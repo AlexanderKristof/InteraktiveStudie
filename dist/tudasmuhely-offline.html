@@ -71,7 +71,7 @@ button, input, select { font: inherit; color: inherit; }
 /* Fejléc */
 .topbar {
   position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 16px;
-  padding: 10px max(16px, calc((100vw - 1200px) / 2)); background: color-mix(in srgb, var(--surface) 92%, transparent);
+  padding: 10px max(16px, calc((100vw - 1440px) / 2)); background: color-mix(in srgb, var(--surface) 92%, transparent);
   backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
 }
 .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--fg); font-weight: 750; font-size: 1.1rem; white-space: nowrap; }
@@ -80,14 +80,14 @@ button, input, select { font: inherit; color: inherit; }
 .topnav a { text-decoration: none; color: var(--fg-2); padding: 6px 10px; border-radius: 8px; white-space: nowrap; }
 .topnav a:hover { background: var(--surface-2); }
 .topnav a.active { color: var(--accent); background: var(--accent-soft); font-weight: 600; }
-.search { position: relative; flex: 1; min-width: 0; }
+.search { position: relative; flex: 1; min-width: 180px; }
 .search input {
   width: 100%; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line);
   background: var(--surface-2); outline: none;
 }
 .search input:focus { border-color: var(--accent); background: var(--surface); }
 .search-pop {
-  position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: var(--surface); border: 1px solid var(--line);
+  position: absolute; top: calc(100% + 6px); right: 0; width: max(100%, min(460px, calc(100vw - 32px))); background: var(--surface); border: 1px solid var(--line);
   border-radius: 12px; box-shadow: var(--shadow); padding: 6px; max-height: 70vh; overflow: auto;
 }
 .icon-btn { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; width: 38px; height: 38px; cursor: pointer; flex: none; }
@@ -607,6 +607,11 @@ h3.letter { margin: 18px 0 8px; color: var(--muted); font-size: 1rem; border-bot
 @media (max-width: 640px) { .leitner { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; } .leitner div { padding: 4px 6px; } .uni-band { grid-template-columns: 1fr; }
   .tabs.big a { padding: 8px 8px; font-size: .92rem; } .f-eq { font-size: 1.3rem; } }
 
+/* Sok menüpont: közepes szélességen a menü külön sorba kerül, így a keresőnek marad hely */
+@media (max-width: 1480px) {
+  .topbar { flex-wrap: wrap; row-gap: 6px; }
+  .topnav { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; }
+}
 @media (max-width: 900px) {
   .lesson { grid-template-columns: 1fr; }
   .toc { display: none; }
@@ -39652,8 +39657,20 @@ STUDIE.addQuestions('sport', {
           text: [t.short, t.text, t.example, t.pitfall].join(' '), tags: (t.en || '') + ' ' + (t.tags || '') });
       });
     });
+    var SPORT_ALIAS = { foci: 'foci futball football soccer', f1: 'f1 forma1 formula1 formula forma-1 autoverseny', kosar: 'kosar kosarlabda basketball nba', tenisz: 'tennis', uszas: 'swimming', atletika: 'athletics futas', kezilabda: 'handball', vizilabda: 'waterpolo', kerekpar: 'bicikli cycling tour', vivas: 'fencing', kajak: 'kenu canoe', jegkorong: 'hoki hockey nhl', torna: 'gymnastics', kuzdo: 'box okolvivas judo birkozas', teli: 'si korcsolya', sakk: 'chess', altalanos: 'edzes sporttudomany' };
+    (S.SPORTS || []).forEach(function (sp) {
+      index.push({ kind: 'Sport', icon: sp[1], title: sp[2], sub: 'Sport és tudomány · érdekességek, sportolók', href: '#/sport?sp=' + sp[0], text: '', tags: sp[0] + ' sport ' + (SPORT_ALIAS[sp[0]] || ''), boost: 6 });
+    });
+    var athl = {};
+    (S.facts || []).forEach(function (f) { (f.athletes || []).forEach(function (n) { athl[n] = (athl[n] || 0) + 1; }); });
+    Object.keys(athl).forEach(function (n) {
+      index.push({ kind: 'Sportoló', icon: '⭐', title: n, sub: athl[n] + ' érdekesség a Sport oldalon', href: '#/sport?ki=' + encodeURIComponent(n), text: '', tags: 'sportolo', boost: 4 });
+    });
+    (S.langCourses || []).forEach(function (c) {
+      index.push({ kind: 'Nyelv', icon: c.flag, title: c.title + ' nyelv', sub: 'Játékos nyelvtanulás · ' + c.units.length + ' egység', href: '#/nyelv/' + c.id, text: (c.intro || '') + ' ' + c.units.map(function (u) { return u.title; }).join(' '), tags: c.id + ' nyelvtanulas nyelvlecke', boost: 6 });
+    });
     (S.facts || []).forEach(function (f) {
-      index.push({ kind: 'Tudtad?', icon: '💡', title: 'Tudtad, hogy ' + f.q.replace(/\*\*/g, ''), sub: S.factCatTitle(f.cat), href: '#/tudtad?f=' + encodeURIComponent(f.id), text: f.why });
+      index.push({ kind: 'Tudtad?', icon: '💡', title: 'Tudtad, hogy ' + f.q.replace(/\*\*/g, ''), sub: S.factCatTitle(f.cat), href: '#/tudtad?f=' + encodeURIComponent(f.id), text: f.why, tags: (f.athletes || []).join(' '), weak: true });
     });
     index.forEach(function (it) { it.nt = norm(it.title); it.nx = norm(it.text); it.ng = norm(it.tags || ''); });
   }
@@ -39695,8 +39712,10 @@ STUDIE.addQuestions('sport', {
         var t = terms[i], s = 0;
         if (it.nt === t) s += 40;
         if (it.nt.indexOf(t) === 0) s += 20;
+        else if ((' ' + it.nt).indexOf(' ' + t) >= 0) s += 10; /* szó elején (pl. „Lionel Messi”) */
         if (it.nt.indexOf(t) >= 0) s += 15;
         if (it.ng.indexOf(t) >= 0) s += 8;
+        if ((' ' + it.ng + ' ').indexOf(' ' + t + ' ') >= 0) s += 14; /* pontos címke/kulcsszó-egyezés (pl. f1) */
         if (it.nx.indexOf(t) >= 0) s += 3;
         if (!s && !noFuzzy) {
           if (!it.nw) { it.nw = it.nt.split(/[^a-z0-9]+/); it.ngw = it.ng.split(/[^a-z0-9]+/); }
@@ -39707,6 +39726,8 @@ STUDIE.addQuestions('sport', {
         sc += s;
       }
       if (it.kind === 'Lecke' || it.kind === 'Felfedező' || it.kind === 'Szakszó') sc += 2;
+      if (it.boost) sc += it.boost;
+      if (it.weak) sc = Math.round(sc * 0.55); /* a hosszú „Tudtad?”-címek ne nyomják el a modelleket, leckéket */
       out.push({ it: it, sc: sc });
     });
     out.sort(function (a, b) { return b.sc - a.sc; });

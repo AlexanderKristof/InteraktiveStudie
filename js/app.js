@@ -366,8 +366,20 @@
           text: [t.short, t.text, t.example, t.pitfall].join(' '), tags: (t.en || '') + ' ' + (t.tags || '') });
       });
     });
+    var SPORT_ALIAS = { foci: 'foci futball football soccer', f1: 'f1 forma1 formula1 formula forma-1 autoverseny', kosar: 'kosar kosarlabda basketball nba', tenisz: 'tennis', uszas: 'swimming', atletika: 'athletics futas', kezilabda: 'handball', vizilabda: 'waterpolo', kerekpar: 'bicikli cycling tour', vivas: 'fencing', kajak: 'kenu canoe', jegkorong: 'hoki hockey nhl', torna: 'gymnastics', kuzdo: 'box okolvivas judo birkozas', teli: 'si korcsolya', sakk: 'chess', altalanos: 'edzes sporttudomany' };
+    (S.SPORTS || []).forEach(function (sp) {
+      index.push({ kind: 'Sport', icon: sp[1], title: sp[2], sub: 'Sport és tudomány · érdekességek, sportolók', href: '#/sport?sp=' + sp[0], text: '', tags: sp[0] + ' sport ' + (SPORT_ALIAS[sp[0]] || ''), boost: 6 });
+    });
+    var athl = {};
+    (S.facts || []).forEach(function (f) { (f.athletes || []).forEach(function (n) { athl[n] = (athl[n] || 0) + 1; }); });
+    Object.keys(athl).forEach(function (n) {
+      index.push({ kind: 'Sportoló', icon: '⭐', title: n, sub: athl[n] + ' érdekesség a Sport oldalon', href: '#/sport?ki=' + encodeURIComponent(n), text: '', tags: 'sportolo', boost: 4 });
+    });
+    (S.langCourses || []).forEach(function (c) {
+      index.push({ kind: 'Nyelv', icon: c.flag, title: c.title + ' nyelv', sub: 'Játékos nyelvtanulás · ' + c.units.length + ' egység', href: '#/nyelv/' + c.id, text: (c.intro || '') + ' ' + c.units.map(function (u) { return u.title; }).join(' '), tags: c.id + ' nyelvtanulas nyelvlecke', boost: 6 });
+    });
     (S.facts || []).forEach(function (f) {
-      index.push({ kind: 'Tudtad?', icon: '💡', title: 'Tudtad, hogy ' + f.q.replace(/\*\*/g, ''), sub: S.factCatTitle(f.cat), href: '#/tudtad?f=' + encodeURIComponent(f.id), text: f.why });
+      index.push({ kind: 'Tudtad?', icon: '💡', title: 'Tudtad, hogy ' + f.q.replace(/\*\*/g, ''), sub: S.factCatTitle(f.cat), href: '#/tudtad?f=' + encodeURIComponent(f.id), text: f.why, tags: (f.athletes || []).join(' '), weak: true });
     });
     index.forEach(function (it) { it.nt = norm(it.title); it.nx = norm(it.text); it.ng = norm(it.tags || ''); });
   }
@@ -409,8 +421,10 @@
         var t = terms[i], s = 0;
         if (it.nt === t) s += 40;
         if (it.nt.indexOf(t) === 0) s += 20;
+        else if ((' ' + it.nt).indexOf(' ' + t) >= 0) s += 10; /* szó elején (pl. „Lionel Messi”) */
         if (it.nt.indexOf(t) >= 0) s += 15;
         if (it.ng.indexOf(t) >= 0) s += 8;
+        if ((' ' + it.ng + ' ').indexOf(' ' + t + ' ') >= 0) s += 14; /* pontos címke/kulcsszó-egyezés (pl. f1) */
         if (it.nx.indexOf(t) >= 0) s += 3;
         if (!s && !noFuzzy) {
           if (!it.nw) { it.nw = it.nt.split(/[^a-z0-9]+/); it.ngw = it.ng.split(/[^a-z0-9]+/); }
@@ -421,6 +435,8 @@
         sc += s;
       }
       if (it.kind === 'Lecke' || it.kind === 'Felfedező' || it.kind === 'Szakszó') sc += 2;
+      if (it.boost) sc += it.boost;
+      if (it.weak) sc = Math.round(sc * 0.55); /* a hosszú „Tudtad?”-címek ne nyomják el a modelleket, leckéket */
       out.push({ it: it, sc: sc });
     });
     out.sort(function (a, b) { return b.sc - a.sc; });
