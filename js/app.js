@@ -110,7 +110,7 @@
       '<form class="search-big" id="hero-search"><input type="search" name="q" placeholder="Mi érdekel? pl. processzor, atom, Ohm-törvény…" aria-label="Keresés"><button class="btn primary" type="submit">Keresés</button></form>' +
       '<div class="chips">' + ['processzor', 'atom', 'akkumulátor', 'Ohm', 'FI relé', 'Pitagorasz', 'négyütemű motor', 'honfoglalás'].map(function (c) {
         return '<a class="chip" href="#/kereses?q=' + encodeURIComponent(c) + '">' + esc(c) + '</a>';
-      }).join('') + '</div>' + lastHtml + dailyHtml() + '</section>' +
+      }).join('') + '</div>' + lastHtml + dailyHtml() + examHtml() + '</section>' +
       ((S.paths || []).length ? '<div class="section-title"><h2>🧭 Válassz célt</h2><a href="#/utvonalak">Összes útvonal →</a></div><p class="muted" style="margin-top:-6px">Lépésről lépésre végigvezető tanulási tervek, tantárgyakon átívelve.</p><div class="grid">' + S.pathCards(4) + '</div>' : '') +
       S.STAGES.map(function (stg) {
         var list = S.subjects.filter(function (s) { return (s.stage || 'kozep') === stg[0]; });
@@ -136,6 +136,10 @@
     });
   }
 
+  function examHtml() {
+    if (!S.examReminder) return '';
+    return S.examReminder() || '<a class="card daily" href="#/felkeszito" style="text-decoration:none;color:inherit"><span class="ico">📅</span><span><b>Dolgozatot vagy vizsgát írsz?</b><small>Add meg, miből és mikor: napokra bontott tervet, próbavizsgát és összefoglalót kapsz.</small></span><span class="btn">Tervet kérek →</span></a>';
+  }
   function dailyHtml() {
     if (!S.startDaily) return '';
     var dl = S.store.get('daily', {}), got = dl[S.dailyKey()];
@@ -433,6 +437,8 @@
     else if (seg[0] === 'egyetem' && seg.length === 1) { setNav('egyetem'); title('Egyetem'); S.pageUniList(main); }
     else if (seg[0] === 'egyetem' && seg[2] === 'fogalom') { if (S.logActivity) S.logActivity('term', seg[1] + '/' + seg[3]); setNav('egyetem'); var tt = S.courseById(seg[1]); title(tt ? tt.title : ''); if (!S.pageTerm(main, seg[1], seg[3])) notFound(); }
     else if (seg[0] === 'egyetem') { setNav('egyetem'); var cc = S.courseById(seg[1]); title(cc ? cc.title : ''); if (!S.pageCourse(main, seg[1], seg[2])) notFound(); }
+    else if (seg[0] === 'felkeszito' && seg[1]) { setNav('felkeszito'); title('Vizsgafelkészítő'); if (!S.pageVizsga(main, seg[1])) notFound(); }
+    else if (seg[0] === 'felkeszito') { setNav('felkeszito'); title('Vizsgafelkészítő'); S.pageFelkeszito(main); }
     else if (seg[0] === 'utvonalak') { setNav(''); title('Tanulási útvonalak'); S.pageUtvonalak(main); }
     else if (seg[0] === 'utvonal') { setNav(''); var pth = (S.paths || []).filter(function (x) { return x.id === seg[1]; })[0]; title(pth ? pth.title : ''); if (!S.pageUtvonal(main, seg[1])) notFound(); }
     else if (seg[0] === 'haladas') { setNav('haladas'); title('Haladásom'); S.pageHaladas(main); }
@@ -505,6 +511,12 @@
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
   }
 
+  /* Ha egy link a jelenlegi címre mutat (pl. futó teszt közben a morzsamenü), a böngésző nem
+     váltana oldalt, ezért ilyenkor kézzel rajzoljuk újra. */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#/"]');
+    if (a && a.getAttribute('href') === location.hash && !e.ctrlKey && !e.metaKey) { e.preventDefault(); route(); window.scrollTo(0, 0); }
+  });
   window.addEventListener('hashchange', route);
   route();
 })();

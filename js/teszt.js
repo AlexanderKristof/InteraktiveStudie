@@ -208,13 +208,38 @@
   };
 
   /* ---------- a teszt futtatása ---------- */
-  function run(main, items, mode, kind) {
+  /* Más modulok (pl. a vizsgafelkészítő) számára. */
+  S.testGroups = buildGroups;
+  S.testItems = function (groupId, topicIds) {
+    var out = [];
+    buildGroups().forEach(function (g) {
+      if (g.id !== groupId) return;
+      g.topics.forEach(function (t) { if (!topicIds || topicIds.indexOf(t.id) >= 0) t.questions.forEach(function (q) { out.push({ q: q, g: g, t: t }); }); });
+    });
+    return out;
+  };
+  S.runTest = function (main, items, mode, opts) { run(main, items, mode, opts && opts.kind, opts || {}); };
+  S.testGrade = grade;
+
+  function run(main, items, mode, kind, ropts) {
+    ropts = ropts || {};
     var qs = items.map(function (it) {
       var opts = S.shuffle(it.q.options.map(function (t, k) { return { t: t, ok: k === it.q.answer }; }));
       return { q: it.q, g: it.g, t: it.t, opts: opts, pick: null, locked: false };
     });
-    var i = 0, t0 = Date.now(), finished = false;
+    var i = 0, t0 = Date.now(), finished = false, timer = null;
     window.scrollTo(0, 0);
+    if (ropts.minutes) {
+      var deadline = t0 + ropts.minutes * 60000;
+      timer = setInterval(function () {
+        var el = main.querySelector('#ts-timer');
+        if (!el || finished) { if (!el) { clearInterval(timer); } return; }
+        var left = Math.max(0, Math.round((deadline - Date.now()) / 1000));
+        el.textContent = '⏱ ' + Math.floor(left / 60) + ':' + ('0' + left % 60).slice(-2);
+        el.classList.toggle('low', left < 120);
+        if (!left) { clearInterval(timer); finished = true; alert('Lejárt az idő! A dolgozatot beadtuk.'); results(); }
+      }, 500);
+    }
 
     function palette() {
       return '<div class="ts-pal" aria-label="Kérdések">' + qs.map(function (x, k) {
@@ -229,8 +254,9 @@
     function show() {
       var x = qs[i], answered = qs.filter(function (y) { return y.pick != null; }).length;
       var reveal = mode === 'azonnali' && x.locked;
-      main.innerHTML = '<nav class="crumbs"><a href="#/teszt">Tesztközpont</a><span>›</span><span>' + (mode === 'vizsga' ? '📝 Vizsga mód' : '⚡ Azonnali visszajelzés') + '</span></nav>' +
+      main.innerHTML = '<nav class="crumbs"><a href="' + (ropts.backHref || '#/teszt') + '">' + esc(ropts.backLabel || 'Tesztközpont') + '</a><span>›</span><span>' + (ropts.label ? esc(ropts.label) : mode === 'vizsga' ? '📝 Vizsga mód' : '⚡ Azonnali visszajelzés') + '</span></nav>' +
         '<div class="ts-run"><div class="ts-top"><span class="badge" style="background:color-mix(in srgb,' + x.g.color + ' 18%,transparent)">' + x.g.icon + ' ' + esc(x.g.title) + ' › ' + esc(x.t.title) + '</span>' +
+        (ropts.minutes ? '<span class="ts-timer" id="ts-timer">⏱</span>' : '') +
         '<span class="muted">' + (mode === 'azonnali' ? 'Pontszám: <b>' + score() + '</b> / ' + qs.filter(function (y) { return y.locked; }).length : 'Megválaszolva: <b>' + answered + '</b> / ' + qs.length) + '</span></div>' +
         '<div class="bar" style="margin:10px 0 16px"><i style="width:' + Math.round((i + 1) / qs.length * 100) + '%"></i></div>' +
         '<div class="card quiz ts-q"><div class="progress">' + (i + 1) + '. kérdés / ' + qs.length + '</div><div class="q">' + S.inline(x.q.q) + '</div><div class="opts">' +
@@ -293,6 +319,8 @@
       var hist = S.store.get('teszt.history', []);
       hist.unshift({ pct: pct, n: qs.length, mode: mode, date: new Date().toLocaleDateString('hu-HU') + ' ' + new Date().toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' }) });
       S.store.set('teszt.history', hist.slice(0, 30));
+      if (timer) clearInterval(timer);
+      if (ropts.onFinish) { try { ropts.onFinish(pct, ok, qs.length); } catch (e) { /* nem kritikus */ } }
       if (kind === 'napi') { var dl = S.store.get('daily', {}); dl[S.dailyKey()] = ok; S.store.set('daily', dl); }
       var wrong = qs.filter(function (x) { return x.pick == null || !x.opts[x.pick].ok; });
       var filter = 'mind';
@@ -309,12 +337,12 @@
         main.querySelectorAll('[data-f]').forEach(function (b) { b.classList.toggle('on', b.dataset.f === filter); });
       }
 
-      main.innerHTML = '<nav class="crumbs"><a href="#/teszt">Tesztközpont</a><span>›</span><span>Eredmény</span></nav>' +
+      main.innerHTML = '<nav class="crumbs"><a href="' + (ropts.backHref || '#/teszt') + '">' + esc(ropts.backLabel || 'Tesztközpont') + '</a><span>›</span><span>Eredmény</span></nav>' +
         '<div class="ts-result card pad"><div class="ts-score g' + gr[0] + '"><b>' + pct + '%</b><span>' + gr[0] + ' – ' + gr[1] + '</span></div>' +
         '<div><h1 style="margin-bottom:4px">' + (pct === 100 ? 'Hibátlan! 🏆' : pct >= 75 ? 'Szép munka!' : pct >= 50 ? 'Átmentél, de van még mit gyakorolni.' : 'Ezt még gyakorolni kell.') + '</h1>' +
         '<p class="muted">' + ok + ' helyes válasz ' + qs.length + ' kérdésből · ' + Math.floor(secs / 60) + ' perc ' + (secs % 60) + ' mp · ' + (mode === 'vizsga' ? 'vizsga mód' : 'azonnali visszajelzés') + '</p>' +
         '<div class="row">' + (wrong.length ? '<button type="button" class="btn primary" id="ts-redo">↻ A hibásak újra (' + wrong.length + ')</button>' : '') +
-        '<button type="button" class="btn" id="ts-again">Ugyanezek a témák, új kérdésekkel</button><a class="btn" href="#/teszt">Új beállítás</a></div></div></div>' +
+        (ropts.backHref ? '<a class="btn" href="' + ropts.backHref + '">← Vissza: ' + esc(ropts.backLabel || '') + '</a>' : '<button type="button" class="btn" id="ts-again">Ugyanezek a témák, új kérdésekkel</button><a class="btn" href="#/teszt">Új beállítás</a>') + '</div></div></div>' +
         '<h2>Témánként</h2><div class="ts-topicres">' + Object.keys(byTopic).map(function (k) {
           var b = byTopic[k], p = Math.round(b.ok / b.n * 100);
           return '<a class="card" href="' + b.t.href + '"><span>' + b.g.icon + ' ' + esc(b.t.title) + '</span><span class="bar" style="--tile:' + (p >= 75 ? 'var(--ok)' : p >= 50 ? 'var(--warn)' : 'var(--bad)') + '"><i style="width:' + p + '%"></i></span><b>' + b.ok + '/' + b.n + '</b></a>';
@@ -324,7 +352,8 @@
       main.querySelectorAll('[data-f]').forEach(function (b) { b.addEventListener('click', function () { filter = b.dataset.f; paintReview(); }); });
       var rd = main.querySelector('#ts-redo');
       if (rd) rd.addEventListener('click', function () { run(main, S.shuffle(wrong.map(function (x) { return { q: x.q, g: x.g, t: x.t }; })), mode); });
-      main.querySelector('#ts-again').addEventListener('click', function () { S.pageTeszt(main, {}); main.querySelector('#ts-start').click(); });
+      var ag = main.querySelector('#ts-again');
+      if (ag) ag.addEventListener('click', function () { S.pageTeszt(main, {}); main.querySelector('#ts-start').click(); });
       paintReview();
       window.scrollTo(0, 0);
     }
