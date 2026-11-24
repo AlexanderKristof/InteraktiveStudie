@@ -68,59 +68,64 @@
     intro: 'A tranzisztor egy **kapcsoló, amelyben nincs mozgó alkatrész**: egy feszültség (a kapun) dönti el, folyhat-e áram két pont (a forrás és a nyelő) között. Folyik áram: **1**. Nem folyik: **0**. Ezekből a kapcsolókból épülnek fel a logikai kapuk, azokból az összeadók, a memória és végül az egész processzor.\n\nA rajz egy **n-csatornás MOSFET keresztmetszete**, mintha kettévágtál volna egyet. A neve a felépítését írja le: **M**etal–**O**xide–**S**emiconductor (fém–oxid–félvezető) **F**ield-**E**ffect **T**ransistor (térvezérlésű tranzisztor).',
     parts: [
       {
-        id: 'gate', z: 5, name: 'Kapu (gate)', svg: gate, explode: [0, -80], badge: [244, 196],
+        id: 'gate', z: 5, name: 'Kapu (gate)', en: 'gate (metal gate, high-k/metal gate)', terms: ['digitalis-technika/mosfet', 'digitalis-technika/cmos'], uni: 'A gate és a csatorna egy **kondenzátort** alkot: `C_ox = ε_ox / t_ox` (egységnyi területre). Minél nagyobb C_ox, annál erősebben vezérli a gate a csatornát. Ezért cserélték a SiO₂-t nagy dielektromos állandójú (high-k) HfO₂-ra: vastagabb, kevésbé szivárgó réteggel ugyanakkora kapacitás érhető el.', svg: gate, explode: [0, -80], badge: [244, 196],
         what: 'A tranzisztor „kapcsológombja”. Ha a kapura **pozitív feszültséget** adsz (a küszöbfeszültség fölé, ez ma kb. 0,3 V), az elektromos tere a vékony szigetelőn keresztül magához vonzza az elektronokat a szilícium felszínére. Így létrejön a **csatorna**, és a tranzisztor bekapcsol. Ha a feszültséget elveszed, a csatorna eltűnik: kikapcsol.\n\nA kapuba **nem folyik áram** (hiszen szigetelő van alatta), csak a tere hat. Ezért hívják térvezérlésű tranzisztornak, és ezért fogyaszt nagyon keveset.',
         madeOf: '- Régen **poliszilícium**: sok apró kristályból álló, erősen adalékolt (vezető) szilícium.\n- Ma inkább **fémrétegek**: titán-nitrid, titán-alumínium, volfrám. A fémet úgy választják, hogy a tranzisztor pont a kívánt feszültségnél kapcsoljon.\n- A két oldalán **szilícium-nitrid** távtartók (spacer) szigetelik a kontaktusoktól.',
         how: 'Az anyagot vékony rétegben az egész szeletre leválasztják (gőzből, CVD-vel), majd **litográfiával** és **maratással** csak a keskeny kapucsíkot hagyják meg. Ez a legkritikusabb méret az egész chipen: a kapu hossza ma kb. 10–20 nm.',
         fact: 'A mai chipekben a kapu nem csak felülről fogja a csatornát. A **FinFET**-ben a csatorna egy függőleges szilícium „uszony” (fin), amit a kapu három oldalról ölel körbe, a legújabb **GAA** (gate-all-around) tranzisztoroknál pedig vékony szilíciumlapokat minden oldalról. Így a kapu sokkal jobban tudja „elzárni” az áramot.'
       },
       {
-        id: 'oxide', z: 4, name: 'Kapuszigetelő (gate-oxid)', svg: ox, explode: [0, -45], badge: [384, 254],
+        id: 'oxide', z: 4, name: 'Kapuszigetelő (gate-oxid)', en: 'gate dielectric (gate oxide, high-k)', terms: ['digitalis-technika/mosfet'], uni: 'A SiO₂ relatív permittivitása 3,9, a HfO₂-é kb. 25. Az ekvivalens oxidvastagság (EOT) azt adja meg, milyen vastag SiO₂ adna azonos kapacitást: `EOT = t_high-k · 3,9 / ε_high-k`. 1 nm alatti SiO₂-n át a kvantummechanikai **alagúteffektus** miatt már jelentős áram szivárogna.', svg: ox, explode: [0, -45], badge: [384, 254],
         what: 'Nagyon vékony **szigetelőréteg** a kapu és a szilícium között. Ez választja el a kapcsológombot az áram útjától: a kapu tere átjut rajta, de az elektronok nem. Minél vékonyabb, annál erősebben hat a kapu, de ha túl vékony, az elektronok kvantummechanikai **alagúthatással** átszivárognak rajta.',
         madeOf: 'Régen tiszta **szilícium-dioxid** (SiO₂, ugyanaz az anyag, mint a kvarc). 2007 óta **hafnium-oxid** (HfO₂) alapú, úgynevezett „high-k” anyag, amely vastagabb lehet, mégis ugyanolyan jól hat. Vastagsága csak **1–2 nanométer**, néhány atomréteg.',
         how: 'A SiO₂ réteget **termikus oxidációval** növesztik: a szeletet kb. 1000 °C-on oxigénben hevítik, és a szilícium felszíne oxiddá alakul. A hafnium-oxidot **atomi rétegleválasztással** (ALD) viszik fel: két gázt felváltva engednek a szeletre, és minden ciklus pontosan egyetlen atomréteget ad.',
         fact: 'Ha a gate-oxid egy futballpálya hosszú lenne, a vastagsága akkor is csak pár milliméter lenne.'
       },
       {
-        id: 'channel', z: 3, name: 'Csatorna', svg: chan, explode: [0, -22], badge: [249, 278],
+        id: 'channel', z: 3, name: 'Csatorna', en: 'inversion channel', terms: ['digitalis-technika/mosfet'], uni: 'Ha `U_GS > U_T`, a gate tere a p-típusú felszín alatt kisebbségi töltéshordozókból (elektronokból) álló **inverziós réteget** hoz létre. A csatorna töltése első közelítésben `Q_n = −C_ox · (U_GS − U_T)`, innen jön a négyzetes áramképlet. A lenti szimulációban ki is próbálhatod.', svg: chan, explode: [0, -22], badge: [249, 278],
         what: 'A forrás és a nyelő közötti keskeny sáv a szilícium felszínén. Ez maga is p-típusú szilícium, tehát alapból **nincs benne szabad elektron**: a tranzisztor ki van kapcsolva. Ha a kapura feszültséget adsz, a tér elektronokat gyűjt ide: a felszínen egy vékony **n-típusú réteg** (inverziós réteg) alakul ki, és a forrásból a nyelőbe elektronok áramolhatnak. A rajzon a sötét pöttyök ezek az elektronok.',
         madeOf: '**Szilícium**, ugyanaz a kristály, mint a szubsztrát. Ezt a vékony réteget nem külön építik rá, hanem a kapu tere „kapcsolja át” vezetővé. Újabb chipekben néha egy kis **germánium** van benne, vagy mechanikailag megfeszítik a kristályt, mert így gyorsabban mozognak benne a töltéshordozók.',
         how: 'A csatorna alatti területbe ionimplantációval pontosan beállított mennyiségű adalékot juttatnak. Ez határozza meg, mekkora kapufeszültségnél kapcsol be a tranzisztor (ez a **küszöbfeszültség**).',
         fact: 'Egy bekapcsolt csatornán át csak néhány tíz mikroamper folyik, de mivel egy chipben milliárdnyi tranzisztor kapcsol másodpercenként milliárdszor, ebből jön össze a processzor 100 watt körüli fogyasztása.'
       },
       {
-        id: 'source', z: 2, name: 'Forrás (source)', svg: source, explode: [0, 0], badge: [118, 278],
+        id: 'source', z: 2, name: 'Forrás (source)', en: 'source', terms: ['digitalis-technika/mosfet'], svg: source, explode: [0, 0], badge: [118, 278],
         what: 'Az a tartomány, ahonnan az elektronok **elindulnak**. Erősen adalékolt, **n+ típusú** szilícium: rengeteg szabad elektron van benne. Általában a föld (0 V) kapcsolódik ide.',
         madeOf: '**Szilícium**, amelybe **arzén** vagy **foszfor** atomokat juttattak. Ezeknek eggyel több vegyértékelektronjuk van (5), mint a szilíciumnak (4). A „fölösleges” elektron szabadon mozoghat: ettől vezet.',
         how: '**Ionimplantációval** készül: az adalékatomokat ionná alakítják, és nagy feszültséggel felgyorsítva belelövik a szilíciumba. A kapu maga is maszkként szolgál, így a forrás és a nyelő pontosan a kapu két szélénél kezdődik (ez az **önillesztés**). Utána egy villámgyors hőkezeléssel a helyükre rázzák az atomokat a kristályrácsban.'
       },
       {
-        id: 'drain', z: 2, name: 'Nyelő (drain)', svg: drain, explode: [0, 0], badge: [482, 278],
+        id: 'drain', z: 2, name: 'Nyelő (drain)', en: 'drain', terms: ['digitalis-technika/mosfet'], uni: 'Telítésben a csatorna a drain oldalán elzáródik (pinch-off), az áram ettől kezdve alig függ U_DS-től. A maradék függést a csatornahossz-moduláció (λ) írja le.', svg: drain, explode: [0, 0], badge: [482, 278],
         what: 'Az a tartomány, ahová az elektronok **megérkeznek**. Felépítése ugyanolyan, mint a forrásé (n+ szilícium), de pozitív feszültség van rajta, ez „szívja” át az elektronokat a csatornán. Egy egyszerű NEM kapuban (inverterben) a nyelő a kimenet: ha a tranzisztor bekapcsol, a földre húzza, így a kimenet **0** lesz. Ha kikapcsol, a párja (egy p-csatornás tranzisztor) a tápfeszültségre húzza: a kimenet **1**.',
         madeOf: '**Arzénnel** vagy **foszforral** erősen adalékolt szilícium, a felszínén vékony **nikkel-szilicid** réteggel, hogy a fém kontaktus jól érintkezzen vele.',
         how: 'A forrással egy lépésben, ugyanazzal az ionimplantációval készül. A két oldal csak a bekötésben különbözik.',
         fact: 'A számítógépekben **CMOS** áramkörök vannak: egy n-csatornás tranzisztor (mint ez) és egy p-csatornás „párja” mindig ellentétesen kapcsol. Így nyugalmi állapotban szinte egyáltalán nem folyik áram, és csak a kapcsoláskor fogy energia.'
       },
       {
-        id: 'substrate', z: 0, name: 'Szilícium szubsztrát (p-típusú)', svg: sub, explode: [0, 60], link: 'atom', badge: [100, 392],
+        id: 'substrate', z: 0, name: 'Szilícium szubsztrát (p-típusú)', en: 'p-type substrate (body)', uni: 'A p-típusú adalékolás (bór, kb. 10¹⁷ atom/cm³) a vegyértéksáv közelébe hoz akceptorszinteket. A küszöbfeszültség az adalékolástól, az oxidkapacitástól és a kilépési munkák különbségétől függ. Melegben kb. −2 mV/K-nel csökken.', svg: sub, explode: [0, 60], link: 'atom', badge: [100, 392],
         what: 'Az alap: egy tökéletes **szilícium-egykristály** szelet, a wafer felső része. Ebben és ezen épül fel minden tranzisztor. **p-típusú**, vagyis kevés **bórral** adalékolták. A bórnak csak 3 vegyértékelektronja van, ezért a kristályban hiányzó elektronok, úgynevezett **lyukak** keletkeznek, amelyek pozitív töltésként viselkednek.',
         madeOf: '**Szilícium** atomok szabályos, gyémántszerű kristályrácsban: minden atom 4 szomszédjával köt össze, mindegyikkel egy elektronpárt megosztva. Ezenkívül egy kis **bór**: nagyjából minden milliomodik atom helyén.\n\nHa kíváncsi vagy, mi van egy szilíciumatom belsejében, nézz bele!',
         how: 'Tisztított kvarchomokból kb. 99,9999999%-os szilíciumot állítanak elő, és Czochralski-eljárással egykristályt húznak belőle. Ezt waferekre szeletelik és tükörsimára polírozzák. A bórt már az olvadékba keverik.'
       },
       {
-        id: 'sti', z: 1, name: 'Árokszigetelés (STI)', svg: sti, explode: [0, 18], badge: [72, 314],
+        id: 'sti', z: 1, name: 'Árokszigetelés (STI)', en: 'shallow trench isolation (STI)', svg: sti, explode: [0, 18], badge: [72, 314],
         what: 'Szigetelő „árkok” a tranzisztor két oldalán. Egy chipben a tranzisztorok néhány tíz nanométerre vannak egymástól, ezek az árkok akadályozzák meg, hogy az áram átszivárogjon a szomszédba.',
         madeOf: '**Szilícium-dioxid** (SiO₂), vagyis üveg, ugyanaz az anyag, mint a kvarchomok.',
         how: 'Ez az egyik legelső lépés: litográfiával kijelölik, majd plazmával kimarják az árkokat a szilíciumba. Ezután gőzből oxiddal töltik fel, és a felesleget **kémiai-mechanikai polírozással** (CMP) tökéletesen síkra csiszolják.'
       },
       {
-        id: 'metal', z: 6, name: 'Kontaktusok és rézvezetékek', svg: metal, explode: [0, -115], badge: [113, 138],
+        id: 'metal', z: 6, name: 'Kontaktusok és rézvezetékek', en: 'contacts and interconnects (BEOL)', terms: ['digitalis-technika/orajel'], uni: 'A vezetékek **RC-késleltetése** (`τ ≈ R·C`) a kis méreteknél már fontosabb lehet, mint a tranzisztoroké: a vékony rézvezeték ellenállása nő, a szomszédos vezetékek közti kapacitás pedig nő, ahogy közelebb kerülnek. Ezért használnak kis permittivitású (low-k) szigetelőket a vezetékek között.', svg: metal, explode: [0, -115], badge: [113, 138],
         what: 'Ezeken keresztül kapcsolódik a tranzisztor a többi tranzisztorhoz. A szürke függőleges **kontaktusok** (dugók) a forráshoz, a nyelőhöz és a kapuhoz érnek le, a narancs **rézvezetékek** pedig vízszintesen viszik tovább a jelet. A chipen 10–15 ilyen vezetékréteg van egymás fölött, köztük szigetelővel.',
         madeOf: '- Kontaktusok: **volfrám** (vagy újabban kobalt), vékony titán-nitrid bélésben.\n- Vezetékek: **réz**, tantál/tantál-nitrid határréteggel, hogy a réz ne diffundáljon a szilíciumba (az tönkretenné a tranzisztort).\n- Köztük alacsony dielektromos állandójú, porózus **szigetelő** (low-k anyag).',
         how: 'A **damaszcén eljárással** készülnek (a nevét a damaszkuszi berakásos díszítésről kapta): a szigetelőbe árkokat marnak, ezeket fémmel töltik fel, majd a felesleget CMP-vel lecsiszolják. Így marad a fém csak az árkokban.',
         fact: 'Egy mai processzorban a rézvezetékek összhossza több tíz kilométer, pedig az egész chip csak körömnyi.'
       }
     ],
+    uni: {
+      text: 'A MOSFET egyetemi modellje a **négyzetes (Shichman–Hodges) modell**: lineáris tartományban vezérelt ellenállás, telítésben négyzetesen vezérelt áramforrás. A szimulációban a gate- és drain-feszültséget, valamint a hőmérsékletet állítva látod, hogyan változik a kimeneti karakterisztika, és melyik munkatartományban van a tranzisztor.',
+      widgets: [{ type: 'mosfet-iv' }],
+      terms: ['digitalis-technika/mosfet', 'digitalis-technika/cmos', 'digitalis-technika/logikai-kapu']
+    },
     steps: [
       { icon: '💿', title: 'Kiindulás: a p-típusú wafer', text: 'A gyártás egy tükörsimára polírozott, **bórral enyhén adalékolt** szilíciumszeletből indul. Minden lépés tisztatérben zajlik, ahol a levegő ezerszer tisztább, mint egy kórházi műtőben, hiszen egyetlen porszem is akkora, mint száz tranzisztor.', parts: ['substrate'] },
       { icon: '🕳️', title: 'Árkok a tranzisztorok közé', text: 'Litográfiával kijelölik a tranzisztorok helyét, köréjük árkokat marnak, és **szilícium-dioxiddal** töltik fel őket (STI). Utána CMP-vel síkra csiszolják a szeletet.', parts: ['sti'] },

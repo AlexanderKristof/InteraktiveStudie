@@ -154,88 +154,93 @@
     intro: 'Az alaplap egy nagy **nyomtatott áramköri lap** (NYÁK), amely összeköti a számítógép részeit: tápot ad nekik, és vezetékek ezrein szállítja köztük az adatot. Ő maga nem számol, de nélküle semmi nem tudna egymással „beszélgetni”.\n\nNyomd meg a **Szétszedés** gombot: az alkatrészek felemelkednek, és látszanak a lapon futó rézvezetékek. A CPU-foglalatnál pedig **belenézhetsz a processzorba**.',
     parts: [
       {
-        id: 'pcb', z: 0, name: 'Nyomtatott áramköri lap (NYÁK)', svg: pcb, explode: [0, 30], badge: I.pt(205, 150, B),
+        id: 'pcb', z: 0, name: 'Nyomtatott áramköri lap (NYÁK)', en: 'printed circuit board (PCB)', uni: 'Nagy sebességű jeleknél (DDR5, PCIe 5.0) a vezetősáv **tápvonal**: hullámimpedanciája (tipikusan 50 Ω egyvégű, 85–100 Ω differenciális) a sáv szélességétől, a dielektrikum vastagságától és ε_r-étől függ. A hullámos (kígyózó) vezetékek a jelek futási idejét egyenlítik ki: FR4-ben a jel kb. 15 cm-t tesz meg nanoszekundumonként.', svg: pcb, explode: [0, 30], badge: I.pt(205, 150, B),
         what: 'Maga a lap, amire minden rá van forrasztva. Kívülről csak egy zöld (vagy fekete) lemez, de valójában **6–12 rétegből** áll: a rétegekben vékony **rézvezetékek** futnak, összesen több száz méter hosszan. A rétegeket apró, rézzel bevont furatok (**via**-k) kötik össze.',
         madeOf: '- **Üvegszálas szövet + epoxigyanta** (FR-4): ez a szigetelő, merev alap.\n- **Réz**: a vezetékek és a táp-/földsíkok, rétegenként kb. 0,035 mm vastag fóliából.\n- **Forrasztásgátló lakk**: ettől zöld vagy fekete a felület, és védi a rezet.\n- A forrasztási pontokon vékony **ón** vagy **arany** bevonat.',
         how: 'A rézzel bevont üvegszál-epoxi lapokra fényérzékeny lakkal „lefényképezik” a vezetékek mintáját, majd a felesleges rezet kimarják. A kész rétegeket hővel és nyomással összepréselik, a furatokat kifúrják és belülről rézzel bevonják. A részleteket a lenti gyártási lépéseknél nézheted meg.',
         fact: 'A memória és a PCIe vezetékei néha kanyarognak, mint egy kígyó. Nem tervezési hiba: a jelek fénysebesség közelében haladnak, és ha az egyik vezeték rövidebb, a bitek **nem egyszerre** érkeznének meg. A kanyarokkal egyforma hosszúra húzzák őket.'
       },
       {
-        id: 'socket', z: 4, name: 'CPU-foglalat', svg: sock, explode: [0, -130], link: 'processzor',
+        id: 'socket', z: 4, name: 'CPU-foglalat', en: 'CPU socket (LGA)', svg: sock, explode: [0, -130], link: 'processzor',
         what: 'Ide kerül a **processzor**. A foglalat aljában több mint 1700 apró, rugós tűs érintkező van (LGA-foglalat), ezek nyomódnak rá a processzor alján lévő aranyozott pontokra. A fém keret és a kar szorítja le egyenletesen a processzort.',
         madeOf: '- Hőálló **műanyag** (folyadékkristályos polimer, LCP) ház.\n- **Rézötvözet** rugós tűk, **arany** bevonattal.\n- **Acél** rögzítőkeret és kar.',
         how: 'A műanyag házat fröccsöntik, a tűket külön sajtolják és aranyozzák, majd gépek ültetik be őket a házba. A kész foglalat alján apró **forrasztógolyók** vannak: a lapra helyezik, és kemencében (reflow) ráforrasztják, ugyanúgy, mint a többi felületszerelt alkatrészt.',
         fact: 'A foglalat tűi olyan finomak, hogy egy leejtett processzor egy pillanat alatt elgörbítheti őket. Ezért kapsz hozzá műanyag védősapkát, amit csak a beszereléskor veszel le.'
       },
       {
-        id: 'vrm', z: 3, name: 'Tápellátás (VRM)', svg: vrm, explode: [0, -110], badge: I.pt(40, 92, B + 9),
+        id: 'vrm', z: 3, name: 'Tápellátás (VRM)', en: 'voltage regulator module (VRM), multiphase buck converter', terms: ['digitalis-technika/cmos'], uni: 'A VRM többfázisú **feszültségcsökkentő (buck) átalakító**: `U_ki ≈ D · U_be`, ahol D a kitöltési tényező. 12 V-ból kb. 1,2 V-hoz D ≈ 0,1 kell. Több fázist eltolva kapcsolnak, így kisebb a hullámosság, és megoszlik a 100–200 A-es áram. A hatásfok 85–92%: a maradék hővé alakul a MOSFET-eken és a fojtókon.', svg: vrm, explode: [0, -110], badge: I.pt(40, 92, B + 9),
         what: 'A tápegység 12 V-ot ad, de a processzornak kb. **1,0–1,4 V** kell, viszont nagyon nagy áramerősséggel: terhelés alatt akár **200 A** felett! A VRM (feszültségszabályzó modul) ezt az átalakítást végzi, több párhuzamos „fázisban”. A szürke kockák a **tekercsek**, mellettük a kapcsoló **MOSFET-ek** és a **kondenzátorok**. Ide tartozik a bal felső sarokban lévő 8 pines **CPU-tápcsatlakozó** is.',
         madeOf: '- Tekercsek: **ferrit** mag köré tekert vastag **réz**.\n- Teljesítmény-MOSFET-ek: szilícium tranzisztorok műanyag tokban.\n- Szilárd polimer **kondenzátorok** alumíniumházban.\n- Egy vezérlő chip (PWM-vezérlő), amely a fázisokat összehangolja.',
         how: 'Mindegyik alkatrészt külön gyárban készítik, majd felületszerelési technológiával (SMT) ültetik a lapra és forrasztják. A drágább alaplapokon fém hűtőborda kerül rájuk, mert a sok amper melegít.',
         fact: 'A VRM másodpercenként több százezerszer kapcsolja ki-be a 12 V-ot. A tekercs és a kondenzátor ezt a „szaggatott” áramot simítja egyenletes, alacsony feszültséggé. Ezt **kapcsolóüzemű feszültségátalakítónak** (buck konverternek) hívják.'
       },
       {
-        id: 'ram', z: 4, name: 'RAM-foglalatok', svg: ram, explode: [0, -130],
+        id: 'ram', z: 4, name: 'RAM-foglalatok', en: 'DIMM slots (DDR)', terms: ['digitalis-technika/dram', 'digitalis-technika/memoriahierarchia'], svg: ram, explode: [0, -130],
         what: 'Négy hosszú foglalat a **memóriamodulok** (RAM) számára. A RAM a processzor „munkaasztala”: itt vannak a futó programok és adataik. A foglalatok párban dolgoznak (kétcsatornás mód), ezért vannak felváltva színezve: a párokat érdemes ugyanolyan színű helyekre tenni.',
         madeOf: 'Hőálló **műanyag** ház, benne 288 **rézötvözet** érintkező (DDR5 esetén) **arany** bevonattal, a végein pattintható reteszekkel.',
         how: 'A házat fröccsöntik, az érintkezőket beültetik, majd a foglalatot a lapra forrasztják. A foglalatok a processzorhoz a lehető legközelebb vannak, mert a memória jelei nagyon gyorsak, és minden centiméter számít.',
         fact: 'A RAM áram nélkül mindent elfelejt. Ezért kell a dokumentumot elmenteni: a mentés a RAM-ból a háttértárra (pl. az SSD-re) másolja az adatot.'
       },
       {
-        id: 'atx24', z: 5, name: '24 pines tápcsatlakozó', svg: atx, explode: [0, -130],
+        id: 'atx24', z: 5, name: '24 pines tápcsatlakozó', en: 'ATX 24-pin power connector', svg: atx, explode: [0, -130],
         what: 'Itt kapja az alaplap a tápegységtől a **+12 V**, **+5 V** és **+3,3 V** feszültséget, valamint a földet. Néhány érintkező jelzésre szolgál: például a tápegység ezen keresztül kapja meg a „bekapcsolás” parancsot, amikor megnyomod a gépen a gombot.',
         madeOf: '**Nejlon** (poliamid) ház, benne ónozott **sárgaréz** vagy rézötvözet hüvelyek.',
         how: 'A házat fröccsöntik, a fém érintkezőket sajtolják és belepattintják. Ez **furatszerelt** alkatrész: a lábai átmennek a lapon, és alul forrasztják be, hogy bírja a dugó ki-be húzogatását.',
         fact: 'A gép bekapcsológombja nem kapcsol nagy áramot. Csak az alaplapnak szól, az pedig ezen a csatlakozón földre húzza a PS_ON jelet, és erre indul el a tápegység.'
       },
       {
-        id: 'pcie', z: 5, name: 'PCIe-bővítőhelyek', svg: pcie, explode: [0, -120], badge: I.pt(80, 176, B + 11),
+        id: 'pcie', z: 5, name: 'PCIe-bővítőhelyek', en: 'PCI Express slots', svg: pcie, explode: [0, -120], badge: I.pt(80, 176, B + 11),
         what: 'Hosszú résekbe kerülnek a **bővítőkártyák**: leggyakrabban a **videokártya**, de lehet hálózati, hang- vagy rögzítőkártya is. A PCI Express soros kapcsolat: az adat „sávokon” (lane) halad, egy x16-os hely 16 sávot jelent. A felső, fémmel megerősített hely a videokártyáé, mert az nehéz.',
         madeOf: '**Műanyag** ház, **arany** bevonatú rézötvözet érintkezők (x16-nál 164 darab), a megerősített helyen **acél** borítás.',
         how: 'Fröccsöntés, érintkezők beültetése, majd forrasztás a lapra. A fémborítást utólag pattintják vagy forrasztják rá.',
         fact: 'Egy PCIe 5.0 x16-os hely irányonként kb. **64 GB/s**-ot visz át: ez nagyjából egy teljes 4K filmnyi adat egy másodperc alatt.'
       },
       {
-        id: 'm2', z: 6, name: 'M.2 SSD', svg: m2, explode: [0, -130],
+        id: 'm2', z: 6, name: 'M.2 SSD', en: 'M.2 NVMe SSD', terms: ['digitalis-technika/memoriahierarchia'], svg: m2, explode: [0, -130],
         what: 'Rágógumi-méretű **háttértár**, közvetlenül az alaplapra csavarozva. Itt van az operációs rendszer, a programjaid és a fájljaid. Áram nélkül is megőrzi az adatot. PCIe-sávokon csatlakozik, ezért nagyon gyors: akár **7000 MB/s**, ami tízszer több, mint a SATA SSD-ké.',
         madeOf: '- Kis NYÁK, rajta **NAND flash** memóriachipek (szilícium, akár 200-nál is több rétegben egymásra épített tárolócellákkal).\n- Egy **vezérlő chip**, ami a kopást is elosztja a cellák között.\n- A fehér címke alatt gyakran hővezető réteg.',
         how: 'A memóriachipeket ugyanúgy gyártják, mint a processzort, csak itt cellákat építenek egymás fölé (3D NAND). A kész chipeket a kis lapra forrasztják, az SSD-t teszt után dobozolják. Az alaplapon csak a foglalat és a rögzítőcsavar-helye van.',
         fact: 'A 2280-as típusjelzés a méret: **22 mm** széles és **80 mm** hosszú.'
       },
       {
-        id: 'chipset', z: 6, name: 'Lapkakészlet (chipset)', svg: chip, explode: [0, -130],
+        id: 'chipset', z: 6, name: 'Lapkakészlet (chipset)', en: 'chipset (platform controller hub, PCH)', svg: chip, explode: [0, -130],
         what: 'A processzor „titkára”. A processzor nem tud közvetlenül minden eszközzel foglalkozni, ezért a lapkakészlet (PCH) intézi a lassabb kapcsolatokat: **USB**-portok, **SATA**, további PCIe-helyek, hálózat, hang. Egy gyors kapcsolattal kötődik a processzorhoz, és ő gyűjti össze neki ezek forgalmát.',
         madeOf: 'Egy **szilícium** lapka (a processzorhoz hasonló, de egyszerűbb chip), a tetején **alumínium** hűtőborda.',
         how: 'A chipet egy félvezetőgyárban készítik, gyakran egy kicsit régebbi, olcsóbb gyártástechnológiával, mint a processzort. A kész tokot BGA-forrasztással (golyóforrasztás) rögzítik a lapra, majd ráragasztják a hűtőt.'
       },
       {
-        id: 'cmos', z: 6, name: 'CMOS-elem', svg: cmos, explode: [0, -130],
+        id: 'cmos', z: 6, name: 'CMOS-elem', en: 'CMOS battery (RTC battery)', svg: cmos, explode: [0, -130],
         what: 'Egy kis gombelem, amely akkor is táplálja a **valós idejű órát** (RTC), amikor a gép ki van kapcsolva, sőt ki van húzva a konnektorból. Ezért tudja a gép bekapcsoláskor a pontos időt. Ha lemerül, a gép minden indításkor rossz dátumot mutat, és elfelejthet egyes beállításokat.',
         madeOf: 'Egy **CR2032** típusú, 3 V-os **lítium** gombelem: lítium anód, mangán-dioxid katód, acél ház.',
         how: 'Az elemgyárban préselik és zárják le. Az alaplapon csak a tartója van beforrasztva, az elemet kézzel pattintják be, így cserélhető.',
         fact: 'A neve onnan ered, hogy régen egy kis **CMOS** technológiájú memóriát (és benne a BIOS-beállításokat) is ez tartott életben. Egy ilyen elem általában 3–10 évig bírja.'
       },
       {
-        id: 'bios', z: 6, name: 'BIOS/UEFI chip', svg: bios, explode: [0, -130], badge: I.pt(226, 292, B),
+        id: 'bios', z: 6, name: 'BIOS/UEFI chip', en: 'BIOS/UEFI firmware flash', svg: bios, explode: [0, -130], badge: I.pt(226, 292, B),
         what: 'Egy apró, nyolclábú **flash memória**chip. Benne van a gép legelső programja, a **UEFI** (régebben BIOS). Bekapcsoláskor ez fut le először: ellenőrzi a hardvert (POST), beállítja a memóriát és a processzort, majd elindítja az operációs rendszert a háttértárról.',
         madeOf: 'Szilícium flash-memória lapka (általában 16–32 MB), fekete **epoxi** tokban, ónozott réz lábakkal.',
         how: 'A chipet félvezetőgyárban készítik, és vagy előre beírják a programot, vagy az alaplapgyárban az utolsó teszt előtt „égetik” rá. Később te is frissítheted a UEFI-t a gyártó honlapjáról.',
         fact: 'A BIOS jelentése Basic Input/Output System, vagyis alapvető be- és kimeneti rendszer. Sokan ma is BIOS-nak hívják a UEFI-t.'
       },
       {
-        id: 'sata', z: 7, name: 'SATA-csatlakozók', svg: sata, explode: [0, -130],
+        id: 'sata', z: 7, name: 'SATA-csatlakozók', en: 'SATA connectors', svg: sata, explode: [0, -130],
         what: 'Ide csatlakoztathatók kábellel a régebbi típusú háttértárak: **merevlemez** (HDD), 2,5 colos **SSD** és optikai meghajtó. A SATA III legfeljebb kb. **600 MB/s** sebességű, a nagy kapacitású, olcsó merevlemezekhez ma is jól jön.',
         madeOf: '**Műanyag** L alakú ház, benne 7 **rézötvözet** érintkező (2 adatpár + 3 föld).',
         how: 'Fröccsöntés és érintkező-beültetés után a lap szélére forrasztják. Oldalra néznek, hogy a kábel ne akadjon bele a videokártyába.'
       },
       {
-        id: 'io', z: 2, name: 'Hátlapi csatlakozók (I/O)', svg: io, explode: [-40, -100],
+        id: 'io', z: 2, name: 'Hátlapi csatlakozók (I/O)', en: 'rear I/O panel', svg: io, explode: [-40, -100],
         what: 'A gép hátulján kilógó csatlakozók: **USB**, **HDMI**/DisplayPort a beépített grafikához, **Ethernet** (hálózat) és **hang**csatlakozók. Ezeket látod, amikor hátulról bedugod a kábeleket.',
         madeOf: '- **Ónozott acél** vagy rézötvözet burkolat (árnyékolás a zavarok ellen).\n- **Műanyag** szigetelő nyelvek (a kék szín az USB 3-at jelzi).\n- **Aranyozott** érintkezők.\n- A hálózati aljzatban kis **transzformátorok** a leválasztáshoz.',
         how: 'Az aljzatokat külön gyártják, és **furatszerelt** módon forrasztják be, hogy a kábel dugdosását is kibírják. Elé kerül egy fém takarólemez (I/O shield), amely a ház nyílásához illeszkedik.',
         fact: 'Az USB-aljzat belseje színkódos: fekete az USB 2.0, kék az USB 3.0, piros vagy sárga gyakran az, amelyik kikapcsolt gépnél is tölt.'
       }
     ],
+    uni: {
+      text: 'Egyetemi szemmel az alaplap egyszerre **tápelosztó hálózat** (power delivery network: a VRM-től a processzorig mΩ-os ellenállásokkal és nagy kondenzátortelepekkel) és **nagyfrekvenciás jelátviteli rendszer**, ahol a vezetékek tápvonalként viselkednek. A processzor teljesítményfelvétele határozza meg, mekkora áramot kell a VRM-nek előállítania: ezt próbálhatod ki lent.',
+      widgets: [{ type: 'cpu-teljesitmeny', options: { title: 'Mekkora áramot kell a VRM-nek adnia?' } }],
+      terms: ['digitalis-technika/dram', 'digitalis-technika/memoriahierarchia', 'digitalis-technika/cmos']
+    },
     steps: [
       { icon: '🧵', title: 'Az alapanyag: üvegszál és réz', text: 'Az alap az **FR-4**: üvegszálas szövet, amelyet epoxigyantával itatnak át, és mindkét oldalára vékony **rézfóliát** préselnek. A gyanta tűzálló adalékot is kap (az FR a flame retardant, vagyis lángálló rövidítése). Ebből a táblából készülnek a belső rétegek.', parts: ['pcb'] },
       { icon: '💡', title: 'A belső rétegek mintázata', text: 'A rezet fényérzékeny lakkal vonják be, és egy filmen keresztül UV-fénnyel megvilágítják, ahol vezeték lesz. Előhívás után vegyszerrel **kimarják** a fölösleges rezet: csak a vezetékek maradnak. Kamerás gép (AOI) ellenőrzi, nincs-e szakadás vagy zárlat.', parts: ['pcb'] },

@@ -35,6 +35,15 @@ e-mobilitás, analízis, fizika):
 - **Fogalomtérkép**: a fogalmak hálózata, ami megmutatja, mi mivel függ össze
 - **Tanulókártyák** Leitner-módszerrel, és minden alkalommal újragenerált **kvíz**
 
+**🎒/🎓 Mélységi szintek – egy tudásgráf.** A fejlécben váltható, hogy iskolai vagy egyetemi szinten nézed a tartalmat.
+Ugyanaz a modell (pl. processzor, tranzisztor, alaplap) egyetemi szinten megmutatja az angol szakszavakat, az
+„Egyetemi háttér” magyarázatokat és paraméterezhető szimulációkat (MOSFET I–U karakterisztika, CPU-teljesítmény).
+A szakszavaknál megjelenik, milyen középiskolai leckékre épülnek („Előismeret”) és hol találkozol velük a valóságban.
+
+**📝 Tesztközpont.** Témákra bontott kérdésbank, minden kérdés 4 válaszlehetőséggel. Választható az *azonnali visszajelzés*
+(minden válasz után kiírja, helyes volt-e) vagy a *vizsga mód* (csak a végén értékel). Az eredmény osztályzattal,
+témánkénti bontással és a hibás kérdések újragyakorlásával jár, a gyenge témákat pedig a program megjegyzi.
+
 Ezen kívül: **kereső** az összes tartalomban (ékezet nélkül is működik), haladásmentés, világos és sötét mód,
 mobilbarát felület.
 
@@ -54,11 +63,13 @@ Minden tartalom egy-egy egyszerű JavaScript fájl, nincs szükség fordításra
 - Tantárgyak: `data/tantargyak/*.js`. A minta a `villanyszereles.js`.
 - Modellek: `data/modellek/*.js`. A minta a `processzor.js`.
 - Egyetemi kurzusok: `data/egyetem/*.js`. A minta a `digitalis-technika.js`.
+- Kérdésbank: `data/kerdesek/*.js` – `STUDIE.addQuestions('tantárgy', { leckeId: [ { q, options: [4 db], answer, explain } ] })`.
+- Egyetemi kapcsolatok: alkatrésznél és leckénél `terms: ['kurzus/fogalom']`, szakszónál `prereq: ['lecke:tantárgy/lecke', 'modell:id']`, modellnél `uni: { text, widgets, terms }`.
 - Új fájlt az `index.html`-ben kell felvenni egy `<script>` sorral.
 - Szövegjelölés: `**félkövér**`, `` `képlet` ``, `- ` felsorolás, `1. ` számozott lista, üres sor új bekezdés,
   `[[processzor|link a felfedezőbe]]`.
 - Interaktív elemek (`js/widgets.js`): `ohm`, `soros-parhuzamos`, `feszultsegeses`, `negyutemu`, `attetel`,
-  `akkupakk`, `fuggveny`, `pitagorasz`, `gyakorlas`, `idovonal`, `hajitas`, `atomepito`.
+  `akkupakk`, `fuggveny`, `pitagorasz`, `gyakorlas`, `idovonal`, `hajitas`, `atomepito`, `mosfet-iv`, `cpu-teljesitmeny`.
   Leckében: `widget: { type: 'ohm', options: {} }`.
 
 Az egyfájlos változat újragenerálása (Node.js kell hozzá):
@@ -77,6 +88,7 @@ js/widgets.js         interaktív kísérletek
 js/explorer.js        „Mi miből áll?” felfedező
 js/app.js             oldalak, keresés, kvíz, haladás
 js/university.js      egyetemi rész: szakszótár, képletek, fogalomtérkép, kártyák
+js/teszt.js           tesztközpont: kérdésbank, azonnali és vizsga mód
 data/                 a tananyag
 sw.js, manifest       offline mód és telepíthetőség
 tools/build-single.js egyfájlos változat készítése
