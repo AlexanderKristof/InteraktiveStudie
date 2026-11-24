@@ -205,7 +205,7 @@
     return pos;
   }
   function mapHtml(c) {
-    var W = 900, H = 560, pos = layout(c, W, H), L = links(c), edges = '', nodes = '';
+    var W = 900, H = 640, pos = layout(c, W, H), L = links(c), edges = '', nodes = '';
     c.terms.forEach(function (t) {
       L[t.id].forEach(function (r) {
         if (t.id < r) edges += '<line data-a="' + t.id + '" data-b="' + r + '" x1="' + pos[t.id].x.toFixed(1) + '" y1="' + pos[t.id].y.toFixed(1) + '" x2="' + pos[r].x.toFixed(1) + '" y2="' + pos[r].y.toFixed(1) + '"/>';
