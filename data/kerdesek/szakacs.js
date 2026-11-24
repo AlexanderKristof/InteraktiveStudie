@@ -27,7 +27,7 @@ STUDIE.addQuestions('szakacs', {
     { q: 'Kb. milyen hőmérsékleten szaporodnak a baktériumok a leggyorsabban?', options: ['−18 °C körül', '100 °C körül', '0 °C körül', 'Kb. 37 °C körül'], answer: 3,
       explain: 'A legtöbb ételmérgező baktérium testhőmérséklet körül szaporodik a leggyorsabban. A veszélyes zóna kb. 5–63 °C.' },
     { q: 'Egy baktérium 20 percenként megkettőződik. Hány lesz 1-ből 2 óra alatt?', options: ['6', '12', '64', '120'], answer: 2,
-      explain: '2 óra = 120 perc = 6 kettőződés: `2⁶ = 64`. A 6 a kettőződések száma, nem a baktériumoké; a 12 akkor jönne ki, ha összeadnál szorzás helyett.' },
+      explain: '2 óra = 120 perc = 6 kettőződés: `2⁶ = 64`. A 6 a kettőződések száma, nem a baktériumoké; a 12 akkor jönne ki, ha a 2-t a 6-tal szoroznád (2 · 6) hatványozás helyett.' },
     { q: 'Mi történik a baktériumokkal a fagyasztóban (−18 °C)?', options: ['A szaporodás megáll, de túlnyomó részük életben marad', 'Mind elpusztulnak', 'Gyorsabban szaporodnak', 'Méreggé alakulnak'], answer: 0,
       explain: 'A fagyasztás nem fertőtlenít! Felolvasztás után a túlélő baktériumok újra szaporodni kezdenek, ezért a felolvasztott ételt is óvatosan kell kezelni.' },
     { q: 'Hogyan hűtsd le helyesen 20 liter frissen főtt gulyást?', options: ['A fazékban hagyod a pulton éjszakára', 'Forrón, a nagy fazékban beteszed a hűtőbe', 'Hideg vizet öntesz bele', 'Lapos, kisebb edényekbe osztod, és sokkolóban vagy jeges fürdőben gyorsan hűtöd'], answer: 3,

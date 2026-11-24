@@ -115,7 +115,7 @@ STUDIE.addSubject({
             ['Majonézes salátaöntet', 'Mustár és tojás'],
             ['Aszalt sárgabarack, bor', 'Kén-dioxid, szulfitok'],
             ['Tahini, hamburgerzsemle teteje', 'Szezámmag'],
-            ['Pesto', 'Diófélék (és tej a sajtból)'],
+            ['Pesto', 'Tej a sajtból (és diófélék, ha dióval vagy kesudióval készül)'],
             ['Szójaszósz', 'Szója és glutén'],
             ['Paella', 'Puhatestűek és rákfélék']
           ] } }
