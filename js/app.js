@@ -167,7 +167,7 @@
       '<p class="lead" style="margin:0">' + esc(s.description) + '</p></div></div>' +
       (s.intro ? '<div class="lesson-body">' + md(s.intro) + '</div>' : '') +
       '<div class="row" style="--tile:' + s.color + ';margin-top:10px"><span class="muted">' + st.done + ' / ' + st.total + ' lecke kész</span><span class="bar" style="flex:1;max-width:260px"><i style="width:' + st.pct + '%"></i></span></div>' +
-      '<div class="row" style="margin-top:14px"><a class="btn primary" href="#/teszt?targy=' + s.id + '">📝 Teszt ebből a tantárgyból</a><a class="btn" href="#/felkeszito">📅 Felkészülés dolgozatra</a><button type="button" class="btn" id="syllabus">🖨 Tanmenet</button></div>' +
+      '<div class="row" style="margin-top:14px"><a class="btn primary" href="#/teszt?targy=' + s.id + '">📝 Teszt ebből a tantárgyból</a><a class="btn" href="#/kartyak/' + s.id + '">🃏 Tanulókártyák</a><a class="btn" href="#/felkeszito">📅 Felkészülés dolgozatra</a><button type="button" class="btn" id="syllabus">🖨 Tanmenet</button></div>' +
       '<ol class="lesson-list" style="--tile:' + s.color + '">' + s.lessons.map(function (l, i) {
         var d = isDone(s.id, l.id), lv = LEVELS[l.level || 1];
         var p = progress[lessonKey(s.id, l.id)];
@@ -454,6 +454,7 @@
     else if (seg[0] === 'egyetem') { setNav('egyetem'); var cc = S.courseById(seg[1]); title(cc ? cc.title : ''); if (!S.pageCourse(main, seg[1], seg[2])) notFound(); }
     else if (seg[0] === 'felkeszito' && seg[1]) { setNav('felkeszito'); title('Vizsgafelkészítő'); if (!S.pageVizsga(main, seg[1])) notFound(); }
     else if (seg[0] === 'felkeszito') { setNav('felkeszito'); title('Vizsgafelkészítő'); S.pageFelkeszito(main); }
+    else if (seg[0] === 'kartyak') { setNav('home'); title('Tanulókártyák'); if (!S.pageKartyak(main, seg[1], params)) notFound(); }
     else if (seg[0] === 'tartalom') { setNav(''); title('Tartalomjegyzék'); S.pageTartalom(main); }
     else if (seg[0] === 'beallitasok') { setNav(''); title('Beállítások'); S.pageBeallitasok(); }
     else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
