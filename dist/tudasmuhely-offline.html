@@ -739,6 +739,28 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .lr-score b { font-size: 1.4rem; }
 @media (max-width: 600px) { .lp-node { transform: translateX(calc(var(--off, 0) / 2)); } .lr-q { font-size: 1.15rem; } }
 
+.train-band { display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 14px; padding: 16px 18px; text-align: left; cursor: pointer; font: inherit; color: var(--fg); border: 1px solid var(--line); }
+.train-band .ico { font-size: 2rem; }
+.train-band > span:nth-child(2) { flex: 1; display: grid; gap: 2px; }
+.train-band small { color: var(--muted); }
+.train-band.on { box-shadow: 0 0 0 2px var(--accent) inset; }
+
+/* 💰 pénzügyi kalkulátorok */
+.pw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin: 10px 0; }
+.pw-f { display: grid; gap: 4px; font-size: .9rem; }
+.pw-f > span:first-child { color: var(--muted); }
+.pw-in { display: flex; align-items: center; gap: 6px; }
+.pw-in input, .pw-f select { width: 100%; padding: 8px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; }
+.pw-chk { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+.pw-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.pw-table td { padding: 7px 4px; border-bottom: 1px solid var(--line); }
+.pw-table td:last-child { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pw-table tr.sum td { font-size: 1.1rem; border-bottom: 2px solid var(--fg); }
+.pw-table tr.muted td { color: var(--muted); font-size: .9rem; }
+.pw-bar { display: flex; height: 14px; border-radius: 99px; overflow: hidden; margin: 10px 0 4px; background: var(--line); }
+.pw-bar i { display: block; height: 100%; }
+.pw-chart { width: 100%; max-height: 180px; margin-top: 6px; }
+
 </style>
 </head>
 <body>
@@ -792,7 +814,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   S.lessonUni = {};
   S.addLessonUni = function (sid, map) { Object.keys(map).forEach(function (k) { S.lessonUni[sid + '/' + k] = map[k]; }); };
   /* Iskolai szintek a tantárgyakhoz (subject.stage). */
-  S.STAGES = [['altalanos', '🎒 Általános iskola (5–8. osztály)'], ['kozep', '🏫 Középiskola'], ['szakma', '🛠️ Szakmák'], ['sport', '⚽ Sport és mozgás']];
+  S.STAGES = [['altalanos', '🎒 Általános iskola (5–8. osztály)'], ['kozep', '🏫 Középiskola'], ['szakma', '🛠️ Szakmák'], ['sport', '⚽ Sport és mozgás'], ['elet', '🧭 Felnőtt élet – amit az iskola nem tanít']];
   S.stageTitle = function (id) { var x = S.STAGES.filter(function (s) { return s[0] === (id || 'kozep'); })[0]; return x ? x[1] : ''; };
   S.addModel = function (m) { S.models[m.id] = m; };
   S.addWidget = function (name, fn) { S.widgets[name] = fn; };
@@ -1978,7 +2000,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   }
 
   S.pageSport = function (main, params) {
-    var sp = params && params.sp || '', who = params && params.ki || '', q = '';
+    var sp = params && params.sp || '', who = params && params.ki || '', q = '', theme = params && params.tema || '';
     var all = sportFacts(), ath = athletes();
     var subj = S.subjects.filter(function (s) { return s.id === 'sport'; })[0];
     var counts = {};
@@ -1990,6 +2012,8 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
       '<div class="sport-grid" id="sp-grid">' + S.SPORTS.filter(function (s) { return counts[s[0]]; }).map(function (s) {
         return '<button type="button" class="sport-tile" data-sp="' + s[0] + '"><span class="ico">' + s[1] + '</span><b>' + s[2] + '</b><small>' + counts[s[0]] + ' érdekesség</small></button>';
       }).join('') + '</div>' +
+      (all.some(function (f) { return f.theme === 'edzes'; }) ? '<button type="button" class="card train-band" id="sp-train"><span class="ico">🏋️</span><span><b>Így edzenek a legjobbak</b>' +
+        '<small>Agyedzés, vizualizáció, alvás, regeneráció, technika: ' + all.filter(function (f) { return f.theme === 'edzes'; }).length + ' tudományos edzéstitok sportolóktól</small></span><span class="btn primary">Mutasd →</span></button>' : '') +
       '<section class="card pad" style="margin-top:16px"><h2 style="margin-top:0">⭐ Ki a kedvenc sportolód?</h2>' +
       '<input type="search" id="sp-who" placeholder="Írd be a nevét, pl. Messi, Hosszú Katinka, Verstappen…" style="width:100%">' +
       '<div class="chips" id="sp-ath" style="margin-top:10px"></div></section>' +
@@ -2011,13 +2035,14 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     function paint() {
       main.querySelectorAll('#sp-grid [data-sp]').forEach(function (b) { b.classList.toggle('on', b.dataset.sp === sp); });
       paintAth();
-      var items = all.filter(function (f) { return (!sp || f.sport === sp) && (!who || (f.athletes || []).indexOf(who) >= 0); });
-      var head = who ? '⭐ ' + esc(who) : sp ? esc(S.sportLabel(sp)) : '💡 Válogatás minden sportágból';
-      if (!who && !sp) items = S.shuffle(items.slice()).slice(0, 12);
-      list.innerHTML = '<div class="section-title"><h2>' + head + '</h2>' + (sp || who ? '<button type="button" class="linkish" id="sp-reset">Összes sportág</button>' : '<button type="button" class="linkish" id="sp-more">🎲 Másik 12</button>') + '</div>' +
+      var items = all.filter(function (f) { return (!sp || f.sport === sp) && (!who || (f.athletes || []).indexOf(who) >= 0) && (!theme || f.theme === theme); });
+      var head = (theme ? '🏋️ Így edzenek a legjobbak' + (sp ? ' · ' : '') : '') + (who ? '⭐ ' + esc(who) : sp ? esc(S.sportLabel(sp)) : theme ? '' : '💡 Válogatás minden sportágból');
+      if (!who && !sp && !theme) items = S.shuffle(items.slice()).slice(0, 12);
+      var tb = main.querySelector('#sp-train'); if (tb) tb.classList.toggle('on', !!theme);
+      list.innerHTML = '<div class="section-title"><h2>' + head + '</h2>' + (sp || who || theme ? '<button type="button" class="linkish" id="sp-reset">Összes sportág</button>' : '<button type="button" class="linkish" id="sp-more">🎲 Másik 12</button>') + '</div>' +
         (items.length ? items.map(function (f) { return S.factCard(f, { open: !!who && items.length <= 3 }); }).join('') : '<p class="muted">Még nincs ilyen érdekesség.</p>');
       S.bindFacts(list);
-      var r = list.querySelector('#sp-reset'); if (r) r.addEventListener('click', function () { sp = ''; who = ''; paint(); });
+      var r = list.querySelector('#sp-reset'); if (r) r.addEventListener('click', function () { sp = ''; who = ''; theme = ''; paint(); });
       var m = list.querySelector('#sp-more'); if (m) m.addEventListener('click', paint);
     }
     main.querySelector('#sp-grid').addEventListener('click', function (e) {
@@ -2029,6 +2054,8 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
       var b = e.target.closest('[data-who]'); if (!b) return;
       who = b.dataset.who; paint(); list.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+    var trb = main.querySelector('#sp-train');
+    if (trb) trb.addEventListener('click', function () { theme = theme ? '' : 'edzes'; who = ''; paint(); list.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     main.querySelector('#sp-who').addEventListener('input', function (e) { q = e.target.value; paintAth(); });
     paint();
     return true;
@@ -33340,7 +33367,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/sportpszichologia', 'szakszo:valszam/varhato-ertek', 'lecke:matematika/szazalek']
   },
   {
-    id: 'sp-scanning', cat: 'sport', sport: 'foci', athletes: ['Xavi', 'Frank Lampard'],
+    id: 'sp-scanning', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Xavi', 'Frank Lampard'],
     q: 'a legjobb középpályások a labda átvétele előtt **másodpercenként majdnem egyszer körülnéznek**?',
     why: 'Geir Jordet norvég kutató és csapata videón számolta meg, hányszor fordítják el a fejüket a játékosok a labda átvétele előtti 10 másodpercben. A mért értékek közül **Xavi** volt a csúcstartó: átlagosan kb. **0,83 „szkennelés” másodpercenként**, de Frank Lampard és Steven Gerrard is kb. 0,6 felett járt.\n\nAki gyakrabban néz körül, annak a fejében már kész „térkép” van a társakról és az ellenfelekről, ezért gyorsabban és jobban tud passzolni. A jó hír: a körülnézés **edzhető szokás**, nem velünk született tehetség.',
     links: ['lecke:sport/sportpszichologia', 'modell:agy#nyakszirti', 'modell:szem#retina']
@@ -33396,7 +33423,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia']
   },
   {
-    id: 'sp-gulacsi-visszateres', cat: 'sport', sport: 'foci', athletes: ['Gulácsi Péter'],
+    id: 'sp-gulacsi-visszateres', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Gulácsi Péter'],
     q: 'Gulácsi Péter egy súlyos térdsérülés, **két műtét és majdnem egy év kihagyás után** tért vissza a Bundesligába, és újra csapatkapitány lett?',
     why: '2022. október 5-én, a Celtic elleni BL-meccsen elszakadt a jobb térdében az **elülső keresztszalag**. A műtét után egy fertőzés miatt egy második beavatkozásra is szükség volt, ami tovább nyújtotta a rehabilitációt.\n\nA keresztszalag a combcsontot és a sípcsontot köti össze, és megakadályozza, hogy a térd előre-hátra „elcsússzon”. Pótlása után hónapokig tart, mire az izmok, az egyensúly és a bizalom visszatér. Gulácsi majdnem egy év után állt újra a lipcsei kapuba, és visszakapta a kapitányi karszalagot is.',
     links: ['lecke:sport/edzeselmelet', 'szakszo:anatomia/izulet', 'lecke:sport/sportpszichologia']
@@ -33408,7 +33435,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/foci-fizika', 'lecke:sport/sportpszichologia', 'lecke:fizika/newton']
   },
   {
-    id: 'sp-szoboszlai-ut', cat: 'sport', sport: 'foci', athletes: ['Szoboszlai Dominik'],
+    id: 'sp-szoboszlai-ut', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Szoboszlai Dominik'],
     q: 'Szoboszlai Dominik első edzője **az édesapja** volt, aki gyerekkorától tudatosan fejlesztette a két lábát és a technikáját?',
     why: 'Szoboszlai Dominik Székesfehérváron nőtt fel, és édesapja, Szoboszlai Zsolt volt az első edzője, aki saját utánpótlásműhelyt is alapított. Sok gyakorlással, már gyerekként is mindkét lábbal dolgoztatta.\n\nA kitartó munka meghozta az eredményét: Szoboszlai Salzburg és Lipcse után a Liverpoolhoz került, amellyel **2024–25-ben megnyerte a Premier League-et**, a 2024-es Eb-n pedig ő volt a magyar válogatott csapatkapitánya. A gyerekkorban sokszor ismételt mozdulatok az agyban és a gerincvelőben „bevésődnek” – ezért fontos már fiatalon a helyes technika.',
     links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy', 'lecke:sport/sportpszichologia']
@@ -33618,7 +33645,7 @@ STUDIE.addFacts([
     links: ['modell:f1-auto#monocoque', 'modell:f1-auto#halo', 'lecke:sport/forma1']
   },
   {
-    id: 'sp-schumacher-edzes', cat: 'sport', sport: 'f1', athletes: ['Michael Schumacher'],
+    id: 'sp-schumacher-edzes', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Michael Schumacher'],
     q: 'Michael Schumacher az elsők között **tette az F1-pilóták edzését élsportolói szintűvé**?',
     why: 'Schumacher a 90-es években olyan fizikai felkészítéssel dolgozott, ami akkor még nem volt általános a pilóták körében: állóképességi és erőedzés, nyakerősítés, gondos étrend. Így a futam végén is ugyanolyan gyors és koncentrált tudott maradni, mint az elején.\n\nEz a hozzáállás azóta alapkövetelmény lett. Schumacher **7 világbajnoki címet** és **91 futamgyőzelmet** szerzett, 2004-ben egyetlen idényben 13 futamot nyert.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/test-edzes', 'lecke:sport/forma1']
@@ -33748,19 +33775,19 @@ STUDIE.addFacts([
     links: ['lecke:sport/kosarlabda', 'modell:agy#kisagy', 'lecke:sport/edzeselmelet']
   },
   {
-    id: 'sp-curry-agyedzes', cat: 'sport', sport: 'kosar', athletes: ['Stephen Curry'],
+    id: 'sp-curry-agyedzes', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Stephen Curry'],
     q: 'Stephen Curry az edzésein **nemcsak a dobást, hanem az agyát is edzi** – például villogó fényekre kell reagálnia labdavezetés közben?',
     why: 'Curry edzője, Brandon Payne olyan gyakorlatokat is használ, ahol Curry két labdát vezet, miközben fényjelekre kell reagálnia, vagy olyan szemüveget visel, amely időnként elsötétül. Így a figyelem megosztását és a gyors döntéshozatalt edzi.\n\nEzeket **neurokognitív** gyakorlatoknak hívják. Céljuk, hogy a labdavezetés automatikussá váljon, és az agy figyelme felszabaduljon a pálya „olvasására” – hasonlóan ahhoz, ahogy a focisták körülnéznek a labda átvétele előtt.',
     links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'modell:szem']
   },
   {
-    id: 'sp-jordan-jv', cat: 'sport', sport: 'kosar', athletes: ['Michael Jordan'],
+    id: 'sp-jordan-jv', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Michael Jordan'],
     q: 'Michael Jordant másodikos középiskolásként **nem a felnőtt csapatba, hanem az utánpótláscsapatba osztották be** – és ez csak még keményebb munkára sarkallta?',
     why: 'Sokszor hallani, hogy Jordant „kirúgták” a középiskolai csapatból – ez így nem pontos. 1978-ban, másodikosként, kb. 178 cm magasan nem került be az iskola első csapatába, hanem a fiatalabbakból álló **JV-csapatban** játszott.\n\nJordan elmondása szerint ez nagyon bántotta, és még többet edzett. A következő évre sokat nőtt és fejlődött – később hat NBA-bajnoki címet és hat döntős MVP-díjat nyert.',
     links: ['lecke:sport/sportpszichologia', 'lecke:sport/edzeselmelet']
   },
   {
-    id: 'sp-jordan-9000', cat: 'sport', sport: 'kosar', athletes: ['Michael Jordan'],
+    id: 'sp-jordan-9000', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Michael Jordan'],
     q: 'Michael Jordan híres mondása szerint **több mint 9000 dobást elhibázott a pályafutása során** – és épp ezért lett sikeres?',
     why: 'Egy 1997-es reklámban Jordan ezt mondta: „Több mint 9000 dobást elhibáztam a pályafutásom során. Majdnem 300 meccset elvesztettem. 26-szor bíztak rám győztes dobást, és elhibáztam. Újra és újra kudarcot vallottam az életemben. És ezért sikerülhetett.”\n\nA sportpszichológia szerint a hibákhoz való viszony kulcsfontosságú: aki a kudarcot **tanulási lehetőségnek** tekinti, az bátrabban próbálkozik, és gyorsabban fejlődik.',
     links: ['lecke:sport/sportpszichologia']
@@ -33848,7 +33875,7 @@ STUDIE.addFacts([
     links: ['lecke:fizika/newton', 'lecke:fiz-alap/nyomas', 'szakszo:fizika-bsc/impulzusmomentum', 'lecke:sport/foci-fizika']
   },
   {
-    id: 'tenisz-federer-237-het', cat: 'sport', sport: 'tenisz', athletes: ['Roger Federer'],
+    id: 'tenisz-federer-237-het', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Roger Federer'],
     q: 'Roger Federer **237 hétig egyhuzamban** vezette a világranglistát – fiatalon pedig híresen ingerült, ütőt dobáló junior volt?',
     why: 'Federer 2004 februárjától 2008 augusztusáig, **237 egymást követő héten** át volt világelső – ez máig rekord (összesen 310 hetet töltött az élen).\n\nKevésbé ismert, hogy tinédzserként gyakran **kiabált és ütőt dobált** a pályán. Ő maga mesélte el, hogy tudatos munkával tanulta meg kezelni az érzelmeit, és később épp a **nyugodtsága** lett a védjegye.\n\nA sportpszichológia szerint az érzelemszabályozás **tanulható készség**, mint a fonák: gyakorlással fejlődik.',
     links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus', 'modell:agy#homlok']
@@ -33922,7 +33949,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/olimpia', 'lecke:sport/edzeselmelet', 'lecke:sport/test-edzes']
   },
   {
-    id: 'uszas-phelps-alkat', cat: 'sport', sport: 'uszas', athletes: ['Michael Phelps'],
+    id: 'uszas-phelps-alkat', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Michael Phelps'],
     q: 'Michael Phelps karfesztávolsága **kb. 201 cm**, miközben magassága csak kb. 193 cm – és a beszámolók szerint **5 évig egyetlen napot sem hagyott ki** az edzésből?',
     why: 'Phelps **23 olimpiai aranyat** és összesen **28 érmet** nyert – mindkettő minden idők rekordja; 2008-ban Pekingben egyetlen olimpián **8 aranyat**.\n\nAz alkata (hosszú kar, nagy tenyér és lábfej, hosszú törzs) segítette, de önmagában ez kevés lett volna. Edzője, Bob Bowman szerint évekig **minden nap** edzett, még karácsonykor és születésnapján is – így évente kb. 50 nappal többet gyakorolt, mint aki vasárnaponként pihen.\n\nA tehetség lehetőség; a rendszeresség teszi teljesítménnyé.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/rekordok', 'lecke:sport/sportpszichologia']
@@ -33948,7 +33975,7 @@ STUDIE.addFacts([
     links: ['lecke:fizika/mertekegysegek-mozgas', 'lecke:fizika/energia-munka', 'lecke:sport/rekordok']
   },
   {
-    id: 'atletika-bolt-gerincferdules', cat: 'sport', sport: 'atletika', athletes: ['Usain Bolt'],
+    id: 'atletika-bolt-gerincferdules', cat: 'sport', sport: 'atletika', theme: 'edzes', athletes: ['Usain Bolt'],
     q: 'Usain Bolt **gerincferdüléssel (szkoliózissal)** lett minden idők leggyorsabb embere?',
     why: 'Bolt gerince oldalirányban görbült, ami az egyik lábára nagyobb terhelést tett, és pályafutása elején gyakoribbá tette a combizom-sérüléseket. Edzőivel ezért különösen sokat dolgozott a **törzs- és hátizmok** erősítésén, hogy azok stabilan tartsák a gerincet.\n\nA sportorvoslás egyik alapelve: egy testi adottság nem feltétlenül akadály, ha **célzott edzéssel** kompenzálják. Bolt 2008 és 2016 között 8 olimpiai aranyat nyert, és a 100 m (9,58) és 200 m (19,19) világcsúcsát is 2009-ben futotta.',
     links: ['lecke:sport/edzeselmelet', 'lecke:bio-alap/emberi-test-1', 'szakszo:anatomia/csont']
@@ -34340,7 +34367,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/sportpszichologia', 'lecke:informatika/algoritmusok']
   },
   {
-    id: 'sakk-polgar-kiserlet', cat: 'sport', sport: 'sakk', athletes: ['Polgár Judit', 'Polgár Zsuzsa', 'Polgár Zsófia'],
+    id: 'sakk-polgar-kiserlet', cat: 'sport', sport: 'sakk', theme: 'edzes', athletes: ['Polgár Judit', 'Polgár Zsuzsa', 'Polgár Zsófia'],
     q: 'Polgár László pedagógus azt állította, hogy **„a zseni nem születik, hanem nevelhető”** – és mindhárom lánya kiváló sakkozó lett?',
     why: 'Polgár László és felesége lányaikat, Zsuzsát, Zsófiát és Juditot otthon tanították, és a sakkot már kisgyerekkoruktól **játékos, de rendszeres** gyakorlással oktatták. Zsuzsa később női világbajnok lett, Judit minden idők legerősebb női sakkozója, Zsófia is nemzetközi mester.\n\nA családi „kísérlet” nem bizonyítja, hogy bárkiből bármi lehet, hiszen sok tényező hat. Azt viszont jól mutatja, mennyit ér a korán kezdett, **tudatos, örömmel végzett gyakorlás**, a támogató környezet és a magas elvárás együtt.',
     links: ['lecke:sport/sportpszichologia', 'lecke:biologia/genetika', 'modell:agy#homlok']
@@ -34378,7 +34405,7 @@ STUDIE.addFacts([
     links: ['modell:sziv#bk', 'szakszo:anatomia/percterfogat', 'lecke:biologia/keringes-legzes', 'lecke:sport/test-edzes']
   },
   {
-    id: 'sporttud-alvas-kosar', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-alvas-kosar', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'egy stanfordi kísérletben a kosarasok **büntetődobás-pontossága kb. 9%-kal javult**, miután hetekig többet aludtak?',
     why: 'Cheri Mah és munkatársai (2011) a Stanford Egyetem férfi kosárlabdacsapatának 11 játékosát kérték meg, hogy 5–7 héten át éjszakánként **legalább 10 órát töltsenek ágyban**. Átlagosan közel 2 órával többet aludtak, mint korábban.\n\nAz eredmény: a büntetődobás és a hárompontos dobás pontossága **kb. 9%-kal** javult, a sprintidő kb. 0,7 másodperccel csökkent, a reakcióidő is javult. A kísérlet kicsi volt, kontrollcsoport nélkül, de jól illeszkedik ahhoz, amit tudunk: alvás közben **rögzülnek a tanult mozdulatok**, és regenerálódnak az izmok.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/kosarlabda', 'modell:agy#hipofizis', 'lecke:bio-alap/emberi-test-2']
@@ -34390,19 +34417,19 @@ STUDIE.addFacts([
     links: ['modell:szem#retina', 'lecke:fizika/hullamok-feny', 'szakszo:anatomia/reflexiv', 'lecke:bio-alap/emberi-test-2']
   },
   {
-    id: 'sporttud-magaslati-edzes', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-magaslati-edzes', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a „**magasan élni, alacsonyan edzeni**” módszerrel a futók egy kísérletben **kb. 13 másodpercet** javítottak az 5000 m-es idejükön?',
     why: 'Magasan kevesebb az oxigén a levegőben, ezért a vese **EPO** hormont termel, ami több **vörösvértest** képzésére serkent – több vörösvértest több oxigént szállít. Csakhogy magaslaton nehéz keményen edzeni.\n\nLevine és Stray-Gundersen 1997-es kísérletében 39 futót osztottak három csoportba. Csak azok javultak egyértelműen, akik **2500 m magasan aludtak, de 1250 m-en edzettek**: 4 hét alatt átlagosan kb. **13 másodpercet** az 5 km-es időn. A hatás egyénenként eltér, és egyeseknél elmarad – ezért a sporttudomány óvatosan fogalmaz.',
     links: ['lecke:biologia/keringes-legzes', 'szakszo:anatomia/oxigen-disszociacio', 'lecke:foldrajz/legkor', 'lecke:sport/edzeselmelet']
   },
   {
-    id: 'sporttud-bemelegites', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-bemelegites', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a bemelegítés lényege tényleg a **„melegítés”**: a melegebb izom gyorsabban és erősebben húzódik össze?',
     why: 'Bemelegítéskor nő az izmok hőmérséklete, és ezzel gyorsulnak az izomrostokban zajló **kémiai reakciók** (a reakciósebesség a hőmérséklettel nő), gyorsabb az idegi ingerületvezetés, és könnyebben adja le az oxigént a hemoglobin. Vizsgálatok szerint az izomhőmérséklet már néhány fokos emelkedése is több százalékkal javíthatja a robbanékony teljesítményt.\n\nA jó bemelegítés **dinamikus**: könnyű futás, lendítések, gyorsítások. A hosszú, statikus nyújtás közvetlenül sprint előtt egyes vizsgálatokban kissé rontotta a teljesítményt – azt inkább edzés utánra érdemes hagyni.',
     links: ['lecke:kemia/reakciok', 'szakszo:kemia-bsc/aktivalasi-energia', 'szakszo:anatomia/izomosszehuzodas', 'lecke:sport/edzeselmelet']
   },
   {
-    id: 'sporttud-folyadek-2-szazalek', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-folyadek-2-szazalek', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'ha a testtömeged **kb. 2%-ának megfelelő folyadékot** elveszíted izzadással, az már **ronthatja az állóképességedet**?',
     why: 'Egy 50 kg-os sportolónál ez csak **1 liter** folyadék – egy meleg napon, intenzív edzésen ennyi akár egy óra alatt is elpárologhat. A folyadékvesztés miatt csökken a vérplazma mennyisége, a szívnek gyorsabban kell vernie, nehezebb leadni a hőt, és romlik a koncentráció is.\n\nAz izzadás a szervezet „hűtőrendszere”: a bőrön elpárolgó víz **hőt von el**. Ezért fontos edzés előtt, közben és után is rendszeresen inni – hosszú, verejtékes terhelésnél az elvesztett **sók** (nátrium) pótlására is figyelni kell.',
     links: ['lecke:sport/taplalkozas', 'lecke:fiz-alap/hotan', 'szakszo:anatomia/homeosztazis', 'szakszo:anatomia/vizeletkepzes']
@@ -34438,30 +34465,748 @@ STUDIE.addFacts([
     links: ['lecke:sport/sportpszichologia', 'lecke:matematika/szazalek', 'szakszo:valszam/felteteles-valoszinuseg']
   },
   {
-    id: 'sporttud-sokoldalusag', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-sokoldalusag', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a világklasszis sportolók gyerekkorukban **jellemzően több sportágat** űztek, és **később specializálódtak**, mint a „csak” nemzeti szintű társaik?',
     why: 'Güllich, Macnamara és Hambrick 2022-es összefoglaló elemzése (metaanalízise) több mint 6000 sportoló adatait vizsgálta, köztük 772 világklasszisét. A felnőttkori **világklasszisok** gyerekként több sportágban edzettek, **később kezdték** fő sportágukat, és fiatalon **lassabban fejlődtek**, mint a nemzeti szintű sportolók.\n\nJunior korban viszont épp a korán specializálódók voltak jobbak – csak felnőttkorra fordult meg a kép. A sokféle mozgás széles alapot ad, csökkenti a kiégés és a túlterheléses sérülések esélyét.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia', 'lecke:matematika/szazalek']
   },
   {
-    id: 'sporttud-fejlodesi-szemlelet', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-fejlodesi-szemlelet', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a „**fejlődési szemlélet**” (growth mindset) kutatásai szerint **számít, hogyan gondolkodunk a saját képességeinkről** – de a hatás kisebb, mint amit a népszerű könyvek állítanak?',
     why: 'Carol Dweck pszichológus azt írta le, hogy akik a képességeiket **fejleszthetőnek** tartják, könnyebben vállalnak nehéz feladatokat, és a kudarcot tanulási lehetőségnek látják. Akik szerint a tehetség „adott”, hajlamosabbak kerülni a kihívást, nehogy kiderüljön, hogy „nem elég jók”.\n\nNagy, sok iskolát átfogó vizsgálatok szerint a rövid fejlődési szemléletet tanító programok átlagosan **kicsi, de mérhető** javulást hoznak, főleg a gyengébben teljesítő diákoknál. Önmagában nem csodaszer – de a kitartó, okosan tervezett gyakorlással együtt valóban segít.',
     links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok']
   },
   {
-    id: 'sporttud-szuperkompenzacio', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-szuperkompenzacio', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'az edzéstől **nem edzés közben**, hanem **a pihenés alatt** leszel erősebb és gyorsabb?',
     why: 'Az edzés terhelés: kifárasztja az izmokat, csökkenti az energiaraktárakat, apró sérüléseket okoz. A pihenés alatt a szervezet nemcsak helyreállítja ezeket, hanem egy kicsit **„túlépít”**: több fehérjét épít az izmokba, több glikogént raktároz, több mitokondriumot hoz létre – ez a **szuperkompenzáció**.\n\nHa a következő edzés jó időben jön, a teljesítmény lépcsőzetesen nő. Ha viszont túl korán és túl gyakran terhelünk, a szervezetnek nincs ideje alkalmazkodni – ebből lesz a **túledzettség**. Az alvás, az étkezés és a pihenőnapok tehát az edzés részei.',
     links: ['lecke:sport/edzeselmelet', 'modell:sejt#mito', 'szakszo:anatomia/homeosztazis', 'lecke:sport/taplalkozas']
   },
   {
-    id: 'sporttud-tudatos-gyakorlas', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-tudatos-gyakorlas', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a híres „**10 000 órás szabály**” leegyszerűsítés – a kutatások szerint nem az órák száma, hanem a **gyakorlás minősége** a döntő?',
     why: 'Anders Ericsson pszichológus azt vizsgálta, mitől lesz valaki szakértő, és a **tudatos gyakorlás** fogalmát írta le: célzott, a jelenlegi képességeink határát feszegető feladatok, azonnali visszajelzéssel, sok ismétléssel. A „10 000 óra” egy átlagérték volt a kutatásából, amelyet később népszerű könyvek „szabállyá” tettek.\n\nA valóságban a szükséges gyakorlási idő **egyénenként és területenként nagyon eltér**, és a tehetség, az életkor, az edzés minősége is számít. A tanulság mégis érvényes: tíz perc koncentrált, javító szándékú gyakorlás többet ér egy óra gépies ismétlésnél.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia', 'modell:agy#kisagy']
   }
 
+]);
+
+</script>
+  <script>/* data/tudtad/edzes-1.js */
+/* Tudtad? – „Így edzenek a legjobbak” I.: foci, kosárlabda, Forma–1, kézilabda, vízilabda, jégkorong.
+ * Edzésmódszerek, regeneráció, agyedzés és gondolkodásmód – interjúk, dokumentumfilmek és kutatások alapján, pletyka nélkül.
+ * Formátum: js/tudtad.js (theme: 'edzes') */
+STUDIE.addFacts([
+
+  /* ───────── FOCI ───────── */
+  {
+    id: 'ed-ronaldo-sotetben', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Cristiano Ronaldo'],
+    q: 'Cristiano Ronaldo egy kísérletben **teljes sötétben is eltalálta a felé ívelt labdát**, mert a lámpák csak a beadás után aludtak ki?',
+    why: 'Egy 2011-es dokumentumfilmben (Ronaldo: Tested to the Limit) a kutatók beadást kértek Ronaldónak, és amikor a labda már úton volt, lekapcsolták a csarnok világítását. Ronaldo a sötétben is elérte a labdát, és gólt szerzett – az éjjellátó kamera felvétele szerint.\n\nA titok az **anticipáció** (előrejelzés): a profik agya a beadó játékos testtartásából és a labda röppályájának első pillanataiból már kiszámolja, hová érkezik majd. A szakértő sportolók nem gyorsabban reagálnak, hanem **korábban „tudják”**, mi fog történni. Tipp: edzésen figyeld a passzoló csípőjét és támaszlábát, ne csak a labdát!',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#kisagy', 'modell:szem#retina']
+  },
+  {
+    id: 'ed-ronaldo-r90', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Cristiano Ronaldo'],
+    q: 'Cristiano Ronaldo alvásedzője az alvást **nem órákban, hanem 90 perces ciklusokban** számolja?',
+    why: 'Nick Littlehales angol alváskutató a Manchester Unitednél és más élcsapatoknál is dolgozott, Ronaldóval is. Az általa kidolgozott **R90-módszer** lényege, hogy az alvás kb. 90 perces ciklusokból áll, és ezek számát (például heti 35 ciklust) érdemes tervezni; a nap közbeni pihenés is beilleszthető ciklusként. A sajtóban terjedő „Ronaldo napi ötször alszik” változatot Littlehales maga is túlzásnak nevezte.\n\nEgy ciklusban váltakozik a mélyalvás (ekkor termeli a legtöbb **növekedési hormont** az agyalapi mirigy, ez segíti az izmok helyreállását) és az álomalvás, amely a **tanult mozdulatok rögzítésében** fontos. Ha egy ciklus végén ébredsz, kevésbé vagy kábult. Tipp: kamaszként 8–10 óra alvásra van szükséged, minden nap hasonló időben feküdj le!',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#hipofizis', 'lecke:bio-alap/emberi-test-2']
+  },
+  {
+    id: 'ed-ronaldo-extra-szabadrugas', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Cristiano Ronaldo'],
+    q: 'Cristiano Ronaldo fiatalon olyan sokat gyakorolta edzés után a szabadrúgásokat, hogy **Sir Alex Fergusonnak kellett leküldenie a pályáról**?',
+    why: 'Ferguson egy interjúban így emlékezett: Ronaldo **minden edzés után szabadrúgásokat gyakorolt**. Volt csapattársai, például Nicky Butt és Paul Scholes szerint a menedzser néha kiabálva küldte be ebédelni, mert a többiek már rég végeztek.\n\nAz ilyen plusz munka akkor ér a legtöbbet, ha **tudatos gyakorlás**: egy konkrét célra (pl. a labda ívére) koncentrál, és minden lövés után van visszajelzés. A kisagy és a mozgatókéreg így finomhangolja a mozdulatot. De Ferguson figyelmeztetése is tanulság: a fejlődéshez **pihenés is kell**, a kimerült izom és agy rosszabbul tanul.',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy', 'lecke:sport/foci-fizika']
+  },
+  {
+    id: 'ed-messi-etrend', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Lionel Messi'],
+    q: 'Messi **meccs közbeni hányingerei** elmúltak, miután megváltoztatta az étrendjét?',
+    why: 'A 2013–14-es idényben Messi több meccsen is rosszul lett, hányt a pályán. A 2014-es vb után egy olasz táplálkozási szakember, **Giuliano Poser** tanácsai szerint alakította át az étrendjét: több víz, olívaolaj, teljes kiőrlésű gabona, friss zöldség és gyümölcs, kevesebb cukor. Messi 2018-ban azt mondta, sokáig rosszul evett, és az étrendváltás után a hányások megszűntek – hogy pontosan melyik változtatás segített, nem tudni biztosan.\n\nEdzés és meccs közben a vér nagy része az izmokhoz áramlik, így az **emésztés lelassul** – a nehéz vagy cukros étel ilyenkor könnyen rosszullétet okoz. Tipp: a fő étkezés meccs előtt 3–4 órával legyen, utána csak könnyű falat és víz.',
+    links: ['lecke:sport/taplalkozas', 'lecke:biologia/ideg-hormon-emesztes', 'szakszo:anatomia/emesztes']
+  },
+  {
+    id: 'ed-haaland-tavolugras', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Erling Haaland'],
+    q: 'Erling Haaland **5 évesen korosztályos világcsúcsot ugrott helyből távolugrásban**?',
+    why: 'Haaland 2006. január 22-én, szülővárosában, Brynében **1,63 métert** ugrott helyből – a korosztályos rekordokat gyűjtő International Age Records szerint ez az 5 éves fiúk világcsúcsa (egy finn kisfiú később beállította). Gyerekként a beszámolók szerint több sportot is űzött, mielőtt a foci mellett döntött.\n\nA helyből távolugrás a **robbanékonyság** mércéje: a gyors izomrostok és az inak rugószerű „megfeszítés–elengedés” működése adja. Ezt ma a gólokhoz vezető sprintjeiben látjuk viszont. A kutatások szerint a sokféle mozgás gyerekkorban **széles mozgásalapot** ad, amire később a szakág épülhet.',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/izomosszehuzodas', 'lecke:sport/rekordok']
+  },
+  {
+    id: 'ed-haaland-kekfeny', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Erling Haaland'],
+    q: 'Haaland lefekvés előtt kb. három órával **narancssárga, kékfényszűrő szemüveget** vesz fel, hogy jobban aludjon?',
+    why: 'Haaland egy 2023-as podcastinterjúban mesélte, hogy esténként kékfény-blokkoló szemüveget hord, mert szerinte **az alvás a legfontosabb dolog** a regenerációhoz.\n\nA szem ideghártyájában vannak különleges, a kék fényre érzékeny sejtek, amelyek a köztiagyban lévő „belső órának” jeleznek: ha este sok kék fény (képernyő, LED) éri őket, a szervezet később kezdi termelni az elalváshoz szükséges **melatonint**. Hogy maga a szemüveg mennyit segít, arról vegyesek a vizsgálatok. Tipp: egyszerűbb és biztosan hasznos, ha lefekvés előtt egy órával leteszed a telefont.',
+    links: ['modell:szem#retina', 'modell:agy#koztiagy', 'lecke:bio-alap/emberi-test-2']
+  },
+  {
+    id: 'ed-haaland-meditacio', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Erling Haaland'],
+    q: 'Haaland híres, keresztbe tett lábú **„zen” gólörömét a meditáció ihlette**?',
+    why: 'Haaland még a norvég Molde játékosaként kezdett meditálni. Elmondása szerint ez **nyugalmat és békét** ad neki, ezért ül le néha gól után törökülésben, csukott szemmel.\n\nA meditáció tulajdonképpen **figyelemedzés**: megtanít észrevenni, ha elkalandoznak a gondolataink, és visszahozni a figyelmet a jelenbe (például a légzésre). A vizsgálatok szerint ez segíthet a stressz kezelésében, mert a homloklebeny jobban „fékezi” a félelemért felelős limbikus területeket. Tipp: próbálj ki naponta 3–5 percet: csak figyeld, ahogy be- és kiáramlik a levegő.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus', 'modell:agy#homlok']
+  },
+  {
+    id: 'ed-haaland-celok', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Erling Haaland'],
+    q: 'Haaland egy interjú szerint **a Bajnokok Ligája himnuszára ébred**, és esténként emlékeztetőt ír magának arról, mit akar elérni?',
+    why: 'Egy interjúban Haaland elmesélte, hogy ébresztőként a BL-himnusz szól, és minden este **felírja magának, mit szeretne elérni** a fociban. Így a nagy cél mindennap eszébe jut.\n\nA sportpszichológia szerint a célkitűzés akkor működik igazán, ha a nagy álom mellett **konkrét, mérhető, rövid távú célok** is vannak (pl. „ezen a héten 50 bal lábas lövés”). Ezek irányítják a figyelmet és az erőfeszítést, és a teljesítésük önbizalmat ad. Tipp: írj fel egy konkrét célt a következő edzésre, és utána nézd meg, sikerült-e!',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok']
+  },
+  {
+    id: 'ed-liverpool-neuro11', cat: 'sport', sport: 'foci', theme: 'edzes',
+    q: 'a Liverpool **agykutatókkal** készült a tizenegyesekre, és egy 11:10-es büntetőpárbajban mind a 11 játékosa betalált?',
+    why: 'A 2021–22-es idényben a Liverpool a potsdami **neuro11** céggel dolgozott: a játékosok fejére EEG-sapkát tettek, és rögzítették az agyi aktivitásukat, miközben pontrúgásokat végeztek. A cél az volt, hogy megtalálják és begyakorolják a lövés előtti ideális, **nyugodt-összpontosított agyállapotot**. A Ligakupa-döntőben a Chelsea ellen 11:10-re nyert büntetőpárbajban minden liverpooli belőtte a tizenegyesét, Jürgen Klopp pedig nyilvánosan megköszönte a cég munkáját.\n\nFontos: egyetlen meccsből nem bizonyítható, hogy a módszer okozta a sikert. Az viszont jól ismert, hogy a **stressz rontja a finommozgást**, és az állandó, begyakorolt lövés előtti rutin segíthet kizárni a zavaró gondolatokat.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#neuron', 'modell:agy#limbikus']
+  },
+  {
+    id: 'ed-liverpool-bedobas', cat: 'sport', sport: 'foci', theme: 'edzes',
+    q: 'a Liverpoolnak **külön bedobásedzője** volt, és egy év alatt a liga egyik legrosszabbjából a legjobb lett nyomás alatti bedobásokban?',
+    why: '2018-ban Jürgen Klopp leszerződtette a dán **Thomas Grønnemarkot**, aki a bedobásokra specializálódott. Elemzések szerint a Liverpool a 2017–18-as idényben a nyomás alatt elvégzett bedobások után csak kb. **45%-ban** tartotta meg a labdát, a következő idényben viszont már kb. **68%-ban**, ezzel a Premier League legjobbja lett.\n\nGrønnemark a dobótechnikát (az egész test láncszerű, csípőtől induló mozdulatát) és a gyors, jól megtervezett indítást is edzette. A tanulság: egy meccsen több tucat bedobás van, és az ilyen **„apróságok” összeadódnak**.',
+    links: ['lecke:sport/foci-fizika', 'lecke:fizika/newton', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed-szoboszlai-szabadrugas', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Szoboszlai Dominik'],
+    q: 'Szoboszlai Dominik saját elmondása szerint gyerekkora óta **szinte mindennap gyakorolja a szabadrúgást**?',
+    why: 'Egy francia lapnak adott interjúban Szoboszlai elmondta, hogy már gyerekként az édesapjával gyakorolta a szabadrúgásokat, és azóta is szinte minden nap. A Liverpoolnál a sérülések megelőzése miatt nem szívesen engedik a sok plusz edzést, de néha néhány társával kint marad szabadrúgást, tizenegyest rúgni.\n\nA rendszeres, rövid gyakorlás jobb, mint a ritka, hosszú: a mozgás „programja” a sok ismétléssel **automatikussá** válik, így meccsen a figyelem a fal és a kapus helyzetére maradhat. Szoboszlai a lövések előtt a kapusok és a sorfal szokásait is tanulmányozza.',
+    links: ['lecke:sport/foci-fizika', 'lecke:sport/edzeselmelet', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed-modric-gumiszalag', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Luka Modrić'],
+    q: 'Luka Modrić a 40. születésnapja után is élvonalbeli meccseket játszott, és ebben **a napi gumiszalagos gyakorlatok** is segítették?',
+    why: 'Modrić személyi edzője, Vlatko Vučetić szerint a horvát középpályás naponta 30–45 percet dolgozik az ő gyakorlataival a klubedzés előtt, és a kulcs a **megelőzés**, főleg hosszú gumiszalagokkal végzett erősítés. Modrić 2025 nyarán az AC Milanhoz igazolt, és 40 évesen is ott játszott; ő maga azt mondja, a legfontosabb a szenvedély, az étrend és az edzés „csak” utána jön.\n\nA gumiszalag fokozatosan növekvő ellenállást ad, így a kis, **ízületstabilizáló izmok** és az inak is erősödnek – ezek lassabban alkalmazkodnak, mint a nagy izmok, és a sérülések gyakran itt kezdődnek. Tipp: a szalagos gyakorlatokat edzővel tanuld meg, lassú, kontrollált mozdulatokkal.',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/izulet', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed-modric-parkolo', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Luka Modrić'],
+    q: 'Luka Modrić gyerekként **egy szálloda parkolójában** csiszolta a technikáját, ahol a családja menekültként élt?',
+    why: 'A délszláv háború idején Modrić családja 1992-ben Zadarba menekült, és a **Kolovare szállóban** kapott szállást. A kisfiú a szálloda sík parkolójában szinte megállás nélkül rúgta a labdát; egy hotelalkalmazott figyelt fel rá, és szólt a helyi NK Zadar vezetőjének.\n\nA kutatók ezt **szabad játéknak** hívják: kötetlen, örömből végzett labdázás, rengeteg ismétléssel és kreatív megoldással. Vizsgálatok szerint a később kiemelkedő sportolók gyerekként sok ilyen órát gyűjtöttek, a szervezett edzés mellett. Tipp: a falhoz rúgott labda is edzés – ballal és jobbal is!',
+    links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed-vandijk-joga', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Virgil van Dijk'],
+    q: 'Virgil van Dijk szerint hosszú pályafutásának egyik titka a **jóga**, és a meccsnapi **szundikálás**?',
+    why: 'Van Dijk a Liverpool klubmagazinjának azt mondta, hogy a hosszú pályafutás kombináció: jó regeneráció, jó táplálkozás, egészséges életmód, fizioterápia – és **a jóga is része**. Egy másik interjúban arról beszélt, hogy tudatosan figyel az alvására, meccsnapon szundikál, és légzőgyakorlatokat is végez. 2020-ban elülső keresztszalag-szakadás miatt több mint 9 hónapot hagyott ki, ami után még tudatosabb lett.\n\nA jóga javítja az **ízületi mozgástartományt** és a testtudatot (azt, hogy érezzük, hol vannak a testrészeink), ami segíthet megelőzni a rossz mozdulatból adódó sérüléseket. Tipp: edzés után 5–10 perc nyújtás is sokat ér.',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/izulet', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed-debruyne-szkenneles', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Kevin De Bruyne'],
+    q: 'Kevin De Bruyne gyakran **még a labda átvétele közben is körülnéz**, így a passza a legfrissebb „térképre” épül?',
+    why: 'Geir Jordet norvég kutató csapata több mint 200 élvonalbeli játékos fejmozgását elemezte, és De Bruyne-t a legjobb „szkennelők” közé sorolta. Jordet szerint De Bruyne **nagyon későn néz körül**, sokszor épp az átvétel pillanatában, változtatja, meddig néz el a labdáról, és még álcázza is a körülnézést az ellenfelek elől.\n\nAz agy a látott képből egy belső térképet épít a társakról és az ellenfelekről, de ez a térkép gyorsan elavul. Minél frissebb, annál pontosabb lehet a döntés. Jordet hangsúlyozza: a szkennelés nem magyaráz meg mindent, de **a jó játékintelligencia alapja** – és edzhető.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#fali', 'modell:szem#szemizmok']
+  },
+  {
+    id: 'ed-puskas-rongylabda', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Puskás Ferenc'],
+    q: 'Puskás Ferenc gyerekként **édesanyja harisnyáiból készített rongylabdával** tanult focizni Kispesten?',
+    why: 'Húga, Puskás Éva visszaemlékezése szerint „Öcsi” rendszeresen elcsente az anyjuk harisnyáit, mert azokból készült a rongylabda – és nagyon értett hozzá, hogyan kell jó keményre tömöríteni. A kispesti gyerekek a szomszéd utcák csapatai ellen játszottak, a legügyesebbeket pedig, köztük Puskást, a Kispest ifjúsági csapata vitte el.\n\nA rongylabda kisebb, nehezebb és rendszertelenebbül pattan, mint egy rendes labda, ezért **pontosabb érintést** követel. Sok edző ma is használ kisebb labdát a technikai képzésben. Tipp: a dekázást próbáld ki teniszlabdával is!',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy', 'lecke:sport/foci-fizika']
+  },
+  {
+    id: 'ed-mbappe-clairefontaine', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Kylian Mbappé'],
+    q: 'Kylian Mbappé 12 és 15 éves kora között **hétköznap a francia nemzeti akadémián edzett, hétvégén pedig a gyerekkori klubjában játszott**?',
+    why: 'Mbappé a Párizs melletti Bondyban nőtt fel, ahol édesapja, Wilfried a helyi klub, az AS Bondy edzője volt. Tehetsége miatt bekerült a **clairefontaine-i** nemzeti futballakadémiára (itt nevelkedett Thierry Henry is), de hétvégente továbbra is a Bondyban játszott. Volt edzői szerint már akkor is a gyorsasága és a gyors gondolkodása tűnt ki.\n\nEz a felállás egyszerre adott **magas szintű technikai képzést** és rengeteg valódi meccshelyzetet, ahol a gyakorolt mozdulatokat döntésekkel együtt kell alkalmazni. A tanulás akkor a leghatékonyabb, ha az edzésen tanultat élesben is kipróbálhatod.',
+    links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia']
+  },
+
+  /* ───────── KOSÁRLABDA ───────── */
+  {
+    id: 'ed-lebron-alvas', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['LeBron James'],
+    q: 'LeBron James **8–10 óra alvásra** törekszik, és az erőnléti edzője ellenőrzi is, hogy meglegyen?',
+    why: 'Egy 2018-as podcastban LeBron és régi erőnléti edzője, **Mike Mancias** elmondták, hogy az alvás a regenerációjuk legfontosabb része: LeBron 8–10 órát próbál aludni, és ha kevés jutott, napközben hosszabban szundít. Mancias rendszeresen rákérdez, megvan-e az alvás.\n\nMancias szavaival: a test alvás közben, a mély- és álomalvás szakaszában **gyógyítja meg önmagát**. Ekkor szabadul fel a legtöbb növekedési hormon, és rendeződnek a nap közben tanult mozdulatok. LeBron 40 évesen is az NBA-ben játszott, ami ritka hosszú pályafutás.',
+    links: ['lecke:sport/test-edzes', 'modell:agy#hipofizis', 'lecke:bio-alap/emberi-test-2']
+  },
+  {
+    id: 'ed-lebron-memoria', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['LeBron James'],
+    q: 'LeBron James egy sajtótájékoztatón **egy egész negyed játékait felidézte emlékezetből**, támadásról támadásra?',
+    why: 'LeBron többször mondta, hogy szerinte „fényképes memóriája” van, és évekkel korábbi játékhelyzetekre is emlékszik. Gyerekként mindent elolvasott a kosárlabdáról, és újra meg újra megnézte a nagy játékosok felvételeit; a Lakersnél a videóelemzéseken gyakran ő magyarázta el a társaknak az ellenfél védekezését.\n\nA kutatók szerint valódi fényképes memória szinte nem létezik – a szakértők azért emlékeznek jobban, mert az ismerős mintákat **nagyobb egységekbe csoportosítják** (ugyanez a sakkmesterek titka). Ehhez rengeteg tudatos nézés és elemzés kell. Tipp: nézd vissza a saját meccseidet, és mondd el hangosan, mi történik!',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus', 'lecke:sport/kosarlabda']
+  },
+  {
+    id: 'ed-mumford-meditacio', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Michael Jordan', 'Kobe Bryant'],
+    q: 'Michael Jordannek és Kobe Bryantnek is **ugyanaz a meditációs tanár** segített?',
+    why: 'Phil Jackson edző a 90-es évek elején hívta a Chicago Bullshoz **George Mumford** mindfulness-oktatót, aki a bajnoki idények alatt is a csapattal dolgozott. 1999-ben Jacksonnal együtt a Lakershez ment, ahol Kobe Bryant lelkes meditálóvá vált; Kobe azt mondta, Mumford segített megértenie a tudatos jelenlét művészetét.\n\nA **mindfulness** azt tanítja, hogy a figyelmed ítélkezés nélkül a jelen pillanaton legyen – nem a rontott dobáson és nem a jövőn. Ez segíthet elérni az ún. **flow** állapotot, amikor a mozdulatok szinte maguktól mennek. Tipp: dobás előtt egy nyugodt kilégzés segít „visszajönni” a jelenbe.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'modell:agy#limbikus']
+  },
+  {
+    id: 'ed-jordan-grover', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Michael Jordan'],
+    q: 'Michael Jordan sokáig **kerülte a súlyzós edzést, mert féltette a dobását** – aztán egy fájó vereségsorozat után mégis elkezdte?',
+    why: 'A Detroit Pistons a 80-as évek végén kemény, testi védekezéssel (a „Jordan-szabályokkal”) többször kiejtette a Bullst. 1989-től Jordan **Tim Grover** erőnléti edzővel dolgozott; a beszámolók szerint kb. 90-ről 97 kg-ra nőtt a testtömege, főleg izomból. 1991-ben a Bulls végre legyőzte a Pistonst, és megnyerte első bajnoki címét.\n\nAz erőedzés hatására az izomrostok megvastagodnak, és **jobban elnyelik az ütközéseket**, ami védi az ízületeket is. Jordan dobása nem romlott el. Tipp: kamaszként is biztonságos az erősítés – de szakember által megtanított, jó technikával, előbb saját testsúllyal.',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/izomosszehuzodas', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed-jordan-edzes-kemenyebb', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Michael Jordan'],
+    q: 'Michael Jordan azt mondta, **edzésen keményebben játszott, mint a meccseken**?',
+    why: 'A The Last Dance című dokumentumfilmben Jordan így fogalmazott: az emberek nem hitték el, hogy keményebben edzett, mint ahogy játszott, pedig igaz volt – szerinte **ott alakult ki a „komfortzónája”**. Volt csapattársa, Steve Kerr szerint Jordan azt mondta: aki az edzés intenzitását nem bírja, az a rájátszást sem fogja.\n\nA sporttudomány szerint az a gyakorlás adódik át legjobban a meccsre, amely **hasonlít a meccsre**: valódi ellenféllel, időnyomással, tétre. Ha edzésen megszokod a nyomást, meccsen kevésbé ijedsz meg tőle. Tipp: tegyél tétet a gyakorlásba – például „3 dobásból 2-nek be kell mennie”.',
+    links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia']
+  },
+  {
+    id: 'ed-kobe-videokazettak', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Kobe Bryant'],
+    q: 'Kobe Bryant Olaszországban nőtt fel, és **a nagyapja által postázott NBA-videókazettákról** tanulta el a mozdulatokat?',
+    why: 'Kobe 6 éves korától, 1984-től 1991-ig Olaszországban élt, mert az édesapja ott kosarazott. Amerikai nagyapja felvette a tévéből az NBA-meccseket, és **VHS-kazettákon elküldte neki**; Kobe újra és újra visszanézte őket, és lemásolta a nagyok, például Michael Jordan mozdulatait.\n\nA mások mozgásának figyelése nem passzív: az agy mozgatóterületei részben **„együtt dolgoznak”**, amikor egy mozdulatot nézünk, és ez segíti a későbbi utánzást. Ez a **megfigyeléses tanulás**. Tipp: válassz ki egy mozdulatot egy kedvenc játékosodtól, nézd meg lassítva, aztán gyakorold!',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'lecke:sport/kosarlabda']
+  },
+  {
+    id: 'ed-kobe-hakeem', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Kobe Bryant', 'Hakeem Olajuwon'],
+    q: 'Kobe Bryant négyszeres bajnokként is **„beiratkozott” egy visszavonult legendához** lábmunkát tanulni?',
+    why: '2009 nyarán, negyedik bajnoki címe után Kobe felkereste Houstonban a visszavonult **Hakeem Olajuwont**, és tőle tanulta a palánk alatti cseleket. Olajuwon később azt mondta, sok játékossal dolgozott, de Kobe hasznosította a legjobban a tanultakat. Olajuwon híres, táncos lábmunkája részben abból ered, hogy gyerekként Nigériában focizott.\n\nA tanulság kettős: a legjobbak sem hagyják abba a tanulást, és **más sportágakból is átvihetők készségek** – a focis lábmunka a kosárlabdában is működött. Tipp: kérj visszajelzést olyantól, aki már tudja, amit te még nem.',
+    links: ['lecke:sport/kosarlabda', 'lecke:sport/edzeselmelet', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed-giannis-kudarc', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Giannis Antetokounmpo'],
+    q: 'Giannis Antetokounmpo egy fájó kiesés után azt mondta: **„A sportban nincs kudarc”** – és a válasza bejárta a világot?',
+    why: '2023 áprilisában a Milwaukee meglepetésre kiesett a rájátszás első körében. Amikor egy újságíró megkérdezte, kudarc volt-e az idény, Giannis azt felelte: ez **nem kudarc, hanem lépések a siker felé**. Példaként Michael Jordant hozta: 15 évéből 6-ban nyert bajnokságot – a másik 9 talán kudarc volt?\n\nA sportpszichológia szerint az számít, hogyan **értelmezzük** a vereséget: aki tanulási lehetőségnek látja, gyorsabban talpra áll és kitartóbb marad. Ez nem azt jelenti, hogy a vereség nem fáj – hanem hogy nem határozza meg, ki vagy. Tipp: egy rossz meccs után írj fel egy dolgot, amit tanultál, és egyet, ami jól ment.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus']
+  },
+  {
+    id: 'ed-curry-konnyek-nyara', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Stephen Curry', 'Dell Curry'],
+    q: 'Stephen Curry középiskolásként **egy egész nyáron át átépítette a dobását**, és eleinte rosszabbul dobott, mint előtte?',
+    why: 'Másodéves gimnazistaként Curry még alacsony, vékony fiú volt, és a dobását derékmagasságból indította – ezt egyetemi szinten könnyen blokkolták volna. Édesapja, a volt NBA-játékos Dell Curry segítségével a kiengedési pontot **a feje fölé emelte**. A család „a könnyek nyarának” hívja ezt az időszakot: Curry elmondása szerint az első kb. három hétben a festékes területen kívülről szinte semmit sem tudott bedobni.\n\nAmikor egy begyakorolt mozdulatot átírsz, az agynak a régi „programot” kell felülírnia, ezért **átmenetileg romlik a teljesítmény**. Ez normális, és nem azt jelenti, hogy rossz úton jársz. Tipp: technikaváltásnál türelem – a javulás hetekben mérhető, nem napokban.',
+    links: ['lecke:sport/kosarlabda', 'modell:agy#kisagy', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed-curry-minden-gyakorlat-jatek', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Stephen Curry'],
+    q: 'Stephen Curry edzésein **minden gyakorlatnak van pontszáma vagy időlimitje**, és ritkán dob kettőnél többször ugyanonnan?',
+    why: 'Curry személyi edzője 2011 óta Brandon Payne. Payne szerint náluk **minden gyakorlat egy játék**, versenyszerű, és mindig idő vagy pontszám ellen megy; az ismert gyakorlatokat évről évre nehezítik. Egy 2021-es ESPN-cikk szerint Curry egy-egy helyről csak néhány dobást vesz, aztán máshonnan próbálkozik.\n\nEz a **változatos gyakorlás**: ha a helyszín, a távolság és a helyzet folyton változik, edzésen nehezebbnek tűnik, de a tudás jobban megmarad és jobban átvihető a meccsre, mint ha százszor dobnál ugyanonnan. A pontszám pedig azonnali visszajelzést ad. Tipp: mérd a saját gyakorlásodat – és próbáld megdönteni a rekordodat!',
+    links: ['lecke:sport/edzeselmelet', 'lecke:sport/kosarlabda', 'lecke:sport/sportpszichologia']
+  },
+  {
+    id: 'ed-nowitzki-fizikus-edzo', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Dirk Nowitzki'],
+    q: 'Dirk Nowitzki mentora egy **fizikus** volt, aki matematikával számolta ki a dobása ideális röppályáját?',
+    why: 'Nowitzki egész pályafutása alatt **Holger Geschwindnerrel**, a volt német válogatott kosárlabdázóval és fizikussal dolgozott. Geschwindner fizikát, matematikát és pszichológiát is bevont: kiszámolta, milyen ívben érdemes a labdát a gyűrű felé indítani, és kijavította Nowitzki befelé dőlő térdét a dobásnál. Fiatalon a dobó- és passzgyakorlatokat helyezte előtérbe, nem a nehéz súlyzókat.\n\nFizikailag: minél meredekebben érkezik felülről a labda, annál „nagyobbnak látszik” neki a gyűrű, tehát nagyobb a hibahatár. Viszont a túl magas ívhez több erő kell, ami ronthatja a pontosságot – a jó dobás e kettő **kompromisszuma**.',
+    links: ['lecke:sport/kosarlabda', 'lecke:fizika/newton', 'lecke:fiz-alap/mozgas']
+  },
+  {
+    id: 'ed-nowitzki-szokatlan-gyakorlatok', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Dirk Nowitzki'],
+    q: 'Dirk Nowitzki edzője saját intézetét tréfásan **„Alkalmazott Badarságok Intézetének”** nevezte – és a módszerei tényleg szokatlanok voltak?',
+    why: 'Holger Geschwindner egyik gyakorlata az ESPN beszámolója szerint a „talicskázás” volt: Nowitzki kézen járt, miközben Geschwindner a lábát fogta. A beszámolók szerint Nowitzki a lábmunkáját még **vívókkal** is csiszolta. Sokan kételkedtek ezekben a módszerekben, Nowitzki mégis az NBA egyik legjobb dobó magas embere lett, és híres, egy lábon elrugaszkodó, hátradőlő dobása szinte védhetetlenné vált.\n\nA más sportágakból vett gyakorlatok (**keresztedzés**) új ingereket adnak: a vívás például a gyors, kiegyensúlyozott lépéseket és az irányváltást fejleszti. Tipp: ha egy gyakorlat furcsának tűnik, kérdezd meg az edzőt, mi a célja – a „miért” megértése segíti a tanulást.',
+    links: ['lecke:sport/kosarlabda', 'lecke:sport/edzeselmelet', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed-wembanyama-shaolin', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Victor Wembanyama'],
+    q: 'Victor Wembanyama 2025 nyarán **egy kínai sao-lin (Shaolin) kolostorban edzett szerzetesekkel**?',
+    why: 'Egy vérrög miatti vállműtétből felépülve Wembanyama 2025 júniusában kb. tíz napot töltött a kínai Henan tartományban, a híres **sao-lin (Shaolin) templomnál**. A beszámolók szerint naponta többször meditált, kungfu-formagyakorlatokat tanult egy harcos szerzetestől, hajnalban futott, és ugyanazt ették, amit a szerzetesek. Később maga is nagyszerű élménynek nevezte.\n\nA harcművészeti formagyakorlatok az **egyensúlyt, a testtartást és a test helyzetének érzékelését** fejlesztik – ez egy több mint 2,2 méteres játékosnál különösen fontos, mert hosszú végtagjait gyorsan és összehangoltan kell mozgatnia. Tipp: a harcművészet, a tánc vagy a torna jó kiegészítő mozgás bármely sportághoz.',
+    links: ['lecke:sport/test-edzes', 'lecke:sport/sportpszichologia', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed-bunteto-rutin', cat: 'sport', sport: 'kosar', theme: 'edzes',
+    q: 'egy NBA-büntetődobásokat elemző vizsgálat szerint **nem az számít, milyen hosszú a dobás előtti rutin**?',
+    why: 'Lonsdale és Tam (2008) 14 rájátszásbeli NBA-meccs 284 büntetőjét elemezte: megfigyelték, mit csinál minden játékos dobás előtt (labdapattintás, légzés, célzás), és mennyi ideig. A rövid, a hosszú és a szokásos hosszúságú rutinok után **nem volt különbség a találati arányban**.\n\nA kutatók szerint a rutin értéke inkább abban lehet, hogy **mindig ugyanaz**: kizárja a zavaró gondolatokat, és ugyanabba a testi-lelki állapotba hoz. Erről a későbbi vizsgálatok eredményei vegyesek, a rutin tehát nem varázsszer. Tipp: alakíts ki egy rövid, egyszerű rutint, és ragaszkodj hozzá edzésen és meccsen is!',
+    links: ['lecke:sport/sportpszichologia', 'lecke:sport/kosarlabda']
+  },
+
+  /* ───────── FORMA–1 ───────── */
+  {
+    id: 'ed-verstappen-szimulator', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Max Verstappen'],
+    q: 'Max Verstappen F1-es világbajnokként is **virtuális autóversenyeken indul** egy szimverseny-csapatban, és nyer is?',
+    why: 'Verstappen 2015 óta versenyez a Team Redline szimverseny-csapattal (2026-tól Verstappen Sim Racing néven). 2024-ben megnyerte többek között a virtuális **Nürburgring 24 órás** versenyt, az imolai F1-hétvégéje közben. A csapat vezetője szerint fontos, hogy a szimulátorban **ugyanazt a féktechnikát** használja, mint a valódi pályán.\n\nA szimulátor a látás és a kéz–láb mozgás összehangolását, a pályaismeretet és a gyors döntéseket edzi, a valódi gyorsulást és g-erőket viszont nem tudja visszaadni. Tipp: a versenyjáték jó gyakorlás lehet a pályák megismerésére, de mértékkel, és nem helyettesíti a mozgást!',
+    links: ['lecke:sport/forma1', 'modell:f1-auto#kormany', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed-verstappen-zsonglorkodes', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Max Verstappen'],
+    q: 'Max Verstappen a futam előtti bemelegítésben **fényjelekre reagál és zsonglőrködik**?',
+    why: 'Verstappen edzője, Bradley Scanes a rajt előtt fényjelekre épülő reakciógyakorlatokat végeztet vele, és utána következik a **zsonglőrködés**. Verstappen egy interjúban elmondta, hogy sokat dolgozik a reakcióidején és a koordinációján, és szerinte az izommemória kulcsszerepet játszik.\n\nAz ilyen bemelegítés nemcsak az izmokat, hanem az **idegrendszert is „felébreszti”**: a szem és a kéz közötti kapcsolat gyorsul, a figyelem kiélesedik. A zsonglőrködés a kisagyat és a térlátást dolgoztatja. Tipp: három labdával zsonglőrködni bárki megtanulhat – biztonságos és jó koordinációs edzés!',
+    links: ['lecke:sport/forma1', 'modell:agy#kisagy', 'modell:szem#retina']
+  },
+  {
+    id: 'ed-f1-nyakedzes', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Lando Norris', 'Max Verstappen'],
+    q: 'az F1-pilóták legtöbbet edzett testrésze **a nyakuk** – Lando Norris edzője szerint hetente legalább ötször?',
+    why: 'Kanyarban és fékezéskor a pilóta fejére saját súlyának többszöröse hat, oldalra és előre. A fej és a sisak együtt nagyjából 6–7 kg, így 5 g-nél ez durván **30 kg-nyi** erőnek felel meg, amit a nyakizmoknak kell megtartaniuk akár másfél órán át. Ezért a pilóták súlyozott sisakkal, gumikötéllel, csigás hevederrel edzenek; Verstappen edzője például gumiszalaggal húzza oldalra a fejét, amit Verstappennek ki kell tartania.\n\nNorris edzője szerint Norris hetente legalább ötször végez nyakgyakorlatokat. Daniel Ricciardo viszont arra figyelmeztetett, hogy **a nyak sérülékeny**, nem szabad nagy súlyokkal kezdeni. Tipp: gyerekként semmiképp ne tegyél súlyt a fejedre – a nyak erősítését is szakember tanítsa meg!',
+    links: ['lecke:sport/forma1', 'lecke:fizika/newton', 'szakszo:anatomia/izomosszehuzodas']
+  },
+  {
+    id: 'ed-leclerc-formula-medicine', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Charles Leclerc'],
+    q: 'Charles Leclerc **13 éves kora óta egy olasz „agyedzőteremben”** is edz?',
+    why: 'Leclerc 2011-ben került a viareggiói **Formula Medicine** központba, amelyet Dr. Riccardo Ceccarelli alapított. Itt a versenyzők versenyülésben ülve, képernyők előtt végeznek koncentrációs és reakciófeladatokat, közben mérik a szívverésüket és más élettani jeleiket. A központ szerint az elmúlt évtizedekben több mint 75 F1-pilóta járt náluk; Leclerc még Ceccarelli mentális edzésről szóló könyvének előszavát is megírta.\n\nA módszer célja a **„mentális gazdaságosság”**: hogy az agy ugyanazt a teljesítményt kevesebb erőfeszítéssel nyújtsa, így a futam végén is friss maradjon. Ahogy az izom, úgy a figyelem is fárad – és edzhető.',
+    links: ['lecke:sport/forma1', 'lecke:sport/sportpszichologia', 'modell:agy#homlok']
+  },
+  {
+    id: 'ed-norris-pszichologus', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Lando Norris'],
+    q: 'Lando Norris szerint **a pszichológussal végzett munka** is segítette abban, hogy 2025-ben világbajnok legyen?',
+    why: 'Norris a 2025-ös idény elején több hibát vétett, és nyíltan beszélt arról, hogy sokszor a saját fejében „ragad le”, és túl kemény kritikusa önmagának. Az idény során egy **pszichológussal** kezdett dolgozni, és a cím megszerzése után azt mondta, ez sokat segített. A cél nem a vezetése átalakítása volt, hanem hogy **egyenletesen hozza a saját szintjét**.\n\nA sportpszichológiában gyakori módszer, hogy a negatív, önostorozó belső beszédet reálisabb, támogató gondolatokra cserélik („hibáztam, de tudom, mit javítok”). Segítséget kérni nem gyengeség – a világ legjobb sportolói is rendszeresen dolgoznak mentális edzővel.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus', 'lecke:sport/forma1']
+  },
+  {
+    id: 'ed-senna-cobra', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Ayrton Senna'],
+    q: 'Ayrton Senna szerint **a fizikai erőnlét a koncentráció alapja** – ezért már 1984-ben saját edzőt fogadott?',
+    why: 'Senna F1-es pályafutása elején rájött, hogy vékony testalkata miatt nem bírja a terhelést, ezért 1984-ben felkérte a brazil **Nuno Cobrát**, hogy dolgozzon vele. Senna szerint Cobra pontosan tudta, meddig lehet terhelni egy embert. 1992-ben így fogalmazott: ha nem vagy fitt, a **koncentrációd a futam során fokozatosan elszáll**.\n\nEnnek élettani oka van: az edzett szív egy összehúzódással több vért pumpál, így ugyanaz a terhelés kevésbé fárasztja a szervezetet, és több „energia” marad az agy számára. Kutatások szerint a rendszeres mozgás a **figyelmet és a végrehajtó funkciókat** is javítja – dolgozatírás előtt sem árt!',
+    links: ['lecke:sport/forma1', 'lecke:sport/edzeselmelet', 'modell:sziv']
+  },
+  {
+    id: 'ed-schumacher-hasznalt-gumik', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Michael Schumacher'],
+    q: 'Michael Schumacher gyerekként **a gazdagabb versenytársak eldobott, kopott gumijaival** is nyert gokartversenyeket?',
+    why: 'Schumacher a németországi Kerpenben nőtt fel, ahol édesapja a helyi gokartpályán dolgozott. A család nem engedhette meg magának az új gumikat és a drága gokartokat, ezért a hivatalos oldala szerint Michael **a többiek által kidobott, használt gumikat** szerelte fel – és így is nyert.\n\nSokan úgy vélik, hogy a kopott, kevésbé tapadó gumikkal való versenyzés különösen érzékennyé tette a tapadás határára. Ez összhangban van egy edzéselvvel: ha **nehezített körülmények között** gyakorolsz, a normál helyzet könnyebbnek tűnik. A drága felszerelés nem feltétele a fejlődésnek.',
+    links: ['lecke:sport/forma1', 'modell:f1-auto#gumik', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed-f1-hokamra', cat: 'sport', sport: 'f1', theme: 'edzes',
+    q: 'az F1-pilóták a szingapúri futamra **hetekkel előtte fűtött „hőkamrában”** szoktatják magukat a hőséghez?',
+    why: 'Szingapúrban az éjszakai futam is fullasztóan párás és meleg, a pilótafülkében még melegebb van. Az Alpine csapat teljesítményért felelős szakembere szerint a felkészülés **legalább három héttel korábban** kezdődik: a pilóták hőkamrában szobabicikliznek, miközben mérik a testhőmérsékletüket és a súlyvesztésüket, hogy egyéni folyadékpótlási tervet készíthessenek.\n\nA hőhöz szokás (**akklimatizáció**) kb. 1–2 hét alatt alakul ki: nő a vérplazma mennyisége, a test korábban kezd izzadni, és alacsonyabb marad a pulzus és a maghőmérséklet. Tipp: kánikulában fokozatosan edz, sokat igyál, és sose hajtsd túl magad a hőségben!',
+    links: ['lecke:sport/forma1', 'lecke:biologia/keringes-legzes', 'szakszo:anatomia/homeosztazis']
+  },
+  {
+    id: 'ed-f1-pulzus', cat: 'sport', sport: 'f1', theme: 'edzes',
+    q: 'egy vizsgálatban egy F1-pilóta pulzusa **a teljes futam alatt 148 és 163 között** volt – mintha másfél órán át futna?',
+    why: 'Olasz kutatók egy F1-pilóta pulzusát mérték a 2013-as Ausztrál Nagydíjon: a futam alatt végig a maximális pulzusa **74–82%-án** volt. Ez nagyjából egy kemény, tartós futóedzésnek felel meg – pedig a pilóta ül. Az ok: a hőség, a nagy g-erők, az izommunka (fékezés, kormányzás) és a folyamatos, nagy tétű koncentráció együtt.\n\nEzért a pilóták rengeteg **állóképességi edzést** (futás, kerékpár, úszás) végeznek. Az edzett szív nagyobb verőtérfogatú, így ugyanazt a terhelést alacsonyabb pulzussal bírja, és marad „tartalék” a nehéz pillanatokra. Igaz, ez egyetlen pilóta mérése volt, de más mérések is hasonló értékeket mutatnak.',
+    links: ['lecke:sport/forma1', 'modell:sziv', 'szakszo:anatomia/percterfogat']
+  },
+  {
+    id: 'ed-hamilton-meditacio', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Lewis Hamilton'],
+    q: 'Lewis Hamilton **napi 7–10 perc meditációt** „áttörésnek” nevezett, és a rajt előtt a légzésére figyel?',
+    why: 'Hamilton interjúkban elmondta, hogy a járvány alatti leállás idején kezdett rendszeresen, napi 7–10 percet meditálni, és ezt nagyon hasznosnak találta; ha teheti, reggel meditál. A verseny előtt szerinte nem csinál külön légzőgyakorlatot, de **a légzésére figyel**, hogy középen maradjon, és alacsonyan tartsa a pulzusát.\n\nA lassú, hosszú kilégzés aktiválja a **paraszimpatikus idegrendszert** (a „nyugalmi” rendszert), amely a szívritmust is lassítja. Ezt a hatást az agytörzs és a szív ingerképző rendszere közvetíti. Tipp: izgulós helyzetben próbáld ki: 4 másodperc belégzés, 6 másodperc kilégzés, néhányszor egymás után.',
+    links: ['lecke:sport/sportpszichologia', 'modell:sziv#inger', 'modell:agy#agytorzs']
+  },
+  {
+    id: 'ed-alonso-kerekpar', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Fernando Alonso'],
+    q: 'Fernando Alonso legfontosabb edzéseszköze a futamok között **a kerékpár** – és még 40 felett is F1-ben versenyez?',
+    why: 'A beszámolók szerint Alonso a futamok között és a téli szünetben főleg **kerékpározással** tartja magát formában, és ez kedvenc időtöltése is. Edzői más módszerekkel is dolgoznak: egy 2014-es felkészülési programban például autógumikba kellett minél gyorsabban be- és kiugrálnia, ami a reflexeket és a koordinációt fejleszti. Alonso 2001-ben debütált, és a 2020-as években is F1-pilóta.\n\nA kerékpározás kíméli az ízületeket (nincs ütődés, mint futásnál), mégis erősen terheli a szívet és a tüdőt, így nagy mennyiségű **állóképességi edzésre** alkalmas sérülésveszély nélkül. Tipp: biciklizz bukósisakban – az iskolába járás is edzés!',
+    links: ['lecke:sport/forma1', 'lecke:sport/edzeselmelet', 'modell:sziv#bk']
+  },
+  {
+    id: 'ed-f1-szimulator-uj-palya', cat: 'sport', sport: 'f1', theme: 'edzes',
+    q: 'az F1-pilóták egy új versenypályát **először a csapat szimulátorában** ismernek meg, és csak utána élőben?',
+    why: 'Az F1-csapatok gyáraiban hatalmas, mozgó platformos szimulátorok működnek, ahol a pilóta egy valódi autó vezérlőivel „vezet” egy lézerrel felmért, pontos pályamodellen. Új helyszínek (például a 2023-as Las Vegas-i utcai pálya) előtt a pilóták itt tanulják meg a kanyarokat, a féktávokat, és a mérnökökkel együtt az autó beállításait is előkészítik.\n\nAz agy a sokszor „bejárt” pályát már ismerősként kezeli, így az első valódi körökön kevesebb figyelem megy el a tájékozódásra, és több marad a határok keresésére. A **mentális gyakorlás** (fejben bejárni a pályát) is működik: sok pilóta csukott szemmel, kanyarról kanyarra végigmegy a körön.',
+    links: ['lecke:sport/forma1', 'modell:f1-auto#kormany', 'modell:agy#limbikus']
+  },
+
+  /* ───────── JÉGKORONG ───────── */
+  {
+    id: 'ed-gretzky-udvari-palya', cat: 'sport', sport: 'jegkorong', theme: 'edzes', athletes: ['Wayne Gretzky'],
+    q: 'Wayne Gretzky apja a ház mögötti kertben **jégpályát épített** neki, és ott tanította: „korcsolyázz oda, ahová a korong megy, ne oda, ahol volt”?',
+    why: 'Walter Gretzky 1965-ben, amikor Wayne kb. 4 éves volt, a kanadai Brantfordban a hátsó kertben kis jégpályát készített, amelyet később „Wally’s Coliseum”-nak neveztek el. Ott mindenféle saját gyakorlatot talált ki. Az egyik híres „kikérdezés”: – Hová korcsolyázol? – Oda, ahová a korong megy, nem oda, ahol volt.\n\nEz a gondolat Gretzky egész pályafutását meghatározta. Az agy folyamatosan **előrejelzéseket készít** a mozgó tárgyak pályájáról; a jó játékos nem csak reagál, hanem előre „lát”. Gretzky lett az NHL történetének legtöbb pontot szerző játékosa.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'lecke:fizika/mertekegysegek-mozgas']
+  },
+  {
+    id: 'ed-gretzky-teniszlabda', cat: 'sport', sport: 'jegkorong', theme: 'edzes', athletes: ['Wayne Gretzky'],
+    q: 'Wayne Gretzky gyerekként **a jégen pattogó teniszlabdákkal** gyakorolta a korongvezetést?',
+    why: 'Gretzky maga mesélte, hogy apja azt találta ki: a jégen pattogó teniszlabdát kell irányítania az ütőjével. A teniszlabda sokkal kiszámíthatatlanabbul pattan és gurul, mint a lapos korong, így **sokkal gyorsabb és finomabb kéz- és ütőmunkát** követel.\n\nEz egy jól ismert edzéselv: ha valamit **nehezebb változatban** gyakorolsz, a normál feladat könnyebbnek tűnik. A kisagy közben folyamatosan finomhangolja a mozdulatokat a hibák alapján. Tipp: focisták dekázhatnak kisebb labdával, kosarasok vezethetnek két labdát – lépésről lépésre nehezítve.',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed-crosby-szaritogep', cat: 'sport', sport: 'jegkorong', theme: 'edzes', athletes: ['Sidney Crosby'],
+    q: 'Sidney Crosby gyerekkori pincéjének **horpadt szárítógépe** ma egy sportmúzeumban látható?',
+    why: 'Crosby gyerekként a kanadai Cole Harbourben, a családi ház pincéjében gyakorolta a lövéseket egy kapura – a kapu mögött állt a szárítógép. Ő maga tisztázta, hogy nem a gépre lőtt: a **horpadásokat a mellé ment lövések** okozták. A korongnyomokkal teli szárítógép ma az új-skóciai sport-hírességek csarnokában látható, Crosby trófeái mellett.\n\nA történet a rengeteg ismétlésről szól: minden lövés **azonnali visszajelzést** adott, hogy jó volt-e. Az NHL elsőként draftolt játékosaként Crosby 2005-ben egy tévéműsorban is szárítógépre lőtt korongokat. Tipp: otthoni gyakorláshoz kérj szülői engedélyt, és válassz biztonságos helyet!',
+    links: ['lecke:sport/edzeselmelet', 'lecke:fizika/newton']
+  },
+  {
+    id: 'ed-crosby-domb', cat: 'sport', sport: 'jegkorong', theme: 'edzes', athletes: ['Sidney Crosby', 'Nathan MacKinnon'],
+    q: 'Sidney Crosby **14 éves kora óta minden nyáron ugyanazzal az edzővel** fut fel a dombokon?',
+    why: 'Andy O’Brien erőnléti edző 2002 óta, Crosby 14 éves kora óta készíti fel a játékost a nyári szünetben, gyakran a szabad ég alatt, például Halifax Citadella-dombján. O’Brien szerint a domb nagyon sokoldalú eszköz: **meredek emelkedőn az erőt, enyhe emelkedőn a gyorsaságot** lehet fejleszteni. A közös edzésekhez évek óta más NHL-sztárok, például Nathan MacKinnon is csatlakoznak.\n\nEmelkedőn futva a lábnak nagyobb erővel kell elrugaszkodnia, a talajfogás rövidebb, és kisebb az ütődés is, mint gyors sík futásnál. A hosszú, bizalmi **edző–sportoló kapcsolat** pedig segít, hogy az edzésterv évről évre a sportoló változó igényeihez igazodjon.',
+    links: ['lecke:sport/test-edzes', 'lecke:sport/edzeselmelet', 'szakszo:anatomia/izomosszehuzodas']
+  },
+  {
+    id: 'ed-ovecskin-valtozatossag', cat: 'sport', sport: 'jegkorong', theme: 'edzes', athletes: ['Alekszandr Ovecskin'],
+    q: 'Alekszandr Ovecskin bevallotta, hogy **nem szeret edzeni** – mégis 40 évesen is az NHL-ben játszik, mert a nyári edzéseket változatossá teszik?',
+    why: 'Ovecskin a nyári szünetben évek óta régi személyi edzőjével, Pavel Burlacsenkóval dolgozik Oroszországban. Az edzésprogramjai CrossFit-szerű feladatokból, futásból, kerékpározásból állnak, és Burlacsenko rendszeresen **új gyakorlatokat** iktat be, hogy ne váljon unalmassá. Ovecskin egy interjúban nyíltan azt mondta, „egyszerűen nem szeret edzeni”, és hogy idősebb korára még elkötelezettebben kell felkészülnie.\n\nA változatosság a **túlterheléses sérüléseket** is csökkentheti, mert nem ugyanazokat az izmokat és ízületeket terheli mindig. És a tanulság: a motiváció nem mindig érzés – sokszor döntés. 2025-ben Ovecskin megdöntötte Gretzky góllövőrekordját.',
+    links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia']
+  },
+  {
+    id: 'ed-nhl-delutani-alvas', cat: 'sport', sport: 'jegkorong', theme: 'edzes',
+    q: 'szinte **minden NHL-játékos alszik délután** a meccs előtt?',
+    why: 'Az NHL hivatalos oldalának egyik cikke szerint a profi jégkorongozók szinte kivétel nélkül szundítanak a meccsnap délutánján, sokan órás nagyságrendben – de akadnak kivételek, akik inkább pihennek, sétálnak vagy videojátékoznak. A meccsek többnyire este vannak, és a délutáni alvás felfrissíti őket a késő esti terhelésre.\n\nA kutatások szerint egy rövid alvás javítja az **éberséget és a reakcióidőt**. A hosszabb alvás után viszont kábultság jöhet (ezt alvási tehetetlenségnek hívják), ezért a profik bőven a meccs előtt ébrednek. Tipp: ha napközben pihenni szeretnél, 20–30 perc elég, és ne késő délután aludj, különben este nehezebben alszol el.',
+    links: ['lecke:sport/test-edzes', 'modell:agy#koztiagy', 'lecke:bio-alap/emberi-test-2']
+  },
+
+  /* ───────── KÉZILABDA ───────── */
+  {
+    id: 'ed-kezi-vallprogram', cat: 'sport', sport: 'kezilabda', theme: 'edzes',
+    q: 'egy norvég kísérletben **egy pár perces bemelegítő gyakorlatsor** csökkentette az élvonalbeli kézilabdások vállproblémáit?',
+    why: 'Andersson és munkatársai (2017) 660 élvonalbeli kézilabdázó részvételével vizsgálták, mi történik, ha a csapatok hetente háromszor egy célzott váll-programot építenek be a bemelegítésbe. A gyakorlatok a váll befelé forgatásának mozgékonyságát, a kifelé forgató izmok erejét és a **lapocka kontrollját** fejlesztették. Az eredmény: ritkábbak lettek a vállproblémák.\n\nA kézilabdás dobókarja szezononként sok ezer erős dobást végez; a vállízületet a kis **forgatóköpeny-izmok** stabilizálják, és ha ezek gyengék, a terhelés az ízület szalagjait és inait éri. Tipp: gumiszalagos vállgyakorlatok a bemelegítésben – edzővel megtanulva.',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/izulet', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed-kezi-terdvedo-bemelegites', cat: 'sport', sport: 'kezilabda', theme: 'edzes',
+    q: 'fiatal kézilabdásoknál egy **egyszerű, 15 perces bemelegítés nagyjából felére csökkentette** a térd- és bokasérüléseket?',
+    why: 'Egy 2005-ös norvég vizsgálatban (Olsen és munkatársai, BMJ) 120 klub 1837, 15–17 éves kézilabdázója vett részt. A csapatok felénél a bemelegítés futó-, irányváltó- és **érkezéstechnikai**, egyensúly- és erősítő gyakorlatokat tartalmazott. Ezekben a csapatokban egy idény alatt kb. **feleannyi** heveny térd- és bokasérülés történt, mint a többieknél.\n\nA súlyos térdsérülések (például a keresztszalag-szakadás) gyakran ütközés nélkül, rossz **érkezésnél vagy irányváltásnál** történnek, amikor a térd befelé „bicsaklik”. Tipp: ugrás után puhán, hajlított térddel érkezz, a térd a lábujjak irányába nézzen!',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/izulet', 'lecke:fizika/newton']
+  },
+  {
+    id: 'ed-kezi-kapus-tekintet', cat: 'sport', sport: 'kezilabda', theme: 'edzes',
+    q: 'a tapasztalt kézilabdakapusok hétméteresnél **a lövő karját figyelik, a kezdők inkább a fejét**?',
+    why: 'Szemmozgáskövető vizsgálatok szerint a rutinos kapusok tekintete többet időzik a dobókaron, míg a kezdők gyakrabban a dobó fejét nézik – ami könnyen „becsaphat”. Egy másik vizsgálat szerint a szakértő kapusok **később mozdulnak el**, mint a kezdők, vagyis tovább gyűjtik az információt, mielőtt döntenek. (A vizsgálatok kicsik, az eredmények nem mindenben egyeznek.)\n\nA lövés kb. 90–100 km/h, így a kapusnak előre kell jeleznie, hová megy a labda. Az agy azokat a testjeleket tanulja meg „olvasni”, amelyek **valóban árulkodnak** a lövés irányáról. Ez a fajta figyelem videós feladatokkal is fejleszthető.',
+    links: ['lecke:sport/sportpszichologia', 'modell:szem#sargafolt', 'modell:agy#nyakszirti']
+  },
+
+  /* ───────── VÍZILABDA ───────── */
+  {
+    id: 'ed-kemeny-kibeszeles', cat: 'sport', sport: 'vizilabda', theme: 'edzes', athletes: ['Kemény Dénes'],
+    q: 'a magyar pólóválogatott egy elvesztett döntő után **leült és őszintén kibeszélte a kudarcot** – és a következő évben világbajnok lett?',
+    why: 'A 2002-es belgrádi Világkupa döntőjében a válogatott kikapott az oroszoktól, és – ahogy egy 2023-as dokumentumfilmből kiderült – a játékosok bizalma is megingott a szövetségi kapitányban. Kemény Dénes egy interjúban elmondta, hogy a döntő után összezuhant, ezt a csapat is érzékelte, ezért **gyorsan összeültek és kibeszélték**, mi történt. 2003-ban a csapat megnyerte a barcelonai világbajnokságot.\n\nA sportpszichológia szerint egy vereség utáni **őszinte, közös átbeszélés** csökkenti a rágódást, és visszaépíti a bizalmat. A csapat akkor működik jól, ha mindenki ki meri mondani, amit gondol.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus', 'lecke:sport/olimpia']
+  },
+  {
+    id: 'ed-kemeny-bizalom', cat: 'sport', sport: 'vizilabda', theme: 'edzes', athletes: ['Kemény Dénes'],
+    q: 'Kemény Dénes, aki **zsinórban három olimpiai aranyig** vezette a pólóválogatottat, szerint a legfontosabb, hogy **a sportoló érezze: bíznak benne**?',
+    why: 'Kemény Dénes 1997 és 2012 között volt a férfi vízilabda-válogatott szövetségi kapitánya; csapata 2000-ben, 2004-ben és 2008-ban is olimpiai bajnok lett. Egy 2023-as interjúban azt mondta, a legfontosabb, hogy a sportoló **érezze, bíznak benne**, és a **szorgalmat** az egyik legfontosabb tehetségnek tartja.\n\nA kutatások szerint az a sportoló, aki úgy érzi, hogy az edzője bízik benne és beleszólása is lehet a dolgokba, **belső motivációval** edz, és jobban hisz a saját képességeiben (ezt önhatékonyságnak hívják). Tipp: ha csapatkapitány vagy, mondd el a társaidnak, miben bízol bennük!',
+    links: ['lecke:sport/sportpszichologia', 'lecke:sport/edzeselmelet', 'lecke:sport/olimpia']
+  },
+  {
+    id: 'ed-vizilabda-allokepesseg', cat: 'sport', sport: 'vizilabda', theme: 'edzes',
+    q: 'a jobb vízilabdázók **az utolsó negyedben is közel olyan intenzíven** játszanak, mint az elején – mert jobb az állóképességük?',
+    why: 'Pulzusmérő vizsgálatok szerint a vízilabdázók a meccsidő nagy részét magas pulzussal töltik, és a negyedik negyedre jellemzően csökken a játék intenzitása. A magasabb szintű játékosoknál ez a visszaesés **kisebb**, és ezt a kutatók a jobb **aerob állóképességgel** magyarázzák. Becslések szerint egy játékos egy meccsen nagyjából 1–2 km-t is úszhat, sok rövid sprintben, miközben folyamatosan „tapos” és birkózik.\n\nAz aerob edzés hatására a szív verőtérfogata nő, az izmokban több hajszálér és mitokondrium lesz, így a test gyorsabban regenerálódik két sprint között. Ezért ennyi a sok úszás a pólóedzésen.',
+    links: ['lecke:sport/edzeselmelet', 'modell:sziv', 'modell:sejt#mito']
+  }
+
+]);
+
+</script>
+  <script>/* data/tudtad/edzes-2.js */
+/* Tudtad? – „Így edzenek a legjobbak” II.: edzésmódszerek tenisz, úszás, atlétika, kerékpár, vívás, kajak-kenu,
+ * torna, küzdősportok, téli sportok, sakk és általános sporttudomány területéről. Formátum: js/tudtad.js
+ * Minden tény theme: 'edzes'. A sportolók módszereit interjúk, életrajzok és nagy sportlapok beszámolói alapján
+ * írtuk le (ellenőrizve 2026 novemberében); a tudományos háttér lektorált kutatásokra épül. */
+STUDIE.addFacts([
+
+  /* ───────── TENISZ ───────── */
+  {
+    id: 'ed2-djokovic-gencic-video', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Novak Djokovic'],
+    q: 'Novak Djokovic első edzője, Jelena Genčić a kisgyerek Novakkal **videókat nézetett a nagy bajnokok játékáról** – a megfigyelés is edzés?',
+    why: 'Genčić 1993-ban, egy kopaoniki nyári táborban figyelt fel a hatéves Djokovicra, és 1999-ig foglalkozott vele; Djokovic később „második anyjának” nevezte. Saját elmondása szerint az edzőnél töltött idő alatt rendszeresen **felvételeket nézett a legnagyobbakról**.\n\nA tudomány: amikor egy mozdulatot figyelmesen nézünk, az agy **mozgástervező területei** (a homloklebeny mozgató kérgének egy része) részben úgy aktiválódnak, mintha mi magunk végeznénk – ezért a megfigyeléses tanulás valódi gyakorlás. **Tipp:** nézd meg lassítva egy profi mozdulatát, figyelj egyetlen részletre, majd rögtön próbáld ki.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'modell:agy#neuron']
+  },
+  {
+    id: 'ed2-djokovic-meditacio', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Novak Djokovic'],
+    q: 'Novak Djokovic a saját könyve szerint **naponta kb. 15 percet meditál**, és ezt ugyanolyan fontosnak tartja, mint a testi edzést?',
+    why: 'A „Serve to Win” (2013) című könyvében Djokovic leírja, hogy napi kb. 15 perces **tudatos jelenlét (mindfulness) gyakorlatot** végez, és a jógát, valamint a **tudatos légzést** is a rutinja fontos részének tartja.\n\nA háttér: a figyelem „visszaterelése” a légzésre olyan, mint egy ismétlés az edzőteremben – a kutatások szerint rendszeres gyakorlással javul a figyelem szabályozása, a lassú kilégzés pedig a **paraszimpatikus („nyugtató”) idegrendszert** aktiválja. **Tipp:** naponta 5 perc, csendben ülve, a kilégzéseket számolva – egy meccs szünetében is működik.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'lecke:biologia/ideg-hormon-emesztes']
+  },
+  {
+    id: 'ed2-nadal-rutin', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Rafael Nadal'],
+    q: 'Rafael Nadal szerint a híres **palackrendezgetése nem babona, hanem koncentrációs rutin** – ha kihagyja, elkalandoznak a gondolatai?',
+    why: 'Nadal a szünetekben mindig ugyanúgy, egy vonalba állítja az italos palackjait, és meccs előtt is kötött sorrendet követ. Önéletrajzában azt írja, hogy ezzel a környezetét a fejében lévő rendhez igazítja, és egy interjúban elmondta: ha kihagyja, **elkalandoznak a gondolatai**, ha megcsinálja, a teniszre fókuszál.\n\nA sportpszichológia ezt **teljesítmény előtti rutinnak** hívja: az ismerős lépéssor jelzi az agynak, hogy „most jön a feladat”, és kiszorítja a zavaró gondolatokat. A különbség a babonától: a rutin a figyelmet irányítja, nem a szerencsét hívja. **Tipp:** alakíts ki egy rövid, mindig azonos rituálét (pl. két mély levegő + egy kulcsszó) adogatás, büntető vagy rajt előtt.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'modell:agy#limbikus']
+  },
+  {
+    id: 'ed2-federer-sok-sport', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Roger Federer'],
+    q: 'Roger Federer gyerekként **focizott, síelt, birkózott, úszott, kosarazott, tollasozott és pingpongozott** is – és csak kamaszként kötelezte el magát a tenisz mellett?',
+    why: 'David Epstein „Range” című könyve Federer gyerekkorával kezdődik: édesanyja teniszedző volt, mégsem ő edzette, hanem a szülei arra biztatták, hogy **minél több sportot** kipróbáljon. Federer maga is a sokféle sportnak tulajdonítja kivételes **kéz–szem koordinációját**.\n\nA háttér: a különböző mozgások sokféle „mozgásmintát” építenek az idegrendszerbe (főleg a **kisagyban**), amelyekből később egy sportág is merít; a sokoldalúság a túlterheléses sérülések és a kiégés esélyét is csökkenti. **Tipp:** a fő sportágad mellett heti egy „más” mozgás (labdajáték, úszás, tánc) is fejleszt.',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy', 'lecke:sport/test-edzes']
+  },
+  {
+    id: 'ed2-serena-jegyzetek', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Serena Williams'],
+    q: 'Serena Williams a szünetekben **saját kezűleg írt cetliket olvasott** – és a 2019-es Wimbledonon azt mondta, ezt már **évtizedek óta** csinálja?',
+    why: 'A kamerák gyakran mutatták, ahogy oldalcserénél egy füzetet vagy papírlapot nézeget. Williams egy 2019-es wimbledoni sajtótájékoztatón elmondta, hogy ezek **saját magának írt üzenetek**, amelyek segítenek a meccsre koncentrálni.\n\nEz a **tudatos önbeszéd** egyik formája. Hatzigeorgiadis és munkatársai 2011-es metaanalízise 32 kutatás alapján közepes erősségű, **valódi teljesítményjavító hatást** talált; a rövid, konkrét utasítások („láb mozog!”, „lazán!”) főleg a pontos mozdulatoknál segítenek. **Tipp:** írj fel 2–3 rövid, pozitív, cselekvésre utaló mondatot, és nézd meg őket verseny előtt.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'modell:agy#limbikus']
+  },
+  {
+    id: 'ed2-alcaraz-ferrero', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Carlos Alcaraz'],
+    q: 'Carlos Alcaraz **15 évesen** költözött be Juan Carlos Ferrero villenai akadémiájára, és a volt világelső edző **hét évig** egyengette a pályáját?',
+    why: 'Ferrero, a 2003-as Roland Garros-győztes 2018 szeptemberében vette át a tinédzser Alcaraz irányítását; a közös munka 2025 végéig tartott, és közben Alcaraz több Grand Slam-tornát nyert és világelső lett. Az akadémián edzés, iskola és pihenés egy helyen, napi rendben zajlott.\n\nA sportpszichológiai kutatások szerint a hosszú távú siker egyik legerősebb előrejelzője a **jó edző–sportoló kapcsolat**: kölcsönös bizalom, nyílt kommunikáció és közös célok. Az ilyen kapcsolatban a visszajelzés gyorsabban „beépül”. **Tipp:** kérdezz bátran az edződtől – miért ezt a gyakorlatot csináljuk? –, mert ha érted a célt, jobban tanulsz.',
+    links: ['lecke:sport/sportpszichologia', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed2-alcaraz-harom-c', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Carlos Alcaraz'],
+    q: 'Carlos Alcaraz nagyapja mottóját, a **„három C”-t (fej, szív, bátorság)** a karjára is tetováltatta – és meccs közben, kétség esetén ezt ismételgeti magában?',
+    why: 'A spanyol mondás – „cabeza, corazón y …” – nagyjából annyit tesz: **fej, szív és bátorság** (a harmadik szó ennél nyersebb). Alcaraz elmondta, hogy ha egy meccsen elbizonytalanodik, ezt a mottót mondja magában, és nagy győzelmek után is ezzel üzent.\n\nA sportpszichológia ezt **kulcsszavas önbeszédnek** nevezi: egy rövid, személyes jelentésű szó vagy mondat gyorsan visszahívja a kívánt lelkiállapotot, mert nem kell hozzá hosszú gondolkodás. **Tipp:** válassz egy 1–3 szavas saját jelmondatot, és gyakorold edzésen is, hogy versenyen „automatikusan” működjön.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus']
+  },
+  {
+    id: 'ed2-sinner-si', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Jannik Sinner'],
+    q: 'Jannik Sinner gyerekként **Olaszország egyik legjobb ifjúsági síversenyzője** volt óriás-műlesiklásban – és szerinte a síelés segíti ma is a csúszó mozgását a pályán?',
+    why: 'Sinner a Dolomitokban nőtt fel, kb. 7 és 12 éves kora között országos szintű síversenyző volt, és csak **13 évesen** döntött a tenisz mellett. Elmondta, hogy a síelés **egyensúlyérzéke** nagyban hozzájárulhat ahhoz, ahogy keményborításon is csúszva mozog; Lindsey Vonn olimpiai bajnok is a térd- és csípőtartását emelte ki.\n\nA háttér: az egyensúlyt a belső fül **egyensúlyszerve**, az izmokban lévő érzékelők és a **kisagy** közösen tartja fenn – ez a rendszer edzhető, és sportágak között is átvihető. **Tipp:** egylábas állás, egyensúlypárna vagy görkorcsolya – kiváló kiegészítő minden labdajátékhoz.',
+    links: ['modell:agy#kisagy', 'lecke:sport/edzeselmelet', 'lecke:bio-alap/emberi-test-2']
+  },
+  {
+    id: 'ed2-fucsovics-regeneracio', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Fucsovics Márton'],
+    q: 'Fucsovics Márton szerint egy hosszú meccs után a regeneráció legalább annyira fontos, mint a játék – **nyújtás, masszázs, hideg víz és sok alvás** a receptje?',
+    why: 'Egy hosszú, kimerítő meccs után Fucsovics elmondta, hogy ilyenkor még több energiát fordít a regenerálódásra: **hosszú nyújtásra, masszázsra, hidegvizes ücsörgésre**, és különösen a **sok alvásra**.\n\nA háttér: alvás közben választódik ki a legtöbb **növekedési hormon** (az agyalapi mirigyből), ami az izmok helyreállításához kell, és ilyenkor rögzülnek a nap során gyakorolt mozdulatok is. A hideg víz csökkentheti az izomfájdalmat, de rendszeres használata erőedzés után a kutatások szerint **lassíthatja az izomépülést** – ezért a profik is csak indokolt esetben, felügyelettel alkalmazzák. **Tipp:** neked az alvás a legjobb, ingyenes regeneráló.',
+    links: ['lecke:sport/test-edzes', 'modell:agy#hipofizis', 'lecke:sport/edzeselmelet']
+  },
+
+  /* ───────── ÚSZÁS ───────── */
+  {
+    id: 'ed2-phelps-videoszalag', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Michael Phelps'],
+    q: 'Michael Phelps edzője, Bob Bowman minden este arra kérte a fiatal úszót, hogy **„tegye be a videókazettát”** – vagyis fejben, lépésről lépésre lejátssza a tökéletes versenyét?',
+    why: 'Bowman leírása szerint Phelps elalvás előtt először **tagról tagra ellazította a testét**, majd fejben „lejátszotta” az ideális úszását: a rajtot, minden fordulót, a célba érést – és azt is, mit tesz, ha valami elromlik. Edzésen Bowman versenytempónál bekiabálta: „Tedd be a kazettát!”\n\nA tudomány: a **mozgásos képzelet** közben az agy mozgástervező hálózatai hasonlóan aktiválódnak, mint valódi mozgásnál, ezért a fejben gyakorlás valódi tanulás (a valódi edzést kiegészíti, nem helyettesíti). **Tipp:** elalvás előtt 2–3 percben képzeld el a következő versenyed egy kulcspillanatát – minél több érzékszervvel (hang, víz, izomérzet).',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed2-phelps-szemuveg', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Michael Phelps'],
+    q: 'Bob Bowman egyszer **szándékosan rálépett Michael Phelps úszószemüvegére** egy verseny előtt – hogy hozzászoktassa a váratlan nehézségekhez?',
+    why: 'Bowman egy McKinsey-interjúban mesélte el, hogy 2003-ban Ausztráliában rálépett Phelps szemüvegére, és tudatosan kereste a módját, hogy **edzésen vagy versenyen nehézséget** okozzon neki. A 2008-as pekingi olimpián a 200 m-es pillangóúszás döntőjében Phelps szemüvege tényleg megtelt vízzel; ő a **karcsapásait számolva** úszott a falig – és világcsúccsal nyert.\n\nA pszichológia ezt **stresszoltásnak** hívja: aki gyakorlás közben, kis adagokban már találkozott a hibával, versenyen nem pánikol, mert van kész terve. **Tipp:** edzésen néha gyakorold a „B tervet” is (pl. rossz rajt után hogyan rendezed a tempót).',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus', 'lecke:sport/olimpia']
+  },
+  {
+    id: 'ed2-phelps-hipoxias-sator', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Michael Phelps'],
+    q: 'Michael Phelps a 2012-es olimpia előtt közel egy évig egy **alacsony oxigéntartalmú sátorban aludt**, amely kb. 2400 m-es magasságot szimulált?',
+    why: 'Phelps 2012 februárjában mondta el, hogy már majdnem egy éve „**8000 láb (kb. 2400 m) magasan**” alszik egy ún. hipoxiás sátorban. Ez az „élj magasan, edz alacsonyan” elv otthoni változata: a ritkább levegőben a vese több **EPO** hormont termel, ami több vörösvértest képzésére serkent, így a vér több oxigént szállíthat.\n\nA hatáshoz azonban sok órányi, hetekig tartó „magaslati” idő kell, és egyénenként nagyon eltér. Ez **nem otthoni kísérletezésre való** – az élsportolók orvosi felügyelettel használják. **Tipp:** fiatalon a rendszeres állóképességi edzés ugyanúgy növeli a vér oxigénszállító képességét.',
+    links: ['lecke:biologia/keringes-legzes', 'szakszo:anatomia/oxigen-disszociacio', 'modell:sziv', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed2-ledecky-want-times', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Katie Ledecky'],
+    q: 'Katie Ledecky már **6 évesen papírra írta a „vágyott idejeit”** minden verseny előtt – és a lapot meg is őrizte a következő versenyre?',
+    why: 'Ledecky elmesélte, hogy gyerekként minden verseny előtt felírta a számait és a célidőit („want times”), utána pedig melléírta, mit úszott; a lapot az éjjeliszekrényén tartotta. Felnőttként is a **célkitűzést** tartja sikere egyik kulcsának.\n\nLocke és Latham célkitűzés-elmélete szerint a **konkrét, mérhető, kihívást jelentő** célok jobban irányítják a figyelmet és az erőfeszítést, mint a „csináld a legjobbat” jellegűek – különösen, ha rendszeres visszajelzés is van. **Tipp:** írd fel a következő versenyed előtt 1–2 mérhető célodat, utána írd mellé az eredményt, és nézd meg, mit tanultál.',
+    links: ['lecke:sport/sportpszichologia', 'lecke:matematika/szazalek']
+  },
+  {
+    id: 'ed2-ledecky-ferfiakkal', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Katie Ledecky', 'Bobby Finke'],
+    q: 'Katie Ledecky a Floridai Egyetemen rendszeresen **férfi úszókkal, köztük olimpiai bajnokokkal** együtt edz a hosszútávokon?',
+    why: 'A San Francisco Chronicle beszámolója szerint Floridában Ledecky gyakran **Bobby Finke-kel**, a 800 és 1500 m gyors olimpiai bajnokával úszik egy pályán, és ez a hosszú távokon olyan húzóerőt ad, amilyet korábban, a Stanfordon nem kapott.\n\nA sportpszichológia régóta ismeri a **társas serkentés** jelenségét: ha valaki mellettünk ugyanazt csinálja – kicsit gyorsabban –, többet hozunk ki magunkból, és jobb a tempóérzékünk is. **Tipp:** keress edzőtársat, aki egy kicsit jobb nálad; a túl nagy különbség viszont inkább elkedvetlenít.',
+    links: ['lecke:sport/sportpszichologia', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed2-hosszu-verseny-edzes', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Hosszú Katinka'],
+    q: 'Hosszú Katinka a világkupa-versenyeket **edzésként** használta – egyetlen hétvégén akár egy tucat számban is rajthoz állt?',
+    why: 'Hosszú egy Swimming World-interjúban elmondta, hogy a világkupákra edzésként ment, mert ott **versenyhelyzetben** gyakorolhatta a rajtot, a fordulókat és a víz alatti szakaszokat. Egyes állomásokon 8–12 számban is indult; a kínai sajtó ezért nevezte el **„Vasladynek”**.\n\nA háttér: a versenyhelyzet stresszét, a bemelegítés és a pihenők időzítését edzésen nehéz utánozni – a gyakori versenyzés ezért **versenyspecifikus rutint** épít. **Tipp:** az „edzőversenyeken” ne az eredményre, hanem egy-egy konkrét elemre (pl. a fordulókra) figyelj; a pihenést viszont ilyenkor is be kell tartani.',
+    links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia']
+  },
+  {
+    id: 'ed2-egerszegi-majkremes-doboz', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Egerszegi Krisztina'],
+    q: 'Egerszegi Krisztina edzője, Kiss László **egy üres májkrémes dobozt tett a kislány homlokára**, és azzal kellett végigúsznia hátúszásban a medencét?',
+    why: 'A Telex beszámolója szerint Kiss László különösen nagy gondot fordított a technikára: Egerszeginek a homlokán egyensúlyozott dobozzal kellett a medence egyik falától a másikig hátúszásban haladnia. Ehhez a **fejnek teljesen nyugodtan** kell maradnia.\n\nA fizika és a biomechanika: ha a fej mozdulatlan, a test egyenes vonalban fekszik a vízen, kisebb a **közegellenállás**, és a karok ereje nem „oldalra” vész el. A kis, egyszerű eszközzel adott **azonnali visszajelzés** (leesett-e a doboz) a mozgástanulás egyik leghatékonyabb módja. **Tipp:** hátúszásnál próbáld ki egy műanyag pohárral vagy egy szivaccsal a homlokodon.',
+    links: ['lecke:fiz-alap/nyomas', 'lecke:fizika/newton', 'modell:agy#kisagy', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed2-milak-pillango', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Milák Kristóf'],
+    q: 'Milák Kristóf eredetileg **hátúszó** volt – korábbi edzője, Selmeci Attila beszélte rá 14 évesen a pillangóúszásra?',
+    why: 'Selmeci Attila akkor vette át Milák felkészítését, amikor az úszó 14 éves volt, és 2014 szeptemberében álltak rá a **pillangóra** – öt évvel később Milák már világcsúcsot úszott 200 m pillangón. Selmeci egy interjúban azt is elmondta, hogy a felkészülés elején a **helyes technika** a legfontosabb, a nagy terhelés csak később jön.\n\nA tanulság: a jó edző észreveszi, melyik mozgásformához illik a sportoló alkata és ritmusa, és a **technika megszilárdítása** megelőzi a mennyiséget – fáradtan ugyanis a rossz mozdulat rögzül. **Tipp:** egy új szezon első heteiben lassabban, de tökéletes mozdulatokkal edz.',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy']
+  },
+
+  /* ───────── ATLÉTIKA ───────── */
+  {
+    id: 'ed2-kipchoge-naplo', cat: 'sport', sport: 'atletika', theme: 'edzes', athletes: ['Eliud Kipchoge'],
+    q: 'Eliud Kipchoge **több mint két évtizede kézzel, füzetbe írja** minden edzése adatait – a távot, az időt, az időjárást és hogy hogyan érezte magát?',
+    why: 'Az Outside magazin szerint Kipchoge az okosórák korában is ragaszkodik a régimódi **edzésnaplóhoz**: minden edzés után feljegyzi a részleteket, sőt azt is, melyik cipőben futott. Így évekre visszamenőleg látja, mi működött és mi nem.\n\nA háttér: az edzésnapló a **tudatos gyakorlás** egyik eszköze – visszajelzést ad, segít észrevenni a túlterhelés jeleit (pl. rossz alvás, nehéz lábak), és a saját fejlődés látványa motivál. Kipchoge híres mondása: „Csak a fegyelmezett ember szabad.” **Tipp:** egy egyszerű füzet is elég: dátum, mit edzettél, 1–10-ig mennyire volt nehéz, hogy aludtál.',
+    links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia']
+  },
+  {
+    id: 'ed2-kipchoge-80-szazalek', cat: 'sport', sport: 'atletika', theme: 'edzes', athletes: ['Eliud Kipchoge'],
+    q: 'Eliud Kipchoge saját elmondása szerint edzésen **ritkán megy 80%-nál keményebben** – a 100%-ot a versenyre tartogatja?',
+    why: 'Kipchoge az Outside magazinnak azt mondta: igyekszik nem 100%-on futni; kedden, csütörtökön és szombaton kb. **80%-os**, a többi napon kb. **50%-os** erőfeszítéssel edz.\n\nEz egybevág Stephen Seiler sporttudós megfigyelésével: az élvonalbeli állóképességi sportolók edzésidejük nagyjából **80%-át alacsony**, kb. 20%-át magas intenzitáson töltik. A könnyű edzés fejleszti a hajszálereket és a **mitokondriumokat**, közben pedig van idő a regenerációra, így a kemény napok tényleg keményen sikerülhetnek. **Tipp:** ha minden edzésed „maximális”, valójában egyik sem az – legyen könnyű nap, amikor még beszélgetni is tudsz futás közben.',
+    links: ['lecke:sport/edzeselmelet', 'modell:sejt#mito', 'modell:sziv', 'lecke:biologia/keringes-legzes']
+  },
+  {
+    id: 'ed2-kipchoge-tabor', cat: 'sport', sport: 'atletika', theme: 'edzes', athletes: ['Eliud Kipchoge'],
+    q: 'Eliud Kipchoge a kaptagati edzőtáborban – olimpiai bajnokként is – **beosztás szerint ő is takarít**, a mosdót is beleértve?',
+    why: 'A LetsRun beszámolója szerint a kenyai Kaptagatban, kb. 2400 m magasan lévő táborban mindenki részt vesz a közös munkában, és Kipchoge sem kivétel. A futók hétfőtől szombatig együtt élnek, egyszerű körülmények között, és csak hétvégére mennek haza.\n\nA háttér: a közös feladatok **csapategységet** és alázatot építenek, a kötött napirend (alvás, étkezés, edzés mindig ugyanakkor) pedig a **cirkadián ritmust** stabilizálja, ami jobb alvást és regenerációt jelent. A magaslat ráadásul edzi a vér oxigénszállító képességét. **Tipp:** a rendszeres lefekvési és ébredési idő az egyik legegyszerűbb teljesítményfokozó.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#koztiagy', 'lecke:biologia/keringes-legzes']
+  },
+  {
+    id: 'ed2-duplantis-hatsokert', cat: 'sport', sport: 'atletika', theme: 'edzes', athletes: ['Armand Duplantis'],
+    q: 'Armand „Mondo” Duplantis **3–4 évesen a családi ház hátsó kertjében** kezdett rúdugrani – az apja saját nekifutópályát és ugrógödröt épített neki?',
+    why: 'Duplantis a louisianai Lafayette-ben nőtt fel; apja, Greg korábban **5,80 m-es** rúdugró volt, és a ház mögött kb. 45 m-es nekifutót és ugrógödröt alakított ki. A kis Mondo eleinte a bátyjait és az apját figyelte, egy anekdota szerint pedig a nappaliban egy kis rúddal a puffra ugrált fel. Ma is az apja a technikai edzője.\n\nA háttér: a korai, **játékos és rengeteg ismétléssel járó** gyakorlás a mozgásmintákat mélyen rögzíti, és a félelemmel járó elemek (fejjel lefelé fordulás a levegőben) természetessé válnak. **Tipp:** a játékos gyakorlás is gyakorlás – de rúdugrás csak szakember felügyeletével, megfelelő ugrógödörrel!',
+    links: ['lecke:sport/edzeselmelet', 'lecke:fizika/energia-munka', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed2-kipyegon-csoport', cat: 'sport', sport: 'atletika', theme: 'edzes', athletes: ['Faith Kipyegon', 'Eliud Kipchoge'],
+    q: 'Faith Kipyegon háromszoros olimpiai bajnok ugyanabban a kaptagati csoportban edz, mint Eliud Kipchoge – **ugyanannál az edzőnél, Patrick Sangnál**?',
+    why: 'Patrick Sang, egykori olimpiai ezüstérmes akadályfutó Kaptagatban vezeti a csapatot, ahol Kipyegon és Kipchoge **hétfőtől szombatig együtt edz** másokkal, felvezetőkkel és edzőtársakkal. Sang szerint a csoportjában a hosszú pályafutás és a türelmes, fokozatos fejlődés a legfontosabb.\n\nA háttér: a csoportos edzés **húzóerőt ad**, megosztja a tempódiktálás terhét, és a jó példák (egy olimpiai bajnok fegyelme) mintát mutatnak. A sportpszichológiában ezt **szociális tanulásnak** is nevezik. **Tipp:** az edzőcsapatod szokásai rád is ragadnak – válassz olyan közeget, ahol a szorgalom a „menő”.',
+    links: ['lecke:sport/sportpszichologia', 'lecke:sport/edzeselmelet', 'lecke:sport/olimpia']
+  },
+  {
+    id: 'ed2-sawe-frissites', cat: 'sport', sport: 'atletika', theme: 'edzes', athletes: ['Sabastian Sawe'],
+    q: 'Sabastian Sawe a 2 órán belüli londoni maratonja előtt **két szelet kenyeret mézzel és teát** reggelizett – a verseny közbeni frissítést pedig hónapokig gyakorolta?',
+    why: 'Sawe 2026 áprilisában a londoni maratonon elsőként futott hivatalos versenyen 2 órán belül. Beszámolók szerint reggelije egyszerű volt, a versenyközbeni szénhidrát-bevitelt (átlag kb. **115 g óránként**) viszont edzői, Claudio Berardelli csapata **hónapokon át, edzéseken próbálta ki**. Közben hetente kb. 240 km-t futott Kapsabetben, kb. 2000 m magasan.\n\nA háttér: a bél is „edzhető” – rendszeres gyakorlással a szervezet jobban tolerálja a futás közbeni evést-ivást. Az alapszabály: **versenynapon semmi új**. **Tipp:** egy fontos meccs vagy verseny előtt olyat egyél, amit már edzésnapokon kipróbáltál, és ami nem nehezíti meg a gyomrod.',
+    links: ['lecke:sport/taplalkozas', 'lecke:biologia/ideg-hormon-emesztes', 'lecke:sport/rekordok']
+  },
+  {
+    id: 'ed2-ingebrigtsen-kuszob', cat: 'sport', sport: 'atletika', theme: 'edzes', athletes: ['Jakob Ingebrigtsen'],
+    q: 'a norvég Ingebrigtsen testvérek híres módszerében edzés közben **ujjbegyből vett vércseppel mérik a laktátszintet**, hogy ne fussanak túl gyorsan?',
+    why: 'A „norvég módszer” lényege a nagy mennyiségű könnyű futás mellett a **kettős küszöbedzés**: egy napon két, intervallumokra bontott edzés, amelyeken a vér laktátszintjét egy hordozható mérővel tartják egy szűk tartományban (nagyjából 2–4 mmol/l). Így az edzés kemény, de **nem csúszik át** a kimerítő tartományba, és másnap is lehet minőségi munkát végezni.\n\nA háttér: a laktát nem „méreg”, hanem az izom anyagcseréjének jelzője – a szintje megmutatja, mennyire terheli a szervezetet az adott tempó. A módszer élsportolóknak készült. **Tipp:** neked nem kell mérő: ha még tudsz rövid mondatokat mondani futás közben, jó tempóban vagy a küszöbedzéshez.',
+    links: ['lecke:sport/edzeselmelet', 'modell:sejt#mito', 'lecke:biologia/keringes-legzes']
+  },
+
+  /* ───────── KERÉKPÁR ───────── */
+  {
+    id: 'ed2-pogacar-zona2', cat: 'sport', sport: 'kerekpar', theme: 'edzes', athletes: ['Tadej Pogačar'],
+    q: 'Tadej Pogačar edzéseinek nagy része **meglepően könnyű tempójú** – a sokat emlegetett „2-es zónás” edzés egyik népszerűsítője épp az ő edzője volt?',
+    why: 'Iñigo San Millán, aki éveken át a UAE csapat teljesítményéért felelt és Pogačar edzője volt, a hosszú, egyenletes, alacsony intenzitású („2-es zóna”) tekerést tartja az állóképesség alapjának. Szerinte Pogačar egyik különlegessége, hogy szervezete nagyon gyorsan **eltakarítja és üzemanyagként hasznosítja a laktátot**.\n\nA háttér: a könnyű, hosszú edzés hatására az izomsejtekben több és hatékonyabb **mitokondrium** keletkezik, ezek pedig zsírt és laktátot is „elégetnek”. A pontos mechanizmusról a kutatók között vita van, az alapelv – sok könnyű edzés – viszont jól alátámasztott. **Tipp:** a hosszú, beszélgetős tempójú bicajtúra is valódi edzés.',
+    links: ['modell:sejt#mito', 'lecke:sport/edzeselmelet', 'lecke:biologia/keringes-legzes']
+  },
+  {
+    id: 'ed2-pogacar-szenhidrat', cat: 'sport', sport: 'kerekpar', theme: 'edzes', athletes: ['Tadej Pogačar'],
+    q: 'Tadej Pogačar a legnehezebb Tour de France-szakaszokon **óránként kb. 120 gramm szénhidrátot** fogyaszt – ami öt éve még szerinte is lehetetlennek tűnt?',
+    why: 'Pogačar egy 2024-es interjúban mondta el, hogy a nehéz napokon kb. 120 g, a könnyebbeken 60–90 g szénhidrát a cél óránként; a csapat táplálkozási szakembere szerint a szakasz jellegéhez igazítják a mennyiséget. Korábban 60–90 g volt a „plafon”.\n\nA háttér: hosszú terhelésnél az izmok **glikogénraktára** néhány óra alatt kiürül; ha a bevitel lépést tart a felhasználással, később jön a „fal”. A nagy mennyiséget a bélnek fokozatosan, **edzéseken kell megszoknia**. A szakértők szerint amatőröknek nem kell másolni ezeket a számokat. **Tipp:** hosszabb (1,5 óránál hosszabb) edzésre vigyél magaddal egy banánt vagy szendvicset, és igyál rendszeresen.',
+    links: ['lecke:sport/taplalkozas', 'lecke:biologia/ideg-hormon-emesztes', 'lecke:sport/test-edzes']
+  },
+  {
+    id: 'ed2-valter-hegyikerekpar', cat: 'sport', sport: 'kerekpar', theme: 'edzes', athletes: ['Valter Attila'],
+    q: 'Valter Attila **hegyikerékpárosként** kezdte – mert a csömöri utak nem voltak alkalmasak arra, hogy gyerekekkel országúton edzzenek?',
+    why: 'Apja és első edzője, Valter Tibor egy interjúban elmondta, hogy Csömörön a forgalmas utak miatt a gyerekekkel **terepen, hegyi kerékpárral** dolgozott. Attila fiatalon hegyikerékpáros és terep- (cyclocross) versenyeken is indult, és csak később váltott országútra – ahol 2021-ben a Giro rózsaszín trikóját is viselte.\n\nA háttér: terepen folyamatosan változik a talaj, az emelkedő és az ív, ezért fejlődik az **egyensúly, a kerékpárkezelés és a gyors reakció**, a sok rövid, kemény emelkedő pedig az erőt. **Tipp:** egy kis erdei-mezei bringázás az országúti versenyzőknek is jót tesz – mindig sisakban.',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy', 'lecke:fizika/energia-munka']
+  },
+  {
+    id: 'ed2-sky-apro-elonyok', cat: 'sport', sport: 'kerekpar', theme: 'edzes', athletes: [],
+    q: 'a brit Team Sky kerékpárcsapat **saját matracokat és párnákat vitt minden versenyre**, és még a helyes kézmosást is megtanította a versenyzőknek?',
+    why: 'Dave Brailsford, a csapat vezetője az **„apró előnyök összeadása”** (marginal gains) elvét hirdette: ha száz apró dolgon mind 1%-ot javítanak, az összesen nagy előnyt adhat. A beszámolók szerint ezért szállították magukkal a saját ágyneműt (hogy idegen szállodában is jól aludjanak), és tanították meg a helyes kézmosást (hogy kevesebb legyen a fertőzés).\n\nA háttér: egy megfázás egy hét kiesést jelenthet, a rossz alvás pedig rontja a regenerációt – ezek tényleg a teljesítmény részei. A módszert később sokan túlzásnak tartották, a lényege mégis érvényes. **Tipp:** kézmosás, saját kulacs, elég alvás – három ingyenes „apró előny” a versenyidőszakban.',
+    links: ['lecke:sport/edzeselmelet', 'lecke:matematika/szazalek', 'lecke:szakacs/higienia']
+  },
+
+  /* ───────── VÍVÁS ───────── */
+  {
+    id: 'ed2-szilagyi-mentalis', cat: 'sport', sport: 'vivas', theme: 'edzes', athletes: ['Szilágyi Áron'],
+    q: 'Szilágyi Áron **20 éves kora óta dolgozik mentális felkészítőkkel**, és pszichológiát is tanult – a fejet ugyanúgy edzi, mint a vágást?',
+    why: 'Szilágyi elmondta, hogy húszévesen kezdett két szakemberrel, **Faludi Viktóriával és Kárpáti Róberttel** dolgozni; a Károli Egyetemen pszichológiát tanult, és a tudást a vívásban is hasznosította. Egy interjúban arról is beszélt, hogy olimpiai döntőjére **csak képekben emlékszik** – a teljes elmélyülés jele.\n\nA sportpszichológia ezt **flow-élménynek** hívja: amikor a feladat és a képesség egyensúlyban van, a figyelem teljesen a jelenre szűkül, és a mozdulatok szinte maguktól jönnek. Ehhez a stressz szabályozása (légzés, rutin, kulcsszavak) is kell. **Tipp:** a mentális edzés nem csak a „bajban lévőknek” szól – a legjobbak is rendszeresen végzik.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus', 'modell:agy#homlok']
+  },
+  {
+    id: 'ed2-vivas-valasztasos-reakcio', cat: 'sport', sport: 'vivas', theme: 'edzes', athletes: [],
+    q: 'minél több lehetséges támadásra kell felkészülnöd, **annál lassabban reagálsz** – ezért a vívók a cselekkel szándékosan „megsokszorozzák” az ellenfél választási lehetőségeit?',
+    why: 'A **Hick-törvény** (1952) szerint a választásos reakcióidő a lehetőségek számával nő: két lehetséges ingerre gyorsabban reagálunk, mint nyolcra. A vívásban ezért aranyat ér a **csel**: egy színlelt mozdulattal az ellenfélnek több lehetőséget kell számba vennie, és ez értékes ezredmásodperceket vesz el tőle.\n\nA védekező oldalon a gyakorlás segít: a tapasztalt vívó az ellenfél testtartásából, lábmunkájából **előre „olvas”**, így kevesebb valódi lehetőséggel kell számolnia. **Tipp:** reakcióedzésnél ne csak egy jelre gyakorolj – az edződ adjon két-három különböző jelet, amelyekre más-más mozdulattal kell felelned.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'szakszo:anatomia/reflexiv']
+  },
+
+  /* ───────── KAJAK-KENU ───────── */
+  {
+    id: 'ed2-kozak-pihenes', cat: 'sport', sport: 'kajak', theme: 'edzes', athletes: ['Kozák Danuta'],
+    q: 'hatszoros olimpiai bajnok kajakozónk, Kozák Danuta egy szezon végén úgy nyilatkozott: **„Pihenek, semmi más, csak pihenek”** – és szerinte a szervezetet nem lehet a végtelenségig feszíteni?',
+    why: 'Kozák Danuta több interjúban beszélt arról, hogy a hosszú, kemény szezonok után tudatosan **kikapcsol**, és hogy a terhelést „nem lehet a végtelenségig feszíteni”.\n\nAz edzéselmélet ezt **periodizációnak** hívja: az év felkészülési, versenyzési és **átmeneti (pihenő) szakaszokra** oszlik. Az átmeneti időszakban gyógyulnak a kisebb sérülések, feltöltődnek az energiaraktárak és a motiváció is – e nélkül nő a túledzés és a kiégés esélye. **Tipp:** a szezon után 1–3 hét könnyű, más jellegű mozgás (séta, bicikli, játék) nem lustaság, hanem a következő év alapja.',
+    links: ['lecke:sport/edzeselmelet', 'lecke:sport/test-edzes', 'lecke:sport/sportpszichologia']
+  },
+
+  /* ───────── TORNA ───────── */
+  {
+    id: 'ed2-biles-terapia', cat: 'sport', sport: 'torna', theme: 'edzes', athletes: ['Simone Biles'],
+    q: 'Simone Biles a párizsi olimpiára készülve **minden héten, általában csütörtökön** terapeutához járt – és a döntők előtt is beszélt vele?',
+    why: 'Biles elmondta, hogy a csütörtök a „terápiás napja”, és Párizsban a csapat- és az összetett döntő előtt is beszélt amerikai terapeutájával, akinek ehhez az éjszaka közepén kellett felkelnie. Szerinte ez nemcsak a lelkének tett jót, hanem **a teljesítményének is segített**: „Az évekig végzett mentális munka kifizetődött.”\n\nA háttér: a tartós stressz rontja a koncentrációt, az alvást és a **testérzékelést** – a tornában pedig a test térbeli helyzetének érzékelése létfontosságú. A lelki egészség gondozása ezért az edzés része. **Tipp:** ha valami nyomaszt, beszélj róla egy felnőttel, edzővel vagy iskolapszichológussal – ez erősség, nem gyengeség.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed2-magyar-labtorlok', cat: 'sport', sport: 'torna', theme: 'edzes', athletes: ['Magyar Zoltán'],
+    q: 'a Magyar-vándor begyakorlásához Vígh László edző **lábtörlőket tett a lólengő ló két kápája közé**, és ahogy Magyar Zoltán egyre biztosabb lett, egyenként kivette őket?',
+    why: 'A Telex beszámolója szerint a vándor ötlete Vígh Lászlótól, Magyar Zoltán edzőjétől származott. Mivel a kápák közötti rész alacsonyabb, a lábtörlőkkel **kiegyenlítette a szintkülönbséget**, így az új elemet könnyített körülmények között lehetett tanulni; a lábtörlőket fokozatosan szedte ki. Vígh szerint emellett az **erőnlét** volt a legfontosabb.\n\nA mozgástanulásban ezt **fokozatos nehezítésnek** (progressziónak) hívják: a nehéz elemet könnyített változatban kezdjük, sikerélménnyel, majd lépésenként vesszük el a segítséget. **Tipp:** ha valami nem megy, ne a teljes elemet erőltesd – keresd meg a könnyített változatát, és onnan építkezz.',
+    links: ['lecke:sport/edzeselmelet', 'szakszo:mechanika/nyomatek', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed2-berki-200-gyakorlat', cat: 'sport', sport: 'torna', theme: 'edzes', athletes: ['Berki Krisztián'],
+    q: 'Berki Krisztián a 2014-es világbajnokság előtti évben a lólengésgyakorlatát **kb. 200-szor csinálta végig – szinte mindet hibátlanul**?',
+    why: 'Berki elmondása szerint ennyi tiszta **teljes gyakorlat** előzte meg a versenyt; amikor egy sérülés miatt csak néhány hibátlan próbája lehetett, azt kockázatnak érezte. Edzője, Kovács István egy vállsérülés után úgy fogalmazott: a terhelést „**patikamérlegen**” kellett adagolni.\n\nA háttér: a teljes gyakorlat sokszori, hibátlan ismétlése az **automatizálást** szolgálja – a mozdulatsor irányítása a tudatos agykéregről egyre inkább a kisagyra és a mélyebb agyterületekre kerül, így versenystresszben is megbízható. Sérülés után viszont a fokozatos visszaépítés a kulcs. **Tipp:** számold, hány tiszta ismétlésed van egy elemből – a „tiszta” fontosabb, mint a „sok”.',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy', 'lecke:sport/test-edzes']
+  },
+
+  /* ───────── KÜZDŐSPORTOK ───────── */
+  {
+    id: 'ed2-ali-legnagyobb', cat: 'sport', sport: 'kuzdo', theme: 'edzes', athletes: ['Muhammad Ali'],
+    q: 'Muhammad Ali egyszer azt mondta: **„Azt mondtam, én vagyok a legnagyobb, még mielőtt tudtam volna, hogy az vagyok”**?',
+    why: 'Ali számtalanszor nevezte magát „a legnagyobbnak”; egy másik mondása szerint az önmegerősítő mondatok ismételgetése **hitet** épít, és ha a hit meggyőződéssé válik, „a dolgok elkezdenek megtörténni”.\n\nA pszichológia ezt az **önhatékonyság** (Bandura) fogalmával írja le: aki hisz abban, hogy képes egy feladatra, többet próbálkozik és kitartóbb. Fontos azonban: a kutatások szerint a puszta „én vagyok a legjobb” típusú mondatok magukban keveset érnek – a hit a **valódi sikerélményekből** és a sok munkából épül, a jó önbeszéd ezt erősíti. **Tipp:** mondd magadnak azt is, ami igaz: „Ezt már százszor megcsináltam edzésen.”',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus']
+  },
+  {
+    id: 'ed2-lorincz-pszichologus', cat: 'sport', sport: 'kuzdo', theme: 'edzes', athletes: ['Lőrincz Tamás'],
+    q: 'Lőrincz Tamás a tokiói olimpiai aranyára készülve a birkózóedzések mellett **sportpszichológussal is dolgozott** – a negyedik olimpiáján végre a dobogó tetejére állt?',
+    why: 'A beszámolók szerint Tokió előtt Balassa Levente sportpszichológus segítette a mentális felkészülésében. Lőrincz korábban olimpiai ezüstérmet is nyert, 2021-ben, 34 évesen viszont aranyat nyert kötöttfogásban.\n\nA háttér: a sokéves tapasztalat mellett a korábbi vereségek **feldolgozása** is döntő – a sportpszichológia segít abban, hogy a kudarc ne félelemként, hanem tanulságként épüljön be. A fontos meccseken a **szorongás szabályozása** (légzés, rutin, a figyelem jelenre irányítása) sokszor többet számít, mint egy újabb kemény edzés. **Tipp:** egy vereség után írd le: mi ment jól, mi nem, és mit csinálok legközelebb másképp.',
+    links: ['lecke:sport/sportpszichologia', 'lecke:sport/olimpia', 'modell:agy#limbikus']
+  },
+
+  /* ───────── TÉLI SPORTOK ───────── */
+  {
+    id: 'ed2-liu-kina-tabor', cat: 'sport', sport: 'teli', theme: 'edzes', athletes: ['Liu Shaolin Sándor', 'Liu Shaoang'],
+    q: 'a Liu testvérek eredetileg **úszással kezdték**, majd gyerekként **másfél évre Kínába mentek edzeni** rövidpályás gyorskorcsolyában?',
+    why: 'A budapesti születésű testvérek kb. 11 és 8 évesen váltottak az úszásról a korcsolyára, 2006-ban pedig egy véletlen találkozás után másfél évig Kínában edzettek, ahol rengeteget korcsolyáztak. Később, 2012-től tíz éven át a kínai **Zhang Jing** volt a magyar válogatott vezetőedzője, aki az olimpiai aranyakig vezette őket.\n\nA háttér: a rövidpálya technikája (mélyen ülő testhelyzet, bedőlés a kanyarban, lépésritmus) rengeteg ismétlést kíván, és a **testvér mint edzőtárs** naponta ad mércét és motivációt. **Tipp:** egy kis „barátságos verseny” egy edzőtárssal – akár testvérrel – a gyakorlást is izgalmasabbá teszi.',
+    links: ['lecke:sport/edzeselmelet', 'lecke:sport/olimpia', 'modell:agy#kisagy']
+  },
+  {
+    id: 'ed2-shiffrin-alvas', cat: 'sport', sport: 'teli', theme: 'edzes', athletes: ['Mikaela Shiffrin'],
+    q: 'Mikaela Shiffrint a csapattársai **„Sir Naps A Lot”-nak (kb. Szundi Lovag)** becézik – a beszámolók szerint éjjel kb. 10 órát alszik, és napközben is szundít?',
+    why: 'Shiffrin egy interjúban az **alvást** nevezte a legfontosabb regenerációs módszerének, és igyekszik minden nap szunyókálni. A 2018-as olimpián két futam között is aludt egyet – egy alvásszakértő szerint „briliáns ötlet”.\n\nA háttér: alvás közben a nap során gyakorolt **mozdulatok rögzülnek**, és termelődik a regenerációhoz szükséges növekedési hormon. Egy NASA-kutatásban a pilóták egy kb. 26 perces szundítás után éberebbek voltak és jobban teljesítettek. **Tipp:** kamaszként 8–10 óra alvásra van szükséged; a délutáni szundi legyen rövid (20–30 perc), és ne késő délután.',
+    links: ['lecke:sport/test-edzes', 'modell:agy#koztiagy', 'modell:agy#hipofizis']
+  },
+  {
+    id: 'ed2-shiffrin-kevesebb-verseny', cat: 'sport', sport: 'teli', theme: 'edzes', athletes: ['Mikaela Shiffrin'],
+    q: 'Mikaela Shiffrin gyerekként **kevesebbet versenyzett és többet gyakorolt**, mint a társai – néha 45 percig araszolt le egy lejtőn, csak hogy az egyensúlyát és a fordulóit csiszolja?',
+    why: 'Szülei, akik maguk is síversenyzők voltak, tudatosan **kevés versenyt** és sok, célzott technikai gyakorlást terveztek neki; édesanyja, Eileen ma is az edzői csapat tagja. A beszámolók szerint az egyensúlyérzékét **egykerekűzéssel és zsonglőrködéssel** is fejlesztették. Shiffrin így fogalmazott: „Mindig az volt a lényeg, hogy az ismétlés a kulcs.”\n\nA háttér: versenyen kevés idő jut a technika javítására, edzésen viszont lassan, hibákat javítva lehet tanulni – ez a **tudatos gyakorlás**. **Tipp:** nem kell minden hétvégén versenyezned; egy „technikai hét” sokszor többet hoz.',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy', 'lecke:sport/sportpszichologia']
+  },
+
+  /* ───────── SAKK ───────── */
+  {
+    id: 'ed2-carlsen-fitnesz', cat: 'sport', sport: 'sakk', theme: 'edzes', athletes: ['Magnus Carlsen'],
+    q: 'Magnus Carlsen sakkvilágbajnok **rendszeresen fut, jógázik és focizik** – mert úgy érezte, a hosszú játszmák végére elfogy az állóképessége?',
+    why: 'Az ESPN beszámolója szerint Carlsen 2017-ben vette észre, hogy a győzelmei egyre jobban kimerítik. Ezután tudatosan fejlesztette az **állóképességét** (futópados intervallumok, foci, kosár), a törzsizmait pedig főleg jógával erősíti; egy amatőr futballcsapatban is játszott.\n\nA háttér: egy 5–6 órás játszma alatt a stressz miatt megemelkedik a pulzus, és a döntéshozatal a fáradtsággal romlik. A jobb állóképesség segít fenntartani a **figyelmet**, a rendszeres mozgás pedig a kutatások szerint az agy vérellátását és a végrehajtó funkciókat (tervezés, figyelem) is javítja. **Tipp:** tanulás vagy sakkedzés közben óránként tarts 5 perc mozgásos szünetet.',
+    links: ['modell:agy#homlok', 'modell:sziv', 'lecke:sport/test-edzes']
+  },
+
+  /* ───────── ÁLTALÁNOS SPORTTUDOMÁNY ───────── */
+  {
+    id: 'ed2-mentalis-zongora', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'egy 1995-ös kísérletben azok is **megtanultak egy zongoragyakorlatot**, akik csak **fejben** gyakorolták – és az agyukban hasonló változás történt, mint a valóban gyakorlókéban?',
+    why: 'Alvaro Pascual-Leone és munkatársai öt napon át, napi 2 órában gyakoroltattak egy egykezes, ötujjas zongoragyakorlatot: egyik csoport valóban játszott, a másik csak **elképzelte**. Mágneses agyi ingerléssel mérve mindkét csoportban **kitágult** a mozgató agykéreg kézhez tartozó területe, és a fejben gyakorlók is javultak – bár kevésbé, mint a valódi gyakorlók.\n\nEz a **mentális gyakorlás** tudományos alapja, amit Phelps „videókazettája” vagy a síelők pálya-bejárás utáni „fejben futása” is kihasznál. **Tipp:** sérülés idején, utazás közben vagy elalvás előtt a fejben gyakorlás a valódi edzés jó kiegészítője.',
+    links: ['modell:agy#homlok', 'modell:agy#neuron', 'lecke:sport/sportpszichologia']
+  },
+  {
+    id: 'ed2-kulso-fokusz', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'sok kísérlet szerint **jobban teljesítesz, ha a mozdulat hatására figyelsz** (pl. a labda röppályájára), mint ha a saját testrészeidre (pl. a csuklódra)?',
+    why: 'Gabriele Wulf és munkatársai 1998-ban sí-szimulátoron mutatták ki: akik a gép **kerekeinek tolására** figyeltek (külső fókusz), jobban teljesítettek, mint akik a **lábukra** (belső fókusz). Azóta golfban, kosárban, ugrásokban is sok hasonló eredmény született; egy feltételezett magyarázat, hogy a belső fókusz „beleszól” az automatikus mozgásvezérlésbe.\n\nA hatás nagysága vitatott: egy 2024-es újraelemzés szerint a korábbi összefoglalók túlbecsülhették, mert a „nem működött” kísérletek ritkábban jelentek meg. **Tipp:** próbáld ki magadon: dobásnál a gyűrű hátsó szélére gondolj a könyököd helyett – és figyeld, melyik megy jobban.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#kisagy', 'lecke:sport/kosarlabda']
+  },
+  {
+    id: 'ed2-valtozatos-gyakorlas', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'egy egyetemi baseballcsapatnál azok javultak többet ütésben, akik **összekeverve** kapták a különböző dobásfajtákat, és nem blokkokban, egyfélét egymás után?',
+    why: 'Hall, Domingues és Cavazos 1994-es kísérletében a játékosok hat héten át heti két extra ütőedzést kaptak. A **véletlenszerű sorrendű** gyakorlás (gyors, csavart, ívelt dobás összevissza) jobb eredményt hozott a teszteken, mint a **blokkos** (előbb csak gyors, aztán csak csavart).\n\nEz a **kontextuális interferencia** jelensége: a keverés edzés közben nehezebbnek tűnik, mert minden ismétlés előtt újra kell „tervezni” a mozdulatot, de éppen ettől lesz tartósabb és rugalmasabb a tudás. **Tipp:** ha már megy egy mozdulat alapszinten, keverd: két kapura lövés, egy passz, egy cselezés – ne húszat ugyanabból.',
+    links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy', 'modell:agy#homlok']
+  },
+  {
+    id: 'ed2-onbeszed-meta', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: '32 kutatás összesítése szerint a **tudatos önbeszéd** – amit magadban mondasz verseny közben – **mérhetően javítja a sportteljesítményt**?',
+    why: 'Hatzigeorgiadis és munkatársai 2011-es metaanalízise közepes erősségű hatást talált. Az **utasító** önbeszéd („könyök fel!”, „nézd a labdát!”) főleg a **pontosságot igénylő** feladatoknál (célzás, dobás) segített, a **motiváló** („bírod!”, „hajrá!”) inkább az erő- és állóképességi feladatoknál; a gyakorolt önbeszéd jobban működött, mint az alkalmi.\n\nA magyarázat: a rövid kulcsszavak irányítják a figyelmet, csökkentik a szorongást, és kiszorítják a negatív gondolatokat. Ilyen eszközt használt Serena Williams a cetlijeivel vagy Alcaraz a „három C”-vel. **Tipp:** válassz egy utasító és egy motiváló kulcsszót, és gyakorold őket edzésen.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'modell:agy#limbikus']
+  },
+  {
+    id: 'ed2-nordic-hamstring', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'egyetlen gyakorlat, a **„nordic hamstring”** rendszeres végzése egy 2019-es összefoglaló szerint **kb. a felére csökkenti a combhajlító-sérüléseket**?',
+    why: 'A gyakorlatban térdelve, rögzített bokával a felsőtestet lassan előre engedjük, miközben a **combhajlító izmok fékezik** a mozgást (ez az ún. excentrikus munka). Van Dyk és munkatársai 15 kutatás, több mint 8000 sportoló adatait összesítve azt találták, hogy az ilyen programok mellett a combhajlító-sérülések aránya **kb. 51%-kal** kisebb volt.\n\nA háttér: sprint közben a combhajlító éppen nyúlás közben feszül meg a legjobban – az excentrikus erő és a hosszabb izomrostok ezt a terhelést jobban viselik. **Tipp:** edzővel tanuld meg, kevés ismétléssel kezdd (heti 1–2 alkalom), és fokozatosan emeld – izomláz eleinte várható.',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/izomosszehuzodas', 'lecke:bio-alap/emberi-test-1']
+  },
+  {
+    id: 'ed2-hideg-viz-izom', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'egy 2015-ös kísérletben azok, akik erőedzés után rendszeresen **jeges vízbe ültek**, **kevesebb izmot és erőt szereztek**, mint akik helyette levezetően bicikliztek?',
+    why: 'Roberts és munkatársai 12 héten át heti kétszer erőedzést végeztettek fiatal férfiakkal: az egyik csoport utána 10 percet ült **10 °C-os vízben**, a másik könnyű levezetést végzett. A levezetők izomrostjai vastagodtak és erejük nőtt, a hideg vizesek nem; az izom-őssejtek aktiválódása is elmaradt náluk.\n\nA lehetséges ok: a hideg csökkenti az izom vérellátását és a gyulladásos jeleket – márpedig ezek az **alkalmazkodás jelzései**. A hideg víz ezért inkább sűrű versenyidőszakban, a gyors felfrissülésre való. **Tipp:** neked a levezetés, a nyújtás, az evés és az alvás a legjobb regeneráció; jeges fürdő csak felnőtt felügyelettel.',
+    links: ['lecke:sport/test-edzes', 'lecke:biologia/keringes-legzes', 'lecke:fiz-alap/hotan']
+  },
+  {
+    id: 'ed2-nasa-szundi', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'egy NASA-kutatásban a hosszú utakon repülő pilóták egy **kb. 26 perces szundítás** után akár **54%-kal éberebbek** voltak?',
+    why: 'Mark Rosekind kutatócsoportja 1995-ben óceánt átrepülő pilótákat vizsgált: akiknek a csendes repülési szakaszban 40 perc pihenőt engedtek, átlagosan kb. 6 perc alatt elaludtak, és **kb. 26 percet** aludtak. Utána a vizsgálatok szerint jelentősen éberebbek voltak, és jobban teljesítettek, mint a nem pihenők.\n\nA háttér: a rövid szundi még nem visz le a mély alvásba, így ébredés után nincs „kábaság”, viszont csökkenti az ébrenlét alatt felgyűlő **alvásnyomást**. Sok sportoló (pl. Mikaela Shiffrin) használja edzések között. **Tipp:** ha kialvatlan vagy, egy 20–30 perces délutáni szundi segíthet – de az éjszakai alvást nem pótolja.',
+    links: ['modell:agy#koztiagy', 'lecke:sport/test-edzes', 'lecke:bio-alap/emberi-test-2']
+  },
+  {
+    id: 'ed2-quiet-eye', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'a legjobb célzók egy kicsit **tovább néznek mozdulatlanul a célra** közvetlenül a dobás előtt – és ezt a **„nyugodt szem”** technikát meg is lehet tanulni?',
+    why: 'Joan Vickers kanadai kutató szemkövető kamerákkal fedezte fel, hogy a profi célzók (kosarasok, golfozók, lövészek) a mozdulat előtt hosszabb ideig **egyetlen pontra rögzítik a tekintetüket** – ezt nevezte „quiet eye”-nak. Egy 2011-es kísérletben kezdő kosarasok, akiket erre tanítottak, **nyomás alatt is pontosabban** dobták a büntetőket, mint a hagyományos módon gyakorlók.\n\nA magyarázat: a nyugodt tekintet idő alatt az agy pontosan „betölti” a mozdulat paramétereit (távolság, irány), és a figyelem nem kalandozik el. **Tipp:** büntetőnél, célzásnál válassz egy kis pontot (pl. a gyűrű elejét), és dobás előtt 1–2 másodpercig nyugodtan nézd.',
+    links: ['modell:szem#sargafolt', 'modell:szem#szemizmok', 'lecke:sport/kosarlabda', 'modell:agy#nyakszirti']
+  },
+  {
+    id: 'ed2-ifjusagi-ero', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'a régi hiedelemmel ellentétben a **szakszerű erőedzés gyerekeknek és kamaszoknak is biztonságos** – és nem „állítja meg a növekedést”?',
+    why: 'Az Amerikai Gyermekgyógyászati Akadémia (AAP) és nemzetközi sportorvosi szervezetek állásfoglalása szerint a **felügyelt, jó technikájú** erőedzés gyerekeknél és serdülőknél is biztonságos, javítja az erőt, a csontsűrűséget és a mozgáskoordinációt, sőt **csökkenti a sportsérülések** kockázatát. Nincs bizonyíték arra, hogy károsítaná a növekedési porckorongokat, ha szakszerűen végzik.\n\nA kulcs a **technika és a fokozatosság**: eleinte saját testsúllyal vagy könnyű súllyal, sok ismétléssel, a maximális súlyok emelgetése nélkül. **Tipp:** fekvőtámasz, guggolás, plank, kitörés – jó alap; súlyokkal csak edző vagy testnevelő felügyelete mellett kezdj.',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/csont', 'lecke:bio-alap/emberi-test-1']
+  },
+  {
+    id: 'ed2-lassu-legzes', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'ha **lassan, percenként kb. 6-szor lélegzel**, és a kilégzés hosszabb a belégzésnél, a szívverésed is megnyugszik – ezért használják sok sportoló a verseny előtti izgalom ellen?',
+    why: 'Belégzéskor a pulzus kicsit gyorsul, kilégzéskor lassul (ez a **légzési szinusz-aritmia**). Lassú légzésnél ez a hullámzás felerősödik, és a **paraszimpatikus idegrendszer** – amelynek egyik fő idege, a bolygóideg a szívet „fékezi” – nagyobb szerephez jut. A kutatások szerint ez csökkenti a szorongás érzését és a szívfrekvenciát.\n\nNovak Djokovic a tudatos légzést nevezte rutinja egyik legfontosabb elemének, és sok lövő, golfozó, úszó is légzéssel „hangol” rajt előtt. **Tipp:** 4 másodperc be, 6 másodperc ki – ismételd 1–2 percig a bemelegítés végén vagy a rajtnál.',
+    links: ['modell:sziv#inger', 'lecke:biologia/keringes-legzes', 'lecke:biologia/ideg-hormon-emesztes', 'modell:agy#agytorzs']
+  },
+  {
+    id: 'ed2-iras-szorongas', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'egy kísérletben a szorongó diákok **jobban teljesítettek a vizsgán**, ha előtte **10 percig leírták az aggodalmaikat**?',
+    why: 'Gerardo Ramirez és Sian Beilock 2011-ben a Science folyóiratban számolt be arról, hogy az egyetemisták és egy kilencedikes biológiadolgozat résztvevői közül a **vizsgadrukkosok** közel egy jeggyel jobban teljesítettek, ha a teszt előtt 10 percig az érzéseikről írtak, mint ha csendben ültek.\n\nA magyarázat: az aggódás leköti a **munkamemóriát** (a homloklebeny „jegyzettömbjét”), és a kiírás „felszabadítja” ezt a kapacitást. A sportpszichológusok hasonló céllal javasolnak verseny előtti naplóírást. **Tipp:** verseny vagy dolgozat előtt írd le pár mondatban, mitől tartasz, és mit fogsz tenni, ha bekövetkezik.',
+    links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'modell:agy#limbikus']
+  },
+  {
+    id: 'ed2-fifa-11', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'egy **20 perces, speciális bemelegítő program** egy norvég vizsgálatban kb. **egyharmaddal csökkentette** a fiatal focista lányok sérüléseit?',
+    why: 'Soligard és munkatársai 2008-ban kb. 1900 norvég, 13–17 éves női labdarúgóval tesztelték a **FIFA 11+** programot: futás, egyensúly-, erősítő- (pl. nordic hamstring) és ugrásgyakorlatok, helyes landolással. A programot végző csapatokban kevesebb sérülés történt, különösen a **súlyos és a túlterheléses** sérülésekből; a kutatók szerint aki rendszeresen végezte, annál kb. **egyharmaddal** kisebb volt a kockázat.\n\nA háttér: a jó **térdtartás landoláskor** (a térd ne essen befelé), az erős törzs és az egyensúly-reflexek edzése védi az ízületeket. **Tipp:** kérd az edződet, hogy a bemelegítés tartalmazzon egyensúly- és landolási gyakorlatokat – bármely sportágban működik.',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/izulet', 'lecke:sport/edzeselmelet']
+  },
+  {
+    id: 'ed2-alvas-motoros', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'egy új mozdulatsort **egy éjszakai alvás után kb. 20%-kal gyorsabban** tudsz végrehajtani, mint előző este – pedig közben nem is gyakoroltál?',
+    why: 'Matthew Walker és munkatársai 2002-es kísérletében a résztvevők egy ujjal billentyűzött számsort gyakoroltak. Akik **alvás után** ismételték meg a tesztet, átlagosan kb. **20%-kal gyorsabbak** lettek pontosságvesztés nélkül, akik ugyanennyi időt ébren töltöttek, azok nem javultak ennyit. A javulás főleg az éjszaka végi, **2-es stádiumú könnyű alvással** függött össze.\n\nA háttér: alvás közben az agy „újrajátssza” és megszilárdítja a nap tanult mozgásmintáit. Ezért nem mindegy, hogy egy fontos edzés után hogyan alszol. **Tipp:** ne rövidítsd meg az alvást reggeli edzés miatt – az éjszaka utolsó órái különösen értékesek a mozgástanuláshoz.',
+    links: ['modell:agy#neuron', 'modell:agy#kisagy', 'lecke:bio-alap/emberi-test-2']
+  },
+  {
+    id: 'ed2-csucsforma-tapering', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'a fontos verseny előtti két hétben **kevesebbet érdemes edzeni** – egy összefoglaló szerint az edzésmennyiség kb. **felére csökkentése** hozza a legjobb eredményt?',
+    why: 'A „ráhangolódás” (angolul tapering) során csökken a terhelés, hogy a szervezet kipihenje a fáradtságot, de megtartsa a felhalmozott edzettséget. Bosquet és munkatársai 2007-es metaanalízise szerint a leghatékonyabb a kb. **2 hetes** időszak, amelyben a mennyiséget fokozatosan **41–60%-kal** csökkentik, de az **intenzitás és az edzések száma marad**; a javulás jellemzően néhány százalék.\n\nA háttér: az edzés kétféle hatást okoz – edzettséget és fáradtságot. A fáradtság gyorsabban múlik el, mint az edzettség, ezért a pihentetéssel a „mérleg” javul. Az úszók és futók klasszikus módszere. **Tipp:** verseny előtti héten ne próbáld bepótolni a lemaradást – rövidebb, de lendületes edzések kellenek.',
+    links: ['lecke:sport/edzeselmelet', 'lecke:matematika/szazalek', 'lecke:sport/test-edzes']
+  },
+  {
+    id: 'ed2-hoakklimatizacio', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'a szervezet **kb. 1–2 hét alatt hozzászokik a hőséghez**: hamarabb kezdesz izzadni, és megnő a vérplazma mennyisége?',
+    why: 'A sporttudomány ezt **hőakklimatizációnak** nevezi. Ha valaki naponta, fokozatosan növelve edz melegben, a szervezete alkalmazkodik: hamarabb és bőségesebben izzad (de kevesebb sót veszít), nő a **vérplazma térfogata**, így a szív egy dobbanással több vért pumpálhat, és alacsonyabb marad a testhőmérséklet és a pulzus. Ezért utaznak az élsportolók egy-két héttel korábban a meleg helyszínű versenyekre.\n\nA háttér: a hőleadás az **izzadság párolgásával** történik, ami energiát (párolgáshőt) von el a bőrtől. **Tipp:** nyári edzéseken az első napokban rövidebben és könnyebben edz, igyál rendszeresen, és tarts árnyékos szüneteket – a hőguta veszélyes!',
+    links: ['lecke:fiz-alap/hotan', 'szakszo:anatomia/homeosztazis', 'modell:agy#koztiagy', 'lecke:biologia/keringes-legzes']
+  },
+  {
+    id: 'ed2-dinamikus-bemelegites', cat: 'sport', sport: 'altalanos', theme: 'edzes', athletes: [],
+    q: 'a hosszú, **egy helyben tartott nyújtás** közvetlenül sprint vagy ugrás előtt kicsit **ronthatja** a robbanékonyságot – ezért a profik bemelegítése inkább **mozgásos**?',
+    why: 'Behm és munkatársai 2016-os összefoglalója szerint izmonként **60 másodpercnél hosszabb** statikus nyújtás közvetlenül a terhelés előtt kis mértékben csökkentheti az erőt és a gyorsaságot; a rövid (30 mp alatti) nyújtásnak elhanyagolható a hatása. Ezért a mai bemelegítések inkább **dinamikusak**: lendítések, szökdelések, rövid gyorsítások.\n\nA háttér: a dinamikus mozgás emeli az izom hőmérsékletét, aktiválja az idegrendszert és „bejáratja” a sportághoz hasonló mozdulatokat. A statikus nyújtásnak az **edzés után** és a mozgékonyság fejlesztésében van fontos helye. **Tipp:** bemelegítésnél: kocogás → dinamikus nyújtás → sportágspecifikus gyakorlatok; a hosszú nyújtás maradjon a végére.',
+    links: ['lecke:sport/test-edzes', 'szakszo:anatomia/izomosszehuzodas', 'lecke:sport/edzeselmelet']
+  }
 ]);
 
 </script>
@@ -34581,7 +35326,7 @@ STUDIE.addFacts([
   }
 
   /* A tesztközpont nagy címsorai: iskolai szintek, egyetem, szakmák, felfedező. */
-  var SECTIONS = [['altalanos', '🎒 Általános iskola'], ['kozep', '🏫 Középiskola'], ['egyetem', '🎓 Egyetem'], ['szakma', '🛠️ Szakmák'], ['sport', '⚽ Sport és mozgás'], ['felfedezo', '🔍 Mi miből áll? (modellek)']];
+  var SECTIONS = [['altalanos', '🎒 Általános iskola'], ['kozep', '🏫 Középiskola'], ['egyetem', '🎓 Egyetem'], ['szakma', '🛠️ Szakmák'], ['sport', '⚽ Sport és mozgás'], ['elet', '🧭 Felnőtt élet'], ['felfedezo', '🔍 Mi miből áll? (modellek)']];
   function secOf(g) {
     if (g.id === 'felfedezo') return 'felfedezo';
     if (S.courseById && S.courseById(g.id)) return 'egyetem';
@@ -38932,6 +39677,100 @@ STUDIE.addQuestions('sport', {
     }
     onSeg(el, 'md', function (v) { mode = v; build(); });
     build();
+  });
+})();
+
+</script>
+  <script>/* js/penz-widgets.js */
+/* Tudásműhely – pénzügyi kalkulátorok: afa, berkalkulator, megtakaritas.
+ * Leckében: widget: { type: 'afa' }  ·  { type: 'berkalkulator' }  ·  { type: 'megtakaritas' }
+ * Az alapértelmezett kulcsok a 2026-os magyar szabályok; minden kulcs átírható, mert évente változhatnak. */
+(function () {
+  'use strict';
+  var S = window.STUDIE, esc = S.esc;
+  function ft(n) { return isFinite(n) ? Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' Ft' : '–'; }
+  function num(el, id) { var v = parseFloat(String(el.querySelector('#' + id).value).replace(/\s/g, '').replace(',', '.')); return isFinite(v) ? v : 0; }
+  function pc(x) { return String(Math.round(x * 1000) / 10).replace('.', ','); }
+  function field(id, label, val, unit, extra) {
+    return '<label class="pw-f"><span>' + esc(label) + '</span><span class="pw-in"><input id="' + id + '" type="number" inputmode="decimal" value="' + val + '"' + (extra || '') + '><small>' + esc(unit || '') + '</small></span></label>';
+  }
+  function head(t, h) { return '<div class="w-title">' + esc(t) + '</div>' + (h ? '<p class="w-help">' + S.inline(h) + '</p>' : ''); }
+  function rows(list) { return '<table class="pw-table"><tbody>' + list.map(function (r) { return '<tr' + (r[2] ? ' class="' + r[2] + '"' : '') + '><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') + '</tbody></table>'; }
+
+  /* ---------- ÁFA ---------- */
+  S.addWidget('afa', function (el) {
+    var mode = 'netto';
+    el.innerHTML = head('ÁFA-kalkulátor', 'Az árcédulán (boltban) mindig a **bruttó**, áfával együtt számolt ár szerepel. Cégek között gyakran **nettó** árban beszélnek. Kulcsok 2026-ban: **27 %** általános, **18 %** (pl. egyes alapvető élelmiszerek, szálláshely), **5 %** (pl. gyógyszerek, könyvek, egyes élelmiszerek), és vannak adómentes tételek.') +
+      '<div class="seg" id="afa-mode"><button type="button" data-m="netto" class="on">Nettóból bruttó</button><button type="button" data-m="brutto">Bruttóból nettó</button></div>' +
+      '<div class="pw-grid">' + field('afa-ar', 'Ár', 10000, 'Ft') +
+      '<label class="pw-f"><span>ÁFA-kulcs</span><select id="afa-k"><option value="27">27 %</option><option value="18">18 %</option><option value="5">5 %</option><option value="0">0 % (mentes)</option></select></label></div>' +
+      '<div id="afa-out"></div>';
+    function calc() {
+      var a = num(el, 'afa-ar'), k = parseFloat(el.querySelector('#afa-k').value) / 100, n, b;
+      if (mode === 'netto') { n = a; b = a * (1 + k); } else { b = a; n = a / (1 + k); }
+      el.querySelector('#afa-out').innerHTML = rows([['Nettó ár', ft(n)], ['ÁFA (' + Math.round(k * 100) + ' %)', ft(b - n)], ['<b>Bruttó ár</b>', '<b>' + ft(b) + '</b>', 'sum']]) +
+        '<p class="w-help" style="margin-top:8px">Képlet: <code>bruttó = nettó × ' + (1 + k).toFixed(2).replace('.', ',') + '</code> · <code>nettó = bruttó ÷ ' + (1 + k).toFixed(2).replace('.', ',') + '</code>. ' +
+        (k > 0 ? 'Figyeld meg: a bruttó árban lévő áfa <b>' + (k / (1 + k) * 100).toFixed(1).replace('.', ',') + ' %</b>, nem ' + Math.round(k * 100) + ' %! (Gyakori hiba a bruttóból egyszerűen ' + Math.round(k * 100) + ' %-ot levonni.)' : '') + '</p>';
+    }
+    el.querySelector('#afa-mode').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-m]'); if (!b) return; mode = b.dataset.m;
+      el.querySelectorAll('#afa-mode button').forEach(function (x) { x.classList.toggle('on', x === b); }); calc();
+    });
+    el.querySelectorAll('input,select').forEach(function (i) { i.addEventListener('input', calc); });
+    calc();
+  });
+
+  /* ---------- bruttó → nettó bér ---------- */
+  S.addWidget('berkalkulator', function (el) {
+    el.innerHTML = head('Bérkalkulátor: bruttóból nettó', 'A munkaszerződésben a **bruttó** bér áll; ebből vonják le a személyi jövedelemadót (**SZJA, 15 %**) és a társadalombiztosítási járulékot (**TB-járulék, 18,5 %**). A munkáltató ezen felül **szociális hozzájárulási adót** (**13 %**) fizet. A kulcsok a 2026-os szabályok szerintiek, de átírhatók; a pontos kedvezményekről mindig a NAV oldala a mérvadó.') +
+      '<div class="pw-grid">' + field('b-br', 'Havi bruttó bér', 400000, 'Ft') + field('b-szja', 'SZJA', 15, '%') + field('b-tb', 'TB-járulék', 18.5, '%') + field('b-szo', 'Szocho (munkáltató)', 13, '%') + '</div>' +
+      '<label class="pw-chk"><input type="checkbox" id="b-25"> 25 év alatti vagyok (SZJA-mentesség)</label>' +
+      '<div id="b-cap" class="pw-grid" hidden>' + field('b-plafon', 'A mentesség havi felső határa', '', 'Ft', ' placeholder="NAV-on közzétett összeg"') + '</div>' +
+      '<div class="pw-grid">' + field('b-csk', 'Családi kedvezmény (havi adóalap-csökkentés, ha jár)', 0, 'Ft') + '</div>' +
+      '<div id="b-out"></div>';
+    function calc() {
+      var br = num(el, 'b-br'), szja = num(el, 'b-szja') / 100, tb = num(el, 'b-tb') / 100, szo = num(el, 'b-szo') / 100;
+      var young = el.querySelector('#b-25').checked; el.querySelector('#b-cap').hidden = !young;
+      var cap = num(el, 'b-plafon'), csk = num(el, 'b-csk');
+      var adoalap = young ? (cap > 0 ? Math.max(0, br - cap) : 0) : br;
+      var szjaFt = Math.max(0, (adoalap - csk) * szja);
+      var csRest = Math.max(0, csk - adoalap); /* a fel nem használt kedvezmény a járulékból is érvényesíthető (családi járulékkedvezmény) */
+      var tbFt = Math.max(0, br * tb - csRest * szja);
+      var net = br - szjaFt - tbFt, cost = br * (1 + szo);
+      el.querySelector('#b-out').innerHTML = rows([
+        ['Bruttó bér', ft(br)],
+        ['− SZJA (' + pc(szja) + ' %' + (young ? ', 25 év alatti mentességgel' : '') + ')', ft(szjaFt)],
+        ['− TB-járulék (' + pc(tb) + ' %)', ft(tbFt)],
+        ['<b>Nettó (kézhez kapott) bér</b>', '<b>' + ft(net) + '</b>', 'sum'],
+        ['A munkáltató teljes költsége (bruttó + ' + pc(szo) + ' % szocho)', ft(cost), 'muted']
+      ]) + '<div class="pw-bar"><i style="width:' + (cost ? net / cost * 100 : 0) + '%;background:#22c55e" title="nettó"></i><i style="width:' + (cost ? (szjaFt + tbFt) / cost * 100 : 0) + '%;background:#f59e0b" title="levonások"></i><i style="width:' + (cost ? (cost - br) / cost * 100 : 0) + '%;background:#94a3b8" title="szocho"></i></div>' +
+        '<p class="w-help">🟩 neked marad · 🟧 tőled levont adó és járulék · ⬜ a munkáltató által fizetett adó. A munkáltató összköltségének kb. <b>' + (cost ? Math.round(net / cost * 100) : 0) + ' %</b>-a jut el hozzád. ' +
+        (young ? 'A 25 év alattiak mentessége egy havi felső határig jár (az előző év júliusi átlagkeresetéhez kötve): e fölött a résznek már van SZJA-ja. A TB-járulékot ők is fizetik.' : '') + '</p>';
+    }
+    el.querySelectorAll('input').forEach(function (i) { i.addEventListener('input', calc); i.addEventListener('change', calc); });
+    calc();
+  });
+
+  /* ---------- megtakarítás: kamatos kamat + infláció ---------- */
+  S.addWidget('megtakaritas', function (el) {
+    el.innerHTML = head('Megtakarítás-tervező', 'Mennyi lesz a havonta félretett pénzed, ha kamatozik? Az **infláció** közben csökkenti a pénz vásárlóerejét, ezért a „mai pénzben” mért értéket is kiszámoljuk. (Egyszerűsített modell: havi befizetés, éves kamat havi tőkésítéssel, adó és díjak nélkül.)') +
+      '<div class="pw-grid">' + field('m-kezd', 'Kezdő összeg', 0, 'Ft') + field('m-havi', 'Havi befizetés', 10000, 'Ft') + field('m-ev', 'Időtartam', 10, 'év') +
+      field('m-kamat', 'Éves hozam (kamat)', 6, '%') + field('m-inf', 'Éves infláció', 4, '%') + '</div><div id="m-out"></div><svg class="w-svg pw-chart" id="m-svg" viewBox="0 0 400 160"></svg>';
+    function calc() {
+      var p = num(el, 'm-kezd'), m = num(el, 'm-havi'), y = Math.min(60, Math.max(0, Math.round(num(el, 'm-ev')))), r = num(el, 'm-kamat') / 100 / 12, inf = num(el, 'm-inf') / 100;
+      var bal = p, paid = p, pts = [[0, p, p]];
+      for (var i = 1; i <= y * 12; i++) { bal = bal * (1 + r) + m; paid += m; if (i % 12 === 0) pts.push([i / 12, bal, paid]); }
+      var real = bal / Math.pow(1 + inf, y);
+      el.querySelector('#m-out').innerHTML = rows([['Befizetett összeg', ft(paid)], ['Kamat / hozam', ft(bal - paid)], ['<b>Egyenleg ' + y + ' év múlva</b>', '<b>' + ft(bal) + '</b>', 'sum'],
+        ['Ugyanez mai pénzben (inflációval)', ft(real), 'muted']]) +
+        '<p class="w-help">' + (real < paid ? '⚠️ Ha a hozam nem éri el az inflációt, a megtakarítás vásárlóereje <b>csökken</b> – ezért nem elég a „párnacihában” tartani.' : 'A kamatos kamat az idő múlásával egyre gyorsabban dolgozik: a görbe nem egyenes, hanem felfelé hajlik.') + '</p>';
+      var max = Math.max.apply(null, pts.map(function (q) { return q[1]; })) || 1, W = 400, H = 150;
+      function line(idx, color) { return '<polyline fill="none" stroke="' + color + '" stroke-width="2.5" points="' + pts.map(function (q) { return (y ? q[0] / y * (W - 10) + 5 : 5) + ',' + (H - q[idx] / max * (H - 10)); }).join(' ') + '"/>'; }
+      el.querySelector('#m-svg').innerHTML = '<line x1="5" y1="' + H + '" x2="' + (W - 5) + '" y2="' + H + '" stroke="var(--line)"/>' + line(2, '#94a3b8') + line(1, '#22c55e') +
+        '<text x="8" y="14" font-size="11" class="svg-text">— egyenleg (zöld) · befizetés (szürke)</text>';
+    }
+    el.querySelectorAll('input').forEach(function (i) { i.addEventListener('input', calc); });
+    calc();
   });
 })();
 

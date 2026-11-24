@@ -89,7 +89,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/sportpszichologia', 'szakszo:valszam/varhato-ertek', 'lecke:matematika/szazalek']
   },
   {
-    id: 'sp-scanning', cat: 'sport', sport: 'foci', athletes: ['Xavi', 'Frank Lampard'],
+    id: 'sp-scanning', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Xavi', 'Frank Lampard'],
     q: 'a legjobb középpályások a labda átvétele előtt **másodpercenként majdnem egyszer körülnéznek**?',
     why: 'Geir Jordet norvég kutató és csapata videón számolta meg, hányszor fordítják el a fejüket a játékosok a labda átvétele előtti 10 másodpercben. A mért értékek közül **Xavi** volt a csúcstartó: átlagosan kb. **0,83 „szkennelés” másodpercenként**, de Frank Lampard és Steven Gerrard is kb. 0,6 felett járt.\n\nAki gyakrabban néz körül, annak a fejében már kész „térkép” van a társakról és az ellenfelekről, ezért gyorsabban és jobban tud passzolni. A jó hír: a körülnézés **edzhető szokás**, nem velünk született tehetség.',
     links: ['lecke:sport/sportpszichologia', 'modell:agy#nyakszirti', 'modell:szem#retina']
@@ -145,7 +145,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia']
   },
   {
-    id: 'sp-gulacsi-visszateres', cat: 'sport', sport: 'foci', athletes: ['Gulácsi Péter'],
+    id: 'sp-gulacsi-visszateres', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Gulácsi Péter'],
     q: 'Gulácsi Péter egy súlyos térdsérülés, **két műtét és majdnem egy év kihagyás után** tért vissza a Bundesligába, és újra csapatkapitány lett?',
     why: '2022. október 5-én, a Celtic elleni BL-meccsen elszakadt a jobb térdében az **elülső keresztszalag**. A műtét után egy fertőzés miatt egy második beavatkozásra is szükség volt, ami tovább nyújtotta a rehabilitációt.\n\nA keresztszalag a combcsontot és a sípcsontot köti össze, és megakadályozza, hogy a térd előre-hátra „elcsússzon”. Pótlása után hónapokig tart, mire az izmok, az egyensúly és a bizalom visszatér. Gulácsi majdnem egy év után állt újra a lipcsei kapuba, és visszakapta a kapitányi karszalagot is.',
     links: ['lecke:sport/edzeselmelet', 'szakszo:anatomia/izulet', 'lecke:sport/sportpszichologia']
@@ -157,7 +157,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/foci-fizika', 'lecke:sport/sportpszichologia', 'lecke:fizika/newton']
   },
   {
-    id: 'sp-szoboszlai-ut', cat: 'sport', sport: 'foci', athletes: ['Szoboszlai Dominik'],
+    id: 'sp-szoboszlai-ut', cat: 'sport', sport: 'foci', theme: 'edzes', athletes: ['Szoboszlai Dominik'],
     q: 'Szoboszlai Dominik első edzője **az édesapja** volt, aki gyerekkorától tudatosan fejlesztette a két lábát és a technikáját?',
     why: 'Szoboszlai Dominik Székesfehérváron nőtt fel, és édesapja, Szoboszlai Zsolt volt az első edzője, aki saját utánpótlásműhelyt is alapított. Sok gyakorlással, már gyerekként is mindkét lábbal dolgoztatta.\n\nA kitartó munka meghozta az eredményét: Szoboszlai Salzburg és Lipcse után a Liverpoolhoz került, amellyel **2024–25-ben megnyerte a Premier League-et**, a 2024-es Eb-n pedig ő volt a magyar válogatott csapatkapitánya. A gyerekkorban sokszor ismételt mozdulatok az agyban és a gerincvelőben „bevésődnek” – ezért fontos már fiatalon a helyes technika.',
     links: ['lecke:sport/edzeselmelet', 'modell:agy#kisagy', 'lecke:sport/sportpszichologia']
@@ -367,7 +367,7 @@ STUDIE.addFacts([
     links: ['modell:f1-auto#monocoque', 'modell:f1-auto#halo', 'lecke:sport/forma1']
   },
   {
-    id: 'sp-schumacher-edzes', cat: 'sport', sport: 'f1', athletes: ['Michael Schumacher'],
+    id: 'sp-schumacher-edzes', cat: 'sport', sport: 'f1', theme: 'edzes', athletes: ['Michael Schumacher'],
     q: 'Michael Schumacher az elsők között **tette az F1-pilóták edzését élsportolói szintűvé**?',
     why: 'Schumacher a 90-es években olyan fizikai felkészítéssel dolgozott, ami akkor még nem volt általános a pilóták körében: állóképességi és erőedzés, nyakerősítés, gondos étrend. Így a futam végén is ugyanolyan gyors és koncentrált tudott maradni, mint az elején.\n\nEz a hozzáállás azóta alapkövetelmény lett. Schumacher **7 világbajnoki címet** és **91 futamgyőzelmet** szerzett, 2004-ben egyetlen idényben 13 futamot nyert.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/test-edzes', 'lecke:sport/forma1']
@@ -497,19 +497,19 @@ STUDIE.addFacts([
     links: ['lecke:sport/kosarlabda', 'modell:agy#kisagy', 'lecke:sport/edzeselmelet']
   },
   {
-    id: 'sp-curry-agyedzes', cat: 'sport', sport: 'kosar', athletes: ['Stephen Curry'],
+    id: 'sp-curry-agyedzes', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Stephen Curry'],
     q: 'Stephen Curry az edzésein **nemcsak a dobást, hanem az agyát is edzi** – például villogó fényekre kell reagálnia labdavezetés közben?',
     why: 'Curry edzője, Brandon Payne olyan gyakorlatokat is használ, ahol Curry két labdát vezet, miközben fényjelekre kell reagálnia, vagy olyan szemüveget visel, amely időnként elsötétül. Így a figyelem megosztását és a gyors döntéshozatalt edzi.\n\nEzeket **neurokognitív** gyakorlatoknak hívják. Céljuk, hogy a labdavezetés automatikussá váljon, és az agy figyelme felszabaduljon a pálya „olvasására” – hasonlóan ahhoz, ahogy a focisták körülnéznek a labda átvétele előtt.',
     links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok', 'modell:szem']
   },
   {
-    id: 'sp-jordan-jv', cat: 'sport', sport: 'kosar', athletes: ['Michael Jordan'],
+    id: 'sp-jordan-jv', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Michael Jordan'],
     q: 'Michael Jordant másodikos középiskolásként **nem a felnőtt csapatba, hanem az utánpótláscsapatba osztották be** – és ez csak még keményebb munkára sarkallta?',
     why: 'Sokszor hallani, hogy Jordant „kirúgták” a középiskolai csapatból – ez így nem pontos. 1978-ban, másodikosként, kb. 178 cm magasan nem került be az iskola első csapatába, hanem a fiatalabbakból álló **JV-csapatban** játszott.\n\nJordan elmondása szerint ez nagyon bántotta, és még többet edzett. A következő évre sokat nőtt és fejlődött – később hat NBA-bajnoki címet és hat döntős MVP-díjat nyert.',
     links: ['lecke:sport/sportpszichologia', 'lecke:sport/edzeselmelet']
   },
   {
-    id: 'sp-jordan-9000', cat: 'sport', sport: 'kosar', athletes: ['Michael Jordan'],
+    id: 'sp-jordan-9000', cat: 'sport', sport: 'kosar', theme: 'edzes', athletes: ['Michael Jordan'],
     q: 'Michael Jordan híres mondása szerint **több mint 9000 dobást elhibázott a pályafutása során** – és épp ezért lett sikeres?',
     why: 'Egy 1997-es reklámban Jordan ezt mondta: „Több mint 9000 dobást elhibáztam a pályafutásom során. Majdnem 300 meccset elvesztettem. 26-szor bíztak rám győztes dobást, és elhibáztam. Újra és újra kudarcot vallottam az életemben. És ezért sikerülhetett.”\n\nA sportpszichológia szerint a hibákhoz való viszony kulcsfontosságú: aki a kudarcot **tanulási lehetőségnek** tekinti, az bátrabban próbálkozik, és gyorsabban fejlődik.',
     links: ['lecke:sport/sportpszichologia']
