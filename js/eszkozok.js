@@ -37,7 +37,7 @@
       setTimeout(function () { alert('Ezen az eszközön nincs telepítve magyar felolvasóhang, ezért a kiejtés idegenes lehet. A rendszer beállításaiban (Nyelv / Szövegfelolvasás) telepíthetsz magyar hangot.'); }, 300);
     }
   }
-  window.addEventListener('hashchange', stopSpeech);
+  if (window.addEventListener) window.addEventListener('hashchange', stopSpeech);
 
   /* A felolvasandó szöveg: a megadott tartalomból a widgetek, kvízek és gombok nélkül. */
   function readable(root) {
