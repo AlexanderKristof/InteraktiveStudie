@@ -86,7 +86,7 @@
         fact: 'Az anódhoz rezet használnak, mert az alumínium az anód alacsony feszültségén ötvözetet képezne a lítiummal, és tönkremenne.'
       },
       {
-        id: 'anode', z: 5, name: 'Anód (grafit)', svg: anode, explode: [66, -128], badge: B(-50, 64, 13),
+        id: 'anode', terms: ['e-mobilitas/cellakemia'], z: 5, name: 'Anód (grafit)', svg: anode, explode: [66, -128], badge: B(-50, 64, 13),
         what: 'A negatív elektróda. **Töltéskor** ide vándorolnak be a lítiumionok, és a grafit rétegei közé „bújnak” be, mint könyvek közé tett lapok. Minél több ion fér el itt, annál több energiát tud tárolni a cella.',
         madeOf: '**Grafit** (természetes vagy mesterséges szén) por, kevés kötőanyaggal és vezetőképes korommal. Újabb cellákban egy kis **szilícium** is van benne, mert az még több lítiumot tud befogadni.',
         how: 'A grafitport vízzel és kötőanyaggal sűrű pasztává keverik, vékony rétegben a rézfóliára kenik (mindkét oldalára), kiszárítják, majd hengerek között tömörre préselik (kalanderezés).'
@@ -99,14 +99,14 @@
         fact: 'Sok szeparátor „biztosítékként” is működik: ha kb. 130 °C fölé melegszik, a pórusai összezáródnak, és leáll az ionok áramlása.'
       },
       {
-        id: 'elec', z: 3, name: 'Elektrolit', svg: elec, explode: [22, -40], badge: B(10, 62, 8),
+        id: 'elec', terms: ['e-mobilitas/belso-ellenallas', 'e-mobilitas/c-rata'], z: 3, name: 'Elektrolit', svg: elec, explode: [22, -40], badge: B(10, 62, 8),
         what: 'Az a folyadék, amelyben a lítiumionok úsznak az elektródák között. Valójában mindent átitat: a pórusokat, a szeparátort és az elektródák belsejét is. Itt külön rétegként rajzoltuk, hogy látszódjon.',
         madeOf: 'Szerves oldószerek keveréke (pl. etilén-karbonát, dimetil-karbonát), benne oldott **lítiumsó** (LiPF₆). Ez gyúlékony, ezért fontos, hogy a cella ne sérüljön meg.',
         how: 'Vegyi üzemben keverik, nagyon száraz környezetben, mert a víz tönkretenné. A cellába vákuumban töltik be, hogy minden pórusba beszivárogjon.',
         fact: 'A kutatók **szilárdtest-akkumulátorokon** dolgoznak, amelyekben a folyadék helyett szilárd elektrolit van. Ez biztonságosabb lehet, és több energiát tárolhat.'
       },
       {
-        id: 'cathode', z: 2, name: 'Katód (NMC vagy LFP)', svg: cathode, explode: [0, 2], badge: B(40, 62, 7), link: 'atom',
+        id: 'cathode', terms: ['e-mobilitas/cellakemia', 'e-mobilitas/hofutas'], z: 2, name: 'Katód (NMC vagy LFP)', svg: cathode, explode: [0, 2], badge: B(40, 62, 7), link: 'atom',
         what: 'A pozitív elektróda: ez határozza meg leginkább a cella feszültségét és kapacitását. Kisütött állapotban itt vannak a lítiumatomok. **Használat közben** a lítiumionok ide térnek vissza az anódból, az elektronok pedig a külső áramkörön (a motoron) keresztül érkeznek meg.',
         madeOf: 'Lítium-fémoxid por, kötőanyaggal és korommal:\n\n- **NMC**: lítium-nikkel-mangán-kobalt-oxid, sok energia kis tömegben (nagy hatótávú autók)\n- **LFP**: lítium-vas-foszfát, olcsóbb, tartósabb és biztonságosabb, de nehezebb\n\nEzek a fémek bányákból érkeznek, ezért fontos az akkuk **újrahasznosítása**.',
         how: 'A fémsókból kicsapással és több száz fokos hevítéssel apró kristályos szemcséket gyártanak. Ezt pasztává keverik, az alufólia mindkét oldalára kenik, szárítják és préselik, akárcsak az anódot.'

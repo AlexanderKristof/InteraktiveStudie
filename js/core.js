@@ -36,9 +36,16 @@
    *   **félkövér**, `képlet`, [[modell-id|link a felfedezőbe]], [[#/útvonal|belső link]]
    *   "- " kezdetű sorok: felsorolás, "1. " kezdetű sorok: számozott lista,
    *   üres sor: új bekezdés. */
+  /* Alsó index a folyó szövegben is: U_0, F_g, c_{w}, T_{CPU} (kódrészleten kívül). */
+  function subs(t) {
+    return t.replace(/(^|[^\w&#\/])([A-Za-zα-ωΑ-Ω])_(?:\{([^}]+)\}|([A-Za-z0-9]{1,4})(?![\w]))/g, function (m, pre, base, a, b) {
+      return pre + base + '<sub>' + (a || b) + '</sub>';
+    });
+  }
   function inline(s) {
     return S.esc(s)
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .split(/(`[^`]*`)/).map(function (part, i) { return i % 2 ? part : subs(part); }).join('')
       .replace(/`(.+?)`/g, '<code>$1</code>')
       .replace(/\[\[(#[^|\]]+)\|(.+?)\]\]/g, '<a href="$1">$2</a>')
       .replace(/\[\[([\w-]+)\|(.+?)\]\]/g, '<a class="model-link" href="#/felfedezo/$1">$2</a>');

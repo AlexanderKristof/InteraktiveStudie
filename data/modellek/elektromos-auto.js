@@ -129,20 +129,20 @@
         fact: 'A villanyautók légellenállási tényezője gyakran 0,23 alatti, ami jobb, mint a legtöbb sportautóé.'
       },
       {
-        id: 'battery', z: 2, name: 'Nagyfeszültségű akkumulátor', svg: batt, explode: [0, 45], link: 'akkucella', badge: B(0, 30, 38),
+        id: 'battery', terms: ['e-mobilitas/cellakemia', 'e-mobilitas/soc', 'e-mobilitas/soh'], z: 2, name: 'Nagyfeszültségű akkumulátor', svg: batt, explode: [0, 45], link: 'akkucella', badge: B(0, 30, 38),
         what: 'Az autó „üzemanyagtartálya”, a padlóba építve, a két tengely között. Több ezer **lítiumion cella**, modulokba csoportosítva, sorba kötve: így jön ki a 400 vagy 800 V. Egy átlagos akku 50–100 kWh energiát tárol, ez 300–600 km-re elég.',
         madeOf: '**Lítiumion cellák** (NMC vagy LFP), köztük hűtőlapok, réz- és alumínium sínek, szigetelés, és mindez egy ütésálló **alumínium** vagy acél dobozban, alul védőlemezzel.',
         how: 'A cellagyárból érkező cellákat robotok modulokba vagy közvetlenül a pakkba építik (**cell-to-pack**), lézerrel hegesztik össze a gyűjtősíneket, beépítik a hűtést és a BMS-t, majd vízmentesen lezárják, és szivárgás- és szigetelésvizsgálatnak vetik alá.',
         fact: 'Mivel az akku a padlóban van, az autó súlypontja nagyon alacsony. Ezért nehezebb felborulnia, és jól kanyarodik.'
       },
       {
-        id: 'bms', z: 4, name: 'Akkumulátor-felügyelet (BMS)', svg: bms, explode: T(98, -8, 42, 600, 525),
+        id: 'bms', terms: ['e-mobilitas/bms', 'e-mobilitas/cellakiegyenlites'], z: 4, name: 'Akkumulátor-felügyelet (BMS)', svg: bms, explode: T(98, -8, 42, 600, 525),
         what: 'A **BMS** (Battery Management System) az akku „agya”. Minden cellacsoport feszültségét és hőmérsékletét figyeli, kiszámolja a töltöttséget, kiegyenlíti a cellákat, és ha valami veszélyes (túlmelegedés, túltöltés), lekapcsolja az akkut a nagyfeszültségű relékkel.',
         madeOf: 'Nyomtatott áramkörök **mikrovezérlőkkel** és mérőchipekkel, vékony mérővezetékekkel a cellákhoz, valamint nagy áramú **mágneskapcsolók** (kontaktorok) és biztosíték.',
         how: 'Elektronikai gyárban automata beültetőgépek rakják az alkatrészeket a panelre, majd forrasztják. A szoftvert a gyártó fejleszti és teszteli, és gyakran távolról (OTA) frissítik.'
       },
       {
-        id: 'motor', z: 3, name: 'Villanymotor', svg: motor, explode: T(-150, -30, 40, 82, 292),
+        id: 'motor', terms: ['e-mobilitas/pmsm', 'e-mobilitas/aszinkron-motor', 'e-mobilitas/foc'], z: 3, name: 'Villanymotor', svg: motor, explode: T(-150, -30, 40, 82, 292),
         what: 'A forgó mágneses mező „húzza körbe” a forgórészt. Nincs benne robbanás, csak elektromágnesesség, ezért halk, és már álló helyzetből teljes nyomatékot ad. Hatásfoka több mint 90%, a benzinmotoré legfeljebb kb. 40%. **Fékezéskor generátorként** áramot termel (rekuperáció).',
         madeOf: 'Állórész: vékony **elektrotechnikai acéllemezekből** rétegzett vasmag, benne **réz** tekercsekkel. Forgórész: vasmag, sok motorban erős **neodímium** állandó mágnesekkel. Ház: alumínium, hűtőcsatornákkal.',
         how: 'A lemezeket kistanzolják és összepréselik, a rézhuzalt (sokszor lapos réz „hajtűket”) robotok fűzik a hornyokba, majd lakkal impregnálják. A forgórészbe beragasztják a mágneseket, kiegyensúlyozzák, és csapágyakkal a házba szerelik.'
@@ -154,14 +154,14 @@
         how: 'A fogaskerekeket kovácsolják, lefogazzák, edzik, majd köszörülik, hogy nagyon halkan fussanak (villanyautóban nincs motorzaj, ami elnyomná a fogaskerekek zúgását).'
       },
       {
-        id: 'inverter', z: 4, name: 'Inverter (teljesítményelektronika)', svg: inverter, explode: T(-150, -30, 70, 86, 205),
+        id: 'inverter', terms: ['e-mobilitas/inverter', 'e-mobilitas/pwm'], z: 4, name: 'Inverter (teljesítményelektronika)', svg: inverter, explode: T(-150, -30, 70, 86, 205),
         what: 'Az akku **egyenáramát** háromfázisú **váltakozó árammá** alakítja a motornak. A frekvenciával szabályozza a fordulatszámot, az áramerősséggel a nyomatékot. Rekuperációnál fordítva dolgozik: a motor által termelt váltakozó áramot egyenirányítja és visszatölti az akkuba.',
         madeOf: 'Nagy teljesítményű félvezető kapcsolók (**IGBT** vagy újabban **szilícium-karbid**, SiC tranzisztorok), kondenzátorok, vezérlőpanel, rézsínek, folyadékhűtésű alumínium ház.',
         how: 'A tranzisztorlapkákat kerámia hordozóra forrasztják, vastag huzalokkal bekötik, majd modulba öntik. A modult hűtőlapra szerelik a vezérlőpanellel együtt, és vízzáró házba zárják.',
         fact: 'Másodpercenként több ezerszer kapcsolja ki-be az áramot. A villanyautók jellegzetes, halk „sípolása” induláskor ebből a kapcsolgatásból ered.'
       },
       {
-        id: 'obc', z: 4, name: 'Fedélzeti töltő (OBC)', svg: obc, explode: T(-97, -42, 47, 120, 478),
+        id: 'obc', terms: ['e-mobilitas/ac-dc-toltes', 'e-mobilitas/cc-cv'], z: 4, name: 'Fedélzeti töltő (OBC)', svg: obc, explode: T(-97, -42, 47, 120, 478),
         what: 'Otthoni vagy közterületi **váltóáramú** (AC) töltéskor ez alakítja a hálózati áramot az akku egyenáramává. Teljesítménye 7–22 kW. Gyors **DC töltéskor** az OBC-t „megkerüli” az áram: a töltőoszlop maga ad egyenáramot, akár 150–350 kW-tal.',
         madeOf: 'Teljesítményelektronika: egyenirányító, tranzisztoros átalakító, **transzformátor** a galvanikus leválasztáshoz, kondenzátorok, hűtött alumínium ház.',
         how: 'Elektronikai gyárban szerelik: a panelre beültetik az alkatrészeket, a nagy alkatrészeket kézzel vagy robottal, majd a házba építik, és nagyfeszültségű szigetelésvizsgálatot végeznek rajta.'
@@ -174,7 +174,7 @@
         fact: 'Ha a 12 V-os akku lemerül, a villanyautó sem indul, hiába van tele a nagy akku!'
       },
       {
-        id: 'port', z: 5, name: 'Töltőcsatlakozó', svg: port, explode: T(-189, 84, 74, 48, 300),
+        id: 'port', terms: ['e-mobilitas/ccs', 'e-mobilitas/kw-kwh'], z: 5, name: 'Töltőcsatlakozó', svg: port, explode: T(-189, 84, 74, 48, 300),
         what: 'Ide dugod a töltőkábelt. Európában a **Type 2** dugó a szabványos AC töltéshez, a **CCS2** pedig ennek kiegészítése két vastag DC érintkezővel a gyorstöltéshez. Amíg a kábel be van dugva, az autó reteszeli, és csak a töltő és az autó „kézfogása” után kapcsol rá a feszültség.',
         madeOf: 'Hőálló **műanyag** ház, ezüstözött **réz** érintkezők, hőmérséklet-érzékelők és egy elektromos reteszelő motor.',
         how: 'Az érintkezőket esztergálják és ezüstözik, a házat fröccsöntik. A gyorstöltő csatlakozók érintkezőit néha folyadékkal hűtik, mert több száz amper folyik át rajtuk.'
@@ -193,7 +193,7 @@
         fact: 'A HV rendszer folyamatosan figyeli a saját szigetelését is. Ha szivárgást észlel a karosszéria felé, figyelmeztet, vagy le sem engedi kapcsolni a nagyfeszültséget.'
       },
       {
-        id: 'wheels', z: 1, name: 'Kerekek és futómű', svg: wheels, explode: [0, 0], badge: B(150, 90, 36),
+        id: 'wheels', terms: ['e-mobilitas/menetellenallas', 'e-mobilitas/rekuperacio'], z: 1, name: 'Kerekek és futómű', svg: wheels, explode: [0, 0], badge: B(150, 90, 36),
         what: 'A kerekek adják át a nyomatékot az útnak. Villanyautóknál gyakran **alacsony gördülési ellenállású** gumikat és légellenállásra optimalizált felniket használnak, mert ezek is számítanak a hatótávnál. A fékek ritkábban kopnak, mert a lassítás nagy részét a motor végzi.',
         madeOf: 'Gumiabroncs: természetes és szintetikus **gumi**, korom, szilícium-dioxid, acél- és textilbetétek. Felni: alumíniumötvözet. Fékek: öntöttvas tárcsák.',
         how: 'A gumit rétegekből építik fel egy dobon, majd formában, hővel és nyomással **vulkanizálják**, ekkor kapja meg a mintázatát. A felniket alumíniumból öntik, majd esztergálják és festik.'

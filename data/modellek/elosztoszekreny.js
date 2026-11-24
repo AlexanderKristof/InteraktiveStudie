@@ -144,7 +144,7 @@
         fact: 'Ha a fedelet leveszed, az elosztó **„érintésvédelme”** megszűnik. Ezért fedél nélkül soha nem szabad üzemeltetni.'
       },
       {
-        id: 'fokapcsolo', z: 4, name: 'Főkapcsoló', svg: main, explode: [L, -22], badge: [MS + 25, R1 + 100], lesson: 'villanyszereles/biztonsag',
+        id: 'fokapcsolo', terms: ['villamosmernoki/haromfazisu-rendszer'], z: 4, name: 'Főkapcsoló', svg: main, explode: [L, -22], badge: [MS + 25, R1 + 100], lesson: 'villanyszereles/biztonsag',
         what: 'Ezzel lehet az egész lakást egyszerre áramtalanítani. Kétpólusú: a fázist és a nullát is bontja. Javítás előtt ezt kapcsolják le, és **lakattal vagy táblával** jelzik, hogy senki ne kapcsolja vissza.',
         madeOf: 'Műanyag ház, benne **ezüstötvözet bevonatú réz érintkezők**, rugós kapcsolómechanika és ívoltó kamra.',
         how: 'Az érintkezőket sajtolják és ezüstözik, a mechanikát automata gépsoron szerelik össze a fröccsöntött házba. Minden darabot próbapadon kapcsolgatnak és mérnek.'
@@ -156,14 +156,14 @@
         how: 'A cink-oxid port kis tárcsákká préselik, kiégetik (szinterelik), fém elektródákat visznek fel rá, és betokozzák. A cserélhető betétet egy talpba dugják.'
       },
       {
-        id: 'fi', z: 4, name: 'FI relé (ÁVK, 30 mA)', svg: fi, explode: [L, -22], badge: [FI + 25, R1 + 100], lesson: 'villanyszereles/vedelmek',
+        id: 'fi', terms: ['villamosmernoki/aram-vedokapcsolo', 'villamosmernoki/erintesvedelem'], z: 4, name: 'FI relé (ÁVK, 30 mA)', svg: fi, explode: [L, -22], badge: [FI + 25, R1 + 100], lesson: 'villanyszereles/vedelmek',
         what: 'Az **áram-védőkapcsoló** az embert védi az áramütéstől. Folyamatosan összehasonlítja a fázison bemenő és a nullán visszajövő áramot. Ha a kettő között **30 mA-nél** nagyobb a különbség, az áram valahol máshol folyik el, például egy ember testén át a föld felé, és ekkor a másodperc töredéke alatt (jellemzően 20–40 ezredmásodperc alatt) lekapcsol.\n\nA sárga **T** (teszt) gombbal félévente érdemes kipróbálni: ha működik, azonnal leold.',
         madeOf: 'Egy gyűrű alakú **vasmag** (összegző áramváltó), amin a fázis és a nulla is átmegy, egy érzékeny kioldórelé, rugós kapcsolómechanika és ezüstözött réz érintkezők.',
         how: 'A nagyon érzékeny, nagy permeabilitású ötvözetből készült gyűrűmagot feltekercselik, a relét pontosan beállítják. Minden FI relét gyári próbán ellenőriznek, hogy a megadott hibaáramnál és időn belül leoldjon.',
         fact: 'A 30 mA-es FI relé kötelező a lakások aljzatos áramköreiben. Egy bekapcsolva maradt hajszárító kádba esésekor is életet menthet.'
       },
       {
-        id: 'mcb', z: 4, name: 'Kismegszakítók és fésűs sín', svg: mcb, explode: [L, -16], lesson: 'villanyszereles/vedelmek',
+        id: 'mcb', terms: ['villamosmernoki/zarlati-aram'], z: 4, name: 'Kismegszakítók és fésűs sín', svg: mcb, explode: [L, -16], lesson: 'villanyszereles/vedelmek',
         what: 'Minden áramkörnek saját kismegszakítója van. **Túlterheléskor** (túl sok fogyasztó egy körön) egy hőre hajló ikerfém, **rövidzárlatkor** egy gyors mágneses tekercs oldja le. A kismegszakító elsősorban a **vezetéket** védi a túlmelegedéstől.\n\n- **B10**: 10 A, világítás (1,5 mm² vezeték)\n- **B16**: 16 A, aljzatok (2,5 mm² vezeték)\n\nA „B” betű a kioldási jelleggörbe: a névleges áram 3–5-szörösénél azonnal old.\n\nA tetejükön futó rézfésű, a **fésűs sín** osztja el a fázist az összes kismegszakító között.',
         madeOf: 'Műanyag ház, **ikerfém** (két különböző hőtágulású fém összehengerelve), rézhuzal tekercs vasmaggal, ezüstözött érintkezők és egy **ívoltó kamra** acéllemezekből, amely szétszakítja a lekapcsoláskor keletkező szikrát. A fésűs sín rézből van, műanyag szigeteléssel.',
         how: 'Évente százmilliókat gyártanak teljesen automatizált gépsorokon. Minden kész darabon ellenőrzik a kioldást: adott áramra adott időn belül le kell kapcsolnia.',
@@ -182,7 +182,7 @@
         how: 'A sárgaréz rudat darabolják, kifúrják, menetet vágnak bele, a csavarokat behajtják, és a szigetelő talpba pattintják.'
       },
       {
-        id: 'pesin', z: 2, name: 'PE gyűjtősín (zöld-sárga)', svg: pebus, explode: [L, 14],
+        id: 'pesin', terms: ['villamosmernoki/foldelesi-rendszerek', 'villamosmernoki/erintesvedelem'], z: 2, name: 'PE gyűjtősín (zöld-sárga)', svg: pebus, explode: [L, 14],
         what: 'A **védőföld** gyűjtőpontja. Ide fut a betáp védővezetője, és innen kap védőföldet minden áramkör, a túlfeszültség-levezető és a fémházas készülékek. Ha egy hibás gép háza feszültség alá kerül, az áram a védővezetőn át folyik el, és a védelem lekapcsol.',
         madeOf: 'Sárgaréz sín csavaros kapcsokkal, zöld-sárga jelölésű talpon. A szekrény fém részeit is ide kötik.',
         how: 'Ugyanúgy készül, mint az N sín, csak a színjelölése más. A szerelő minden védővezetőt külön kapocsba köt, hogy egy laza csavar ne szakíthasson meg több kört egyszerre.'

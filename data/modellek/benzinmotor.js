@@ -200,7 +200,7 @@
         how: 'Homokformába vagy fém kokillába öntik. Kihűlés után a hengereket kifúrják, majd **hónolják**: finom kőzettel keresztmintázatot csiszolnak a falba, ami megtartja az olajat.'
       },
       {
-        id: 'pistons', z: 4, name: 'Dugattyúk', svg: pistons, explode: [0, -42],
+        id: 'pistons', terms: ['e-mobilitas/hatasfok'], z: 4, name: 'Dugattyúk', svg: pistons, explode: [0, -42],
         what: 'A hengerben le-fel mozgó „dugók”. Az égő keverék nyomása ezeket nyomja le. A rajtuk lévő **dugattyúgyűrűk** tömítenek, hogy a gáz ne jusson le a forgattyúházba, és lekaparják az olajat a hengerfalról.',
         madeOf: '**Alumíniumötvözet** (szilíciummal), mert könnyű: percenként akár 6000-szer kell megállnia és irányt váltania. A gyűrűk acélból vagy öntöttvasból vannak.',
         how: 'Kokillába öntik vagy kovácsolják, majd esztergálják. A dugattyú kissé ovális és kúpos, mert melegen úgy tágul, hogy üzem közben pont kerek legyen.',
@@ -213,7 +213,7 @@
         how: 'Izzó acélból kovácsolják, majd a nagy szemet kettétörik (**törve osztás**), hogy a két fél pontosan összeilleszthető legyen. Utána fúrják és köszörülik.'
       },
       {
-        id: 'crank', z: 2, name: 'Főtengely és lendkerék', svg: crank, explode: [0, 86], badge: B(-148, 0, 0),
+        id: 'crank', terms: ['e-mobilitas/nyomatek'], z: 2, name: 'Főtengely és lendkerék', svg: crank, explode: [0, 86], badge: B(-148, 0, 0),
         what: 'A motor fő forgó része. A **forgattyúcsapok** a tengely vonalán kívül vannak, ezeket nyomják a hajtókarok, így forgatják a tengelyt. A végén lévő nehéz **lendkerék** egyenletesebbé teszi a forgást az égések között, és ehhez kapcsolódik a kuplung.',
         madeOf: 'Kovácsolt **acél** vagy gömbgrafitos öntöttvas. A csapágyfelületeket edzik.',
         how: 'Egy darabból kovácsolják vagy öntik, majd a csapokat nagy pontosságú köszörűgépen csiszolják. Végül **kiegyensúlyozzák**: ahol nehezebb, ott furatokkal anyagot vesznek el, hogy rezgés nélkül forogjon.'
