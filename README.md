@@ -68,6 +68,10 @@ A kereső elgépelést is tűr („procesor” → processzor). A **📚 Tartalo
 
 **Tényellenőrzés:** a szakmai biztonsági és szabályozási részeket (villanyszerelés, villanyautó, gáz, F-gáz, napelem, hegesztés, faipar), valamint a történelmi, irodalmi, állampolgári, földrajzi, biológiai, a felfedező-modellekben szereplő tényeket internetes forrásokkal ellenőriztük és javítottuk, a számolós kérdéseket (több mint 800) pedig egyenként újraszámoltuk.
 
+**💡 Tudtad?** Kb. 240 meglepő, de igaz érdekesség (pl. miért ázna át a szappannal megmosott kacsa), mindegyik „Miért?” magyarázattal.
+Témák szerint böngészhető oldalon, a felfedező alkatrészeinél külön fülön, a leckék alján és a kezdőlapon („A nap ténye”).
+Adat: `data/tudtad/*.js` – `STUDIE.addFacts([{ id, cat, q, why, links: ['modell:sziv#billentyuk', 'lecke:fizika/x'] }])`.
+
 **📈 Haladásom.** Tanulási sorozat, aktivitásnaptár, kitűzők, és a haladás **mentése/betöltése fájlba** (géphez nem kötött).
 
 Ezen kívül: **kereső** az összes tartalomban (ékezet nélkül is működik), haladásmentés, világos és sötét mód,
@@ -129,6 +133,7 @@ js/haladas.js         haladás, kitűzők, mentés/betöltés
 js/eszkozok.js        kedvencek, felolvasás, jegyzetek
 js/tartalom.js        teljes tartalomjegyzék
 js/kartyak.js         tantárgyi tanulókártyák
+js/tudtad.js          „Tudtad?” érdekességek
 data/                 a tananyag
 sw.js, manifest       offline mód és telepíthetőség
 tools/build-single.js egyfájlos változat készítése

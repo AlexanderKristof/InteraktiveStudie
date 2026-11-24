@@ -415,7 +415,7 @@ STUDIE.addFacts([
   {
     id: 'voyager-egy-fenynap', cat: 'vilagur',
     q: 'a Voyager–1 űrszonda 2026 novemberében **egy fénynapnyi távolságra** jutott a Földtől, és **nem napelemmel** működik?',
-    why: 'Az 1977-ben indított Voyager–1 **2026. november 18-án** érte el az egy fénynapnyi (kb. **25,9 milliárd km**) távolságot: egy rádióparancs **24 óra** alatt ér el hozzá, és a válasz újabb 24 óra alatt jön vissza. Ez az ember által valaha legmesszebbre küldött tárgy.\n\nIlyen messze a napfény erőssége csak kb. harmincezred része a földinek, ezért napelem nem jöhetne szóba. A szonda **radioizotópos termoelektromos generátorral (RTG)** működik: plutónium bomlásának hőjét alakítja árammá. A teljesítménye évről évre csökken, ezért a mérnökök fokozatosan kapcsolják ki a műszereit.',
+    why: 'Az 1977-ben indított Voyager–1 **2026 novemberében** érte el az egy fénynapnyi (kb. **25,9 milliárd km**) távolságot: egy rádióparancs **24 óra** alatt ér el hozzá, és a válasz újabb 24 óra alatt jön vissza. Ez az ember által valaha legmesszebbre küldött tárgy.\n\nIlyen messze a napfény erőssége csak kb. harmincezred része a földinek, ezért napelem nem jöhetne szóba. A szonda **radioizotópos termoelektromos generátorral (RTG)** működik: plutónium bomlásának hőjét alakítja árammá. A teljesítménye évről évre csökken, ezért a mérnökök fokozatosan kapcsolják ki a műszereit.',
     links: ['modell:napelempanel#cellak', 'lecke:fizika/atom']
   },
   {
