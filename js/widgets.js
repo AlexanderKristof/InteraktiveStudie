@@ -461,11 +461,11 @@
   S.addWidget('idovonal', function (el, o) {
     var ev = (o.events || []).slice().sort(function (a, b) { return a.year - b.year; });
     var sel = 0;
-    el.innerHTML = head(o.title || 'Idővonal', 'Kattints egy évszámra a részletekért, utána próbáld ki az időrendi játékot!') +
+    el.innerHTML = head(o.title || 'Idővonal', o.help || (o.steps ? 'Kattints egy lépésre a részletekért, utána próbáld ki a sorrendi játékot!' : 'Kattints egy évszámra a részletekért, utána próbáld ki az időrendi játékot!')) +
       '<div class="tl" id="tl">' + ev.map(function (e, i) {
         return '<button type="button" data-i="' + i + '"><i></i><b>' + esc(e.label || e.year) + '</b><span>' + esc(e.title) + '</span></button>';
       }).join('') + '</div><div class="tl-detail" id="d"></div>' +
-      '<div class="order-game"><b>Játék: tedd időrendbe!</b><span class="muted">Kattints az eseményekre a legkorábbitól a legkésőbbiig.</span><div class="pool" id="pool"></div><div id="gm"></div>' +
+      '<div class="order-game"><b>' + (o.steps ? 'Játék: tedd helyes sorrendbe!' : 'Játék: tedd időrendbe!') + '</b><span class="muted">' + (o.steps ? 'Kattints a lépésekre az elsőtől az utolsóig.' : 'Kattints az eseményekre a legkorábbitól a legkésőbbiig.') + '</span><div class="pool" id="pool"></div><div id="gm"></div>' +
       '<div><button type="button" class="btn" id="ng">Új kör</button></div></div>';
     function paint() {
       el.querySelectorAll('#tl button').forEach(function (b) { b.classList.toggle('on', +b.dataset.i === sel); });
