@@ -113,6 +113,7 @@
         return '<button type="button" data-c="' + c + '">' + (c || 'Mind') + '</button>';
       }).join('') + '</div>' +
       '<p class="ts-sum" id="ts-sum"></p><button type="button" class="btn primary" id="ts-start" style="width:100%;justify-content:center">Teszt indítása →</button>' +
+      '<button type="button" class="btn" id="ts-print" style="width:100%;justify-content:center;margin-top:8px">🖨 Nyomtatható feladatlap</button>' +
       (S.store.get('teszt.history', []).length ? '<h3 style="margin-top:20px">Legutóbbi tesztjeid</h3><ul class="ts-hist">' + S.store.get('teszt.history', []).slice(0, 5).map(function (h) {
         var gr = grade(h.pct);
         return '<li><b>' + h.pct + '%</b> <span class="badge">' + gr[0] + ' (' + gr[1] + ')</span> <small class="muted">' + h.n + ' kérdés · ' + (h.mode === 'vizsga' ? 'vizsga' : 'azonnali') + ' · ' + esc(h.date) + '</small></li>';
@@ -149,6 +150,10 @@
     main.querySelectorAll('[data-weak]').forEach(function (b) {
       b.addEventListener('click', function () { sel = {}; sel[b.dataset.weak] = 1; paint(); main.querySelector('#ts-start').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
     });
+    main.querySelector('#ts-print').addEventListener('click', function () {
+      var pool = S.shuffle(selected()), list = count ? pool.slice(0, count) : pool;
+      printSheet(list);
+    });
     main.querySelector('#ts-start').addEventListener('click', function () {
       S.store.set('teszt.setup', { mode: mode, count: count, sel: Object.keys(sel) });
       var pool = S.shuffle(selected());
@@ -156,6 +161,37 @@
     });
     paint();
   };
+
+  /* ---------- nyomtatható feladatlap megoldókulccsal ---------- */
+  function plain(t) { return String(t || '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/`(.+?)`/g, '$1').replace(/\[\[[^|\]]+\|(.+?)\]\]/g, '$1'); }
+  function printSheet(items) {
+    var qs = items.map(function (it) {
+      var opts = S.shuffle(it.q.options.map(function (t, k) { return { t: t, ok: k === it.q.answer }; }));
+      return { q: it.q, t: it.t, g: it.g, opts: opts };
+    });
+    var topics = [];
+    qs.forEach(function (x) { var n = x.g.title + ' – ' + x.t.title; if (topics.indexOf(n) < 0) topics.push(n); });
+    var html = '<!doctype html><html lang="hu"><head><meta charset="utf-8"><title>Feladatlap – Tudásműhely</title><style>' +
+      'body{font:14px/1.45 system-ui,Segoe UI,Arial,sans-serif;color:#111;max-width:780px;margin:24px auto;padding:0 16px}' +
+      'h1{font-size:20px;margin:0 0 4px}.meta{color:#555;font-size:12px;margin-bottom:14px}.name{display:flex;gap:24px;margin:10px 0 18px}' +
+      '.name span{flex:1;border-bottom:1px solid #999;padding-bottom:2px}ol.q>li{margin:0 0 12px;break-inside:avoid}ol.q>li>b{display:block;margin-bottom:4px}' +
+      '.o{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px}.o div:before{content:"☐ ";}' +
+      '.key{break-before:page}.key ol{columns:3;font-size:12px}.key li{break-inside:avoid;margin-bottom:4px}' +
+      '@media print{.noprint{display:none}}</style></head><body>' +
+      '<p class="noprint"><button onclick="window.print()">🖨 Nyomtatás</button></p>' +
+      '<h1>Feladatlap</h1><div class="meta">' + topics.map(esc).join(' · ') + '<br>' + qs.length + ' kérdés · Tudásműhely</div>' +
+      '<div class="name"><span>Név:</span><span>Osztály:</span><span>Dátum:</span><span>Pont: &nbsp;&nbsp;&nbsp;/ ' + qs.length + '</span></div>' +
+      '<ol class="q">' + qs.map(function (x) {
+        return '<li><b>' + esc(plain(x.q.q)) + '</b><div class="o">' + x.opts.map(function (o, k) { return '<div>' + LETTERS[k] + ') ' + esc(plain(o.t)) + '</div>'; }).join('') + '</div></li>';
+      }).join('') + '</ol>' +
+      '<div class="key"><h1>Megoldókulcs</h1><ol>' + qs.map(function (x) {
+        var k = x.opts.findIndex(function (o) { return o.ok; });
+        return '<li><b>' + LETTERS[k] + '</b> – ' + esc(plain(x.opts[k].t)) + '</li>';
+      }).join('') + '</ol></div></body></html>';
+    var w = window.open('', '_blank');
+    if (!w) { alert('A böngésző letiltotta az új ablakot. Engedélyezd a felugró ablakokat ehhez az oldalhoz.'); return; }
+    w.document.open(); w.document.write(html); w.document.close();
+  }
 
   /* ---------- a teszt futtatása ---------- */
   function run(main, items, mode) {
