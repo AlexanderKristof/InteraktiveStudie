@@ -253,6 +253,18 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .linkbox small { grid-column: 1 / -1; }
 .shared-test { max-width: 720px; }
 
+/* Tartalomjegyzék, modellszűrő */
+.model-filter { margin: 8px 0 4px; align-items: flex-start; }
+.model-filter .filter { flex: 1 1 260px; }
+.toc-sec h2 { margin-top: 22px; }
+.toc-item { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: 8px 12px; margin-bottom: 6px; }
+.toc-item summary { cursor: pointer; }
+.toc-item ol, .toc-item ul { margin: 6px 0 2px; columns: 2 280px; }
+.toc-item li { break-inside: avoid; }
+.toc-item .dim, .toc-terms a.dim { opacity: .35; }
+.toc-terms { margin: 6px 0 2px; font-size: .9rem; line-height: 1.7; }
+@media print { .toc-item { border: 0; padding: 0; } #toc-q, #toc-open, #toc-print { display: none; } }
+
 /* Beállítások, akadálymentesség */
 .settings { display: grid; gap: 16px; max-width: 640px; }
 .settings > div { display: grid; gap: 6px; }

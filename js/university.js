@@ -290,13 +290,22 @@
   }
 
   /* ---------- oldalak ---------- */
+  /* Tudományterületek a kurzuslistához (a kurzus a `field` mezővel felülírhatja). */
+  var FIELDS = [['mernok', '⚙️ Mérnöki tudományok'], ['info', '💻 Informatika'], ['termtud', '🔬 Matematika és természettudomány'], ['elet', '🧬 Orvos- és élettudomány'], ['gazd', '📊 Gazdaság- és társadalomtudomány'], ['egyeb', '📚 Egyéb']];
+  var FIELD_OF = { villamosmernoki: 'mernok', 'e-mobilitas': 'mernok', mechanika: 'mernok', elektronika: 'mernok', szabalyozas: 'mernok',
+    'digitalis-technika': 'info', algoritmusok: 'info', programozas: 'info', adatbazis: 'info',
+    analizis: 'termtud', 'linearis-algebra': 'termtud', valszam: 'termtud', 'fizika-bsc': 'termtud', 'kemia-bsc': 'termtud', 'szerves-kemia': 'termtud',
+    anatomia: 'elet', kozgazdasagtan: 'gazd' };
   S.pageUniList = function (main) {
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>Egyetem</span></nav>' +
       '<h1>Egyetemi szakszótár és vizuális jegyzet</h1><p class="lead">Szakszavak érthetően, ábrákkal és angol megfelelővel. Kattintható képletek, fogalomtérkép, ami megmutatja, mi mivel függ össze, és tanulókártyák a vizsgára készüléshez.</p>' +
-      '<div class="grid" style="margin-top:18px">' + S.courses.map(function (c) {
-        return '<a class="card tile" style="--tile:' + c.color + '" href="#/egyetem/' + c.id + '"><span class="ico">' + c.icon + '</span><h3>' + esc(c.title) + '</h3><p>' + esc(c.description) + '</p>' +
-          '<span class="meta">' + esc(c.level || '') + ' · ' + c.terms.length + ' szakszó · ' + (c.formulas || []).length + ' képlet</span></a>';
-      }).join('') + '</div>';
+      FIELDS.map(function (f) {
+        var list = S.courses.filter(function (c) { return (c.field || FIELD_OF[c.id] || 'egyeb') === f[0]; });
+        return list.length ? '<div class="section-title"><h2>' + f[1] + '</h2><span class="muted">' + list.length + ' kurzus</span></div><div class="grid">' + list.map(function (c) {
+          return '<a class="card tile" style="--tile:' + c.color + '" href="#/egyetem/' + c.id + '"><span class="ico">' + c.icon + '</span><h3>' + esc(c.title) + '</h3><p>' + esc(c.description) + '</p>' +
+            '<span class="meta">' + esc(c.level || '') + ' · ' + c.terms.length + ' szakszó · ' + (c.formulas || []).length + ' képlet</span></a>';
+        }).join('') + '</div>' : '';
+      }).join('');
   };
 
   S.pageCourse = function (main, id, tab) {

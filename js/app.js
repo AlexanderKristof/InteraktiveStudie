@@ -110,7 +110,7 @@
       '<form class="search-big" id="hero-search"><input type="search" name="q" placeholder="Mi érdekel? pl. processzor, atom, Ohm-törvény…" aria-label="Keresés"><button class="btn primary" type="submit">Keresés</button></form>' +
       '<div class="chips">' + ['processzor', 'atom', 'akkumulátor', 'Ohm', 'FI relé', 'Pitagorasz', 'négyütemű motor', 'honfoglalás'].map(function (c) {
         return '<a class="chip" href="#/kereses?q=' + encodeURIComponent(c) + '">' + esc(c) + '</a>';
-      }).join('') + '</div>' + lastHtml + dailyHtml() + examHtml() + '</section>' +
+      }).join('') + '<a class="chip" href="#/tartalom" style="border-style:dashed">📚 Teljes tartalomjegyzék</a></div>' + lastHtml + dailyHtml() + examHtml() + '</section>' +
       ((S.paths || []).length ? '<div class="section-title"><h2>🧭 Válassz célt</h2><a href="#/utvonalak">Összes útvonal →</a></div><p class="muted" style="margin-top:-6px">Lépésről lépésre végigvezető tanulási tervek, tantárgyakon átívelve.</p><div class="grid">' + S.pathCards(4) + '</div>' : '') +
       S.STAGES.map(function (stg) {
         var list = S.subjects.filter(function (s) { return (s.stage || 'kozep') === stg[0]; });
@@ -266,9 +266,23 @@
           return (i ? '<span class="arrow">→</span>' : '') + '<a class="chip" href="#/felfedezo/' + c.slice(0, i + 1).join('/') + '">' + m.icon + ' ' + esc(m.title) + '</a>';
         }).join('') + '</div>';
       }).join('') + '</div>' : '') +
-      Object.keys(cats).map(function (c) {
-        return '<div class="section-title"><h2>' + esc(c) + '</h2></div><div class="grid">' + cats[c].map(modelTile).join('') + '</div>';
-      }).join('');
+      '<div class="row model-filter"><input type="search" id="mf-q" class="filter" placeholder="Modell keresése… (pl. motor, sejt, chip)" aria-label="Modell keresése">' +
+      '<div class="chips" id="mf-cats" style="margin:0"><button type="button" class="chip on" data-c="">Mind (' + models.length + ')</button>' + Object.keys(cats).map(function (c) {
+        return '<button type="button" class="chip" data-c="' + esc(c) + '">' + esc(c) + ' (' + cats[c].length + ')</button>';
+      }).join('') + '</div></div><div id="mf-list"></div>';
+    var cat = '', q = '';
+    function paintModels() {
+      var nq = norm(q);
+      main.querySelector('#mf-list').innerHTML = Object.keys(cats).filter(function (c) { return !cat || c === cat; }).map(function (c) {
+        var list = cats[c].filter(function (m) { return !nq || norm(m.title + ' ' + m.summary + ' ' + (m.keywords || '') + ' ' + m.parts.map(function (p) { return p.name; }).join(' ')).indexOf(nq) >= 0; });
+        return list.length ? '<div class="section-title"><h2>' + esc(c) + '</h2></div><div class="grid">' + list.map(modelTile).join('') + '</div>' : '';
+      }).join('') || '<div class="empty card">Nincs ilyen modell.</div>';
+    }
+    main.querySelector('#mf-q').addEventListener('input', function (e) { q = e.target.value; paintModels(); });
+    main.querySelectorAll('#mf-cats .chip').forEach(function (b) {
+      b.addEventListener('click', function () { cat = b.dataset.c; main.querySelectorAll('#mf-cats .chip').forEach(function (x) { x.classList.toggle('on', x === b); }); paintModels(); });
+    });
+    paintModels();
   }
 
   function pageExplorer(ids) {
@@ -440,6 +454,7 @@
     else if (seg[0] === 'egyetem') { setNav('egyetem'); var cc = S.courseById(seg[1]); title(cc ? cc.title : ''); if (!S.pageCourse(main, seg[1], seg[2])) notFound(); }
     else if (seg[0] === 'felkeszito' && seg[1]) { setNav('felkeszito'); title('Vizsgafelkészítő'); if (!S.pageVizsga(main, seg[1])) notFound(); }
     else if (seg[0] === 'felkeszito') { setNav('felkeszito'); title('Vizsgafelkészítő'); S.pageFelkeszito(main); }
+    else if (seg[0] === 'tartalom') { setNav(''); title('Tartalomjegyzék'); S.pageTartalom(main); }
     else if (seg[0] === 'beallitasok') { setNav(''); title('Beállítások'); S.pageBeallitasok(); }
     else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
     else if (seg[0] === 'utvonalak') { setNav(''); title('Tanulási útvonalak'); S.pageUtvonalak(main); }
