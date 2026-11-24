@@ -157,6 +157,9 @@
     parts: [
       {
         id: 'intake', z: 5, name: 'Szívócső és befecskendezők', svg: intake, explode: [130, -40], badge: B(40, -124, DECK + 70),
+        en: 'intake manifold and fuel injectors',
+        uni: 'A keverék összetételét a **légviszony** jellemzi: `λ = (m_levegő/m_tüzelőanyag)/14,7`, ahol 14,7 a benzin **sztöchiometrikus** levegő–tüzelőanyag tömegaránya. A háromutas katalizátor csak λ ≈ 1 körüli igen szűk ablakban alakítja át egyszerre a CO-t, a HC-t és az NOₓ-ot, ezért a motorvezérlő a **lambdaszonda** jele alapján zárt hurokban szabályozza a befecskendezett mennyiséget. A henger feltöltését a **töltési fok** (volumetrikus hatásfok) méri, szívómotornál kb. 0,8–1,0; a szívócsövek hossza a nyomáshullámok kihasználásával (rezonanciás feltöltés) adott fordulatszámon ezt növelheti. A szívócső-befecskendezés 3–5 bar, a közvetlen befecskendezés (GDI) 200–350 bar nyomással dolgozik.',
+        terms: ['kemia-bsc/redoxi'],
         what: 'A szívócső vezeti a levegőt minden hengerhez. Az elején (itt nem rajzoltuk) a **fojtószelep** szabályozza, mennyi levegő menjen be: ezt nyomod a gázpedállal. A kék **befecskendezők** a motorvezérlő parancsára pontosan adagolt, porlasztott benzint fecskendeznek a levegőbe vagy közvetlenül a hengerbe.',
         madeOf: 'A szívócső ma többnyire üvegszálas **műanyag** (poliamid), régebben alumínium. A befecskendező acél test, benne elektromágneses tűszelep. Az üzemanyag-elosztó cső acél vagy alumínium.',
         how: 'A műanyag szívócsövet két félből fröccsöntik, majd összehegesztik. A befecskendezők tűit és fúvókáit mikrométeres pontossággal köszörülik, mert a rés néhány ezred milliméter.',
@@ -164,6 +167,8 @@
       },
       {
         id: 'belt', z: 11, name: 'Vezérműszíj és szíjtárcsák', svg: belt, explode: [125, 40],
+        en: 'timing belt and pulleys',
+        uni: 'A vezérműhajtás áttétele pontosan **i = 2**: a négyütemű ciklus 720° főtengely-elfordulás alatt zajlik le, és ezalatt minden szelepnek egyszer kell nyitnia. A fogazott szíj alakzáró hajtás (HNBR gumi, üvegszálas vagy aramid húzószálakkal), a feszítőgörgő tartja állandó előfeszítésben. **Interferenciás motornál** a szelepek és a dugattyúk pályája átfedi egymást, ezért szíjszakadáskor összeütköznek. A korszerű motorokban **változó szelepvezérlés** (VVT) is van: hidraulikus fázistolók több tíz főtengelyfokkal elforgathatják a vezérműtengelyt a szíjtárcsához képest, így a vezérlési idők a munkapont szerint optimalizálhatók.',
         what: 'Összeköti a főtengelyt a vezérműtengelyekkel, hogy a szelepek mindig pontosan a megfelelő pillanatban nyíljanak. A főtengely **kétszer** fordul, amíg a vezérműtengely egyszer, mert egy teljes négyütemű ciklus két főtengely-fordulat. A kis görgő a **feszítő**.',
         madeOf: 'Fogazott **gumiszíj** (hidrogénezett nitrilkaucsuk), belül üvegszálas vagy aramidszálas erősítéssel. Sok motorban szíj helyett acél **vezérműlánc** van, ami olajban fut, és tovább bírja.',
         how: 'A gumit szálakkal együtt formában vulkanizálják (hővel és nyomással), majd a hosszú csőből gyűrűket vágnak. A szíjtárcsák acélból vagy szinterelt fémporból készülnek.',
@@ -171,36 +176,51 @@
       },
       {
         id: 'plugs', z: 10, name: 'Gyújtógyertyák', svg: plugs, explode: [-150, -150], badge: B(-32, 0, DECK + 96),
+        en: 'spark plugs (spark ignition)',
+        uni: 'Az átütési feszültséget a **Paschen-törvény** adja: a gáz nyomásának és az elektródatávolságnak a szorzatától (p·d) függ. Mivel a sűrített keverék nyomása gyújtáskor 10–20 bar, a kb. 0,7–1,1 mm-es résben 10–30 kV kell. A lángfront turbulens terjedése véges ideig tart, ezért a **gyújtási szög** a felső holtpont (FHP) előtt van (kb. 10–40° főtengelyszög, a fordulatszámtól és a terheléstől függően). Az optimum az a legkisebb előgyújtás, amely a legnagyobb nyomatékot adja (MBT); ilyenkor a nyomáscsúcs kb. 10–15°-kal FHP után alakul ki. A túl korai gyújtás **kopogáshoz** vezet: a még el nem égett véggáz öngyullad. A kopogásérzékelő jele alapján a vezérlő késlelteti a gyújtást; a kopogási hajlamot a benzin **oktánszáma** jellemzi.',
+        terms: ['fizika-bsc/elektromos-terero'],
         what: 'Minden henger tetején van egy. A sűrítési ütem végén a gyújtótekercs 20–40 ezer voltos feszültséget ad rá, és a gyertya két elektródája között **szikra** ugrik át, ez gyújtja meg a keveréket.',
         madeOf: 'Fehér **alumínium-oxid kerámia** szigetelő, acél menetes test, a középelektróda csúcsa nikkelötvözet, iridium vagy platina, mert ezek bírják a szikraeróziót és a hőt.',
         how: 'A kerámiaport préselik és kiégetik, beleforrasztják a középelektródát, majd a hidegen sajtolt, menetes acéltestbe szerelik és lezárják.'
       },
       {
         id: 'cams', z: 9, name: 'Vezérműtengelyek', svg: cams, explode: [0, -150], badge: B(-124, -14, DECK + 80),
+        en: 'camshafts (DOHC)',
+        uni: 'A bütyökprofil határozza meg a szelep **emelési görbéjét** h(φ). A profilt úgy tervezik, hogy a gyorsulás és a rántás korlátos legyen, különben a rugó nem tudja a szelepet a bütykön tartani. A jellemző vezérlési idők: a szívószelep kb. 10–20°-kal FHP előtt nyit, és csak 40–60°-kal az alsó holtpont (AHP) után zár, így kihasználja a beáramló gáz tehetetlenségét. A kipufogás végén a két szelep egyszerre nyitva van (**szelepösszenés**), ez segíti az öblítést. A szívószelep nagyon korai vagy késői zárásával (**Atkinson–Miller-ciklus**) az effektív kompresszióviszony kisebb lesz a tágulási viszonynál, ami javítja a hatásfokot; ezt használják a hibrid autók benzinmotorjai.',
         what: 'A tengelyen lévő tojás alakú **bütykök** forgás közben lenyomják a szelepeket, majd elengedik őket. A bütykök alakja határozza meg, mikor, mennyi ideig és mennyire nyílnak a szelepek. Ennél a motornál kettő van (DOHC): egyik a szívó-, másik a kipufogószelepeket mozgatja.',
         madeOf: 'Kéregöntésű **öntöttvas** vagy kovácsolt **acél**. A bütykök felületét edzik, hogy kemények és kopásállók legyenek.',
         how: 'Öntik vagy kovácsolják, majd a bütyköket számvezérelt köszörűgéppel pontos profilra csiszolják. Újabban csőre préselt, külön gyártott bütykökből is összeállítják.'
       },
       {
         id: 'head', z: 8, name: 'Hengerfej', svg: head, explode: [0, -100], badge: B(-60, 42, DECK + 26),
+        en: 'cylinder head (combustion chamber)',
+        uni: 'A hengerfejben lévő égéstér térfogata (V_c) határozza meg a **kompresszióviszonyt**: `ε = (V_h + V_c)/V_c`, ahol V_h a lökettérfogat. Benzinmotoroknál ε jellemzően 10–13, közvetlen befecskendezésnél akár 14; a felső korlát a kopogás. A tetőszerű (pent-roof) égéstér és a dugattyúhoz közeli **squish-felületek** örvénylést (tumble) keltenek, ez gyorsítja a lángterjedést. A falakon át távozó hőáram csúcsértéke több MW/m², ezt a hőátadási tényező empirikus összefüggései (pl. Woschni) írják le. A fej jó hővezető Al–Si öntvény, a szelepülékek és vezetők betétjei kopásállóbb anyagból készülnek.',
         what: 'A hengerblokk tetejére csavarozott „tető”. Benne vannak az **égésterek**, a szívó- és kipufogócsatornák, a szelepek, és ebbe csavarják a gyertyákat. A blokk és a fej között a **hengerfejtömítés** zár.',
         madeOf: 'Többnyire **alumíniumötvözet**: könnyű, és jól vezeti a hőt. A szelepülékek és szelepvezetők keményebb fémből vannak, ezeket belesajtolják.',
         how: 'Homokmagokkal öntik, hogy a bonyolult belső csatornák (víz, olaj, gáz) kialakuljanak. Utána marják, fúrják, és beépítik a szelepeket.'
       },
       {
         id: 'valves', z: 7, name: 'Szelepek', svg: valves, explode: [-150, -55], badge: B(-107, 14, DECK + 42),
+        en: 'intake and exhaust valves',
+        uni: 'A szelep átömlési keresztmetszete kis emelésnél a palástfelület: `A = π·d·h`; a gyakorlatban a h/d ≈ 0,25–0,3 arány felett már nem nő érdemben. A **szívószelepek nagyobbak**, mert a beszíváskor kicsi a hajtó nyomáskülönbség, a kipufogáskor viszont a nagy nyomású gáz a kipufogószelep nyitásakor kritikus (hangsebességű) áramlással is gyorsan távozik. A kipufogószelep tányérja 700–800 °C-ra is felmelegedhet; nagy teljesítményű motorokban üreges, **nátriumtöltésű** szárral vezetik el a hőt. A szeleprugó erejének legnagyobb fordulatszámon is meg kell haladnia a szelep tehetetlenségi erejét (`F > m·a`), különben a szelep „lebeg” (valve float).',
+        terms: ['mechanika/ero'],
         what: 'Hengerenként négy szelep: kettő a friss keveréket engedi be (**szívószelepek**, szürke), kettő a kipufogógázt engedi ki (**kipufogószelepek**, vörösesbarna). A rugók zárják őket, a bütykök nyitják. Percenként akár 3000-szer nyílnak és zárnak.',
         madeOf: 'Hőálló **acélötvözet**. A kipufogószelepek 700–800 °C-ra is felmelegednek, ezért ezek különlegesen hőálló ötvözetből (krómos-nikkeles acél) vannak, némelyik belsejében hűtő **nátriumtöltettel**.',
         how: 'Rúdból melegen sajtolják a tányért, majd a szárat és az ülékfelületet köszörülik. Végül a szelepet az ülékébe „becsiszolják”, hogy tökéletesen zárjon.'
       },
       {
         id: 'block', z: 6, name: 'Hengerblokk', svg: block, explode: [0, 0], badge: B(-60, 42, 40),
+        en: 'cylinder block (crankcase)',
+        uni: 'A **lökettérfogat** `V_H = z · (π/4) · D² · s`; például z = 4, D = 79 mm furat és s = 81,5 mm löket mellett V_H ≈ 1,6 dm³. A blokkot a hengerben fellépő **csúcsnyomás** (benzinmotorban kb. 60–100 bar, turbós motorban több) és a főcsapágyakat terhelő erők méretezik, emellett merevnek kell lennie, hogy a hengerek ne ovalizálódjanak. A **közepes dugattyúsebesség** `c_m = 2·s·n` személyautó-motoroknál jellemzően 20–25 m/s alatt marad. Anyaga szürkeöntvény, vagy könnyebb alumíniumöntvény öntöttvas hengerperselyekkel, illetve termikus szórással felvitt bevonatú hengerfalakkal.',
+        terms: ['mechanika/feszultseg'],
         what: 'A motor „váza”. Benne vannak a **hengerek**, amelyekben a dugattyúk mozognak, az alsó részében pedig a főtengely csapágyai. Belsejében víz- és olajcsatornák futnak a hűtéshez és a kenéshez.',
         madeOf: '**Öntöttvas** (erős, olcsó) vagy könnyebb **alumíniumötvözet**. Az alumínium blokkokban a hengerfal öntöttvas betét vagy speciális bevonat, mert az alumínium magában túl puha.',
         how: 'Homokformába vagy fém kokillába öntik. Kihűlés után a hengereket kifúrják, majd **hónolják**: finom kőzettel keresztmintázatot csiszolnak a falba, ami megtartja az olajat.'
       },
       {
         id: 'pistons', terms: ['e-mobilitas/hatasfok'], z: 4, name: 'Dugattyúk', svg: pistons, explode: [0, -42],
+        en: 'pistons with piston rings',
+        uni: 'A dugattyúra ható gázerő `F = p · A`: 80 bar nyomás egy 79 mm-es furatú dugattyún kb. **39 kN** erőt jelent. A dugattyú gyorsulását a forgattyús hajtómű kinematikája adja: `a ≈ r·ω²·(cos φ + λ_s·cos 2φ)`, ahol λ_s = r/l a forgattyúsugár és a hajtókarhossz aránya (kb. 0,25–0,33). 6000 1/perc-nél és r ≈ 41 mm-nél ez a holtpontban kb. 20 000 m/s², vagyis kb. 2000 g. A dugattyú ezért könnyű, eutektikus vagy hipereutektikus Al–Si ötvözetből készül; a teteje 250–300 °C-ra is felmelegszik. A **gyűrűcsomag** (két kompressziós és egy olajlehúzó gyűrű) tömít; a mellettük a forgattyúházba jutó gáz neve **blow-by**.',
         what: 'A hengerben le-fel mozgó „dugók”. Az égő keverék nyomása ezeket nyomja le. A rajtuk lévő **dugattyúgyűrűk** tömítenek, hogy a gáz ne jusson le a forgattyúházba, és lekaparják az olajat a hengerfalról.',
         madeOf: '**Alumíniumötvözet** (szilíciummal), mert könnyű: percenként akár 6000-szer kell megállnia és irányt váltania. A gyűrűk acélból vagy öntöttvasból vannak.',
         how: 'Kokillába öntik vagy kovácsolják, majd esztergálják. A dugattyú kissé ovális és kúpos, mert melegen úgy tágul, hogy üzem közben pont kerek legyen.',
@@ -208,24 +228,35 @@
       },
       {
         id: 'rods', z: 3, name: 'Hajtókarok', svg: rods, explode: [-155, 45], badge: B(-96, 0, 62),
+        en: 'connecting rods',
+        uni: 'A forgattyús hajtómű dugattyúútja: `x(φ) = r·(1 − cos φ) + l·(1 − √(1 − λ_s²·sin²φ))`. A hajtókart a **gázerő nyomja**, a tehetetlenségi erő viszont húzza: a legnagyobb húzóterhelés a kipufogási ütem végén, FHP-ben lép fel, ahol nincs ellensúlyozó gáznyomás. A méretezés ezért **kifáradásra** (váltakozó húzó–nyomó igénybevétel) és **kihajlásra** (Euler-féle stabilitásvesztés) történik; innen az I-szelvény. Anyaga kovácsolt acél vagy porkohászati acél; a nagy szem fedelét gyakran **töréssel választják le** (fracture split), így a törésfelület egyedi illeszkedése pontos összeállítást ad.',
+        terms: ['mechanika/hajlitonyomatek'],
         what: 'Összekötik a dugattyút a főtengellyel. A felső vége (kis szem) a dugattyúcsapon fordul, az alsó (nagy szem) a főtengely forgattyúcsapján. Így lesz az egyenes vonalú mozgásból forgás, mint a kerékpár pedáljánál a lábad.',
         madeOf: 'Kovácsolt **acél**, sportmotorokban titán. A nagy szemben vékony csúszócsapágy-félhéjak vannak.',
         how: 'Izzó acélból kovácsolják, majd a nagy szemet kettétörik (**törve osztás**), hogy a két fél pontosan összeilleszthető legyen. Utána fúrják és köszörülik.'
       },
       {
         id: 'crank', terms: ['e-mobilitas/nyomatek'], z: 2, name: 'Főtengely és lendkerék', svg: crank, explode: [0, 86], badge: B(-148, 0, 0),
+        en: 'crankshaft and flywheel',
+        uni: 'A forgatónyomaték a hajtókarerő érintő irányú összetevőjéből adódik: `M(φ) = F_g · r · sin(φ + β)/cos β`, ahol β a hajtókar szöge. Ez erősen lüktető; négyhengeres motorban 180° főtengelyszögenként van egy gyújtás. A **lendkerék** a mozgási energia (`E = ½·J·ω²`) tárolásával simítja a szögsebességet: az egyenlőtlenségi fok `δ = (ω_max − ω_min)/ω_k`, és a szükséges tehetetlenségi nyomaték `J = ΔE/(ω_k² · δ)`. A soros négyhengeres motor **másodrendű szabad tömegerőit** (kétszeres fordulatszámú rezgés) kiegyensúlyozó tengelyek (Lanchester-rendszer) kompenzálhatják; a torziós rezgéseket rezgéscsillapító és **kéttömegű lendkerék** mérsékli.',
         what: 'A motor fő forgó része. A **forgattyúcsapok** a tengely vonalán kívül vannak, ezeket nyomják a hajtókarok, így forgatják a tengelyt. A végén lévő nehéz **lendkerék** egyenletesebbé teszi a forgást az égések között, és ehhez kapcsolódik a kuplung.',
         madeOf: 'Kovácsolt **acél** vagy gömbgrafitos öntöttvas. A csapágyfelületeket edzik.',
         how: 'Egy darabból kovácsolják vagy öntik, majd a csapokat nagy pontosságú köszörűgépen csiszolják. Végül **kiegyensúlyozzák**: ahol nehezebb, ott furatokkal anyagot vesznek el, hogy rezgés nélkül forogjon.'
       },
       {
         id: 'pan', z: 1, name: 'Olajteknő', svg: pan, explode: [0, 142],
+        en: 'oil pan (sump) and lubrication system',
+        uni: 'A főtengely- és hajtókar-csapágyak **hidrodinamikus kenéssel** működnek: a forgó csap ék alakú résbe húzza az olajat, és a kialakuló nyomás néhány mikrométeres olajfilmen „lebegteti” a tengelyt. A súrlódás a **Stribeck-görbe** szerint a sebesség és a viszkozitás függvénye: hidegindításkor és kis fordulaton vegyes kenés van, ilyenkor a legnagyobb a kopás. Az olaj viszkozitását a SAE-osztály adja meg (pl. 0W-20: alacsony hidegviszkozitás, 100 °C-on kb. 7–9 mm²/s). Az üzemi olajnyomás kb. 2–5 bar, a hőmérséklet 90–120 °C. Versenymotorokban **szárazkarteres** kenést alkalmaznak, hogy kanyarban se szívjon levegőt a szivattyú.',
         what: 'A motor alján lévő tartály, itt gyűlik össze a motorolaj. Az olajszivattyú innen szívja fel, és nyomja a csapágyakhoz, a hengerfalakra és a vezérműhöz, majd az olaj visszacsorog ide. Az alján lévő csavar a **leeresztő csavar** az olajcseréhez.',
         madeOf: 'Mélyhúzott **acéllemez** vagy öntött **alumínium**. Egy átlagos motorban 4–5 liter olaj van.',
         how: 'Acéllemezből présgéppel húzzák mélyre, vagy alumíniumból öntik. Tömítőanyaggal csavarozzák a blokk aljára.',
         fact: 'Az olaj nemcsak ken, hanem hűt és tisztít is. Ezért kell rendszeresen cserélni, a szűrővel együtt.'
       }
     ],
+    uni: {
+      text: 'Egyetemi szinten a benzinmotor működését az ideális **Otto-körfolyamat** közelíti: két adiabatikus (izentropikus) és két izochor állapotváltozás. Termikus hatásfoka csak a **kompresszióviszonytól** (ε) és az adiabatikus kitevőtől (κ) függ: `η = 1 − 1/ε^(κ−1)`. ε = 10 és κ = 1,4 mellett ez kb. 60%, a valós motorok effektív hatásfoka a legjobb munkapontban mégis csak kb. 35–40%: a valódi munkaközeg κ-ja kisebb, hő távozik a falakon át, és veszteséget jelent a fojtás (**töltetcsere-munka**) és a súrlódás is. A motor terhelésének összehasonlítható mérőszáma az **effektív középnyomás**: `p_me = W_e/V_H`. Ebből négyütemű motorra a teljesítmény `P = p_me · V_H · n/2`, a nyomaték `M = p_me · V_H/(4π)`. Szívómotornál p_me ≈ 10–13 bar, turbós motornál 18–25 bar. A fajlagos fogyasztás (b_e) a legjobb pontban kb. 230–250 g/kWh, ebből `η_e = 3600/(b_e · H_a)`, ahol H_a ≈ 42–43 MJ/kg a benzin alsó fűtőértéke.',
+      terms: ['fizika-bsc/carnot-korfolyamat', 'fizika-bsc/idealis-gaz', 'fizika-bsc/elso-fotetel', 'fizika-bsc/entropia', 'e-mobilitas/hatasfok', 'e-mobilitas/nyomatek', 'kemia-bsc/entalpia']
+    },
     steps: [
       { icon: '🔥', title: 'Öntés: blokk és hengerfej', text: 'Homokból formát és belső magokat készítenek, amelyek a víz- és olajcsatornák helyét adják. Ebbe öntik az olvadt **öntöttvasat** (kb. 1400 °C) vagy **alumíniumot** (kb. 700 °C). Kihűlés után kirázzák a homokot.', parts: ['block', 'head'] },
       { icon: '🛠️', title: 'Megmunkálás', text: 'Számvezérelt (CNC) gépsorokon marják a síkfelületeket, kifúrják és **hónolják** a hengereket, menetet vágnak a csavarfuratokba. A hengerek tűrése néhány ezred milliméter.', parts: ['block'] },

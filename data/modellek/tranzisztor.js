@@ -90,6 +90,7 @@
       },
       {
         id: 'source', z: 2, name: 'Forrás (source)', en: 'source', terms: ['digitalis-technika/mosfet'], svg: source, explode: [0, 0], badge: [118, 278],
+        uni: 'A forrás erősen adalékolt (kb. 10²⁰ atom/cm³) n⁺ tartomány; az ellenállását fém-szilicid (pl. NiSi) kontaktus csökkenti. A **soros forrásellenállás** (R_S) rontja a vezérlést, mert a csatornára ténylegesen csak `U_GS,eff = U_GS − I_D·R_S` jut. Ha a forrás és a szubsztrát között feszültség van (U_SB > 0), a küszöbfeszültség megnő (**body-effektus**): `U_T = U_T0 + γ·(√(2φ_F + U_SB) − √(2φ_F))`. Nagyon rövid csatornáknál az áramot már inkább az szabja meg, milyen sebességgel injektálja a forrás az elektronokat a csatornába (`I_D ≈ W · C_ox · v_inj · (U_GS − U_T)`), mint a mozgékonyság.',
         what: 'Az a tartomány, ahonnan az elektronok **elindulnak**. Erősen adalékolt, **n+ típusú** szilícium: rengeteg szabad elektron van benne. Általában a föld (0 V) kapcsolódik ide.',
         madeOf: '**Szilícium**, amelybe **arzén** vagy **foszfor** atomokat juttattak. Ezeknek eggyel több vegyértékelektronjuk van (5), mint a szilíciumnak (4). A „fölösleges” elektron szabadon mozoghat: ettől vezet.',
         how: '**Ionimplantációval** készül: az adalékatomokat ionná alakítják, és nagy feszültséggel felgyorsítva belelövik a szilíciumba. A kapu maga is maszkként szolgál, így a forrás és a nyelő pontosan a kapu két szélénél kezdődik (ez az **önillesztés**). Utána egy villámgyors hőkezeléssel a helyükre rázzák az atomokat a kristályrácsban.'
@@ -109,6 +110,8 @@
       },
       {
         id: 'sti', z: 1, name: 'Árokszigetelés (STI)', en: 'shallow trench isolation (STI)', svg: sti, explode: [0, 18], badge: [72, 314],
+        uni: 'Az STI-árkot kb. 250–400 nm mélyen marják a szilíciumba, nagy sűrűségű plazmás CVD-vel SiO₂-dal töltik fel, majd kémiai–mechanikai polírozással (CMP) síkra csiszolják. A 250 nm körüli technológiák óta ez váltotta le a **LOCOS**-t, amelynek madárcsőr alakú oxidszéle túl sok helyet foglalt. Az árok megakadályozza, hogy a szomszédos tranzisztorok közti felületen parazita MOS-csatorna nyíljon, és a CMOS-ra jellemző parazita pnpn-tirisztor (**latch-up**) begyújtását is nehezíti. Az oxid mechanikai feszültséget kelt a szomszédos csatornában, ami megváltoztatja a töltéshordozók mozgékonyságát; ezt a tervezésnél figyelembe kell venni.',
+        terms: ['digitalis-technika/cmos'],
         what: 'Szigetelő „árkok” a tranzisztor két oldalán. Egy chipben a tranzisztorok néhány tíz nanométerre vannak egymástól, ezek az árkok akadályozzák meg, hogy az áram átszivárogjon a szomszédba.',
         madeOf: '**Szilícium-dioxid** (SiO₂), vagyis üveg, ugyanaz az anyag, mint a kvarchomok.',
         how: 'Ez az egyik legelső lépés: litográfiával kijelölik, majd plazmával kimarják az árkokat a szilíciumba. Ezután gőzből oxiddal töltik fel, és a felesleget **kémiai-mechanikai polírozással** (CMP) tökéletesen síkra csiszolják.'

@@ -162,6 +162,8 @@
       },
       {
         id: 'socket', z: 4, name: 'CPU-foglalat', en: 'CPU socket (LGA)', svg: sock, explode: [0, -130], link: 'processzor',
+        uni: 'Az LGA-foglalat érintkezőinek jelentős része **táp és föld**: egy asztali processzor 1 V körüli feszültségen akár 200 A feletti áramot is felvehet, és egy-egy rugós érintkező csak kis áramot visel el, ezért a tápáram sok száz párhuzamos érintkezőn oszlik meg. A tápút **induktivitása** gyors terhelésváltáskor feszültségletörést okoz: `ΔU = L · di/dt`, ezért kell a foglalat alatt és a hordozón sok hidegítőkondenzátor. Az egyenletes érintkezést a rögzítőkeret (ILM) több száz newtonos szorítóereje biztosítja; ha ez egyenetlen, a hordozó meghajolhat.',
+        terms: ['villamosmernoki/ohm-torveny', 'fizika-bsc/faraday-indukcio'],
         what: 'Ide kerül a **processzor**. A foglalat aljában több mint 1700 apró, rugós tűs érintkező van (LGA-foglalat), ezek nyomódnak rá a processzor alján lévő aranyozott pontokra. A fém keret és a kar szorítja le egyenletesen a processzort.',
         madeOf: '- Hőálló **műanyag** (folyadékkristályos polimer, LCP) ház.\n- **Rézötvözet** rugós tűk, **arany** bevonattal.\n- **Acél** rögzítőkeret és kar.',
         how: 'A műanyag házat fröccsöntik, a tűket külön sajtolják és aranyozzák, majd gépek ültetik be őket a házba. A kész foglalat alján apró **forrasztógolyók** vannak: a lapra helyezik, és kemencében (reflow) ráforrasztják, ugyanúgy, mint a többi felületszerelt alkatrészt.',
@@ -176,6 +178,7 @@
       },
       {
         id: 'ram', z: 4, name: 'RAM-foglalatok', en: 'DIMM slots (DDR)', terms: ['digitalis-technika/dram', 'digitalis-technika/memoriahierarchia'], svg: ram, explode: [0, -130],
+        uni: 'Egy DDR5-6400 modul 6400 MT/s átviteli sebességgel, 64 bites (2 × 32 bites alcsatornás) adatszélességgel dolgozik: `6400·10⁶ · 8 bájt ≈ 51,2 GB/s` modulonként, kétcsatornás módban kb. 102 GB/s. A késleltetés ciklusban (CL) adott: CL40 3200 MHz-es órajelnél `40/3,2 GHz = 12,5 ns`, vagyis abszolút értékben alig változik a generációk között. A DRAM cella egy tranzisztorból és egy kondenzátorból (1T1C) áll, töltése szivárog, ezért néhány tíz ms-onként **frissíteni** kell. A jelintegritást a lapkán belüli lezárás (ODT) és a vezérlő **kiegyenlítése** (equalization) biztosítja.',
         what: 'Négy hosszú foglalat a **memóriamodulok** (RAM) számára. A RAM a processzor „munkaasztala”: itt vannak a futó programok és adataik. A foglalatok párban dolgoznak (kétcsatornás mód), ezért vannak felváltva színezve: a párokat érdemes ugyanolyan színű helyekre tenni.',
         madeOf: 'Hőálló **műanyag** ház, benne 288 **rézötvözet** érintkező (DDR5 esetén) **arany** bevonattal, a végein pattintható reteszekkel.',
         how: 'A házat fröccsöntik, az érintkezőket beültetik, majd a foglalatot a lapra forrasztják. A foglalatok a processzorhoz a lehető legközelebb vannak, mert a memória jelei nagyon gyorsak, és minden centiméter számít.',
@@ -183,6 +186,8 @@
       },
       {
         id: 'atx24', z: 5, name: '24 pines tápcsatlakozó', en: 'ATX 24-pin power connector', svg: atx, explode: [0, -130],
+        uni: 'Az ATX szabvány a +12 V, +5 V és +3,3 V tápágak feszültségére **±5%-os** tűrést ír elő. A **+5 V SB** (standby) ág kikapcsolt gépnél is él, ez táplálja a bekapcsolási logikát. A PS_ON# jel aktív alacsony: ha az alaplap földre húzza, a tápegység elindul; a **PWR_OK** jel csak akkor lesz aktív, ha a feszültségek stabilak (kb. 100–500 ms késleltetéssel), addig az alaplap resetben tartja a processzort. A nagy fogyasztók (CPU, videokártya) ma már a 12 V-os ágról, külön csatlakozókon kapják a tápot, a helyi átalakítók alakítják le; ezt viszi végig az ATX12VO szabvány, ahol a tápegység csak 12 V-ot ad.',
+        terms: ['villamosmernoki/ohm-torveny'],
         what: 'Itt kapja az alaplap a tápegységtől a **+12 V**, **+5 V** és **+3,3 V** feszültséget, valamint a földet. Néhány érintkező jelzésre szolgál: például a tápegység ezen keresztül kapja meg a „bekapcsolás” parancsot, amikor megnyomod a gépen a gombot.',
         madeOf: '**Nejlon** (poliamid) ház, benne ónozott **sárgaréz** vagy rézötvözet hüvelyek.',
         how: 'A házat fröccsöntik, a fém érintkezőket sajtolják és belepattintják. Ez **furatszerelt** alkatrész: a lábai átmennek a lapon, és alul forrasztják be, hogy bírja a dugó ki-be húzogatását.',
@@ -190,6 +195,7 @@
       },
       {
         id: 'pcie', z: 5, name: 'PCIe-bővítőhelyek', en: 'PCI Express slots', svg: pcie, explode: [0, -120], badge: I.pt(80, 176, B + 11),
+        uni: 'A PCIe 5.0 sávonként **32 GT/s** sebességű, 128b/130b kódolással, ami irányonként kb. 3,94 GB/s hasznos sebesség sávonként, egy x16-os helyen kb. 63 GB/s. A jelek 85 Ω-os differenciális párokon, AC-csatolással, beágyazott órajellel (a vevő **órajel-visszanyeréssel**, CDR, állítja elő) haladnak. A Nyquist-frekvencia 16 GHz, ahol a NYÁK és a csatlakozó csillapítása már több tíz dB, ezért az adó és a vevő **kiegyenlítő szűrőket** (FFE, CTLE, DFE) használ. A PCIe 6.0 PAM4 (négyszintű) modulációra vált 64 GT/s-mal. A bővítőhely legfeljebb 75 W-ot ad, a videokártya a többit külön tápcsatlakozón kapja.',
         what: 'Hosszú résekbe kerülnek a **bővítőkártyák**: leggyakrabban a **videokártya**, de lehet hálózati, hang- vagy rögzítőkártya is. A PCI Express soros kapcsolat: az adat „sávokon” (lane) halad, egy x16-os hely 16 sávot jelent. A felső, fémmel megerősített hely a videokártyáé, mert az nehéz.',
         madeOf: '**Műanyag** ház, **arany** bevonatú rézötvözet érintkezők (x16-nál 164 darab), a megerősített helyen **acél** borítás.',
         how: 'Fröccsöntés, érintkezők beültetése, majd forrasztás a lapra. A fémborítást utólag pattintják vagy forrasztják rá.',
@@ -197,6 +203,7 @@
       },
       {
         id: 'm2', z: 6, name: 'M.2 SSD', en: 'M.2 NVMe SSD', terms: ['digitalis-technika/memoriahierarchia'], svg: m2, explode: [0, -130],
+        uni: 'Egy PCIe 4.0 x4-es NVMe SSD elméleti sávszélessége kb. 7,9 GB/s, a gyakorlatban kb. 7 GB/s olvasható. Az adat **NAND flash** cellákban tárolódik: a töltéscsapdás tranzisztor küszöbfeszültségét a tárolt töltés tolja el. TLC cellánál 3 bit/cella, vagyis **8 küszöbfeszültség-szintet** kell megkülönböztetni, QLC-nél 16-ot. A cellák csak korlátozott számú írási–törlési ciklust bírnak (TLC-nél kb. 1000–3000), ezért a vezérlő **FTL** (flash translation layer) rétege kopáskiegyenlítést és szemétgyűjtést végez. Az NVMe akár 65 535 parancssort kezel, soronként 65 536 paranccsal, ezért párhuzamos terhelésnél sokkal hatékonyabb a SATA-nál használt AHCI-nél.',
         what: 'Rágógumi-méretű **háttértár**, közvetlenül az alaplapra csavarozva. Itt van az operációs rendszer, a programjaid és a fájljaid. Áram nélkül is megőrzi az adatot. PCIe-sávokon csatlakozik, ezért nagyon gyors: akár **7000 MB/s**, ami tízszer több, mint a SATA SSD-ké.',
         madeOf: '- Kis NYÁK, rajta **NAND flash** memóriachipek (szilícium, akár 200-nál is több rétegben egymásra épített tárolócellákkal).\n- Egy **vezérlő chip**, ami a kopást is elosztja a cellák között.\n- A fehér címke alatt gyakran hővezető réteg.',
         how: 'A memóriachipeket ugyanúgy gyártják, mint a processzort, csak itt cellákat építenek egymás fölé (3D NAND). A kész chipeket a kis lapra forrasztják, az SSD-t teszt után dobozolják. Az alaplapon csak a foglalat és a rögzítőcsavar-helye van.',
@@ -204,12 +211,15 @@
       },
       {
         id: 'chipset', z: 6, name: 'Lapkakészlet (chipset)', en: 'chipset (platform controller hub, PCH)', svg: chip, explode: [0, -130],
+        uni: 'A PCH a processzorhoz egy **DMI** (Direct Media Interface) kapcsolattal csatlakozik, ami lényegében egy PCIe-kapcsolat: például DMI 4.0 x8 esetén irányonként kb. 16 GB/s. Minden, ami a lapkakészleten lóg (USB, SATA, hálózat, további M.2 és PCIe-helyek), ezen a közös csatornán osztozik, így párhuzamos nagy terhelésnél **szűk keresztmetszet** lehet. Ezért kapcsolják a videokártyát és az első M.2 helyet közvetlenül a processzor PCIe-sávjaira. A lapkakészlet teljesítményfelvétele kicsi (néhány W), ezért elég egy passzív hűtőborda.',
         what: 'A processzor „titkára”. A processzor nem tud közvetlenül minden eszközzel foglalkozni, ezért a lapkakészlet (PCH) intézi a lassabb kapcsolatokat: **USB**-portok, **SATA**, további PCIe-helyek, hálózat, hang. Egy gyors kapcsolattal kötődik a processzorhoz, és ő gyűjti össze neki ezek forgalmát.',
         madeOf: 'Egy **szilícium** lapka (a processzorhoz hasonló, de egyszerűbb chip), a tetején **alumínium** hűtőborda.',
         how: 'A chipet egy félvezetőgyárban készítik, gyakran egy kicsit régebbi, olcsóbb gyártástechnológiával, mint a processzort. A kész tokot BGA-forrasztással (golyóforrasztás) rögzítik a lapra, majd ráragasztják a hűtőt.'
       },
       {
         id: 'cmos', z: 6, name: 'CMOS-elem', en: 'CMOS battery (RTC battery)', svg: cmos, explode: [0, -130],
+        uni: 'A CR2032 gombelem **lítium–mangán-dioxid** (Li/MnO₂) galvánelem, névleges feszültsége 3 V, kapacitása kb. 220–240 mAh. A valós idejű óra 32,768 kHz-es kvarcoszcillátorral jár: `32 768 = 2¹⁵`, így egy 15 bites bináris osztó pontosan 1 Hz-et ad. Az RTC áramfelvétele néhány µA, ezért az elem élettartama `t = Q/I ≈ 225 mAh / 3 µA ≈ 75 000 óra`, kb. 8–9 év kikapcsolt gép mellett. A „CMOS” név onnan ered, hogy régen a BIOS-beállításokat is az RTC melletti, kis fogyasztású CMOS SRAM-ban tárolták; ma ezek többnyire a flash-ben vannak.',
+        terms: ['kemia-bsc/galvanelem', 'digitalis-technika/cmos'],
         what: 'Egy kis gombelem, amely akkor is táplálja a **valós idejű órát** (RTC), amikor a gép ki van kapcsolva, sőt ki van húzva a konnektorból. Ezért tudja a gép bekapcsoláskor a pontos időt. Ha lemerül, a gép minden indításkor rossz dátumot mutat, és elfelejthet egyes beállításokat.',
         madeOf: 'Egy **CR2032** típusú, 3 V-os **lítium** gombelem: lítium anód, mangán-dioxid katód, acél ház.',
         how: 'Az elemgyárban préselik és zárják le. Az alaplapon csak a tartója van beforrasztva, az elemet kézzel pattintják be, így cserélhető.',
@@ -217,6 +227,7 @@
       },
       {
         id: 'bios', z: 6, name: 'BIOS/UEFI chip', en: 'BIOS/UEFI firmware flash', svg: bios, explode: [0, -130], badge: I.pt(226, 292, B),
+        uni: 'A firmware egy jellemzően 16–32 MB-os **SPI NOR flash** chipben van; a NOR flash bájtonként címezhető olvasást tesz lehetővé, így a kód közvetlenül onnan is futtatható. Bekapcsoláskor az x86 processzor a 0xFFFFFFF0 **reset-vektorról** kezd, ami a flash tartalmára képeződik le. Mivel a DRAM még nincs beállítva, a korai kód a cache-t használja RAM-ként (cache-as-RAM), majd elvégzi a **memóriatréninget** (a DDR-időzítések kalibrálását). Az UEFI fázisai: SEC, PEI, DXE, BDS. A **Secure Boot** csak digitálisan aláírt rendszerbetöltőt enged elindulni, így a bizalmi lánc a firmware-től az operációs rendszerig tart.',
         what: 'Egy apró, nyolclábú **flash memória**chip. Benne van a gép legelső programja, a **UEFI** (régebben BIOS). Bekapcsoláskor ez fut le először: ellenőrzi a hardvert (POST), beállítja a memóriát és a processzort, majd elindítja az operációs rendszert a háttértárról.',
         madeOf: 'Szilícium flash-memória lapka (általában 16–32 MB), fekete **epoxi** tokban, ónozott réz lábakkal.',
         how: 'A chipet félvezetőgyárban készítik, és vagy előre beírják a programot, vagy az alaplapgyárban az utolsó teszt előtt „égetik” rá. Később te is frissítheted a UEFI-t a gyártó honlapjáról.',
@@ -224,12 +235,14 @@
       },
       {
         id: 'sata', z: 7, name: 'SATA-csatlakozók', en: 'SATA connectors', svg: sata, explode: [0, -130],
+        uni: 'A SATA III vonali sebessége 6 Gb/s, 8b/10b kódolással, így a hasznos adatsebesség legfeljebb **600 MB/s**. Egy-egy irányba egy differenciális pár visz adatot. Az AHCI vezérlő **NCQ**-val legfeljebb 32 parancsot tud sorba állítani, ami merevlemeznél elég, mert ott a mechanika a szűk keresztmetszet: 7200 1/perc fordulatszámnál az átlagos forgási várakozás `½ · 60/7200 s ≈ 4,17 ms`, ehhez jön a fejpozicionálás néhány ms-a. Egy NAND-alapú SSD véletlen elérési ideje ehhez képest kb. 0,1 ms, ezért SATA SSD-nél már az interfész a korlát.',
         what: 'Ide csatlakoztathatók kábellel a régebbi típusú háttértárak: **merevlemez** (HDD), 2,5 colos **SSD** és optikai meghajtó. A SATA III legfeljebb kb. **600 MB/s** sebességű, a nagy kapacitású, olcsó merevlemezekhez ma is jól jön.',
         madeOf: '**Műanyag** L alakú ház, benne 7 **rézötvözet** érintkező (2 adatpár + 3 föld).',
         how: 'Fröccsöntés és érintkező-beültetés után a lap szélére forrasztják. Oldalra néznek, hogy a kábel ne akadjon bele a videokártyába.'
       },
       {
         id: 'io', z: 2, name: 'Hátlapi csatlakozók (I/O)', en: 'rear I/O panel', svg: io, explode: [-40, -100],
+        uni: 'A hátlapi csatlakozók nagy sebességű soros interfészek: USB 3.2 Gen 2 10 Gb/s (128b/132b kódolással), USB4 akár 40 Gb/s, HDMI 2.1 48 Gb/s, Ethernet 2,5GBASE-T 2,5 Gb/s. Az Ethernet portokban **leválasztó transzformátorok** (magnetics) vannak, ezek legalább 1500 V-os galvanikus szigetelést adnak a kábel és az alaplap között. Minden kívülről elérhető érintkezőt **ESD-védő** (TVS) diódák védenek, mert az IEC 61000-4-2 szerint akár ±8 kV-os kontaktkisülést is ki kell bírniuk.',
         what: 'A gép hátulján kilógó csatlakozók: **USB**, **HDMI**/DisplayPort a beépített grafikához, **Ethernet** (hálózat) és **hang**csatlakozók. Ezeket látod, amikor hátulról bedugod a kábeleket.',
         madeOf: '- **Ónozott acél** vagy rézötvözet burkolat (árnyékolás a zavarok ellen).\n- **Műanyag** szigetelő nyelvek (a kék szín az USB 3-at jelzi).\n- **Aranyozott** érintkezők.\n- A hálózati aljzatban kis **transzformátorok** a leválasztáshoz.',
         how: 'Az aljzatokat külön gyártják, és **furatszerelt** módon forrasztják be, hogy a kábel dugdosását is kibírják. Elé kerül egy fém takarólemez (I/O shield), amely a ház nyílásához illeszkedik.',

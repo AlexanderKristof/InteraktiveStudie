@@ -73,6 +73,8 @@
     parts: [
       {
         id: 'lid', z: 8, name: 'Tasak (felső fólia)', svg: lid, explode: [110, -235], badge: B(-70, -50, 18),
+        en: 'pouch foil (aluminium laminate), top',
+        uni: 'A tasakfólia fő feladata a **nedvességzárás**: a bejutó víz a vezetősóval reagál (`LiPF₆ + H₂O → LiF + POF₃ + 2 HF`), a keletkező HF pedig megtámadja a katódot és az SEI-réteget. A kb. 40 µm-es alumíniumréteg gyakorlatilag nulla vízgőzáteresztést ad, ezért a gyenge pont a **hegesztett perem**, ahol a polipropilén rétegen át oldalról diffundálhat be nedvesség. Öregedés vagy túltöltés során az elektrolit bomlásából gázok (CO₂, CO, szénhidrogének) keletkeznek: a tasakcella ettől **felfúvódik**, ami a hengeres cellák merev házánál nem látható, ott a nyomás nő.',
         what: 'A cella „csomagolása”. Légmentesen zár, hogy se nedvesség ne jusson be, se elektrolit ki. A tasakcella onnan kapta a nevét, hogy a rétegeket egy hajlékony tasakba hegesztik.',
         madeOf: 'Többrétegű **laminált fólia**: kívül nejlon (mechanikai védelem), középen vékony **alumínium** réteg (ez a vízzáró gát), belül polipropilén, ami hőre olvad, így össze lehet hegeszteni.',
         how: 'A fóliát tekercsből vágják, az alsó felébe szerszámmal mélyedést húznak, belerakják a rétegköteget, majd három oldalon hővel összehegesztik. Az elektrolit betöltése után vákuumban zárják le a negyedik oldalt is.',
@@ -80,6 +82,9 @@
       },
       {
         id: 'cu', z: 6, name: 'Rézfólia (− áramgyűjtő)', svg: cu, explode: [88, -180], badge: B(-80, 66, 14),
+        en: 'copper current collector (negative)',
+        uni: 'Az anód potenciálja működés közben kb. 0,05–0,25 V a Li/Li⁺ referenciához képest. Ilyen alacsony potenciálon az alumínium kb. 0,3 V alatt **LiAl ötvözetet** képezne, a réz viszont nem ötvöződik a lítiummal, ezért réz az anódoldali áramgyűjtő. Fordított irányban a réz a veszélyes: **mélykisütéskor** az anód potenciálja megemelkedhet, és kb. 3,3 V fölött a réz oxidálódva oldatba megy, majd töltéskor fémréz dendritekként válik ki, ami belső zárlatot okozhat. A réz fajlagos ellenállása 1,68·10⁻⁸ Ω·m, sűrűsége 8,96 g/cm³: a fólia vékonyítása (6 µm alá) közvetlenül növeli a cella fajlagos energiáját.',
+        terms: ['kemia-bsc/elektrodpotencial'],
         what: 'Erre a nagyon vékony fémfóliára viszik fel az anód grafitját. Ez gyűjti össze az elektronokat, és vezeti el őket a negatív pólusig.',
         madeOf: 'Tiszta **réz**, mindössze kb. 6–10 mikrométer vastag (egy hajszál kb. 70 µm).',
         how: 'Elektrolitikus úton gyártják: egy forgó hengerre rezet választanak le oldatból, majd lehúzzák róla a vékony fóliát, és tekercsre csévélik.',
@@ -87,12 +92,16 @@
       },
       {
         id: 'anode', terms: ['e-mobilitas/cellakemia'], z: 5, name: 'Anód (grafit)', svg: anode, explode: [66, -128], badge: B(-50, 64, 13),
+        en: 'graphite anode (negative electrode)',
+        uni: 'A grafit a lítiumot a grafénrétegek közé **interkalálja**, a végállapot `LiC₆`, ami **372 mAh/g** elméleti fajlagos kapacitásnak felel meg. Az interkaláció lépcsőzetesen (stage-ek szerint) megy végbe, a rétegtávolság kb. 10%-kal nő. Az első töltéskor az elektrolit az anódfelületen redukálódik, és kialakul a **SEI-réteg** (solid electrolyte interphase: LiF, Li₂CO₃, szerves lítiumsók). Ez ionvezető, de elektronszigetelő, így megállítja a további bomlást; kialakulása azonban az aktív lítium 5–10%-át elfogyasztja. Mivel az anód potenciálja közel van a fémlítiuméhoz, hidegben vagy nagy C-rátájú töltésnél a felületen **fémlítium válhat ki** (lithium plating), ami kapacitásvesztést és dendritképződést okoz. A szilícium (Li₁₅Si₄ esetén kb. 3600 mAh/g) sokkal többet tárol, de térfogata kb. 300%-kal nő, ezért csak néhány százalékban keverik a grafithoz.',
         what: 'A negatív elektróda. **Töltéskor** ide vándorolnak be a lítiumionok, és a grafit rétegei közé „bújnak” be, mint könyvek közé tett lapok. Minél több ion fér el itt, annál több energiát tud tárolni a cella.',
         madeOf: '**Grafit** (természetes vagy mesterséges szén) por, kevés kötőanyaggal és vezetőképes korommal. Újabb cellákban egy kis **szilícium** is van benne, mert az még több lítiumot tud befogadni.',
         how: 'A grafitport vízzel és kötőanyaggal sűrű pasztává keverik, vékony rétegben a rézfóliára kenik (mindkét oldalára), kiszárítják, majd hengerek között tömörre préselik (kalanderezés).'
       },
       {
         id: 'sep', z: 4, name: 'Szeparátor', svg: sep, explode: [44, -82], badge: B(-20, 68, 10),
+        en: 'separator (microporous polyolefin membrane)',
+        uni: 'A szeparátor jellemzően 40% körüli **porozitású** (ε), pórusmérete 0,03–0,1 µm. Ionvezetése a csavarulatosság (τ) miatt kisebb, mint a szabad elektrolité; ezt a **MacMullin-szám** fejezi ki: `N_M = σ_0/σ_eff = τ²/ε`, tipikusan 5–15. A háromrétegű PP/PE/PP szeparátorban a polietilén kb. 130–135 °C-on megolvad és lezárja a pórusokat (**shutdown**), a magasabb olvadáspontú (kb. 165 °C) polipropilén pedig még megtartja a mechanikai épséget. Az Al₂O₃ vagy böhmit kerámiabevonat csökkenti a hőzsugorodást, és javítja a nedvesíthetőséget.',
         what: 'Vékony szigetelő hártya az anód és a katód között. Az ionokat átengedi, az elektronokat nem. Ha a két elektróda összeérne, rövidzár lenne, és a cella felforrósodhatna.',
         madeOf: 'Mikroszkopikus **lyukacsos műanyag fólia** (polietilén vagy polipropilén), gyakran vékony kerámia bevonattal, ami hőállóbbá teszi.',
         how: 'Megolvasztott műanyagból fóliát húznak, majd nyújtással vagy oldószerrel milliónyi apró pórust alakítanak ki benne. Kb. 10–25 µm vastag.',
@@ -100,6 +109,8 @@
       },
       {
         id: 'elec', terms: ['e-mobilitas/belso-ellenallas', 'e-mobilitas/c-rata'], z: 3, name: 'Elektrolit', svg: elec, explode: [22, -40], badge: B(10, 62, 8),
+        en: 'liquid electrolyte (LiPF₆ in organic carbonates)',
+        uni: 'A tipikus elektrolit 1 mol/dm³ LiPF₆ etilén-karbonát (EC) és lineáris karbonátok (DMC, EMC) keverékében; vezetőképessége szobahőmérsékleten kb. 10 mS/cm, a Li⁺ **átviteli száma** csak kb. 0,3–0,4. **Elektrokémiai stabilitási ablaka** nem fedi le a cella teljes tartományát: kb. 0,8 V alatt (Li/Li⁺-hoz képest) redukálódik, ebből épül az SEI, kb. 4,5 V felett oxidálódik. Az elektrolit és a pórusos elektródák ionvezetése adja a **belső ellenállás** jelentős részét; a kapocsfeszültség `U = U_OCV − I·R_i`, a hőtermelés `P = I²·R_i`. Hidegben a viszkozitás nő és a vezetés romlik, ezért kisebb a megengedett C-ráta.',
         what: 'Az a folyadék, amelyben a lítiumionok úsznak az elektródák között. Valójában mindent átitat: a pórusokat, a szeparátort és az elektródák belsejét is. Itt külön rétegként rajzoltuk, hogy látszódjon.',
         madeOf: 'Szerves oldószerek keveréke (pl. etilén-karbonát, dimetil-karbonát), benne oldott **lítiumsó** (LiPF₆). Ez gyúlékony, ezért fontos, hogy a cella ne sérüljön meg.',
         how: 'Vegyi üzemben keverik, nagyon száraz környezetben, mert a víz tönkretenné. A cellába vákuumban töltik be, hogy minden pórusba beszivárogjon.',
@@ -107,29 +118,42 @@
       },
       {
         id: 'cathode', terms: ['e-mobilitas/cellakemia', 'e-mobilitas/hofutas'], z: 2, name: 'Katód (NMC vagy LFP)', svg: cathode, explode: [0, 2], badge: B(40, 62, 7), link: 'atom',
+        en: 'cathode (positive electrode): layered NMC or olivine LFP',
+        uni: 'Az **NMC** (`LiNi_xMn_yCo_zO₂`) rétegszerkezetű oxid: átlagos potenciálja kb. 3,7 V (Li/Li⁺-hoz képest), gyakorlati kapacitása 160–200+ mAh/g, a nikkeltartalommal nő. Erősen delitiált állapotban a rács **oxigént szabadíthat fel**, ami a gyúlékony elektrolittal együtt **hőfutáshoz** vezethet. Az **LFP** (`LiFePO₄`) olivinszerkezetű, potenciálja egy lapos platón kb. 3,4 V, elméleti kapacitása 170 mAh/g. Az erős P–O kovalens kötés miatt nem ad le oxigént, ezért termikusan sokkal stabilabb. A lapos plató hátránya, hogy a nyugalmi feszültségből (OCV) nehéz pontosan becsülni a töltöttséget. Az elektród potenciálját a **Nernst-egyenlet** és az interkalációs fokkal változó Gibbs-energia határozza meg.',
         what: 'A pozitív elektróda: ez határozza meg leginkább a cella feszültségét és kapacitását. Kisütött állapotban itt vannak a lítiumatomok. **Használat közben** a lítiumionok ide térnek vissza az anódból, az elektronok pedig a külső áramkörön (a motoron) keresztül érkeznek meg.',
         madeOf: 'Lítium-fémoxid por, kötőanyaggal és korommal:\n\n- **NMC**: lítium-nikkel-mangán-kobalt-oxid, sok energia kis tömegben (nagy hatótávú autók)\n- **LFP**: lítium-vas-foszfát, olcsóbb, tartósabb és biztonságosabb, de nehezebb\n\nEzek a fémek bányákból érkeznek, ezért fontos az akkuk **újrahasznosítása**.',
         how: 'A fémsókból kicsapással és több száz fokos hevítéssel apró kristályos szemcséket gyártanak. Ezt pasztává keverik, az alufólia mindkét oldalára kenik, szárítják és préselik, akárcsak az anódot.'
       },
       {
         id: 'al', z: 1, name: 'Alumíniumfólia (+ áramgyűjtő)', svg: al, explode: [-22, 48], badge: B(70, 66, 4),
+        en: 'aluminium current collector (positive)',
+        uni: 'A katódoldalon a potenciál 3–4,3 V (Li/Li⁺-hoz képest), itt a réz oxidálódna, az alumíniumot viszont egy vékony **passzív réteg** védi: a natív Al₂O₃-ot a LiPF₆-ból származó fluorid **AlF₃-dá** alakítja, ami nem oldódik. Ezért korrodálja az alumíniumot néhány más vezetősó (pl. a LiTFSI) nagy potenciálon: azok nem képeznek ilyen fluoridos réteget. Érdekesség, hogy a **lítium-titanát (LTO) anódú** cellákban, ahol az anód kb. 1,55 V-on dolgozik, mindkét oldalon alumínium áramgyűjtő használható. Az alumínium fajlagos ellenállása 2,65·10⁻⁸ Ω·m, sűrűsége csak 2,70 g/cm³.',
+        terms: ['kemia-bsc/elektrodpotencial'],
         what: 'A katód hordozója és áramgyűjtője. Ezen keresztül jut el az áram a pozitív pólusig.',
         madeOf: '**Alumínium** fólia, kb. 10–15 µm vastag. A katód magas feszültségén az alumínium nem korrodálódik, és könnyű.',
         how: 'Alumínium tömbökből sok lépésben, egyre vékonyabbra hengerlik, akárcsak a konyhai alufóliát, csak sokkal tisztább anyagból és pontosabb vastagságra.'
       },
       {
         id: 'tabs', z: 7, name: 'Pólusfülek (+ és −)', svg: tabs, explode: [95, 60], badge: B(160, 37, 8),
+        en: 'cell tabs (terminals) with sealant film',
+        uni: 'A fóliacsonkokat **ultrahangos hegesztéssel** (20–40 kHz-es rezgés, nyomás alatt) kötik a fülhöz: ez szilárdfázisú kötés, az anyag nem olvad meg, így nem keletkeznek rideg Al–Cu intermetallikus fázisok. A fülek és a hegesztési varratok ellenállása tized mΩ nagyságrendű, de nagy C-rátánál a `P = I²·R` hő itt koncentrálódik, ezért a fülek környéke a cella egyik legmelegebb pontja (a **fülhűtés** ezt használja ki). Nagy felületű celláknál a fülek elhelyezése befolyásolja az **áramsűrűség-eloszlást**: a fülhöz közeli részek jobban terhelődnek, ami helyi töltöttség- és hőmérséklet-különbségekhez vezet.',
         what: 'A cella két kivezetése. A **pozitív** fül az alufóliákhoz, a **negatív** a rézfóliákhoz csatlakozik. Ezeket hegesztik össze a szomszédos cellák füleivel a modulban.',
         madeOf: 'Pozitív: **alumínium**. Negatív: **nikkelezett réz** vagy nikkel. A sárga csík műanyag tömítés, ezen keresztül hegesztik bele a fület a tasak szélébe.',
         how: 'A sok fólia kilógó csonkját egy kötegbe fogják, és **ultrahangos hegesztéssel** a fülhöz hegesztik: a rezgés hőt termel, és összeolvasztja a fémeket.'
       },
       {
         id: 'bottom', z: 0, name: 'Tasak (alsó, mélyhúzott rész)', svg: bottom, explode: [-44, 108], badge: B(-118, 60, 12),
+        en: 'pouch foil (deep-drawn tray)',
+        uni: 'A **mélyhúzás** határát az alumíniumréteg alakíthatósága szabja meg: a sarkokban a fólia elvékonyodik, és ha az Al réteg megreped, a tasak elveszíti zárását; ezért lágyított (O-állapotú) alumíniumötvözetet használnak, és a húzásmélység jellemzően néhány mm-től kb. 10 mm-ig terjed. A tasakcella csomagolási hatásfoka nagy (kevés holt tömeg), de nincs merev háza, ezért a modulban **külső összeszorításra** van szüksége: ez biztosítja a rétegek közti egyenletes kontaktust, és ellensúlyozza az elektródák töltéskori térfogatváltozását (a grafit kb. 10%-kal tágul).',
         what: 'A tasak alsó fele, amelybe mélyedést húztak. Ebbe kerül a rétegköteg. A széle (perem) körben össze van hegesztve a felső fóliával.',
         madeOf: 'Ugyanaz a nejlon–alumínium–polipropilén laminált fólia, mint a felső rész.',
         how: 'Hideg mélyhúzással formázzák: egy bélyeg belenyomja a fóliát egy szerszámüregbe, de úgy, hogy az alumíniumréteg ne repedjen meg.'
       }
     ],
+    uni: {
+      text: 'Egyetemi szinten a lítiumion-cella **interkalációs galvánelem**: mindkét elektróda rétegrácsos vagy csatornás gazdaszerkezet, amelybe a Li⁺ ionok be- és kiépülnek, miközben a rács lényegében változatlan marad. Kisütéskor az anódon `LiC₆ → C₆ + Li⁺ + e⁻`, a katódon (NMC-re) `Li₁₋ₓMO₂ + x·Li⁺ + x·e⁻ → LiMO₂` játszódik le. A cellafeszültség a két elektród **elektródpotenciáljának** különbsége, termodinamikailag `U = −ΔG/(n·F)`: NMC/grafit cellánál kb. 3,6–3,7 V, LFP/grafitnál kb. 3,2–3,3 V névleges érték. Terhelés alatt a kapocsfeszültség `U = U_OCV − I·R_i`, ahol R_i a **belső ellenállás** (ohmos, töltésátlépési és diffúziós tagok). Az áramot a **C-rátával** adják meg (`I = C · Q_n`: 1C egy óra alatt sütné ki a cellát). Cellaszinten a fajlagos energia NMC-nél kb. 250–300 Wh/kg, LFP-nél kb. 160–200 Wh/kg.',
+      terms: ['kemia-bsc/galvanelem', 'kemia-bsc/elektrodpotencial', 'kemia-bsc/redoxi', 'kemia-bsc/gibbs', 'e-mobilitas/cellakemia', 'e-mobilitas/c-rata', 'e-mobilitas/belso-ellenallas', 'e-mobilitas/soh']
+    },
     steps: [
       { icon: '⛏️', title: 'Nyersanyagok', text: 'A lítiumot sós tavak vizéből (Dél-Amerika) vagy kőzetből (Ausztrália) nyerik, a nikkel, kobalt, mangán és grafit is bányákból érkezik. Vegyi üzemekben tisztítják őket **akkuminőségűre**, ami nagyon tiszta anyagot jelent.' },
       { icon: '🥣', title: 'Keverés és bevonás', text: 'Az elektróda-porokat kötőanyaggal és oldószerrel sűrű, festékszerű **pasztává** keverik. Hosszú, gyorsan futó fóliákra kenik: a grafitot a **rézfóliára**, a katódanyagot az **alufóliára**, mindkét oldalukra. Egy hosszú kemencében szárítják.', parts: ['anode', 'cu', 'cathode', 'al'] },

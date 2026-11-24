@@ -215,6 +215,8 @@
       },
       {
         id: 'eva2', z: 3, name: 'EVA fólia (alsó)', en: 'EVA encapsulant (rear)', svg: eva2, explode: [-26, 52], badge: B(-55, 38, 1.8),
+        uni: 'Az EVA törésmutatója kb. 1,48–1,49, közel az üvegéhez, így a határfelületeken kicsi a reflexiós veszteség. Laminálás közben a laminátort először vákuumozzák, hogy ne maradjon buborék, majd kb. 145–150 °C-on 10–15 perc alatt végbemegy a térhálósodás. Az alsó EVA mechanikai szerepe is fontos: a rugalmas fólia **lazán csatolja** a különböző hőtágulású rétegeket (üveg kb. 9 ppm/K, szilícium kb. 2,6 ppm/K, réz kb. 17 ppm/K), így a −40…+85 °C-os hőciklus-vizsgálat (IEC 61215) során sem repednek meg a cellák és a forrasztások. Kétüveges és kétoldalas (bifacial) moduloknál az alsó fóliának is UV-átlátszónak kell lennie.',
+        terms: ['mechanika/alakvaltozas'],
         what: 'Ugyanaz a ragasztófólia, mint a cellák felett, csak alulról: a cellákat a hátlaphoz ragasztja. A két EVA-réteg együtt teljesen körbezárja a cellákat és a szalagokat, mint egy szendvicsben.',
         madeOf: '**EVA** (etilén-vinil-acetát) fólia. Kétoldalas (bifaciális) paneleknél átlátszó, egyébként néha fehér pigmentet tesznek bele, hogy a cellák közötti résekbe eső fényt visszaverje.',
         how: 'Ugyanúgy készül, mint a felső fólia. A rétegrendet (üveg – EVA – cellák – EVA – hátlap) kézzel vagy robottal rakják egymásra, és együtt kerülnek a laminálóba.'

@@ -123,6 +123,9 @@
     parts: [
       {
         id: 'body', z: 0, name: 'Karosszéria', svg: body, explode: [0, -185], badge: B(-20, -80, 139),
+        en: 'body-in-white and aerodynamic body',
+        uni: 'A légellenállási erő `F_l = ½·ρ·c_w·A·v²`, a legyőzéséhez szükséges teljesítmény tehát **v³-nel** nő: 130 km/h-nál már a légellenállás a menetellenállás nagyobbik része. Korszerű elektromos autóknál c_w ≈ 0,20–0,28, a homlokfelület A ≈ 2,2–2,5 m². A villanyautónak nincs szüksége nagy hűtőnyílásra, és a padló alatti akku sima alsó burkolatot ad, ez segíti a kis c_w-t. A karosszéria (body-in-white) ütközési zónái nagy szilárdságú, **melegen alakított bóracélból** (szakítószilárdság kb. 1500 MPa) és alumíniumból készülnek; az akkuház szerkezeti elemként (cell-to-body) a csavarómerevséget is növeli.',
+        terms: ['e-mobilitas/legellenallas', 'mechanika/folyashatar'],
         what: 'Az autó „héja”: utastér, ajtók, motorháztető, csomagtartó. Elektromos autóknál különösen fontos, hogy **jó légellenállású** legyen, mert autópálya-tempónál az energia nagy része a levegő félretolására megy el.',
         madeOf: 'Nagy szilárdságú **acél** és egyre több **alumínium**, mert a nehéz akku miatt máshol spórolni kell a tömeggel. Szélvédő és ablakok: rétegelt és edzett **üveg**. Lökhárítók: műanyag.',
         how: 'Hatalmas présgépek sajtolják ki a lemezekből a darabokat, majd robotok **ponthegesztéssel** és ragasztással állítják össze a vázat. Utána festőüzembe kerül: korróziógátló fürdő, alapozó, színes festék, lakk. Néhány gyártó a hátsó vázat egyetlen óriási alumíniumöntvényként készíti (**gigaöntés**).',
@@ -130,6 +133,8 @@
       },
       {
         id: 'battery', terms: ['e-mobilitas/cellakemia', 'e-mobilitas/soc', 'e-mobilitas/soh'], z: 2, name: 'Nagyfeszültségű akkumulátor', svg: batt, explode: [0, 45], link: 'akkucella', badge: B(0, 30, 38),
+        en: 'high-voltage traction battery pack',
+        uni: 'A pakkot **xSyP** kapcsolásban építik: x soros cella adja a feszültséget, y párhuzamos a kapacitást. 96 soros NMC cella névlegesen kb. 96 · 3,65 V ≈ 350 V (a „400 V-os” osztály), a 800 V-os rendszerek kb. 180–200 soros cellával dolgoznak. Az energia `E = n_s · n_p · U_cella · Q_cella`, pakkszinten kb. 150–200 Wh/kg. A töltöttséget (**SOC**) áramintegrálással becsülik: `SOC(t) = SOC_0 − (1/Q_n)·∫I dt`, amit a nyugalmi feszültség (OCV) alapján korrigálnak. Az öregedést a **SOH** méri (`SOH = Q_akt/Q_új`); az akku élettartama végének gyakran a 70–80%-os SOH-t tekintik. A 800 V-os rendszer előnye, hogy azonos teljesítményhez fele akkora áram és negyed akkora `I²·R` veszteség tartozik.',
         what: 'Az autó „üzemanyagtartálya”, a padlóba építve, a két tengely között. Több ezer **lítiumion cella**, modulokba csoportosítva, sorba kötve: így jön ki a 400 vagy 800 V. Egy átlagos akku 50–100 kWh energiát tárol, ez 300–600 km-re elég.',
         madeOf: '**Lítiumion cellák** (NMC vagy LFP), köztük hűtőlapok, réz- és alumínium sínek, szigetelés, és mindez egy ütésálló **alumínium** vagy acél dobozban, alul védőlemezzel.',
         how: 'A cellagyárból érkező cellákat robotok modulokba vagy közvetlenül a pakkba építik (**cell-to-pack**), lézerrel hegesztik össze a gyűjtősíneket, beépítik a hűtést és a BMS-t, majd vízmentesen lezárják, és szivárgás- és szigetelésvizsgálatnak vetik alá.',
@@ -137,24 +142,33 @@
       },
       {
         id: 'bms', terms: ['e-mobilitas/bms', 'e-mobilitas/cellakiegyenlites'], z: 4, name: 'Akkumulátor-felügyelet (BMS)', svg: bms, explode: T(98, -8, 42, 600, 525),
+        en: 'battery management system (BMS)',
+        uni: 'A BMS cellafeszültséget mér, néhány mV pontossággal (LFP-nél a lapos OCV-görbe miatt ez kritikus), emellett hőmérsékletet és áramot. Az állapotbecslés jellemzően **helyettesítő áramkörön** (R_0 soros ellenállás és egy-két RC-tag) futó **Kálmán-szűrővel** történik, ez adja a SOC-ot, a SOH-t és a pillanatnyilag megengedett töltő/kisütő teljesítményt. A **cellakiegyenlítés** passzív változatban párhuzamos ellenállásokon (kb. 50–200 mA) hővé alakítja a legtelítettebb cellák többlettöltését, aktív változatban átviszi azt a többi cellára. A BMS vezérli a fő mágneskapcsolókat és az előtöltő ellenállást, és figyeli a nagyfeszültségű rendszer **szigetelési ellenállását** (az ENSZ EGB 100. sz. előírás egyenáramú körre legalább 100 Ω/V-ot követel meg). Funkcionális biztonsági besorolása ISO 26262 szerint jellemzően ASIL C vagy D.',
         what: 'A **BMS** (Battery Management System) az akku „agya”. Minden cellacsoport feszültségét és hőmérsékletét figyeli, kiszámolja a töltöttséget, kiegyenlíti a cellákat, és ha valami veszélyes (túlmelegedés, túltöltés), lekapcsolja az akkut a nagyfeszültségű relékkel.',
         madeOf: 'Nyomtatott áramkörök **mikrovezérlőkkel** és mérőchipekkel, vékony mérővezetékekkel a cellákhoz, valamint nagy áramú **mágneskapcsolók** (kontaktorok) és biztosíték.',
         how: 'Elektronikai gyárban automata beültetőgépek rakják az alkatrészeket a panelre, majd forrasztják. A szoftvert a gyártó fejleszti és teszteli, és gyakran távolról (OTA) frissítik.'
       },
       {
         id: 'motor', terms: ['e-mobilitas/pmsm', 'e-mobilitas/aszinkron-motor', 'e-mobilitas/foc'], z: 3, name: 'Villanymotor', svg: motor, explode: T(-150, -30, 40, 82, 292),
+        en: 'traction motor (PMSM or induction machine)',
+        uni: 'A **PMSM** nyomatéka a forgórészhez kötött d–q koordinátarendszerben: `M = (3/2)·p·[Ψ_PM·i_q + (L_d − L_q)·i_d·i_q]`, ahol p a póluspárszám, Ψ_PM a mágnesek fluxusa. A belső mágneses (IPM) motoroknál L_q > L_d, ezért negatív i_d-vel **reluktancianyomaték** is nyerhető. Az alapfordulatszám felett az indukált feszültség eléri az inverter maximumát, ekkor **mezőgyengítés** következik (negatív i_d), és a motor közel állandó teljesítménnyel dolgozik. A csúcshatásfok 95–97%. Az **aszinkron motorban** nincs mágnes: a nyomatékot a szlip (`s = (n_s − n)/n_s`) által a kalickában indukált áram hozza létre, ez olcsóbb, de a forgórész-veszteség miatt kissé rosszabb hatásfokú.',
         what: 'A forgó mágneses mező „húzza körbe” a forgórészt. Nincs benne robbanás, csak elektromágnesesség, ezért halk, és már álló helyzetből teljes nyomatékot ad. Hatásfoka több mint 90%, a benzinmotoré legfeljebb kb. 40%. **Fékezéskor generátorként** áramot termel (rekuperáció).',
         madeOf: 'Állórész: vékony **elektrotechnikai acéllemezekből** rétegzett vasmag, benne **réz** tekercsekkel. Forgórész: vasmag, sok motorban erős **neodímium** állandó mágnesekkel. Ház: alumínium, hűtőcsatornákkal.',
         how: 'A lemezeket kistanzolják és összepréselik, a rézhuzalt (sokszor lapos réz „hajtűket”) robotok fűzik a hornyokba, majd lakkal impregnálják. A forgórészbe beragasztják a mágneseket, kiegyensúlyozzák, és csapágyakkal a házba szerelik.'
       },
       {
         id: 'gear', z: 3, name: 'Reduktor és féltengelyek', svg: gear, explode: T(-150, 5, 38, 92, 382),
+        en: 'single-speed reduction gearbox, differential and half-shafts',
+        uni: 'Az egyfokozatú reduktor áttétele kb. i ≈ 9–10: `M_kerék = i · η · M_motor` és `n_kerék = n_motor/i`. Például 16 000 1/perc motorfordulatnál és i = 9 mellett a kerék kb. 1780 1/perccel forog, ami 0,34 m-es gördülési sugárral kb. 228 km/h. A hatásfok 97–98%. Mivel nincs motorzaj, ami elfedné, a fogaskerekek „sírása” jól hallható; a ferde fogazás és a pontos fogprofil-korrekció ezért fontos (NVH). A **differenciálmű** a kanyarban eltérő kerékfordulatot teszi lehetővé (`n_bal + n_jobb = 2·n_ház`), a féltengelyek **homokinetikus csuklói** a rugózás és a kormányzás közben is egyenletes szögsebességet adnak át.',
+        terms: ['e-mobilitas/nyomatek', 'mechanika/nyomatek'],
         what: 'A villanymotor akár 15–20 ezer fordulat/perccel forog, a kerekeknek viszont autópálya-tempónál is csak kb. 1000–1500. A **reduktor** fogaskerekekkel kb. 9-szeresére lassít, és ennyivel növeli a nyomatékot. Benne van a **differenciálmű** is, ami kanyarban engedi, hogy a két kerék eltérő sebességgel forogjon. Sebességváltó nem kell.',
         madeOf: 'Edzett **acél** fogaskerekek, alumínium ház, hajtóműolaj. A féltengelyek acélból vannak, a végükön homokinetikus csuklókkal.',
         how: 'A fogaskerekeket kovácsolják, lefogazzák, edzik, majd köszörülik, hogy nagyon halkan fussanak (villanyautóban nincs motorzaj, ami elnyomná a fogaskerekek zúgását).'
       },
       {
         id: 'inverter', terms: ['e-mobilitas/inverter', 'e-mobilitas/pwm'], z: 4, name: 'Inverter (teljesítményelektronika)', svg: inverter, explode: T(-150, -30, 70, 86, 205),
+        en: 'traction inverter (three-phase voltage source inverter)',
+        uni: 'A hajtásinverter háromfázisú, kétszintű **feszültséginverter**: hat félvezető kapcsoló (három félhíd) és egy fóliakondenzátoros DC-köri kondenzátor. 400 V-os rendszerben jellemzően 650–750 V-os **Si IGBT**-ket, 800 V-os rendszerben 1200 V-os **SiC MOSFET**-eket használnak; a SiC kisebb kapcsolási veszteséggel nagyobb kapcsolási frekvenciát (kb. 10–20 kHz vagy több) tesz lehetővé. **Térvektor-modulációval** (SVPWM) a lineáris tartományban a fázisfeszültség alapharmonikusának amplitúdója legfeljebb `U_DC/√3`, ami kb. 15%-kal több, mint szinuszos PWM-mel (`U_DC/2`). A veszteség vezetési és kapcsolási részből áll; utóbbi `P_kapcs = (E_be + E_ki) · f_kapcs`. Az inverter hatásfoka 97–99%.',
         what: 'Az akku **egyenáramát** háromfázisú **váltakozó árammá** alakítja a motornak. A frekvenciával szabályozza a fordulatszámot, az áramerősséggel a nyomatékot. Rekuperációnál fordítva dolgozik: a motor által termelt váltakozó áramot egyenirányítja és visszatölti az akkuba.',
         madeOf: 'Nagy teljesítményű félvezető kapcsolók (**IGBT** vagy újabban **szilícium-karbid**, SiC tranzisztorok), kondenzátorok, vezérlőpanel, rézsínek, folyadékhűtésű alumínium ház.',
         how: 'A tranzisztorlapkákat kerámia hordozóra forrasztják, vastag huzalokkal bekötik, majd modulba öntik. A modult hűtőlapra szerelik a vezérlőpanellel együtt, és vízzáró házba zárják.',
@@ -162,12 +176,17 @@
       },
       {
         id: 'obc', terms: ['e-mobilitas/ac-dc-toltes', 'e-mobilitas/cc-cv'], z: 4, name: 'Fedélzeti töltő (OBC)', svg: obc, explode: T(-97, -42, 47, 120, 478),
+        en: 'on-board charger (OBC)',
+        uni: 'Az OBC jellemzően kétfokozatú: egy **teljesítménytényező-javító** (PFC) egyenirányító a hálózatból közel szinuszos, cos φ ≈ 0,99 áramot vesz fel, egy **galvanikusan leválasztott** DC/DC fokozat (pl. LLC rezonáns vagy kettős aktív híd) pedig az akkufeszültségre illeszt. A teljesítmény háromfázisú hálózaton `P = √3 · U_v · I`: 400 V és 16 A esetén kb. 11 kW, 32 A esetén kb. 22 kW; egyfázisú 230 V és 32 A mellett kb. 7,4 kW. A töltés **CC-CV** jellegű: állandó árammal addig, amíg a cellák elérik a töltési határfeszültséget (NMC-nél kb. 4,2 V, LFP-nél 3,65 V), majd állandó feszültségen, csökkenő árammal. Hatásfoka kb. 93–96%.',
         what: 'Otthoni vagy közterületi **váltóáramú** (AC) töltéskor ez alakítja a hálózati áramot az akku egyenáramává. Teljesítménye 7–22 kW. Gyors **DC töltéskor** az OBC-t „megkerüli” az áram: a töltőoszlop maga ad egyenáramot, akár 150–350 kW-tal.',
         madeOf: 'Teljesítményelektronika: egyenirányító, tranzisztoros átalakító, **transzformátor** a galvanikus leválasztáshoz, kondenzátorok, hűtött alumínium ház.',
         how: 'Elektronikai gyárban szerelik: a panelre beültetik az alkatrészeket, a nagy alkatrészeket kézzel vagy robottal, majd a házba építik, és nagyfeszültségű szigetelésvizsgálatot végeznek rajta.'
       },
       {
         id: 'dcdc', z: 4, name: 'DC-DC átalakító és 12 V-os akku', svg: dcdc, explode: T(152, -51, 46, 650, 430),
+        en: 'DC/DC converter (HV to 12 V) and auxiliary battery',
+        uni: 'A DC/DC átalakító a 400 vagy 800 V-os akkufeszültséget kb. 14 V-ra alakítja, jellemzően **galvanikus leválasztással** (fázistolt teljes híd vagy LLC kapcsolás, nagyfrekvenciás transzformátorral). Erre azért van szükség, mert a nagyfeszültségű kör az alvázhoz képest szigetelt (**IT-rendszer**), a 12 V-os kör viszont az alvázra van kötve. A teljesítmény 2–3,5 kW, ami a kisfeszültségű oldalon `I = P/U ≈ 3000 W/14 V ≈ 210 A` áramot jelent. A transzformátor menetszámáttétele és a PWM kitöltési tényező együtt határozza meg a kimeneti feszültséget. A segédakku ólom (AGM) vagy egyre gyakrabban LFP cellás.',
+        terms: ['villamosmernoki/transzformator', 'e-mobilitas/pwm'],
         what: 'A villanyautóban is van egy kis **12 V-os akku**: ez működteti a világítást, az ablakemelőt, a kijelzőket és az autó indításakor a nagyfeszültségű relék vezérlését. Menet közben a **DC-DC átalakító** tölti a nagy akkuból, a benzinesekben lévő generátor helyett.',
         madeOf: 'Az átalakító: tranzisztorok, transzformátor, alumínium ház. A 12 V-os akku ólomakkumulátor vagy egyre gyakrabban kis lítiumion akku.',
         how: 'Az átalakító ugyanúgy készül, mint a többi teljesítményelektronika. A 12 V-os akkut külön gyártják, és a csomagtartóban vagy elöl, a „frunkban” helyezik el.',
@@ -175,18 +194,26 @@
       },
       {
         id: 'port', terms: ['e-mobilitas/ccs', 'e-mobilitas/kw-kwh'], z: 5, name: 'Töltőcsatlakozó', svg: port, explode: T(-189, 84, 74, 48, 300),
+        en: 'charging inlet (Type 2 / CCS2)',
+        uni: 'AC töltéskor a töltőoszlop és az autó a **Control Pilot** (CP) vonalon kommunikál: ±12 V-os, 1 kHz-es PWM-jel, amelynek kitöltési tényezője adja meg a megengedett áramot (10–85% között `I = kitöltés[%] · 0,6 A`, pl. 50% → 30 A; IEC 61851). A **Proximity Pilot** ellenállása a kábel áramterhelhetőségét kódolja. DC töltéskor a kommunikáció a CP vonalon futó **powerline** kapcsolattal (DIN 70121 / ISO 15118) történik, ez adja a feszültség- és áramkérést. A CCS legfeljebb 1000 V-ot és folyadékhűtéses kábellel 500 A körüli áramot enged; a tényleges töltőteljesítményt (`P = U·I`) a BMS a töltöttség és a hőmérséklet szerint korlátozza, ezért csökken a teljesítmény 80% felett.',
         what: 'Ide dugod a töltőkábelt. Európában a **Type 2** dugó a szabványos AC töltéshez, a **CCS2** pedig ennek kiegészítése két vastag DC érintkezővel a gyorstöltéshez. Amíg a kábel be van dugva, az autó reteszeli, és csak a töltő és az autó „kézfogása” után kapcsol rá a feszültség.',
         madeOf: 'Hőálló **műanyag** ház, ezüstözött **réz** érintkezők, hőmérséklet-érzékelők és egy elektromos reteszelő motor.',
         how: 'Az érintkezőket esztergálják és ezüstözik, a házat fröccsöntik. A gyorstöltő csatlakozók érintkezőit néha folyadékkal hűtik, mert több száz amper folyik át rajtuk.'
       },
       {
         id: 'cool', z: 3, name: 'Hűtőkör és hőszivattyú', svg: cool, explode: T(190, 0, 46, 640, 325), badge: B(208, 44, 70),
+        en: 'thermal management: coolant loops and heat pump',
+        uni: 'Az akku hőtermelése nagyjából `Q̇ = I²·R_i` (plusz egy kisebb, reverzibilis entrópiatag); gyorstöltéskor ez a pakk egészében több kW is lehet, ezt a víz–glikol hűtőkör és egy **chiller** (a klímakör párologtatója) viszi el. A **hőszivattyú** fűtési jósági tényezője `COP = Q_fűtés/W`, az elméleti felső határ a Carnot-érték: `COP_max = T_m/(T_m − T_h)`. A gyakorlatban 0 °C körül COP ≈ 2–3, míg az elektromos (PTC) fűtésé 1, ezért télen a hőszivattyú érdemben növeli a hatótávot. Hűtőközegként R1234yf vagy egyre gyakrabban CO₂ (R744) szolgál; utóbbi hidegben is jól működik.',
+        terms: ['fizika-bsc/carnot-korfolyamat', 'fizika-bsc/entropia', 'e-mobilitas/hofutas'],
         what: 'Az akku 20–40 °C között érzi magát jól: hidegben lassan töltődik, melegben gyorsabban öregszik. A **hűtőkör** hűtőfolyadékot (kék csövek) keringet az akku, a motor és az inverter körül. A **hőszivattyú** télen a környezet és a hajtáslánc hulladékhőjét is felhasználja az utastér fűtésére, így kevesebb energiát fogyaszt, mint egy elektromos fűtőszál.',
         madeOf: 'Alumínium **hűtőradiátor**, elektromos **kompresszor** (ez is a nagyfeszültségről megy), hőcserélők, szelepek, gumi- és műanyag csövek, víz–glikol hűtőfolyadék és hűtőközeg.',
         how: 'A radiátor vékony alumíniumlemezekből és csövekből áll, amelyeket kemencében keményforrasztással kötnek össze. A rendszert összeszerelés után vákuumozzák, és feltöltik.'
       },
       {
         id: 'hv', z: 6, name: 'Nagyfeszültségű kábelek', svg: hv, explode: [0, -15], badge: B(-150, 48, 46),
+        en: 'high-voltage wiring harness (orange HV cables)',
+        uni: 'A nagyfeszültségű kör **B feszültségosztályú** (60 V DC felett, legfeljebb 1500 V DC), és az alváztól elszigetelt **IT-rendszer**: egyetlen szigetelési hiba még nem okoz áramütést, ezt a szigetelésfigyelő jelzi. A kábelkeresztmetszetet a melegedés (`P = I²·R`) határozza meg, a főáramkörben jellemzően 35–95 mm². A kábelek **árnyékoltak**, mert az inverter gyors feszültségváltozásai (SiC-nél több tíz kV/µs) erős elektromágneses zavart keltenek. A csatlakozókon átfutó **HVIL** (high-voltage interlock loop) hurok megszakadásakor a BMS azonnal bontja a fő mágneskapcsolókat.',
+        terms: ['villamosmernoki/foldelesi-rendszerek', 'villamosmernoki/erintesvedelem'],
         what: 'A **narancssárga** szín nemzetközi figyelmeztetés: **nagyfeszültség!** Ezek kötik össze az akkut az inverterrel, a töltővel, a DC-DC átalakítóval és a klímakompresszorral. Baleset után a mentők is erről ismerik fel, hová nem szabad vágni.\n\nA HV rendszeren csak **képzett és feljogosított szakember** dolgozhat, aki előtte kikapcsolja és leválasztja (pl. a szervizcsatlakozóval), majd méréssel ellenőrzi a feszültségmentességet.',
         madeOf: 'Vastag, finom elemi szálakból sodort **réz** vagy alumínium vezető, árnyékoló fémfonat (hogy ne zavarja a rádiót), és vastag, narancssárga szilikon vagy speciális műanyag szigetelés.',
         how: 'A sodrott vezetőre extrudálják a szigetelést, ráfonják az árnyékolást, majd a külső köpenyt. A végükre robotok sajtolják a csatlakozókat, és minden kábelt nagyfeszültségű vizsgálatnak vetnek alá.',
@@ -194,11 +221,17 @@
       },
       {
         id: 'wheels', terms: ['e-mobilitas/menetellenallas', 'e-mobilitas/rekuperacio'], z: 1, name: 'Kerekek és futómű', svg: wheels, explode: [0, 0], badge: B(150, 90, 36),
+        en: 'wheels, tyres and suspension',
+        uni: 'A gördülési ellenállás `F_g = f_g · m · g · cos α`; az alacsony gördülési ellenállású abroncsok tényezője kb. 0,006–0,009 (az uniós abroncscímke „A” osztálya 6,5 N/kN alatt van). Az ellenállás fő oka a gumi **hiszterézise**: a deformáció minden kerékfordulatnál hőveszteséget okoz. A vonóerőt és a fékerőt a gumi és az út közti **tapadás** korlátozza, ami a kerékszlip függvénye (μ(s)-görbe). A rekuperációs teljesítmény `P = F_fék · v`; ennek felső korlátja a motor és az inverter teljesítménye, valamint az akku pillanatnyi töltőáram-felvétele. A maradékot a súrlódó fék adja (**fékösszehangolás**, brake blending).',
         what: 'A kerekek adják át a nyomatékot az útnak. Villanyautóknál gyakran **alacsony gördülési ellenállású** gumikat és légellenállásra optimalizált felniket használnak, mert ezek is számítanak a hatótávnál. A fékek ritkábban kopnak, mert a lassítás nagy részét a motor végzi.',
         madeOf: 'Gumiabroncs: természetes és szintetikus **gumi**, korom, szilícium-dioxid, acél- és textilbetétek. Felni: alumíniumötvözet. Fékek: öntöttvas tárcsák.',
         how: 'A gumit rétegekből építik fel egy dobon, majd formában, hővel és nyomással **vulkanizálják**, ekkor kapja meg a mintázatát. A felniket alumíniumból öntik, majd esztergálják és festik.'
       }
     ],
+    uni: {
+      text: 'Egyetemi szemmel az elektromos autó egy **energiaátalakító lánc**: akkumulátor → inverter (kb. 97–99%) → villanymotor (kb. 90–96%) → reduktor (kb. 97–98%) → kerék. A teljes hatásfok az akkutól a kerékig kb. 85–90%, egy benzinmotoros hajtásláncé valós forgalomban kb. 20–30%. A szükséges vonóerőt a **menetellenállás** adja: `F = m·g·(f_g·cos α + sin α) + ½·ρ·c_w·A·v² + m·e·a`, ahol f_g a gördülési ellenállási tényező, c_w·A a légellenállási felület, e a forgó tömegek tényezője. Példa: m = 2000 kg, f_g = 0,009, c_w·A = 0,53 m², v = 130 km/h esetén a gördülési ellenállás kb. 180 N, a légellenállás kb. 415 N, összesen kb. 590 N, ami kb. 21 kW-ot és kb. 16 kWh/100 km energiát jelent a keréken; a láncveszteségekkel kb. 18–19 kWh/100 km. Fékezéskor a motor generátorként működik (**rekuperáció**), így a mozgási energia egy része visszakerül az akkuba.',
+      terms: ['e-mobilitas/menetellenallas', 'e-mobilitas/legellenallas', 'e-mobilitas/gordulesi-ellenallas', 'e-mobilitas/hatasfok', 'e-mobilitas/pmsm', 'e-mobilitas/inverter', 'e-mobilitas/bms', 'e-mobilitas/rekuperacio', 'e-mobilitas/kw-kwh']
+    },
     steps: [
       { icon: '🔋', title: 'Akkupakk építése', text: 'Az akkugyárban a cellákat modulokba, majd a padlólemez méretű dobozba építik a **BMS**-sel és a hűtőlapokkal együtt. Az akku gyakran az autó legdrágább alkatrésze.', parts: ['battery', 'bms'] },
       { icon: '🏭', title: 'Karosszériaépítés', text: 'A préselt lemezeket robotok hegesztik és ragasztják össze a karosszériaüzemben, majd a karosszéria a festőüzembe kerül.', parts: ['body'] },

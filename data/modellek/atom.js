@@ -115,6 +115,9 @@
     parts: [
       {
         id: 'nucleus', z: 3, name: 'Atommag', svg: core, explode: [0, 215], badge: [C[0] + 4, C[1] - 44],
+        en: 'atomic nucleus',
+        uni: 'A mag sugara jó közelítéssel `R = r_0 · A^(1/3)`, ahol r_0 ≈ 1,2 fm és A a tömegszám: a ²⁸Si magra R ≈ 3,6 fm. Ebből következik, hogy minden mag sűrűsége közel azonos, kb. **2,3·10¹⁷ kg/m³**. A mag tömege kisebb, mint alkotórészeié; a hiány a **kötési energia**: `B = (Z·m_p + N·m_n − M_mag)·c²`. A ²⁸Si fajlagos kötési energiája kb. 8,45 MeV/nukleon, a maximum (kb. 8,8 MeV/nukleon) a vas–nikkel tartományban van: ezért ad energiát a könnyű magok fúziója és a nehéz magok hasadása. A B(A, Z) függést a **Weizsäcker-féle félempirikus tömegformula** (térfogati, felületi, Coulomb-, aszimmetria- és párosítási tag) írja le.',
+        terms: ['fizika-bsc/tomeg-energia', 'fizika-bsc/radioaktiv-bomlas'],
         what: 'Az atom közepén lévő apró, rendkívül sűrű golyó. Itt van az atom tömegének **99,9%-a**, pedig az átmérője csak tízezred–százezred része az atoménak. A szilícium magjában **14 proton** és (a leggyakoribb változatban) **14 neutron** van. A protonok száma határozza meg, melyik elemről van szó: 14 proton = szilícium, 6 = szén, 8 = oxigén.',
         madeOf: 'Protonokból és neutronokból (közös nevükön **nukleonok**). Ezeket az **erős kölcsönhatás** tartja össze, amely sokkal erősebb, mint a protonok közti elektromos taszítás, de csak nagyon kis (kb. 10⁻¹⁵ m-es) távolságon hat.',
         how: 'A szilícium magja nem a Földön készült: **csillagok belsejében** jött létre, ahol több milliárd fokon könnyebb atommagok olvadtak össze (magfúzió), majd egy **szupernóva-robbanás** szórta szét. A lépéseket lent követheted.',
@@ -122,6 +125,9 @@
       },
       {
         id: 'proton', z: 5, name: 'Proton', svg: prot, explode: [-100, 215], badge: [C[0] - 36, C[1] + 20],
+        en: 'proton',
+        uni: 'A proton **barion**, kvarkösszetétele **uud** (2/3 + 2/3 − 1/3 = +1). Töltése +e = 1,602·10⁻¹⁹ C, nyugalmi tömege **938,27 MeV/c²** (1,6726·10⁻²⁷ kg), spinje 1/2, tehát fermion. Figyelemre méltó, hogy a három kvark nyugalmi tömege (kb. 2,2 + 2,2 + 4,7 MeV/c²) a protontömegnek csak kb. 1%-a: a többi a kvarkok mozgási energiájából és a gluonmező energiájából származik (`E = m·c²`). A proton kísérletileg stabil, élettartama több mint 10³⁴ év; mágneses momentuma kb. 2,79 magmagneton, ami maga is a belső szerkezetre utal.',
+        terms: ['fizika-bsc/tomeg-energia'],
         what: 'A mag **pozitív töltésű** részecskéje (+1 elemi töltés). A számuk, a **rendszám**, adja meg, melyik elemről van szó. A periódusos rendszer is e szerint van sorba rendezve: a szilícium a 14. elem.',
         madeOf: 'Három **kvarkból**: két **u** (fel) és egy **d** (le) kvarkból. A töltéseik összege: +2/3 +2/3 −1/3 = **+1**. A kvarkokat **gluonok** tartják össze.',
         how: 'Az univerzum protonjainak túlnyomó része az **ősrobbanás** utáni első másodperc töredékében keletkezett, amikor a forró kvark–gluon „leves” annyira lehűlt, hogy a kvarkok hármasával összeálltak. Egy proton nagyon stabil: élettartama legalább 10³⁴ év, vagyis gyakorlatilag örök.',
@@ -129,6 +135,9 @@
       },
       {
         id: 'neutron', z: 4, name: 'Neutron', svg: neut, explode: [100, 215], badge: [C[0] + 36, C[1] + 22],
+        en: 'neutron',
+        uni: 'A neutron kvarkösszetétele **udd** (töltése 0), tömege **939,57 MeV/c²**, kb. 1,29 MeV/c²-tel nagyobb a protonénál. Emiatt szabad állapotban instabil: **β⁻-bomlással** `n → p + e⁻ + ν̄_e` alakul át, átlagos élettartama kb. 880 s. A bomlás a gyenge kölcsönhatás műve: egy d kvark u kvarkká alakul egy virtuális W⁻ bozon kibocsátásával. A magban kötött neutron akkor stabil, ha a bomlás energetikailag nem kedvező. Könnyű magokban N ≈ Z a stabil, nehezebbekben a protonok Coulomb-taszítása miatt N > Z (pl. ²⁰⁸Pb: 82 proton, 126 neutron).',
+        terms: ['fizika-bsc/radioaktiv-bomlas'],
         what: 'A mag **semleges** (töltés nélküli) részecskéje, tömege majdnem ugyanannyi, mint a protoné. A neutronok „ragasztóként” is működnek: az erős kölcsönhatásukkal segítenek összetartani a magot, de nem taszítják a protonokat. Ugyanannak az elemnek lehet különböző neutronszámú változata, ezek az **izotópok** (pl. szilícium-28, -29, -30).',
         madeOf: 'Három kvarkból: egy **u** és két **d** kvarkból: +2/3 −1/3 −1/3 = **0** töltés.',
         how: 'Az ősrobbanás után a protonokkal együtt keletkeztek. Egyedül, a magon kívül egy neutron nem stabil: kb. **10 perc** felezési idővel protonra, elektronra és antineutrínóra bomlik. Ezért csak azok maradtak meg, amelyek az első percekben magokba épültek.',
@@ -136,6 +145,9 @@
       },
       {
         id: 'electrons', z: 6, name: 'Elektronok (belső héjak)', svg: elec, explode: [0, 0], badge: [C[0] + R[1] * Math.cos(1.77) + 20, C[1] + R[1] * Math.sin(1.77) - 6],
+        en: 'core electrons (inner shells)',
+        uni: 'A szilícium alapállapotú elektronkonfigurációja `1s² 2s² 2p⁶ 3s² 3p²`, a belső (törzs-) elektronok az 1s, 2s és 2p pályákon vannak. Ezeket a mag szinte árnyékolatlanul vonzza, ezért kötési energiájuk nagy: a Si 1s elektronjáé kb. **1,84 keV**, vagyis a röntgentartományba esik (erre épül a röntgen-fotoelektron-spektroszkópia és a **Moseley-törvény**, `√f ∝ (Z − 1)`). A külső elektronokat a belsők leárnyékolják, ezek csak egy **effektív magtöltést** érzékelnek: `Z_eff = Z − σ` (σ az árnyékolási állandó, Slater-szabályokkal becsülhető). Az elektron tömege 0,511 MeV/c², a protonénak kb. 1/1836-od része.',
+        terms: ['kemia-bsc/elektronkonfiguracio', 'kemia-bsc/pauli-hund'],
         what: 'Kicsi, **negatív töltésű** részecskék (−1 elemi töltés) a mag körül. Egy semleges atomban annyi elektron van, ahány proton: a szilíciumban 14. A belső héjakon lévő 10 elektron szorosan kötődik a maghoz, a kémiai reakciókban nem vesz részt.',
         madeOf: 'Az elektron (a mai tudásunk szerint) **elemi részecske**: nem áll kisebb részekből. Tömege kb. 9,1 · 10⁻³¹ kg.',
         how: 'Az elektronok is az ősrobbanás első pillanataiban keletkeztek. Kb. **380 000 évig** azonban túl forró volt minden ahhoz, hogy a magok befogják őket. Amikor az univerzum kb. 3000 fokra hűlt, az elektronok a magokhoz kötődtek: ekkor jöttek létre az első semleges atomok.',
@@ -143,6 +155,9 @@
       },
       {
         id: 'valence', z: 7, name: 'Vegyértékelektronok', svg: val, explode: [0, 0], badge: [C[0] + R[2] * Math.cos(1.035) + 21, C[1] + R[2] * Math.sin(1.035) - 4],
+        en: 'valence electrons',
+        uni: 'A Si vegyértékhéja `3s² 3p²`. Kötéskor az atom **sp³ hibridpályákat** képez, ezek tetraéderesen (109,5°) irányulnak, így jön létre a gyémántrács, amelyben minden atom négy kovalens kötést létesít. Az első **ionizációs energia** 8,15 eV. A kristályban az atomok pályái átfednek, és a diszkrét energiaszintek **sávokká** szélesednek: a betöltött vegyértéksávot a vezetési sávtól 1,12 eV-os **tiltott sáv** választja el (300 K-en). Ez teszi a szilíciumot félvezetővé, és ez a 1,12 eV szabja meg a napelemek és a tranzisztorok működését is.',
+        terms: ['kemia-bsc/hibridizacio', 'kemia-bsc/ionizacios-energia'],
         what: 'A **legkülső héj** elektronjai, a szilíciumnál 4 darab (a rajzon sárgák). Ezek határozzák meg, hogyan kapcsolódik az atom más atomokhoz. A szilíciumkristályban minden atom a 4 vegyértékelektronjával 4 szomszédjához köt: mindegyikkel egy **közös elektronpárt** alkot (kovalens kötés).',
         madeOf: 'Ugyanolyan elektronok, mint a belsők, csak távolabb vannak a magtól, ezért lazábban kötődnek.',
         how: 'A héjak a mag körül a kvantummechanika szabályai szerint töltődnek fel: az első héjra legfeljebb 2, a másodikra 8 elektron fér. A szilícium 14 elektronjából így 2 + 8 után **4 marad** a külső héjra.',
@@ -150,6 +165,9 @@
       },
       {
         id: 'shells', z: 2, name: 'Elektronhéjak', svg: shells, explode: [0, 0], badge: [C[0] - R[2] * 0.707, C[1] + R[2] * 0.707],
+        en: 'electron shells (energy levels)',
+        uni: 'A kvantummechanikában egy elektron állapotát négy **kvantumszám** adja meg: főkvantumszám n = 1, 2, 3…, mellékkvantumszám l = 0…n−1 (s, p, d, f alhéjak), mágneses kvantumszám m_l = −l…+l és spin-kvantumszám m_s = ±1/2. A **Pauli-elv** miatt minden állapotban legfeljebb egy elektron lehet, így az n-edik héj kapacitása **2n²** (2, 8, 18…). Hidrogénszerű atomban az energiaszintek `E_n = −13,6 eV · Z²/n²`. Többelektronos atomban az l szerinti degeneráció megszűnik, és az alhéjak betöltési sorrendjét az **(n + l)-szabály** (Madelung-szabály) közelíti, a Bohr-féle körpálya-kép pedig csak szemléltetés.',
+        terms: ['kemia-bsc/kvantumszamok', 'kemia-bsc/pauli-hund'],
         what: 'A körök az **energiaszinteket** jelölik: minél távolabb van egy héj a magtól, annál nagyobb az elektron energiája rajta. A héjakat belülről kifelé K, L, M betűkkel (vagy 1, 2, 3 számmal) jelölik. Ez a **Bohr-féle atommodell**, amely jól szemlélteti a héjakat, de egyszerűsítés: az elektronok valójában nem keringenek körpályán, mint a bolygók.',
         madeOf: 'A héj nem tárgy, hanem egy **megengedett energiaállapot**. Az elektron csak meghatározott energiájú állapotokban lehet. Ha egy alacsonyabbra „ugrik”, a különbséget fényként (fotonként) bocsátja ki.',
         how: 'A héjak szerkezetét a kvantummechanika írja le. Az, hogy egy héjra hány elektron fér (2, 8, 18…), a **Pauli-elvből** következik: két elektron nem lehet pontosan ugyanabban az állapotban.',
@@ -157,6 +175,9 @@
       },
       {
         id: 'cloud', z: 0, name: 'Elektronfelhő', svg: cloud, explode: [0, 0], badge: [C[0] + 150, C[1] + 118],
+        en: 'electron cloud (orbital probability density)',
+        uni: 'Az elektront a **hullámfüggvény** írja le, amely a stacionárius Schrödinger-egyenlet `Ĥψ = Eψ` megoldása. Gömbszimmetrikus potenciálban szeparálható: `ψ_nlm(r, θ, φ) = R_nl(r) · Y_lm(θ, φ)`, és `|ψ|²` adja meg a **valószínűségsűrűséget**: a felhő ennek a térképe. Az elektronnak azért nincs pályája, mert a **Heisenberg-féle határozatlansági reláció** (`Δx · Δp ≥ ħ/2`) szerint helye és impulzusa egyszerre nem lehet éles. A hidrogén 1s állapotában a legvalószínűbb sugár a **Bohr-sugár**, a_0 = 0,0529 nm.',
+        terms: ['fizika-bsc/hullamfuggveny', 'fizika-bsc/hatarozatlansag', 'kemia-bsc/atompalya'],
         what: 'A mai, **kvantummechanikai** kép: az elektronnak nincs pontos pályája, csak azt lehet megmondani, hol milyen **valószínűséggel** található. Ezt egy elmosódott felhővel ábrázolják: ahol sűrűbb, ott nagyobb eséllyel van az elektron. A felhő alakja (gömb, súlyzó stb.) az ún. **pályától** (orbitáltól) függ.',
         madeOf: 'Maguk az elektronok, egy különös tulajdonsággal: egyszerre viselkednek részecskeként és **hullámként**. A felhő ennek a hullámnak a „sűrűsége”.',
         how: 'Az elektron hullámtermészetét a **Schrödinger-egyenlet** írja le (1926). Ennek megoldásaiból kapják a fizikusok a felhők alakját.',
@@ -164,6 +185,9 @@
       },
       {
         id: 'quarks', z: 9, name: 'Kvarkok (u és d)', svg: quarks, explode: [0, 0], badge: [455, 70],
+        en: 'up and down quarks',
+        uni: 'A kvarkok 1/2 spinű elemi fermionok; hat **ízük** van (u, d, s, c, b, t), a közönséges anyagban csak u és d fordul elő. Áramkvark-tömegük kicsi: u ≈ 2,2 MeV/c², d ≈ 4,7 MeV/c². Az elektromos töltésen kívül **színtöltésük** is van (piros, zöld, kék), és csak színsemleges kombinációkban, **hadronokban** fordulnak elő: barionokban (qqq) és mezonokban (qq̄). Ez a **kvarkbezárás** (confinement): szabad kvarkot soha nem figyeltek meg, mert a szétválasztásukra fordított energiából új kvark–antikvark párok keletkeznek.',
+        terms: ['fizika-bsc/tomeg-energia'],
         what: 'A protonok és a neutronok építőkövei. A közönséges anyagban kétféle kvark van: az **u** („up”, fel) kvark töltése **+2/3**, a **d** („down”, le) kvarké **−1/3**. A proton **uud**, a neutron **udd**.',
         madeOf: 'A mai tudásunk szerint a kvarkok **elemi részecskék**, nincsenek kisebb részeik. Összesen hatféle kvark létezik (u, d, s, c, b, t), de a többi instabil, csak részecskegyorsítókban és a kozmikus sugárzásban jelenik meg.',
         how: 'Az ősrobbanás utáni első milliomod másodpercekben a kvarkok és a gluonok szabadon kavarogtak egy forró „levesben” (**kvark–gluon plazma**). Amikor ez lehűlt, a kvarkok hármasával protonokká és neutronokká álltak össze.',
@@ -171,6 +195,8 @@
       },
       {
         id: 'gluons', z: 8, name: 'Gluonok (erős kölcsönhatás)', svg: gluons, explode: [0, 0], badge: [455, 300],
+        en: 'gluons (strong interaction)',
+        uni: 'A gluonok a **kvantum-színdinamika** (QCD) nyugalmi tömeg nélküli, 1 spinű mértékbozonjai; nyolcféle színállapotuk van. A fotonnal ellentétben maguk is hordoznak színtöltést, ezért egymással is kölcsönhatnak. Ebből két jelenség következik: nagy energián (kis távolságon) a csatolás gyengül (**aszimptotikus szabadság**, Nobel-díj 2004), nagy távolságon viszont a kvark–antikvark potenciál lineárisan nő: `V(r) ≈ −(4/3)·α_s·ħc/r + σ·r`, ahol σ ≈ 1 GeV/fm. A nukleonokat a magban a **maradék erős kölcsönhatás** tartja össze, amely jó közelítésben pioncserével írható le; hatótávolsága `ħ/(m_π·c) ≈ 1,4 fm`.',
         what: 'A kvarkokat összetartó „ragasztó” részecskék (az angol glue = ragasztó szóból). Ők közvetítik az **erős kölcsönhatást**, a természet legerősebb alapvető kölcsönhatását. A rajzon rugószerű vonal jelöli őket.',
         madeOf: 'A gluon elemi részecske, nyugalmi tömege nulla, de rengeteg **energiát** hordoz.',
         how: 'A gluonok folyamatosan keletkeznek és elnyelődnek a kvarkok között. Különlegességük, hogy minél jobban távolodnak a kvarkok, annál erősebb köztük a vonzás, mint egy kifeszített gumiszalagban.',
@@ -178,12 +204,19 @@
       },
       {
         id: 'empty', z: 1, name: 'Üres tér', svg: empty, explode: [0, 0],
+        en: 'empty space between nucleus and electrons',
+        uni: 'A mag és az atom térfogatának aránya `(R_mag/R_atom)³ ≈ (3,6 fm / 0,11 nm)³ ≈ 3·10⁻¹⁴`: a térfogat szinte egésze „üres”. Ezt mutatta ki **Rutherford** szórási kísérlete: az alfa-részecskék többsége eltérülés nélkül áthaladt az aranyfólián, a ritka nagy szögű szórás eloszlása (`dσ/dΩ ∝ 1/sin⁴(θ/2)`) pedig pontszerű, pozitív magra utalt. A tér azonban nem semmi: kitölti a mag **Coulomb-tere** (`E = Z·e/(4π·ε_0·r²)`), és ahol az elektron hullámfüggvénye nem nulla, ott van tartózkodási valószínűsége. A kvantumtérelméletben még az abszolút vákuumnak is van szerkezete (vákuumfluktuációk, ezek mérhető következménye a Lamb-eltolódás és a Casimir-effektus).',
+        terms: ['fizika-bsc/elektromos-terero', 'fizika-bsc/potencial'],
         what: 'Az atom szinte teljesen **üres**. Ha az atommagot egy borsószemre nagyítanánk, az elektronfelhő akkora lenne, mint egy **futballstadion**. A kettő között nincs semmi, csak az elektronok valószínűségi felhője és az elektromos tér.',
         madeOf: 'Semmiből. Pontosabban: nincs benne anyagi részecske, de áthatja a mag és az elektronok **elektromos tere**.',
         how: '1909-ben Geiger és Marsden (**Rutherford** irányításával) alfa-részecskékkel lőtt egy vékony aranyfóliát. A részecskék szinte mind akadálytalanul átmentek, és csak nagyon ritkán pattant vissza egy-egy. Ebből jött rá Rutherford, hogy az atom tömege egy apró magba sűrűsödik, a többi pedig üres.',
         fact: 'Ha az emberiség összes atomjából „kinyomnánk” az üres teret, a teljes emberiség elférne egy kockacukor méretű kockában (igaz, az kb. félmilliárd tonnát nyomna).'
       }
     ],
+    uni: {
+      text: 'Egyetemi szinten az atom három, egymástól nagyságrendekkel elváló skálán írható le. Az **elektronhéj** (kb. 10⁻¹⁰ m) az elektromágneses kölcsönhatás és a kvantummechanika világa: a jellemző energiák néhány eV-osak, ez a kémia skálája. Az **atommag** (kb. 10⁻¹⁵ m = 1 fm) az erős kölcsönhatás birodalma, ahol a kötési energiák MeV nagyságrendűek, ezért a magreakciók milliószor több energiát szabadítanak fel, mint a kémiai reakciók. A **nukleonok belsejében** a kvarkok és gluonok dinamikáját a kvantum-színdinamika (QCD) írja le, GeV-os energiaskálán. A **standard modell** szerint a közönséges anyag mindössze három elemi részecskéből (u és d kvark, elektron) és a kölcsönhatásokat közvetítő bozonokból (foton, gluonok, W és Z) épül fel.',
+      terms: ['kemia-bsc/kvantumszamok', 'kemia-bsc/atompalya', 'kemia-bsc/elektronkonfiguracio', 'fizika-bsc/hullamfuggveny', 'fizika-bsc/hatarozatlansag', 'fizika-bsc/tomeg-energia', 'fizika-bsc/radioaktiv-bomlas']
+    },
     steps: [
       { icon: '💥', title: 'Ősrobbanás: kvark–gluon leves', when: '0 – 10⁻⁶ s', text: 'Kb. **13,8 milliárd** éve az univerzum elképesztően forró és sűrű volt. Atomok, sőt protonok sem létezhettek: a **kvarkok** és **gluonok** szabadon kavarogtak, elektronokkal és fotonokkal együtt.', parts: ['quarks', 'gluons'] },
       { icon: '🧊', title: 'Protonok és neutronok', when: 'kb. 10⁻⁶ s – 1 s', text: 'Ahogy a világegyetem tágult és hűlt, a kvarkok hármasával összeálltak: létrejöttek a **protonok** és a **neutronok**. Kezdetben közel ugyanannyi volt belőlük, de a hűlés során a neutronok aránya csökkent.', parts: ['proton', 'neutron'] },

@@ -138,6 +138,9 @@
     parts: [
       {
         id: 'fedel', z: 9, name: 'Fedél (takarólemez)', svg: cover, explode: [168, 0], badge: [186, 485],
+        en: 'front cover (dead front)',
+        uni: 'A fedél az **alapvédelem** (közvetlen érintés elleni védelem) eszköze: burkolással akadályozza meg az aktív részek megérintését. Az IEC 60529 szerinti védettségnek legalább **IP2X** (vagy IPXXB) fokozatúnak kell lennie, vagyis a 12 mm-es vizsgálóujj nem érhet el feszültség alatti részt. A fedél a szekrény hőháztartását is befolyásolja: minden készülék veszteséget termel (egy kismegszakító névleges áramon néhány W-ot), és a szekrényt az IEC 61439 szerint úgy kell kialakítani, hogy a belső hőmérséklet-emelkedés ne lépje túl a megengedett értéket.',
+        terms: ['villamosmernoki/erintesvedelem'],
         what: 'A fedél eltakarja a feszültség alatt lévő vezetékeket és kapcsokat. Csak a készülékek kapcsolókarja látszik ki a nyílásokon, így biztonságosan lehet kapcsolni őket. A kismegszakítók alatt kis **feliratcsíkok** mutatják, melyik áramkört védik.',
         madeOf: 'Lángálló, ütésálló **műanyag** (pl. polikarbonát vagy ABS), sok szekrénynél fém, porfestett acél. A rajzon áttetszőnek rajzoltuk, hogy lásd mögötte a vezetékeket.',
         how: 'Fröccsöntéssel készül. A villanyszerelő a modulok helyét kitöri vagy vakfedéllel zárja le, hogy sehol ne maradjon rés, ahol be lehetne nyúlni.',
@@ -145,18 +148,25 @@
       },
       {
         id: 'fokapcsolo', terms: ['villamosmernoki/haromfazisu-rendszer'], z: 4, name: 'Főkapcsoló', svg: main, explode: [L, -22], badge: [MS + 25, R1 + 100], lesson: 'villanyszereles/biztonsag',
+        en: 'main switch (switch-disconnector)',
+        uni: 'A főkapcsoló **terheléskapcsoló-szakaszoló**: névleges áramát (pl. 40–63 A) terhelés alatt is be- és kikapcsolhatja (AC-22A használati kategória: vegyes ohmos és mérsékelten induktív terhelés), kikapcsolt állapotban pedig **leválasztó** funkciót lát el, megfelelő érintkezőtávolsággal és megbízható állásjelzéssel. Nem védelmi készülék: nincs kioldója, zárlatot nem kapcsol le, csak a névleges rövid idejű zárlati áramot (I_cw) bírja el, amíg az előtte lévő olvadóbiztosító (gG) vagy kismegszakító lekapcsol. Háromfázisú betáplálásnál három- vagy négypólusú, egy fázisnál kétpólusú.',
         what: 'Ezzel lehet az egész lakást egyszerre áramtalanítani. Kétpólusú: a fázist és a nullát is bontja. Javítás előtt ezt kapcsolják le, és **lakattal vagy táblával** jelzik, hogy senki ne kapcsolja vissza.',
         madeOf: 'Műanyag ház, benne **ezüstötvözet bevonatú réz érintkezők**, rugós kapcsolómechanika és ívoltó kamra.',
         how: 'Az érintkezőket sajtolják és ezüstözik, a mechanikát automata gépsoron szerelik össze a fröccsöntött házba. Minden darabot próbapadon kapcsolgatnak és mérnek.'
       },
       {
         id: 'spd', z: 4, name: 'Túlfeszültség-levezető', svg: spd, explode: [L, -22], badge: [SPD + 25, R1 + 100],
+        en: 'surge protective device (SPD)',
+        uni: 'A túlfeszültség-levezetőket vizsgálóimpulzusuk szerint osztályozzák: **1. típus** (T1) a közvetlen villámáram egy részének levezetésére, 10/350 µs-os hullámalakkal vizsgálva (I_imp pl. 12,5–25 kA pólusonként); **2. típus** (T2) a 8/20 µs-os indukált túlfeszültségekre (I_n kb. 20 kA); **3. típus** (T3) a védett készülék közelében, finomvédelemként. A T1-ben jellemzően **szikraköz**, a T2-ben **varisztor** (ZnO, erősen nemlineáris karakterisztika: `I ∝ U^α`, α ≈ 25–50) van. A védelmi szint U_p ≤ 1,5 kV legyen, hogy a 2,5 kV lökőfeszültség-állóságú (II. túlfeszültség-kategóriájú) készülékek védve legyenek. A bekötővezetékek legyenek rövidek (≤ 0,5 m), mert a vezeték induktivitásán (kb. 1 µH/m) `U = L·di/dt` feszültség esik: 10 kA/8 µs esetén méterenként kb. 1,25 kV.',
+        terms: ['fizika-bsc/faraday-indukcio'],
         what: 'Villámcsapáskor vagy hálózati kapcsolásnál a vezetékekben egy pillanatra több ezer voltos feszültségcsúcs futhat végig. A levezető ezt a „löketet” a **védőföld** felé vezeti el, mielőtt tönkretenné a tévét vagy a hűtőt. A zöld ablak azt jelzi, hogy még működőképes.',
         madeOf: 'A lelke egy **varisztor**: cink-oxid kerámia tárcsa, ami normál feszültségen szigetel, túlfeszültségnél viszont hirtelen vezetni kezd. Mellette hőkioldó, ami a kiégett varisztort lekapcsolja.',
         how: 'A cink-oxid port kis tárcsákká préselik, kiégetik (szinterelik), fém elektródákat visznek fel rá, és betokozzák. A cserélhető betétet egy talpba dugják.'
       },
       {
         id: 'fi', terms: ['villamosmernoki/aram-vedokapcsolo', 'villamosmernoki/erintesvedelem'], z: 4, name: 'FI relé (ÁVK, 30 mA)', svg: fi, explode: [L, -22], badge: [FI + 25, R1 + 100], lesson: 'villanyszereles/vedelmek',
+        en: 'residual current device (RCD/RCCB, 30 mA)',
+        uni: 'Az ÁVK lelke az **összegáram-transzformátor**: egy toroid vasmag, amelyen az összes aktív vezető (L és N) áthalad. Ép áramkörben `i_L + i_N = 0`, a mag fluxusa nulla. Ha a fázisáram egy része a PE-n vagy egy emberen át folyik el, a **különbözeti áram** (`I_Δ = Σi`) fluxust kelt, a szekunder tekercsben feszültség indukálódik, és ez egy állandó mágneses kioldóreléhez jut. A kioldás így a hálózati feszültségtől független. A szabvány szerint I_Δn = 30 mA esetén a kioldás 15 és 30 mA között következik be, névleges hibaáramnál 300 ms-on, ötszörösénél 40 ms-on belül. Típusai: **AC** (csak szinuszos), **A** (lüktető egyenáramú összetevővel is), **F**, valamint **B** (sima egyenáramú hibaáramra is, pl. frekvenciaváltóknál, villanyautó-töltőknél). A tesztgomb egy ellenálláson át mesterséges különbözeti áramot hoz létre.',
         what: 'Az **áram-védőkapcsoló** az embert védi az áramütéstől. Folyamatosan összehasonlítja a fázison bemenő és a nullán visszajövő áramot. Ha a kettő között **30 mA-nél** nagyobb a különbség, az áram valahol máshol folyik el, például egy ember testén át a föld felé, és ekkor a másodperc töredéke alatt (jellemzően 20–40 ezredmásodperc alatt) lekapcsol.\n\nA sárga **T** (teszt) gombbal félévente érdemes kipróbálni: ha működik, azonnal leold.',
         madeOf: 'Egy gyűrű alakú **vasmag** (összegző áramváltó), amin a fázis és a nulla is átmegy, egy érzékeny kioldórelé, rugós kapcsolómechanika és ezüstözött réz érintkezők.',
         how: 'A nagyon érzékeny, nagy permeabilitású ötvözetből készült gyűrűmagot feltekercselik, a relét pontosan beállítják. Minden FI relét gyári próbán ellenőriznek, hogy a megadott hibaáramnál és időn belül leoldjon.',
@@ -164,6 +174,8 @@
       },
       {
         id: 'mcb', terms: ['villamosmernoki/zarlati-aram'], z: 4, name: 'Kismegszakítók és fésűs sín', svg: mcb, explode: [L, -16], lesson: 'villanyszereles/vedelmek',
+        en: 'miniature circuit breakers (MCB) and comb busbar',
+        uni: 'A kismegszakító kioldási jelleggörbéje két tartományból áll. A **hőkioldó** (ikerfém) túlterhelésre működik: 1,13·I_n-nél egy órán belül nem old ki, 1,45·I_n-nél egy órán belül biztosan kiold. Az **elektromágneses gyorskioldó** zárlatra működik: B jelleggörbénél 3–5·I_n, C-nél 5–10·I_n, D-nél 10–20·I_n áramnál pillanatszerűen. A hurokimpedancia feltétele `Z_s ≤ U_0/I_a`; B16-os kismegszakítónál I_a = 5 · 16 A = 80 A, így `Z_s ≤ 230 V / 80 A ≈ 2,9 Ω`. A vezeték védelméhez teljesülnie kell az `I_B ≤ I_n ≤ I_z` és az `I_2 ≤ 1,45·I_z` feltételnek (I_B a terhelőáram, I_z a vezeték terhelhetősége). A lakásokban jellemző zárlati megszakítóképesség 6 kA vagy 10 kA, és a 3. energiahatárolási osztály az átengedett `I²t`-t korlátozza.',
         what: 'Minden áramkörnek saját kismegszakítója van. **Túlterheléskor** (túl sok fogyasztó egy körön) egy hőre hajló ikerfém, **rövidzárlatkor** egy gyors mágneses tekercs oldja le. A kismegszakító elsősorban a **vezetéket** védi a túlmelegedéstől.\n\n- **B10**: 10 A, világítás (1,5 mm² vezeték)\n- **B16**: 16 A, aljzatok (2,5 mm² vezeték)\n\nA „B” betű a kioldási jelleggörbe: a névleges áram 3–5-szörösénél azonnal old.\n\nA tetejükön futó rézfésű, a **fésűs sín** osztja el a fázist az összes kismegszakító között.',
         madeOf: 'Műanyag ház, **ikerfém** (két különböző hőtágulású fém összehengerelve), rézhuzal tekercs vasmaggal, ezüstözött érintkezők és egy **ívoltó kamra** acéllemezekből, amely szétszakítja a lekapcsoláskor keletkező szikrát. A fésűs sín rézből van, műanyag szigeteléssel.',
         how: 'Évente százmilliókat gyártanak teljesen automatizált gépsorokon. Minden kész darabon ellenőrzik a kioldást: adott áramra adott időn belül le kell kapcsolnia.',
@@ -171,47 +183,70 @@
       },
       {
         id: 'din', z: 1, name: 'DIN sínek', svg: din, explode: [L, 0],
+        en: 'DIN rail (TS 35, EN 60715)',
+        uni: 'A kalapsín szabványos mérete **35 × 7,5 mm** (nagyobb terheléshez 35 × 15 mm), az EN 60715 szerint. A moduláris készülékek osztása **17,5 mm** (1 modul, tűréssel kb. 18 mm), így az elosztó kiosztása modulszámban tervezhető. A sűrűn egymás mellé szerelt készülékek melegítik egymást: a kismegszakítók kioldási jelleggörbéjét a gyártók 30 °C-os környezetre adják meg, és egymás melletti, tartós terhelésnél a gyártói **csökkentő tényezőkkel** kell számolni. Fém szekrényben a sín a ház részeként a védővezetőhöz kötött.',
         what: 'A szabványos, kalap alakú fémsín, amelyre a készülékek rápattannak. A szélessége 35 mm, ezért bármelyik gyártó készüléke felfér rá.',
         madeOf: 'Horganyzott **acél** (ritkábban alumínium) szalag.',
         how: 'Acélszalagból hengerléssel hajlítják kalap profilúra, a hosszú réseket kistanzolják, majd horganyozzák, hogy ne rozsdásodjon. A szekrény hátlapjára csavarozzák.'
       },
       {
         id: 'nsin', z: 2, name: 'N gyűjtősín (kék)', svg: nbus, explode: [L, 14],
+        en: 'neutral busbar (N terminal block)',
+        uni: 'Egyfázisú áramkörben a nullavezető árama megegyezik a fázisáraméval. Háromfázisú, **szimmetrikus** lineáris terhelésnél a fázisáramok fazorösszege nulla, a nullavezetőben nem folyik áram. Nemlineáris fogyasztóknál (kapcsolóüzemű tápegységek, LED-meghajtók) azonban a **harmadik felharmonikusok** a három fázisból azonos fázisban adódnak össze a nullavezetőben, ezért annak árama elméletileg akár a fázisáram kb. **1,73-szorosa** is lehet; ezért nem szabad a nullavezető keresztmetszetét csökkenteni. Háromfázisú rendszerben a **nullaszakadás** veszélyes: a csillagpont eltolódik, és aszimmetrikus terhelésnél egyes fogyasztókra a 230 V helyett akár közel 400 V is juthat.',
+        terms: ['villamosmernoki/haromfazisu-rendszer', 'villamosmernoki/fazor', 'villamosmernoki/csillag-kapcsolas'],
         what: 'Ide fut be az FI relé után a **nullavezető**, és innen indul ki minden áramkör kék nullavezetője. Csak a saját FI relé utáni körök nullái kerülhetnek ide, különben az FI relé tévesen oldana le.',
         madeOf: '**Sárgaréz** (réz–cink ötvözet) sín csavaros kapcsokkal, kék műanyag szigetelő talpon.',
         how: 'A sárgaréz rudat darabolják, kifúrják, menetet vágnak bele, a csavarokat behajtják, és a szigetelő talpba pattintják.'
       },
       {
         id: 'pesin', terms: ['villamosmernoki/foldelesi-rendszerek', 'villamosmernoki/erintesvedelem'], z: 2, name: 'PE gyűjtősín (zöld-sárga)', svg: pebus, explode: [L, 14],
+        en: 'protective earth (PE) busbar',
+        uni: 'A PE-sín a **fő földelőkapocshoz** csatlakozik. Ide fut be a **fő egyenpotenciálra hozó** összekötés is (vízvezeték, gázvezeték, fémszerkezetek, alapföldelő), így egy hiba esetén az egyszerre megérinthető vezetőképes részek közel azonos potenciálon maradnak. TN-rendszerben testzárlatkor a hibaáram fémes úton (PE → PEN → transzformátor csillagpontja) folyik vissza, ezért nagy, és gyorsan működteti a túláramvédelmet. A testzárlat alatt fellépő érintési feszültség viszont nem kicsi: azonos fázis- és védővezető-keresztmetszetnél a hurokban eső feszültségnek kb. a fele jut a PE-szakaszra, ezért szükséges a gyors lekapcsolás.',
         what: 'A **védőföld** gyűjtőpontja. Ide fut a betáp védővezetője, és innen kap védőföldet minden áramkör, a túlfeszültség-levezető és a fémházas készülékek. Ha egy hibás gép háza feszültség alá kerül, az áram a védővezetőn át folyik el, és a védelem lekapcsol.',
         madeOf: 'Sárgaréz sín csavaros kapcsokkal, zöld-sárga jelölésű talpon. A szekrény fém részeit is ide kötik.',
         how: 'Ugyanúgy készül, mint az N sín, csak a színjelölése más. A szerelő minden védővezetőt külön kapocsba köt, hogy egy laza csavar ne szakíthasson meg több kört egyszerre.'
       },
       {
         id: 'fazis', z: 3, name: 'Fázisvezetők (barna, fekete)', svg: phase, explode: [L, 0], badge: [300, 405], lesson: 'villanyszereles/vezetekek',
+        en: 'line (phase) conductors',
+        uni: 'A vezeték méretezésének alapfeltétele `I_B ≤ I_n ≤ I_z`, ahol a terhelhetőség (I_z) a szerelési módtól és a környezeti hőmérséklettől függ (MSZ HD 60364-5-52): 1,5 mm² réz kb. 14,5–19,5 A, 2,5 mm² kb. 19,5–27 A terhelhetőségű. Ellenőrizni kell a **feszültségesést** is: egyfázisú körben `ΔU = 2·I·L·ρ/A`, réznél ρ = 0,0175 Ω·mm²/m. Például 25 m-es, 2,5 mm²-es körön 16 A mellett ΔU ≈ 5,6 V, ez kb. 2,4%. Háromfázisú rendszerben a fázisfeszültségek fazorai 120°-ra vannak egymástól, a vonali feszültség `U_v = √3 · U_f ≈ 400 V`; a 230 V és a 400 V **effektív értékek**.',
+        terms: ['villamosmernoki/ohm-torveny', 'villamosmernoki/haromfazisu-rendszer', 'villamosmernoki/effektiv-ertek'],
         what: 'A fázis hozza az áramot: ez van 230 V-on a földhöz képest. Szabványos színe **barna, fekete vagy szürke**. Egyfázisú lakásban a betáp általában barna, a rajzon a világítási körök fekete erekkel indulnak. Háromfázisú bekötésnél L1 barna, L2 fekete, L3 szürke.',
         madeOf: '**Rézvezető** PVC szigeteléssel. Világításhoz 1,5 mm², aljzatokhoz 2,5 mm², a betáphoz 6–10 mm² keresztmetszet szokásos.',
         how: 'A rézhuzalt egyre kisebb lyukakon húzzák át, amíg el nem éri a kívánt vastagságot, majd lágyítják. A szigetelést extrúderrel, színezett műanyagból „húzzák rá”. A szerelő a végeket pontos hosszon csupaszítja, és sodrott erénél érvéghüvelyt sajtol rá.'
       },
       {
         id: 'nulla', z: 3, name: 'Nullavezetők (kék)', svg: neutral, explode: [L, 0], badge: [432, 150], lesson: 'villanyszereles/vezetekek',
+        en: 'neutral conductors (N)',
+        uni: 'A nullavezető **aktív vezető**: üzemszerűen áramot vezet, és rajta is feszültség esik (`U = I·R_N`), ezért az N és a PE között mérhető feszültség (normálisan néhány V) a terhelés és a vezetékállapot diagnosztikai jele. A PEN szétválasztása után az N-t sehol nem szabad a PE-vel összekötni: egy ilyen kötésen a nullavezető áramának egy része a PE-n folyna vissza, amit az áram-védőkapcsoló különbözeti áramként érzékelne és leoldana. Ugyanezért minden áramkör nullavezetőjének egyértelműen ahhoz az ÁVK-hoz kell tartoznia, amelyen a fázisa is áthalad.',
+        terms: ['villamosmernoki/aram-vedokapcsolo', 'villamosmernoki/foldelesi-rendszerek'],
         what: 'A nullavezető (N) viszi vissza az áramot. Színe mindig **kék**. Bár normál esetben közel 0 V-on van, hibánál feszültség alá kerülhet, ezért ugyanúgy veszélyesnek kell tekinteni, mint a fázist.',
         madeOf: 'Réz ér kék PVC szigeteléssel, ugyanakkora keresztmetszettel, mint a hozzá tartozó fázis.',
         how: 'Ugyanúgy készül, mint a fázisvezető, csak kék színezékkel. A kék színt más célra nem szabad használni.'
       },
       {
         id: 'vedo', z: 3, name: 'Védővezetők (zöld-sárga)', svg: pe, explode: [L, 0], badge: [205, 300], lesson: 'villanyszereles/vezetekek',
+        en: 'protective conductors (PE)',
+        uni: 'A védővezető keresztmetszete egyszerűsítve: 16 mm²-ig azonos a fázisvezetőével, 16–35 mm² között 16 mm², afölött a fázisvezető fele. Pontosabban az **adiabatikus feltétel** szerint ellenőrizhető: `S ≥ √(I²·t)/k`, ahol I a zárlati áram, t a lekapcsolási idő, k anyagtényező (PVC-szigetelésű, kábelbe épített réz vezetőnél k = 115). A PE folytonosságát átadáskor legalább 200 mA-es mérőárammal kell ellenőrizni. A PE-n normál üzemben nem folyhat áram, ezért ha mégis van rajta, az szigetelési hibára vagy hibás N–PE kötésre utal.',
+        terms: ['villamosmernoki/erintesvedelem', 'villamosmernoki/zarlati-aram'],
         what: 'A védővezető (PE) normál üzemben nem visz áramot. Csak hiba esetén dolgozik: elvezeti a hibaáramot, hogy a védelem lekapcsolhasson, mielőtt valakit áramütés érne. Színe kizárólag **zöld-sárga**, és ezt a színt semmi másra nem szabad használni.',
         madeOf: 'Réz ér zöld-sárga csíkos PVC szigeteléssel.',
         how: 'A két színt egyszerre extrudálják, így hosszanti csíkok lesznek a szigetelésen. A rajzon ferde csíkozással jelöltük.'
       },
       {
         id: 'doboz', z: 0, name: 'Elosztódoboz', svg: box, explode: [L, 0], badge: [196, 64],
+        en: 'distribution board enclosure',
+        uni: 'A laikusok által kezelt lakáselosztókra az **IEC 61439-3** (DBO) szabvány vonatkozik: ez rögzíti a névleges áramot, a zárlati szilárdságot és a melegedés igazolását, azaz a beépített készülékek összes veszteségteljesítménye mellett a ház belső hőmérséklet-emelkedése nem haladhatja meg a határértéket. A ház védettsége beltérben jellemzően IP30–IP40, kültéren IP65; ütésállóságát az **IK-kód** jelöli. A műanyag házak gyakran **II. érintésvédelmi osztályúak** (kettős szigetelés), és a tűzállóságukat izzóhuzalos vizsgálattal (IEC 60695-2-11) igazolják.',
+        terms: ['villamosmernoki/erintesvedelem'],
         what: 'A szekrény háza, amelyet a falba süllyesztve vagy a falra szerelve rögzítenek. A tetején és az alján lévő kitörhető nyílásokon jönnek be és mennek ki a kábelek.',
         madeOf: 'Lángálló **műanyag** vagy porfestett **acéllemez**. A fém dobozt a PE sínre kell kötni.',
         how: 'A műanyag dobozt fröccsöntik, a fémet lemezből lézerrel kivágják, hajlítják, hegesztik és porfestik.'
       }
     ],
+    uni: {
+      text: 'Egyetemi szinten a lakáselosztó a **TN-C-S földelési rendszer** egy pontja: a szolgáltató hálózatán a védő- és a nullavezető közös (**PEN**), ezt a fogyasztói oldalon (jellemzően a fogyasztásmérő utáni elosztóban) választják szét PE-re és N-re, és a szétválasztás után a kettőt soha többé nem szabad összekötni. Az áramütés elleni hibavédelem módja az **önműködő lekapcsolás**: testzárlatkor a hibaáram a fázis–PE hurkon folyik, és a védelemnek a szabványos időn belül (230 V-os, legfeljebb 32 A-es végáramköröknél 0,4 s) le kell kapcsolnia. A feltétel `Z_s · I_a ≤ U_0`, ahol Z_s a **hurokimpedancia**, I_a a védelem biztos kioldóárama, U_0 = 230 V. A kiegészítő védelmet a 30 mA-es **áram-védőkapcsoló** adja, a túláram- és zárlatvédelmet a kismegszakítók, a légköri és kapcsolási túlfeszültségek ellen pedig a túlfeszültség-levezető.',
+      terms: ['villamosmernoki/foldelesi-rendszerek', 'villamosmernoki/erintesvedelem', 'villamosmernoki/zarlati-aram', 'villamosmernoki/aram-vedokapcsolo', 'villamosmernoki/haromfazisu-rendszer', 'villamosmernoki/impedancia', 'villamosmernoki/effektiv-ertek']
+    },
     steps: [
       { icon: '📝', title: 'Tervezés', text: 'A villanyszerelő felméri, milyen áramkörök kellenek: világítás, aljzatok szobánként, külön kör a konyhai nagy fogyasztóknak, a mosógépnek, a fürdőnek. Ebből számolja ki, hány **modul** hely kell (plusz tartalék), és mekkora szekrény.' },
       { icon: '🔒', title: 'Feszültségmentesítés', text: 'Mielőtt bármihez hozzányúl, a mérőóra előtti szolgáltatói biztosítékot kikapcsoltatja, vagy a saját főkapcsolót bontja, **lezárja** és táblát tesz ki. Ezután műszerrel **ellenőrzi a feszültségmentességet**. Ez az öt biztonsági szabály lényege.' },

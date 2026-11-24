@@ -98,18 +98,24 @@
       },
       {
         id: 'gpu', z: 3, name: 'Integrált grafika (iGPU)', en: 'integrated graphics processing unit (iGPU)', svg: gpu, explode: [0, -75],
+        uni: 'A GPU **SIMD/SIMT** elven dolgozik: sok egyszerű ALU ugyanazt az utasítást hajtja végre különböző adatokon (például képpontokon). Az elméleti csúcsteljesítmény `FLOPS = N_ALU · 2 · f`, ahol a 2-es szorzó a fused multiply-add (FMA) művelet; 512 ALU 2 GHz-en kb. 2 TFLOPS. Az integrált grafika a rendszermemóriát a CPU-val közösen használja (UMA), így gyakran a **memória-sávszélesség** a korlát. Ezt a roofline-modell fejezi ki: az elérhető teljesítmény `min(P_csúcs, I · B)`, ahol I a műveleti intenzitás (FLOP/bájt), B a sávszélesség.',
+        terms: ['digitalis-technika/alu', 'digitalis-technika/memoriahierarchia'],
         what: 'Sok processzorban van beépített grafikus egység, ami a képet állítja elő a monitor számára. Sok kicsi, egyszerű számolóegységből áll, amelyek egyszerre sok képpontot számolnak.',
         madeOf: 'Szilícium tranzisztorok, ugyanúgy, mint a magokban, csak másképp szervezve: sok egyszerű egység dolgozik párhuzamosan.',
         how: 'A lapka része, együtt gyártják a többi egységgel.'
       },
       {
         id: 'substrate', z: 1, name: 'Hordozó (szubsztrát)', en: 'package substrate', svg: substrate, explode: [0, 0],
+        uni: 'A hordozó többrétegű szerves (ABF-alapú) **build-up** áramkör. A lapka **flip-chip** módon, apró forrasztási dudorokkal (kb. 100–150 µm-es osztással) ül rajta, a hordozó pedig ezt a sűrű kiosztást „széthúzza” az alaplapi érintkezők kb. 1 mm-es osztására. A tápellátásnál a cél egy alacsony **célimpedancia**: `Z_cél = ΔU_megengedett/ΔI`, például 1 V-nál 3%-os ingadozás és 100 A-es áramlökés mellett csak 0,3 mΩ. Ezt a hordozón lévő kondenzátorok segítik. A szilícium hőtágulási együtthatója kb. 2,6 ppm/K, a hordozóé kb. 15–17 ppm/K: ezt a különbséget a dudorok közé töltött **alátöltő gyanta** (underfill) egyenlíti ki, különben a forrasztások hőciklusok alatt kifáradnának.',
+        terms: ['mechanika/feszultseg'],
         what: 'Zöld vagy barna, többrétegű kis nyomtatott áramkör. A lapka apró, sűrű kivezetéseit „széthúzza” az alaplapi foglalathoz illeszkedő, nagyobb érintkezőkre. A rajta ülő apró alkatrészek kondenzátorok, ezek simítják a tápfeszültséget.',
         madeOf: 'Üvegszálas vagy speciális műgyanta rétegek (pl. ABF fólia), köztük vékony **rézvezetékekkel** és furatokkal.',
         how: 'Rétegenként laminálják (préselik), a rézvezetékeket maratással alakítják ki, a rétegeket lézerrel fúrt, rézzel kitöltött furatok kötik össze. Végül ráforrasztják a lapkát és a kondenzátorokat.'
       },
       {
         id: 'pads', z: 0, name: 'Érintkezők (LGA)', en: 'land grid array (LGA)', svg: pads, explode: [0, 90], link: 'alaplap',
+        uni: 'Az érintkezők nikkel alapú, **aranyozott** felületek: az arany nem oxidálódik, így kicsi és stabil marad az átmeneti ellenállás. Az érintkezők jelentős része táp (VCC) és föld (VSS): a több száz amperes áram sok párhuzamos érintkezőn oszlik meg, így egy-egy érintkezőre csak kis áram és `P = I²·R` hő jut. A föld-érintkezők a nagy sebességű jelek **visszatérő áramútját** is adják, és árnyékolják egymástól a szomszédos jelpárokat. Az LGA előnye a PGA-val szemben, hogy a sérülékeny tüskék a cserélhető alkatrész helyett a foglalatba kerülnek, és sűrűbb kiosztás érhető el.',
+        terms: ['villamosmernoki/ohm-torveny'],
         what: 'A processzor alján több mint ezer aranyozott érintkező. Ezek fekszenek rá az alaplapi foglalat rugós tűire, és ezeken keresztül kap a processzor tápot és adatot. (A rajzon külön rétegként látszanak, valójában a hordozó alján vannak.)',
         madeOf: 'Réz érintkezőfelületek vékony **nikkel** és **arany** bevonattal. Az arany nem oxidálódik, így évtizedekig jó marad az érintkezés.',
         how: 'A hordozó gyártásakor alakítják ki, majd galvanizálással aranyozzák. Régebbi processzoroknál (PGA) tűk voltak az alján, ma a tűk inkább az alaplapi foglalatban vannak.'
