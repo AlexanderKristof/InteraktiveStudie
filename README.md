@@ -5,19 +5,21 @@ Nem kell hozzá internet, regisztráció vagy telepítés: egy sima weboldal, am
 
 ## Mi van benne?
 
-**Tantárgyak és szakmák**, leckékkel, interaktív kísérletekkel és kvízekkel:
+**Tantárgyak három szinten**, leckékkel, interaktív kísérletekkel és kvízekkel:
 
-| Terület | Példák az interaktív elemekre |
+| Szint | Tantárgyak |
 |---|---|
-| ⚡ Villanyszerelés | Ohm-törvény áramkör, soros/párhuzamos kapcsolás, vezeték-keresztmetszet és feszültségesés |
-| 🔧 Autószerelés | Animált négyütemű motor, fogaskerék-áttétel |
-| 🔋 Elektromosautó-szerelés | Akkupakk-tervező (cellák, feszültség, kWh, hatótáv) |
-| ➗ Matematika | Függvényábrázoló, Pitagorasz-tétel, végtelen gyakorló feladatok |
-| 🪐 Fizika | Ferde hajítás különböző bolygókon, atomépítő |
-| 🏛️ Történelem | Idővonalak időrendi játékkal |
+| 🎒 Általános iskola (5–8.) | Matematika, Magyar nyelv és irodalom, Természettudomány, Angol nyelv (alapok) |
+| 🏫 Középiskola | Matematika, Fizika, Kémia, Biológia, Történelem, Földrajz, Informatika, Pénzügyi ismeretek |
+| 🛠️ Szakmák | Villanyszerelés, Autószerelés, Elektromosautó-szerelés, Napelemes rendszerek, Hőszivattyú és klímatechnika, Víz-, gáz- és fűtésszerelés |
+
+Interaktív elemek: Ohm-törvény, soros/párhuzamos kapcsolás, feszültségesés, animált négyütemű motor, fogaskerék-áttétel,
+akkupakk-tervező, függvényábrázoló, Pitagorasz-tétel, ferde hajítás, atomépítő, periódusos rendszer, idővonal-játék,
+párosító játék, végtelen gyakorló feladatok (12 típus), **kapcsolás-építő** (lámpa bekötése, váltókapcsolás) és
+**hibakereső szimulátor** (11 döntési fa, pl. „Nem indul az autó”, „Leold a FI relé”, „Nem melegszik a radiátor”).
 
 **„Mi miből áll?” felfedező.** Szétszedhető, kattintható modellek (processzor, alaplap, tranzisztor, atom,
-elektromos autó, akkucella, benzinmotor, elosztószekrény). Minden alkatrésznél megtudod:
+elektromos autó, akkucella, benzinmotor, elosztószekrény, sejt, szív, DNS, napelempanel, okostelefon, hőszivattyú). Minden alkatrésznél megtudod:
 
 - **Mi ez?**: mire való
 - **Miből van?**: milyen anyagokból készül
@@ -27,8 +29,9 @@ Minden modellhez tartozik egy lépésről lépésre végigvehető gyártási fol
 A modellek egymásba ágyazhatók, így le lehet ásni egészen az atomokig:
 **alaplap → processzor → tranzisztor → atom**.
 
-**🎓 Egyetem – szakszótár és vizuális jegyzet** BSc-s hallgatóknak (digitális technika, villamosmérnöki alapok,
-e-mobilitás, analízis, fizika):
+**🎓 Egyetem – szakszótár és vizuális jegyzet** BSc-s hallgatóknak (11 kurzus: digitális technika, villamosmérnöki alapok,
+e-mobilitás, analízis, fizika, lineáris algebra, valószínűségszámítás és statisztika, algoritmusok, általános kémia,
+műszaki mechanika, programozás):
 
 - **Szakszótár**: definíció, részletes magyarázat, angol megfelelő, ábra, példa, „gyakori hiba”
 - **Képlet-boncoló**: a képlet minden jelére kattintva megmutatja a jelentését és a mértékegységét
@@ -43,6 +46,9 @@ A szakszavaknál megjelenik, milyen középiskolai leckékre épülnek („Elői
 **📝 Tesztközpont.** Témákra bontott kérdésbank, minden kérdés 4 válaszlehetőséggel. Választható az *azonnali visszajelzés*
 (minden válasz után kiírja, helyes volt-e) vagy a *vizsga mód* (csak a végén értékel). Az eredmény osztályzattal,
 témánkénti bontással és a hibás kérdések újragyakorlásával jár, a gyenge témákat pedig a program megjegyzi.
+Tanároknak: **nyomtatható feladatlap** megoldókulccsal. A kezdőlapon **napi kihívás** (5 kérdés naponta).
+
+**📈 Haladásom.** Tanulási sorozat, aktivitásnaptár, kitűzők, és a haladás **mentése/betöltése fájlba** (géphez nem kötött).
 
 Ezen kívül: **kereső** az összes tartalomban (ékezet nélkül is működik), haladásmentés, világos és sötét mód,
 mobilbarát felület.
