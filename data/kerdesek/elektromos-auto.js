@@ -54,7 +54,7 @@ STUDIE.addQuestions('elektromos-auto', {
     { q: 'Négy 5 Ah-s cellát **párhuzamosan** kötsz. Mekkora lesz a csoport kapacitása?', options: ['20 Ah', '5 Ah', '1,25 Ah', '9 Ah'], answer: 0,
       explain: 'Párhuzamosan a kapacitások adódnak össze: `4 · 5 = 20 Ah`. A feszültség közben egy cella feszültsége marad.' },
     { q: 'Mekkora az energiája egy 400 V-os, 150 Ah-s akkupakknak?', options: ['600 kWh', '60 kWh', '6 kWh', '550 kWh'], answer: 1,
-      explain: '`E = 400 · 150 / 1000 = 60 kWh`. A 600 kWh a tízzel való osztás elhibázása lenne.' },
+      explain: '`E = 400 · 150 / 1000 = 60 kWh`. A 600 kWh akkor jönne ki, ha 1000 helyett 100-zal osztanál.' },
     { q: 'Egy akku **SoH**-ja 85%. Mit jelent ez?', options: ['Hogy 85%-ra van feltöltve', 'Hogy 85 °C-os', 'Hogy az eredeti kapacitásának kb. 85%-a maradt meg', 'Hogy 85 kW-tal tölthető'], answer: 2,
       explain: 'A SoH (State of Health) az akku egészségi állapota. A töltöttségi szint a SoC.' },
     { q: 'Kb. mekkora feszültség felett nem engedi a BMS tölteni az **NMC** cellát?', options: ['kb. 2,5 V', 'kb. 3,2 V', 'kb. 12 V', 'kb. 4,2 V'], answer: 3,
