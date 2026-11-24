@@ -38,11 +38,23 @@
     'elektromos-auto/motor-inverter': ['e-mobilitas/pmsm', 'e-mobilitas/inverter', 'e-mobilitas/pwm', 'e-mobilitas/foc'],
     'elektromos-auto/toltes': ['e-mobilitas/cc-cv', 'e-mobilitas/kw-kwh', 'e-mobilitas/ccs'],
     'autoszereles/negyutemu-motor': ['fizika-bsc/carnot-korfolyamat', 'fizika-bsc/idealis-gaz'],
-    'autoszereles/eroatvitel': ['e-mobilitas/nyomatek']
+    'autoszereles/eroatvitel': ['e-mobilitas/nyomatek', 'mechanika/nyomatek', 'mechanika/csavaras'],
+    'fizika/newton#2': ['mechanika/ero', 'mechanika/egyensuly', 'mechanika/szabadtest'],
+    'fizika/energia-munka#2': ['mechanika/munka-energia'],
+    'informatika/programozas#2': ['programozas/valtozo', 'programozas/vezerlesi-szerkezet', 'programozas/fuggveny', 'programozas/osztaly-objektum'],
+    'informatika/szamrendszerek#2': ['programozas/karakterkodolas', 'programozas/tipus'],
+    'informatika/adatbiztonsag': ['programozas/verziokezeles'],
+    'napelem/mukodes': ['fizika-bsc/fotoeffektus', 'kemia-bsc/elektrodpotencial'],
+    'napelem/bekotes': ['villamosmernoki/thevenin', 'villamosmernoki/hatasos-teljesitmeny'],
+    'hoszivattyu/hutokor': ['fizika-bsc/carnot-korfolyamat', 'fizika-bsc/elso-fotetel', 'fizika-bsc/entropia'],
+    'hoszivattyu/cop': ['fizika-bsc/carnot-korfolyamat', 'e-mobilitas/hatasfok'],
+    'penzugy/kamat-inflacio': ['analizis/exponencialis-novekedes', 'analizis/vegtelen-sor'],
+    'penzugy/befektetes': ['valszam/varhato-ertek', 'valszam/szoras', 'valszam/korrelacio-oksag'],
+    'mat-alap/meres-geometria': ['mechanika/masodrendu-nyomatek']
   };
   S.lessonLinks = LINKS;
   Object.keys(LINKS).forEach(function (key) {
-    var p = key.split('/'), s = S.subjects.filter(function (x) { return x.id === p[0]; })[0];
+    var p = key.replace(/#\d+$/, '').split('/'), s = S.subjects.filter(function (x) { return x.id === p[0]; })[0];
     var l = s && s.lessons.filter(function (x) { return x.id === p[1]; })[0];
     if (!l) return;
     l.terms = (l.terms || []).concat(LINKS[key].filter(function (r) { return (l.terms || []).indexOf(r) < 0; }));

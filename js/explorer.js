@@ -10,7 +10,10 @@
   /* A felfedező lista oldalon megjelenő "utazás a mélybe" láncok. */
   S.chains = [
     ['alaplap', 'processzor', 'tranzisztor', 'atom'],
-    ['elektromos-auto', 'akkucella', 'atom']
+    ['elektromos-auto', 'akkucella', 'atom'],
+    ['okostelefon', 'processzor', 'tranzisztor', 'atom'],
+    ['napelempanel', 'atom'],
+    ['dns', 'atom']
   ];
 
   S.renderModel = function (root, m, trail) {
