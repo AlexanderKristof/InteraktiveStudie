@@ -726,4 +726,109 @@
     }
     start();
   });
+  /* ---------- 17. Zongora: hangok, skálák, akkordok, hangköz-felismerés (WebAudio, offline) ---------- */
+  var NOTE_HU = ['C', 'Cisz', 'D', 'Disz', 'E', 'F', 'Fisz', 'G', 'Gisz', 'A', 'B', 'H'];
+  var SOLMI = { 0: 'dó', 2: 'ré', 4: 'mi', 5: 'fá', 7: 'szó', 9: 'lá', 11: 'ti' };
+  var INTERVALS = [[1, 'kis szekund'], [2, 'nagy szekund'], [3, 'kis terc'], [4, 'nagy terc'], [5, 'tiszta kvart'], [7, 'tiszta kvint'], [8, 'kis szext'], [9, 'nagy szext'], [12, 'tiszta oktáv']];
+  var actx = null;
+  function tone(midi, when, dur) {
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var t = actx.currentTime + (when || 0), o = actx.createOscillator(), g = actx.createGain();
+      o.type = 'triangle'; o.frequency.value = 440 * Math.pow(2, (midi - 69) / 12);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.3, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + (dur || 0.9));
+      o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + (dur || 0.9) + 0.05);
+    } catch (e) { /* nincs hang */ }
+  }
+  S.addWidget('zongora', function (el, o) {
+    var base = 60, keys = 25, hl = {};
+    el.innerHTML = head(o.title || 'Zongora', o.help || 'Kattints a billentyűkre (vagy használd a gépeled A–K sorát)! Alatta skálákat, akkordokat hallgathatsz, és kipróbálhatod a hangköz-felismerő játékot.') +
+      '<div class="piano" id="pn"></div><div class="row" style="margin-top:10px"><span id="pn-name" class="pn-name">–</span></div>' +
+      '<div class="row" style="margin-top:8px">' + seg('sk', [['dur', 'C-dúr skála'], ['moll', 'a-moll skála'], ['penta', 'Pentaton (dó)'], ['akkord', 'C-dúr hármashangzat'], ['makkord', 'a-moll hármashangzat']], '') + '</div>' +
+      '<div class="pn-game"><b>🎧 Hangköz-felismerés</b> <button type="button" class="btn sm" id="pn-play">▶ Új hangköz</button> <button type="button" class="btn sm" id="pn-again">↻ Ismét</button>' +
+      '<div class="chips" id="pn-opts" style="margin-top:6px"></div><div id="pn-res"></div></div>';
+    var pn = el.querySelector('#pn'), whites = [], html = '';
+    for (var i = 0; i < keys; i++) { var pc = (base + i) % 12; if ([1, 3, 6, 8, 10].indexOf(pc) < 0) whites.push(base + i); }
+    var w = 100 / whites.length;
+    whites.forEach(function (m, k) { html += '<button type="button" class="pk white" data-m="' + m + '" style="left:' + (k * w) + '%;width:' + w + '%"><span>' + NOTE_HU[m % 12] + '</span></button>'; });
+    for (i = 0; i < keys; i++) {
+      var mm = base + i, p2 = mm % 12;
+      if ([1, 3, 6, 8, 10].indexOf(p2) >= 0) { var left = whites.indexOf(mm - 1); html += '<button type="button" class="pk black" data-m="' + mm + '" style="left:' + ((left + 0.68) * w) + '%;width:' + (w * 0.64) + '%"></button>'; }
+    }
+    pn.innerHTML = html;
+    function name(m) { var pc3 = m % 12; return NOTE_HU[pc3] + (Math.floor(m / 12) - 1) + (SOLMI[pc3] ? ' · ' + SOLMI[pc3] : ''); }
+    function press(m, when) {
+      tone(m, when);
+      setTimeout(function () {
+        var b = pn.querySelector('[data-m="' + m + '"]'); if (b) { b.classList.add('down'); setTimeout(function () { b.classList.remove('down'); }, 300); }
+        el.querySelector('#pn-name').textContent = name(m);
+      }, (when || 0) * 1000);
+    }
+    pn.querySelectorAll('.pk').forEach(function (b) { b.addEventListener('mousedown', function (e) { e.preventDefault(); press(+b.dataset.m); }); b.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') press(+b.dataset.m); }); });
+    var KB = 'awsedftgzhujk';
+    function onKey(e) {
+      if (!document.body.contains(el)) { document.removeEventListener('keydown', onKey); return; }
+      if (e.target.closest && e.target.closest('input, textarea')) return;
+      var k = KB.indexOf(e.key.toLowerCase()); if (k >= 0 && !e.repeat) press(base + k);
+    }
+    document.addEventListener('keydown', onKey);
+    var SEQ = { dur: [0, 2, 4, 5, 7, 9, 11, 12], moll: [9, 11, 12, 14, 16, 17, 19, 21], penta: [0, 2, 4, 7, 9, 12] };
+    onSeg(el, 'sk', function (v) {
+      if (SEQ[v]) SEQ[v].forEach(function (x, k) { press(base + x, k * 0.38); });
+      else (v === 'akkord' ? [0, 4, 7] : [9, 12, 16]).forEach(function (x) { press(base + x, 0); });
+    });
+    var cur = null, ok = 0, all = 0;
+    function playCur() { if (!cur) return; press(cur[0], 0); press(cur[0] + cur[1], 0.7); }
+    el.querySelector('#pn-play').addEventListener('click', function () {
+      var iv = INTERVALS[ri(0, INTERVALS.length - 1)];
+      cur = [base + ri(0, 10), iv[0]];
+      var opts = S.shuffle(INTERVALS.filter(function (x) { return x !== iv; })).slice(0, 3).concat([iv]);
+      opts = S.shuffle(opts);
+      el.querySelector('#pn-opts').innerHTML = opts.map(function (x) { return '<button type="button" class="chip" data-iv="' + x[0] + '">' + x[1] + '</button>'; }).join('');
+      el.querySelector('#pn-res').innerHTML = '';
+      el.querySelectorAll('[data-iv]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (!cur) return;
+          all++; var good = +b.dataset.iv === cur[1]; if (good) ok++;
+          var right = INTERVALS.filter(function (x) { return x[0] === cur[1]; })[0][1];
+          el.querySelector('#pn-res').innerHTML = '<div class="w-msg ' + (good ? 'ok' : 'bad') + '">' + (good ? '✔ Helyes: ' : '✘ Ez ' ) + right + (good ? '' : ' volt') + ' (' + name(cur[0]).split(' ·')[0] + ' → ' + name(cur[0] + cur[1]).split(' ·')[0] + ', ' + cur[1] + ' félhang). Eredmény: ' + ok + ' / ' + all + '</div>';
+          cur = null;
+        });
+      });
+      playCur();
+    });
+    el.querySelector('#pn-again').addEventListener('click', playCur);
+    (o.highlight || []).forEach(function (m) { var b = pn.querySelector('[data-m="' + m + '"]'); if (b) b.classList.add('hl'); });
+  });
+
+  /* ---------- 18. Színkeverő: additív (fény) és szubtraktív (festék) keverés ---------- */
+  S.addWidget('szinkever', function (el, o) {
+    var mode = o.mode || 'feny';
+    el.innerHTML = head(o.title || 'Színkeverés', o.help || 'Fénynél (képernyő, színpad) a színek összeadódnak: piros + zöld + kék = fehér. Festéknél (nyomtatás) elnyelik egymás fényét: cián + bíbor + sárga ≈ fekete.') +
+      '<div class="row" style="margin-bottom:10px">' + seg('md', [['feny', '💡 Fény (RGB)'], ['festek', '🎨 Festék (CMY)']], mode) + '</div>' +
+      '<div class="w-grid"><div class="w-ctrl" id="sk-ctrl"></div><div class="w-out"><svg class="w-svg" viewBox="0 0 300 240" id="sk-svg"></svg><div id="sk-res"></div></div></div>';
+    var read;
+    function build() {
+      var L = mode === 'feny' ? [['a', 'Piros (R)'], ['b', 'Zöld (G)'], ['c', 'Kék (B)']] : [['a', 'Cián (C)'], ['b', 'Bíbor (M)'], ['c', 'Sárga (Y)']];
+      el.querySelector('#sk-ctrl').innerHTML = L.map(function (x) { return rng(x[0], x[1], 0, 255, 1, 255, ''); }).join('');
+      read = bind(el.querySelector('#sk-ctrl'), paint);
+    }
+    function hex(r, g, b) { return '#' + [r, g, b].map(function (v) { return ('0' + Math.round(v).toString(16)).slice(-2); }).join('').toUpperCase(); }
+    function paint(v) {
+      var add = mode === 'feny', r, g, b, cols;
+      if (add) { r = v.a; g = v.b; b = v.c; cols = [hex(v.a, 0, 0), hex(0, v.b, 0), hex(0, 0, v.c)]; }
+      else { r = 255 - v.a; g = 255 - v.b; b = 255 - v.c; cols = [hex(255 - v.a, 255, 255), hex(255, 255 - v.b, 255), hex(255, 255, 255 - v.c)]; }
+      var bg = add ? '#000' : '#fff';
+      el.querySelector('#sk-svg').innerHTML = '<rect width="300" height="240" fill="' + bg + '" rx="10"/><g style="mix-blend-mode:' + (add ? 'screen' : 'multiply') + ';isolation:isolate">' +
+        '<circle cx="120" cy="95" r="65" fill="' + cols[0] + '" style="mix-blend-mode:' + (add ? 'screen' : 'multiply') + '"/>' +
+        '<circle cx="180" cy="95" r="65" fill="' + cols[1] + '" style="mix-blend-mode:' + (add ? 'screen' : 'multiply') + '"/>' +
+        '<circle cx="150" cy="148" r="65" fill="' + cols[2] + '" style="mix-blend-mode:' + (add ? 'screen' : 'multiply') + '"/></g>';
+      var comp = hex(255 - r, 255 - g, 255 - b);
+      el.querySelector('#sk-res').innerHTML = '<div class="sk-swatches"><div><i style="background:' + hex(r, g, b) + '"></i><small>Keverék (középen)</small><b>' + hex(r, g, b) + '</b></div>' +
+        '<div><i style="background:' + comp + '"></i><small>Kiegészítő színe</small><b>' + comp + '</b></div></div>' +
+        '<div class="w-formula">RGB(' + Math.round(r) + ', ' + Math.round(g) + ', ' + Math.round(b) + ')' + (add ? '' : '  ←  CMY(' + v.a + ', ' + v.b + ', ' + v.c + ')') + '</div>';
+    }
+    onSeg(el, 'md', function (v) { mode = v; build(); });
+    build();
+  });
 })();
