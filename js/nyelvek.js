@@ -155,7 +155,7 @@
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/nyelvek">Nyelvek</a><span>›</span><span>' + esc(c.title) + '</span></nav>' +
       '<section class="lang-hero"><h1>' + c.flag + ' ' + esc(c.title) + '</h1>' + (c.intro ? '<p class="lead">' + S.inline(c.intro) + '</p>' : '') +
       statsBar(streak(), daily()[today()] || 0) + '<p style="margin:8px 0 0">⭐ ' + (p.xp || 0) + ' XP ebben a nyelvben</p></section>' +
-      (c.tts && !canSpeak(c) ? '<p class="note" style="font-size:.9rem">🔇 A böngésződben nincs ' + esc(c.title.toLowerCase()) + ' felolvasóhang, ezért a hallgatós feladatok kimaradnak. (Telefonon és a legtöbb asztali böngészőben van.)</p>' : '') +
+      '<div id="lang-voice"></div>' +
       '<ol class="lang-path">' + c.units.map(function (u, i) {
         var lv = p.units[u.id] || 0, cur = i === next;
         return '<li class="lp-node' + (lv >= MAXLV ? ' done' : lv ? ' started' : '') + (cur ? ' current' : '') + '" style="--off:' + [0, 40, 60, 40, 0, -40, -60, -40][i % 8] + 'px">' +
@@ -167,6 +167,11 @@
     main.querySelectorAll('[data-unit]').forEach(function (b) {
       b.addEventListener('click', function () { unitPop(main, c, +b.dataset.unit); });
     });
+    /* a hangok betöltése aszinkron, ezért kicsit később nézzük meg, van-e felolvasóhang */
+    setTimeout(function () {
+      var v = main.querySelector('#lang-voice');
+      if (v && c.tts && !canSpeak(c)) v.innerHTML = '<p class="note" style="font-size:.9rem">🔇 A böngésződben nincs ' + esc(c.title.toLowerCase()) + ' felolvasóhang, ezért a hallgatós feladatok kimaradnak. (Telefonon és a legtöbb asztali böngészőben van.)</p>';
+    }, 1200);
     return true;
   };
 

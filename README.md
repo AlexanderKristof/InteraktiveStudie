@@ -72,6 +72,17 @@ A kereső elgépelést is tűr („procesor” → processzor). A **📚 Tartalo
 Témák szerint böngészhető oldalon, a felfedező alkatrészeinél külön fülön, a leckék alján és a kezdőlapon („A nap ténye”).
 Adat: `data/tudtad/*.js` – `STUDIE.addFacts([{ id, cat, q, why, links: ['modell:sziv#billentyuk', 'lecke:fizika/x'] }])`.
 
+**⚽ Sport és tudomány.** Foci, Forma–1, kosárlabda és további 14 sportág: kb. 190 tudományos, motiváló érdekesség (pletyka nélkül),
+kereshető kedvenc sportolók (100+), 9 lecke (a foci fizikája, F1-technika, edzéselmélet, táplálkozás, sportpszichológia, olimpiák) kérdésbankkal,
+és egy szétszedhető **Forma–1-es autó** modell.
+
+**🗣️ Nyelvtanulás játékosan.** Angol, német, spanyol, francia, olasz (és további nyelvek): egységekre bontott ösvény, 3–5 perces körök
+(új szó, választás, párosítás, mondatépítés szócsempékből, hallás utáni értés a böngésző felolvasójával, gépelés), XP, napi cél, sorozat, szintek (👑).
+Adat: `data/nyelvek/*.js` – `STUDIE.addLangCourse({ id, title, flag, tts, units: [{ id, title, tip, words, sentences }] })`.
+
+**🎓 Szakmai réteg minden leckéhez.** Egyetemi nézetben minden lecke tetején mélyebb, szaknyelvi magyarázat és szakszótár (magyar – latin – angol).
+Adat: `data/szakmai/*.js` – `STUDIE.addLessonUni('tantárgy', { lecke: { text, glossary } })`.
+
 **📈 Haladásom.** Tanulási sorozat, aktivitásnaptár, kitűzők, és a haladás **mentése/betöltése fájlba** (géphez nem kötött).
 
 Ezen kívül: **kereső** az összes tartalomban (ékezet nélkül is működik), haladásmentés, világos és sötét mód,
@@ -134,6 +145,8 @@ js/eszkozok.js        kedvencek, felolvasás, jegyzetek
 js/tartalom.js        teljes tartalomjegyzék
 js/kartyak.js         tantárgyi tanulókártyák
 js/tudtad.js          „Tudtad?” érdekességek
+js/sport.js           sport és tudomány oldal
+js/nyelvek.js         játékos nyelvtanulás
 data/                 a tananyag
 sw.js, manifest       offline mód és telepíthetőség
 tools/build-single.js egyfájlos változat készítése
