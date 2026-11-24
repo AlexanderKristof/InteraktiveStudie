@@ -39,7 +39,7 @@ STUDIE.addLessonUni('hoszivattyu', {
       { hu: 'túlhevítés', en: 'superheat', def: 'A szívógáz hőmérséklete és a párolgási telítési hőmérséklet különbsége.' },
       { hu: 'utóhűtés', en: 'subcooling', def: 'A kondenzációs telítési hőmérséklet és a folyadékvezeték tényleges hőmérsékletének különbsége.' },
       { hu: 'pótlólagos töltet', en: 'additional refrigerant charge', def: 'Az előtöltésben foglalt csőhosszon felüli szakaszhoz szükséges hűtőközeg-mennyiség.' },
-      { hu: 'poliészter (POE) olaj', en: 'polyolester oil', def: 'HFC-közegekhez használt kompresszorolaj; erősen higroszkópos, nedvességgel savat képezhet.' }
+      { hu: 'poliolészter (POE) olaj', en: 'polyolester oil', def: 'HFC-közegekhez használt kompresszorolaj; erősen higroszkópos, nedvességgel savat képezhet.' }
     ]
   }
 });
