@@ -125,7 +125,7 @@
     function groupHtml(g) {
         var n = 0; g.topics.forEach(function (t) { n += t.questions.length; });
         return '<details class="card ts-group" style="--tile:' + g.color + '"' + (g.topics.some(function (t) { return sel[g.id + '/' + t.id]; }) ? ' open' : '') + '>' +
-          '<summary><span class="ico">' + g.icon + '</span><span class="ts-gt"><b>' + esc(g.title) + '</b><small>' + g.kind + ' · ' + n + ' kérdés</small></span>' +
+          '<summary><span class="ico">' + g.icon + '</span><span class="ts-gt"><b>' + esc(g.title) + '</b><small>' + g.topics.length + ' téma · ' + n + ' kérdés</small></span>' +
           '<label class="ts-all" onclick="event.stopPropagation()"><input type="checkbox" data-group="' + g.id + '"> mind</label></summary>' +
           '<div class="ts-list">' + g.topics.map(function (t) {
             var key = g.id + '/' + t.id, p = topicPct(st, key);
@@ -157,7 +157,7 @@
         var qn = 0; gs.forEach(function (g) { g.topics.forEach(function (t) { qn += t.questions.length; }); });
         var any = gs.some(function (g) { return g.topics.some(function (t) { return sel[g.id + '/' + t.id]; }); });
         return '<details class="ts-section" data-sec="' + sec[0] + '"' + (any ? ' open' : '') + '><summary class="ts-sec-head"><span class="ts-sec-title">' + sec[1] + '</span>' +
-          '<span class="ts-sec-meta">' + gs.length + ' ' + (sec[0] === 'felfedezo' ? 'csoport' : sec[0] === 'egyetem' ? 'kurzus' : 'tantárgy') + ' · ' + qn + ' kérdés · <b data-seccount="' + sec[0] + '"></b></span>' +
+          '<span class="ts-sec-meta">' + gs.length + ' ' + (sec[0] === 'felfedezo' ? 'csoport' : sec[0] === 'egyetem' ? 'kurzus' : 'tantárgy') + ' · ' + qn + ' kérdés <b data-seccount="' + sec[0] + '"></b></span>' +
           '<label class="ts-all" onclick="event.stopPropagation()"><input type="checkbox" data-section="' + sec[0] + '"> mind</label></summary><div class="ts-sec-body">' + gs.map(groupHtml).join('') + '</div></details>';
       }).join('') + '</div>' +
       '<aside class="card pad ts-side"><h3>Beállítások</h3>' +
@@ -194,7 +194,7 @@
         groups.forEach(function (g) { if (secOf(g) !== i.dataset.section) return; g.topics.forEach(function (t) { tot++; if (sel[g.id + '/' + t.id]) k++; }); });
         i.checked = tot > 0 && k === tot; i.indeterminate = k > 0 && k < tot;
         var lab = main.querySelector('[data-seccount="' + i.dataset.section + '"]');
-        if (lab) lab.textContent = k ? k + ' téma kijelölve' : '';
+        if (lab) lab.textContent = k ? '· ' + k + ' téma kijelölve' : '';
       });
       var avail = selected().length, n = count ? Math.min(count, avail) : avail;
       main.querySelector('#ts-sum').innerHTML = avail ? '<b>' + n + '</b> kérdés a kiválasztott <b>' + avail + '</b> közül, ' + (mode === 'vizsga' ? 'vizsga módban.' : 'azonnali visszajelzéssel.') : 'Jelölj ki legalább egy témát!';
