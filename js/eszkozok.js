@@ -28,7 +28,7 @@
     btn.textContent = '⏹ Leállítás';
     chunks.forEach(function (c, i) {
       var u = new SpeechSynthesisUtterance(c.trim());
-      u.lang = 'hu-HU'; if (hu) u.voice = hu; u.rate = 0.95;
+      u.lang = 'hu-HU'; if (hu) u.voice = hu; u.rate = (S.store.get('settings', {}).rate || 0.95);
       if (i === chunks.length - 1) u.onend = function () { speaking = false; btn.textContent = '🔊 Felolvasás'; };
       speechSynthesis.speak(u);
     });

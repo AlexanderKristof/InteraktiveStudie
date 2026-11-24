@@ -167,7 +167,7 @@
       '<p class="lead" style="margin:0">' + esc(s.description) + '</p></div></div>' +
       (s.intro ? '<div class="lesson-body">' + md(s.intro) + '</div>' : '') +
       '<div class="row" style="--tile:' + s.color + ';margin-top:10px"><span class="muted">' + st.done + ' / ' + st.total + ' lecke kész</span><span class="bar" style="flex:1;max-width:260px"><i style="width:' + st.pct + '%"></i></span></div>' +
-      '<div class="row" style="margin-top:14px"><a class="btn primary" href="#/teszt?targy=' + s.id + '">📝 Teszt ebből a tantárgyból</a></div>' +
+      '<div class="row" style="margin-top:14px"><a class="btn primary" href="#/teszt?targy=' + s.id + '">📝 Teszt ebből a tantárgyból</a><a class="btn" href="#/felkeszito">📅 Felkészülés dolgozatra</a><button type="button" class="btn" id="syllabus">🖨 Tanmenet</button></div>' +
       '<ol class="lesson-list" style="--tile:' + s.color + '">' + s.lessons.map(function (l, i) {
         var d = isDone(s.id, l.id), lv = LEVELS[l.level || 1];
         var p = progress[lessonKey(s.id, l.id)];
@@ -440,6 +440,7 @@
     else if (seg[0] === 'egyetem') { setNav('egyetem'); var cc = S.courseById(seg[1]); title(cc ? cc.title : ''); if (!S.pageCourse(main, seg[1], seg[2])) notFound(); }
     else if (seg[0] === 'felkeszito' && seg[1]) { setNav('felkeszito'); title('Vizsgafelkészítő'); if (!S.pageVizsga(main, seg[1])) notFound(); }
     else if (seg[0] === 'felkeszito') { setNav('felkeszito'); title('Vizsgafelkészítő'); S.pageFelkeszito(main); }
+    else if (seg[0] === 'beallitasok') { setNav(''); title('Beállítások'); S.pageBeallitasok(); }
     else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
     else if (seg[0] === 'utvonalak') { setNav(''); title('Tanulási útvonalak'); S.pageUtvonalak(main); }
     else if (seg[0] === 'utvonal') { setNav(''); var pth = (S.paths || []).filter(function (x) { return x.id === seg[1]; })[0]; title(pth ? pth.title : ''); if (!S.pageUtvonal(main, seg[1])) notFound(); }
@@ -496,6 +497,71 @@
   };
   levelBtn.addEventListener('click', function () { S.setLevel(S.level === 'egyetem' ? 'iskolai' : 'egyetem'); });
   paintLevel();
+
+  /* ---------- nyomtatható tanmenet ---------- */
+  function printSyllabus(s) {
+    var plain = function (t) { return String(t || '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/`(.+?)`/g, '$1').replace(/\[\[[^|\]]+\|(.+?)\]\]/g, '$1'); };
+    var WN = { ohm: 'Ohm-törvény kísérlet', 'soros-parhuzamos': 'soros/párhuzamos kapcsolás', feszultsegeses: 'feszültségesés-számító', negyutemu: 'négyütemű motor animáció', attetel: 'áttétel-szimulátor',
+      akkupakk: 'akkupakk-tervező', fuggveny: 'függvényábrázoló', pitagorasz: 'Pitagorasz-szemléltető', gyakorlas: 'gyakorló feladatok', idovonal: 'idővonal-játék', hajitas: 'hajítás-szimulátor',
+      atomepito: 'atomépítő', periodusos: 'periódusos rendszer', parositas: 'párosító játék', hibakereses: 'hibakereső szimulátor', kapcsolas: 'kapcsolás-építő', 'mosfet-iv': 'MOSFET-szimuláció', 'cpu-teljesitmeny': 'CPU-teljesítmény szimuláció' };
+    var total = 0, bank = S.bank && S.bank[s.id] || {};
+    var rows = s.lessons.map(function (l, i) {
+      total += l.minutes || 0;
+      var ws = [];
+      (l.sections || []).forEach(function (x) { if (x.widget) ws.push(x.widget.type); });
+      (l.widgets || []).forEach(function (w) { ws.push(w.type); });
+      var wn = ws.filter(function (w, k) { return ws.indexOf(w) === k; }).map(function (w) { return WN[w] || w; });
+      return '<tr><td>' + (i + 1) + '.</td><td><b>' + esc(l.title) + '</b><br><small>' + esc(plain(l.summary)) + '</small>' +
+        '<div class="sec">' + (l.sections || []).map(function (x) { return esc(x.title || ''); }).filter(Boolean).join(' · ') + '</div>' +
+        (wn.length ? '<div class="w">Interaktív: ' + esc(wn.join(', ')) + '</div>' : '') + '</td>' +
+        '<td>' + esc((LEVELS[l.level || 1] || LEVELS[1])[0]) + '</td><td>' + (l.minutes || '–') + ' perc</td><td>' + (l.quiz || []).length + ' + ' + (bank[l.id] || []).length + '</td></tr>';
+    }).join('');
+    var html = '<!doctype html><html lang="hu"><head><meta charset="utf-8"><title>Tanmenet – ' + esc(s.title) + '</title><style>' +
+      'body{font:13px/1.45 system-ui,Segoe UI,Arial,sans-serif;color:#111;max-width:860px;margin:20px auto;padding:0 16px}h1{font-size:20px;margin:0}.meta{color:#555;margin:4px 0 14px}' +
+      'table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #ccc;padding:6px 6px;text-align:left;vertical-align:top}th{background:#f2f2f2;font-size:12px}' +
+      'small{color:#444}.sec{font-size:12px;color:#333;margin-top:3px}.w{font-size:12px;color:#2357d9;margin-top:2px}@media print{.noprint{display:none}}</style></head><body>' +
+      '<p class="noprint"><button onclick="window.print()">🖨 Nyomtatás</button></p><h1>Tanmenet: ' + esc(s.icon + ' ' + s.title) + '</h1>' +
+      '<div class="meta">' + esc(S.stageTitle(s.stage).replace(/^\S+\s/, '')) + ' · ' + s.lessons.length + ' lecke · kb. ' + total + ' perc önálló tanulás · Tudásműhely</div>' +
+      (s.description ? '<p>' + esc(s.description) + '</p>' : '') +
+      '<table><thead><tr><th>#</th><th>Lecke, részei, interaktív elemek</th><th>Szint</th><th>Idő</th><th>Kvíz + bank</th></tr></thead><tbody>' + rows + '</tbody></table></body></html>';
+    var w = window.open('', '_blank');
+    if (!w) { alert('A böngésző letiltotta az új ablakot. Engedélyezd a felugró ablakokat ehhez az oldalhoz.'); return; }
+    w.document.open(); w.document.write(html); w.document.close();
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target && e.target.id === 'syllabus') {
+      var sid = (location.hash.match(/^#\/tantargy\/([^/?]+)/) || [])[1], s = sid && subjectById(sid);
+      if (s) printSyllabus(s);
+    }
+  });
+
+  /* ---------- akadálymentesítési beállítások ---------- */
+  function applySettings() {
+    var st = S.store.get('settings', {}), r = document.documentElement;
+    r.style.fontSize = st.font ? st.font + '%' : '';
+    r.classList.toggle('hc', !!st.contrast);
+    r.classList.toggle('no-motion', !!st.noMotion);
+  }
+  applySettings();
+  S.pageBeallitasok = function () {
+    var st = S.store.get('settings', {});
+    main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>Beállítások</span></nav><h1>Beállítások</h1>' +
+      '<div class="card pad settings">' +
+      '<div><b>Betűméret</b><div class="seg" id="st-font">' + [[90, 'Kicsi'], [100, 'Normál'], [115, 'Nagy'], [130, 'Nagyon nagy']].map(function (f) {
+        return '<button type="button" data-v="' + f[0] + '" class="' + ((st.font || 100) === f[0] ? 'on' : '') + '">' + f[1] + '</button>'; }).join('') + '</div></div>' +
+      '<label class="ts-topic"><input type="checkbox" id="st-contrast"' + (st.contrast ? ' checked' : '') + '><span><b>Magas kontraszt</b><br><small class="muted">Erősebb színek és keretek, jobb olvashatóság (pl. projektoron).</small></span></label>' +
+      '<label class="ts-topic"><input type="checkbox" id="st-motion"' + (st.noMotion ? ' checked' : '') + '><span><b>Animációk kikapcsolása</b><br><small class="muted">Nincs mozgó átmenet és animáció.</small></span></label>' +
+      '<div><b>Felolvasás sebessége</b><div class="seg" id="st-rate">' + [[0.75, 'Lassú'], [0.95, 'Normál'], [1.2, 'Gyors']].map(function (f) {
+        return '<button type="button" data-v="' + f[0] + '" class="' + ((st.rate || 0.95) === f[0] ? 'on' : '') + '">' + f[1] + '</button>'; }).join('') + '</div></div>' +
+      '<div><b>Mélységi szint</b><div class="seg" id="st-level"><button type="button" data-v="iskolai" class="' + (S.level !== 'egyetem' ? 'on' : '') + '">🎒 Iskolai</button><button type="button" data-v="egyetem" class="' + (S.level === 'egyetem' ? 'on' : '') + '">🎓 Egyetemi</button></div></div>' +
+      '</div><p class="muted">A beállítások ezen az eszközön tárolódnak, és bekerülnek a <a href="#/haladas">haladás-mentésbe</a> is.</p>';
+    function save(k, v) { var s2 = S.store.get('settings', {}); s2[k] = v; S.store.set('settings', s2); applySettings(); S.pageBeallitasok(); }
+    main.querySelectorAll('#st-font button').forEach(function (b) { b.addEventListener('click', function () { save('font', +b.dataset.v); }); });
+    main.querySelectorAll('#st-rate button').forEach(function (b) { b.addEventListener('click', function () { save('rate', +b.dataset.v); }); });
+    main.querySelectorAll('#st-level button').forEach(function (b) { b.addEventListener('click', function () { S.setLevel(b.dataset.v); }); });
+    main.querySelector('#st-contrast').addEventListener('change', function () { save('contrast', this.checked); });
+    main.querySelector('#st-motion').addEventListener('change', function () { save('noMotion', this.checked); });
+  };
 
   /* ---------- téma ---------- */
   var theme = S.store.get('theme', null);
