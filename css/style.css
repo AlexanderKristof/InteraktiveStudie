@@ -248,6 +248,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .ts-timer { font-family: var(--mono); font-weight: 750; font-size: 1.05rem; background: var(--surface-2); padding: 2px 10px; border-radius: 8px; }
 .ts-timer.low { background: var(--bad-soft); color: var(--bad); }
 
+.linkbox { display: grid; grid-template-columns: 1fr auto; gap: 6px; margin-top: 8px; }
+.linkbox input { min-width: 0; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface-2); font-size: .8rem; }
+.linkbox small { grid-column: 1 / -1; }
+.shared-test { max-width: 720px; }
+
 /* Oldaleszköztár */
 .page-tools { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 0 14px; align-items: flex-start; }
 .btn.sm { padding: 4px 10px; font-size: .85rem; border-radius: 8px; }

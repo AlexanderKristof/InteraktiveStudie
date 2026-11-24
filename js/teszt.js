@@ -74,7 +74,45 @@
   }
 
   /* ---------- beállító oldal ---------- */
+  /* ---------- megosztható osztálydolgozat ---------- */
+  function encodeCfg(c) { return btoa(unescape(encodeURIComponent(JSON.stringify(c)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function decodeCfg(s) {
+    try { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+    catch (e) { return null; }
+  }
+  function sshuffle(arr, rnd) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function sharedTest(main, cfg) {
+    var groups = buildGroups(), pool = [];
+    cfg.s.forEach(function (key) {
+      var p = key.split('/'), g = groups.filter(function (x) { return x.id === p[0]; })[0];
+      var t = g && g.topics.filter(function (x) { return x.id === p[1]; })[0];
+      if (t) t.questions.forEach(function (q) { pool.push({ q: q, g: g, t: t }); });
+    });
+    var items = sshuffle(pool, seeded(cfg.r));
+    if (cfg.n) items = items.slice(0, cfg.n);
+    var topics = [];
+    items.forEach(function (x) { var n = x.g.icon + ' ' + x.t.title; if (topics.indexOf(n) < 0) topics.push(n); });
+    main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>Osztálydolgozat</span></nav>' +
+      '<div class="card pad shared-test"><h1>📝 Osztálydolgozat</h1>' +
+      (items.length ? '<p class="lead">' + items.length + ' kérdés' + (cfg.t ? ' · ⏱ ' + cfg.t + ' perc' : '') + ' · ' + (cfg.m === 'vizsga' ? 'értékelés a végén' : 'azonnali visszajelzés') + '</p>' +
+        '<p class="muted">Témák: ' + topics.map(esc).join(', ') + '</p>' +
+        '<form id="sh-form" class="row"><input type="text" id="sh-name" placeholder="Írd be a neved" required style="padding:10px 12px;border-radius:10px;border:1px solid var(--line);min-width:220px">' +
+        '<button class="btn primary" type="submit">Kezdés →</button></form><p class="muted" style="font-size:.85rem">A végén mutasd meg a tanárodnak az eredményoldalt.</p>'
+        : '<p>Ez a dolgozat-link olyan témákra hivatkozik, amelyek ebben a változatban nem találhatók.</p>') + '</div>';
+    var f = main.querySelector('#sh-form');
+    if (f) f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = main.querySelector('#sh-name').value.trim();
+      run(main, items, cfg.m === 'vizsga' ? 'vizsga' : 'azonnali', 'osztaly', { seed: cfg.r, minutes: cfg.t || 0, label: 'Osztálydolgozat – ' + name, student: name, backHref: '#/', backLabel: 'Kezdőlap' });
+    });
+  }
+
   S.pageTeszt = function (main, params) {
+    if (params && params.d) { var cfg = decodeCfg(params.d); if (cfg && cfg.s) return sharedTest(main, cfg); }
     var groups = buildGroups(), st = stats();
     var saved = S.store.get('teszt.setup', { mode: 'azonnali', count: 20, sel: null });
     var sel = {};
@@ -114,6 +152,7 @@
       }).join('') + '</div>' +
       '<p class="ts-sum" id="ts-sum"></p><button type="button" class="btn primary" id="ts-start" style="width:100%;justify-content:center">Teszt indítása →</button>' +
       '<button type="button" class="btn" id="ts-print" style="width:100%;justify-content:center;margin-top:8px">🖨 Nyomtatható feladatlap</button>' +
+      '<button type="button" class="btn" id="ts-link" style="width:100%;justify-content:center;margin-top:8px">🔗 Osztálydolgozat-link</button><div id="ts-linkbox"></div>' +
       (S.store.get('teszt.history', []).length ? '<h3 style="margin-top:20px">Legutóbbi tesztjeid</h3><ul class="ts-hist">' + S.store.get('teszt.history', []).slice(0, 5).map(function (h) {
         var gr = grade(h.pct);
         return '<li><b>' + h.pct + '%</b> <span class="badge">' + gr[0] + ' (' + gr[1] + ')</span> <small class="muted">' + h.n + ' kérdés · ' + (h.mode === 'vizsga' ? 'vizsga' : 'azonnali') + ' · ' + esc(h.date) + '</small></li>';
@@ -149,6 +188,24 @@
     main.querySelectorAll('#ts-count button').forEach(function (b) { b.addEventListener('click', function () { count = +b.dataset.c; paint(); }); });
     main.querySelectorAll('[data-weak]').forEach(function (b) {
       b.addEventListener('click', function () { sel = {}; sel[b.dataset.weak] = 1; paint(); main.querySelector('#ts-start').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+    });
+    main.querySelector('#ts-link').addEventListener('click', function () {
+      var keys = Object.keys(sel);
+      if (!keys.length) return;
+      var mins = prompt('Időkorlát percben (0 = nincs időkorlát):', count ? String(Math.round((count || 20) * 1.5)) : '0');
+      if (mins === null) return;
+      var cfg = { s: keys, n: count || 0, m: mode, t: Math.max(0, parseInt(mins, 10) || 0), r: Math.floor(Math.random() * 1e9) };
+      var url = location.href.split('#')[0] + '#/teszt?d=' + encodeCfg(cfg);
+      var box = main.querySelector('#ts-linkbox');
+      box.innerHTML = '<div class="linkbox"><input type="text" readonly value="' + esc(url) + '"><button type="button" class="btn sm" id="ts-copy">Másolás</button>' +
+        '<small class="muted">Küldd el ezt a linket a diákoknak. Mindenki ugyanazt a ' + (cfg.n || 'összes') + ' kérdést kapja ugyanabban a sorrendben' + (cfg.t ? ', ' + cfg.t + ' perc alatt' : '') + '. A link a weboldalas (GitHub Pages) változattal működik.</small></div>';
+      var inp = box.querySelector('input'); inp.select();
+      box.querySelector('#ts-copy').addEventListener('click', function () {
+        inp.select();
+        var ok = false; try { ok = document.execCommand('copy'); } catch (e) { /* régi böngésző */ }
+        if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { ok = true; }, function () {});
+        this.textContent = '✔ Másolva';
+      });
     });
     main.querySelector('#ts-print').addEventListener('click', function () {
       var pool = S.shuffle(selected()), list = count ? pool.slice(0, count) : pool;
@@ -223,8 +280,10 @@
 
   function run(main, items, mode, kind, ropts) {
     ropts = ropts || {};
+    var orng = ropts.seed != null ? seeded(ropts.seed + 7) : null;
     var qs = items.map(function (it) {
-      var opts = S.shuffle(it.q.options.map(function (t, k) { return { t: t, ok: k === it.q.answer }; }));
+      var base = it.q.options.map(function (t, k) { return { t: t, ok: k === it.q.answer }; });
+      var opts = orng ? sshuffle(base, orng) : S.shuffle(base);
       return { q: it.q, g: it.g, t: it.t, opts: opts, pick: null, locked: false };
     });
     var i = 0, t0 = Date.now(), finished = false, timer = null;
@@ -340,6 +399,7 @@
       main.innerHTML = '<nav class="crumbs"><a href="' + (ropts.backHref || '#/teszt') + '">' + esc(ropts.backLabel || 'Tesztközpont') + '</a><span>›</span><span>Eredmény</span></nav>' +
         '<div class="ts-result card pad"><div class="ts-score g' + gr[0] + '"><b>' + pct + '%</b><span>' + gr[0] + ' – ' + gr[1] + '</span></div>' +
         '<div><h1 style="margin-bottom:4px">' + (pct === 100 ? 'Hibátlan! 🏆' : pct >= 75 ? 'Szép munka!' : pct >= 50 ? 'Átmentél, de van még mit gyakorolni.' : 'Ezt még gyakorolni kell.') + '</h1>' +
+        (ropts.student ? '<p style="margin:0 0 4px"><b>' + esc(ropts.student) + '</b> · ' + esc(new Date().toLocaleString('hu-HU')) + '</p>' : '') +
         '<p class="muted">' + ok + ' helyes válasz ' + qs.length + ' kérdésből · ' + Math.floor(secs / 60) + ' perc ' + (secs % 60) + ' mp · ' + (mode === 'vizsga' ? 'vizsga mód' : 'azonnali visszajelzés') + '</p>' +
         '<div class="row">' + (wrong.length ? '<button type="button" class="btn primary" id="ts-redo">↻ A hibásak újra (' + wrong.length + ')</button>' : '') +
         (ropts.backHref ? '<a class="btn" href="' + ropts.backHref + '">← Vissza: ' + esc(ropts.backLabel || '') + '</a>' : '<button type="button" class="btn" id="ts-again">Ugyanezek a témák, új kérdésekkel</button><a class="btn" href="#/teszt">Új beállítás</a>') + '</div></div></div>' +
