@@ -61,7 +61,7 @@
 
   /* ---------- 1. Ohm-törvény ---------- */
   S.addWidget('ohm', function (el, o) {
-    el.innerHTML = head('Ohm törvénye – próbáld ki!', o.help || 'Állítsd a feszültséget és az ellenállást, és figyeld, hogyan változik az áram és a teljesítmény. Az izzó fényereje a teljesítménnyel nő.') +
+    el.innerHTML = head(o.title || 'Ohm törvénye – próbáld ki!', o.help || 'Állítsd a feszültséget és az ellenállást, és figyeld, hogyan változik az áram és a teljesítmény. Az izzó fényereje a teljesítménnyel nő.') +
       '<div class="w-grid"><div class="w-ctrl">' +
       rng('u', 'Feszültség (U)', 0, o.maxU || 24, 0.5, o.u || 12, 'V') +
       rng('r', 'Ellenállás (R)', 1, o.maxR || 100, 1, o.r || 12, 'Ω') +
