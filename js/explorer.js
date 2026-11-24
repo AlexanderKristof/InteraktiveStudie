@@ -43,6 +43,7 @@
       '<div class="ex-stage card"><div class="ex-toolbar">' +
       '<button type="button" class="btn primary" id="ex-explode">⇱ Szétszedés</button>' +
       '<button type="button" class="btn on" id="ex-badges">① Számok</button>' +
+      '<button type="button" class="btn" id="ex-game">🎯 Keresd meg!</button>' +
       '<span class="zoom-btns"><button type="button" class="btn" id="ex-zin" aria-label="Nagyítás">＋</button><button type="button" class="btn" id="ex-zout" aria-label="Kicsinyítés">−</button><button type="button" class="btn" id="ex-zreset" aria-label="Teljes nézet">⟲</button></span>' +
       (m.scale ? '<span class="scale">Valódi méret: ' + esc(m.scale) + '</span>' : '') + '</div>' +
       '<svg class="ex-svg" id="ex-svg" viewBox="' + vb + '" role="group" aria-label="' + esc(m.title) + ' alkatrészei">' +
@@ -226,12 +227,12 @@
     svg.addEventListener('click', function (e) { if (dragged) { e.stopPropagation(); e.preventDefault(); } }, true);
 
     svg.querySelectorAll('.part').forEach(function (g) {
-      g.addEventListener('click', function () { select(g.dataset.id === selId ? null : g.dataset.id); });
+      g.addEventListener('click', function () { if (game) return gameClick(g); select(g.dataset.id === selId ? null : g.dataset.id); });
       g.addEventListener('keydown', function (ev) {
         if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); select(g.dataset.id); }
       });
     });
-    svg.addEventListener('click', function (ev) { if (!ev.target.closest('.part')) select(null); });
+    svg.addEventListener('click', function (ev) { if (!game && !ev.target.closest('.part')) select(null); });
     root.querySelectorAll('#ex-chips button').forEach(function (b) {
       b.addEventListener('click', function () { select(b.dataset.id === selId ? null : b.dataset.id); });
     });
@@ -242,6 +243,55 @@
       applyTransforms();
       if (hlIds) zoomToParts(hlIds);
     });
+    /* ---------- „Keresd meg!” játék: a név alapján kell rábökni az alkatrészre ---------- */
+    var game = null, gameBtn = root.querySelector('#ex-game'), stage = root.querySelector('.ex-stage');
+    function gameBanner() {
+      var b = stage.querySelector('.game-banner');
+      if (!b) { b = document.createElement('div'); b.className = 'game-banner'; stage.insertBefore(b, svg); }
+      return b;
+    }
+    function gameNext() {
+      var b = gameBanner();
+      if (game.i >= game.order.length) {
+        var best = S.store.get('exGame', {}), prev = best[m.id];
+        if (prev == null || game.first > prev) { best[m.id] = game.first; S.store.set('exGame', best); }
+        b.innerHTML = '<b>🏁 Kész!</b> ' + game.first + ' / ' + game.order.length + ' alkatrészt találtál el elsőre.' + (game.first === game.order.length ? ' Hibátlan! 🎉' : '') +
+          ' <button type="button" class="btn sm" id="gm-again">Újra</button>';
+        b.querySelector('#gm-again').addEventListener('click', startGame);
+        return;
+      }
+      var p = byId[game.order[game.i]].p;
+      game.tries = 0;
+      b.innerHTML = '<span class="muted">' + (game.i + 1) + ' / ' + game.order.length + '</span> Hol van: <b>' + esc(p.name) + '</b>? <span class="muted">Kattints rá a rajzon!</span> <span class="gm-score">✔ ' + game.first + '</span>';
+    }
+    function flash(g, cls) { g.classList.add(cls); setTimeout(function () { g.classList.remove(cls); }, 650); }
+    function gameClick(g) {
+      var target = game.order[game.i];
+      if (game.i >= game.order.length) return;
+      if (g.dataset.id === target) {
+        if (!game.tries) game.first++;
+        flash(g, 'gm-ok'); game.i++; setTimeout(gameNext, 450);
+      } else {
+        game.tries++; flash(g, 'gm-bad');
+        var b = gameBanner(), hint = b.querySelector('.gm-hint');
+        if (!hint) { hint = document.createElement('div'); hint.className = 'gm-hint'; b.appendChild(hint); }
+        hint.textContent = 'Ez a(z) ' + byId[g.dataset.id].p.name + '. Próbáld újra!' + (game.tries >= 2 ? ' Tipp: nézd meg a „Szétszedés” nézetben!' : '');
+      }
+    }
+    function startGame() {
+      select(null);
+      game = { order: S.shuffle(m.parts.map(function (p) { return p.id; })), i: 0, first: 0, tries: 0 };
+      root.classList.add('ex-gaming');
+      gameBtn.textContent = '✕ Játék vége'; gameBtn.classList.add('on');
+      gameNext();
+    }
+    function stopGame() {
+      game = null; root.classList.remove('ex-gaming');
+      gameBtn.textContent = '🎯 Keresd meg!'; gameBtn.classList.remove('on');
+      var b = stage.querySelector('.game-banner'); if (b) b.remove();
+    }
+    gameBtn.addEventListener('click', function () { if (game) stopGame(); else startGame(); });
+
     var bBtn = root.querySelector('#ex-badges');
     bBtn.addEventListener('click', function () {
       var off = svg.classList.toggle('no-badges');

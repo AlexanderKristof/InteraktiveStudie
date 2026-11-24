@@ -322,6 +322,15 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .pair-btn.ok { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); cursor: default; }
 .pair-btn.bad { border-color: var(--bad); background: var(--bad-soft); }
 
+/* „Keresd meg!” játék */
+.game-banner { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 10px; padding: 8px 12px; margin-bottom: 8px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.game-banner .gm-score { margin-left: auto; font-weight: 700; color: var(--ok); }
+.game-banner .gm-hint { flex-basis: 100%; font-size: .88rem; color: var(--bad); }
+.ex-gaming .badge-g, .ex-gaming #ex-chips { display: none; }
+.ex-gaming .ex-info { opacity: .4; pointer-events: none; }
+.ex-svg .part.gm-ok { filter: drop-shadow(0 0 8px #2f9e6a) brightness(1.15); }
+.ex-svg .part.gm-bad { filter: drop-shadow(0 0 8px #e5484d) saturate(.4); }
+
 /* Periódusos rendszer */
 .pt-wrap { overflow-x: auto; }
 .pt { display: grid; grid-template-columns: repeat(18, minmax(30px, 1fr)); gap: 3px; min-width: 560px; }
