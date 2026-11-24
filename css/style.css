@@ -224,6 +224,12 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .counter button { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 700; }
 .counter b { min-width: 36px; text-align: center; font-family: var(--mono); }
 
+.kp-col { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 10px 3px 4px; cursor: pointer; font-size: .85rem; display: inline-flex; gap: 6px; align-items: center; }
+.kp-col i { width: 18px; height: 18px; border-radius: 50%; display: inline-block; border: 1px solid rgba(0,0,0,.2); }
+.kp-col.on { border-color: var(--accent); background: var(--accent-soft); font-weight: 650; }
+.kp-term:hover circle { stroke: var(--accent); }
+.kp-wire:hover { opacity: .6; }
+
 /* Hibakereső */
 .tb-trail .linkish { text-align: left; }
 .tb-trail { margin: 6px 0 12px; padding-left: 22px; font-size: .9rem; color: var(--fg-2); display: grid; gap: 2px; }

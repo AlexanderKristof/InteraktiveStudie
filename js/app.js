@@ -5,6 +5,7 @@
   var esc = S.esc, md = S.md, norm = S.norm;
   var main = document.getElementById('main');
   if (S.attachTroubles) S.attachTroubles();
+  if (S.attachKapcsolas) S.attachKapcsolas();
   var LEVELS = { 1: ['kezdő', 'l1'], 2: ['haladó', 'l2'], 3: ['profi', 'l3'] };
 
   /* ---------- haladás ---------- */
