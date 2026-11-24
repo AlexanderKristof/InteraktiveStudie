@@ -38,7 +38,7 @@
 
     root.innerHTML =
       '<nav class="crumbs">' + crumbs + '</nav>' +
-      '<h1>' + m.icon + ' ' + esc(m.title) + '</h1><p class="lead">' + esc(m.summary) + '</p>' +
+      '<h1>' + m.icon + ' ' + esc(m.title) + '</h1><p class="lead">' + esc(m.summary) + '</p>' + (S.toolsHtml ? S.toolsHtml('modell:' + m.id) : '') +
       '<div class="ex-layout">' +
       '<div class="ex-stage card"><div class="ex-toolbar">' +
       '<button type="button" class="btn primary" id="ex-explode">⇱ Szétszedés</button>' +
@@ -274,6 +274,7 @@
     if (stepsBox) paintStep();
     if (m.quiz && m.quiz.length) S.renderQuiz(root.querySelector('#ex-quiz'), m.quiz, 'model/' + m.id);
 
+    if (S.bindTools) S.bindTools(root, 'modell:' + m.id, { title: m.title, href: '#/felfedezo/' + m.id, kind: 'Mi miből áll? · modell', icon: m.icon }, root.querySelector('#ex-info'));
     if (S.mountWidgets) S.mountWidgets(root);
     applyTransforms();
     var pre = S.params && S.params.resz;

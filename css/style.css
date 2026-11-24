@@ -248,6 +248,14 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .ts-timer { font-family: var(--mono); font-weight: 750; font-size: 1.05rem; background: var(--surface-2); padding: 2px 10px; border-radius: 8px; }
 .ts-timer.low { background: var(--bad-soft); color: var(--bad); }
 
+/* Oldaleszköztár */
+.page-tools { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 0 14px; align-items: flex-start; }
+.btn.sm { padding: 4px 10px; font-size: .85rem; border-radius: 8px; }
+.note-box { flex-basis: 100%; display: grid; gap: 4px; }
+.note-box textarea { width: 100%; max-width: 72ch; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--warn-soft); color: var(--fg); font: inherit; resize: vertical; }
+.notes-list { display: grid; gap: 10px; }
+.note-text { margin-top: 6px; white-space: normal; }
+
 /* Vizsgafelkészítő */
 .gauge { width: 84px; height: 84px; border-radius: 50%; flex: none; display: grid; place-items: center; align-content: center; position: relative;
   background: conic-gradient(var(--c) calc(var(--p) * 1%), var(--surface-2) 0); }

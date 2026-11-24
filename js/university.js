@@ -379,11 +379,13 @@
     c.formulas = c.formulas || [];
     var sorted = sortTerms(c.terms), i = sorted.indexOf(t), prev = sorted[i - 1], next = sorted[i + 1];
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/egyetem">Egyetem</a><span>›</span><a href="#/egyetem/' + c.id + '">' + esc(c.title) + '</a><span>›</span><span>' + esc(t.term) + '</span></nav>' +
+      (S.toolsHtml ? S.toolsHtml('szakszo:' + c.id + '/' + t.id) : '') +
       '<div class="lesson-body term-page">' + termHtml(c, t, false) + '</div>' +
       '<nav class="pager">' + (prev ? '<a class="btn" href="#/egyetem/' + c.id + '/fogalom/' + prev.id + '">← ' + esc(prev.term) + '</a>' : '<span></span>') +
       (next ? '<a class="btn" href="#/egyetem/' + c.id + '/fogalom/' + next.id + '">' + esc(next.term) + ' →</a>' : '<a class="btn" href="#/egyetem/' + c.id + '">Vissza a szótárhoz</a>') + '</nav>';
     bindFormulas(main, c.formulas);
     S.mountWidgets(main);
+    if (S.bindTools) S.bindTools(main, 'szakszo:' + c.id + '/' + t.id, { title: t.term, href: '#/egyetem/' + c.id + '/fogalom/' + t.id, kind: c.title + ' · szakszó', icon: c.icon }, main.querySelector('.term-page'));
     return true;
   };
 })();

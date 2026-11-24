@@ -199,7 +199,7 @@
       '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/tantargy/' + s.id + '">' + esc(s.title) + '</a><span>›</span><span>' + (idx + 1) + '. lecke</span></nav>' +
       '<div class="lesson"><article class="lesson-body">' +
       '<div class="row" style="gap:8px;margin-bottom:6px"><span class="badge ' + lv[1] + '">' + lv[0] + '</span>' + (l.minutes ? '<span class="badge">⏱ kb. ' + l.minutes + ' perc</span>' : '') + '</div>' +
-      '<h1>' + esc(l.title) + '</h1><p class="lead">' + esc(l.summary) + '</p>' +
+      '<h1>' + esc(l.title) + '</h1><p class="lead">' + esc(l.summary) + '</p>' + (S.toolsHtml ? S.toolsHtml('lecke:' + key) : '') +
       body + widgets +
       (models.length ? '<h2>Nézz bele!</h2><p class="muted">Ehhez a leckéhez kapcsolódó szétszedhető modellek:</p><div class="related">' + models.map(function (m) {
         return '<a class="btn" href="#/felfedezo/' + m + '">' + S.models[m].icon + ' ' + esc(S.models[m].title) + '</a>';
@@ -213,6 +213,7 @@
         return sec.title ? '<li><a href="#sec-' + i + '" data-jump="sec-' + i + '">' + esc(sec.title) + '</a></li>' : '';
       }).join('') + (l.quiz ? '<li><a href="#kviz" data-jump="kviz">Kvíz</a></li>' : '') + '</ol></aside></div>';
 
+    if (S.bindTools) S.bindTools(main, 'lecke:' + key, { title: l.title, href: '#/lecke/' + key, kind: s.title + ' · lecke', icon: s.icon }, main.querySelector('.lesson-body'));
     var doneBtn = main.querySelector('#done');
     function paintDone() {
       var d = isDone(sid, lid);
@@ -439,6 +440,7 @@
     else if (seg[0] === 'egyetem') { setNav('egyetem'); var cc = S.courseById(seg[1]); title(cc ? cc.title : ''); if (!S.pageCourse(main, seg[1], seg[2])) notFound(); }
     else if (seg[0] === 'felkeszito' && seg[1]) { setNav('felkeszito'); title('Vizsgafelkészítő'); if (!S.pageVizsga(main, seg[1])) notFound(); }
     else if (seg[0] === 'felkeszito') { setNav('felkeszito'); title('Vizsgafelkészítő'); S.pageFelkeszito(main); }
+    else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
     else if (seg[0] === 'utvonalak') { setNav(''); title('Tanulási útvonalak'); S.pageUtvonalak(main); }
     else if (seg[0] === 'utvonal') { setNav(''); var pth = (S.paths || []).filter(function (x) { return x.id === seg[1]; })[0]; title(pth ? pth.title : ''); if (!S.pageUtvonal(main, seg[1])) notFound(); }
     else if (seg[0] === 'haladas') { setNav('haladas'); title('Haladásom'); S.pageHaladas(main); }

@@ -131,6 +131,7 @@
         var p = r.total ? Math.round(r.done / r.total * 100) : 0;
         return '<a class="card" href="#/tantargy/' + r.s.id + '"><span>' + r.s.icon + ' ' + esc(r.s.title) + '</span><span class="bar" style="--tile:' + r.s.color + '"><i style="width:' + p + '%"></i></span><b>' + r.done + '/' + r.total + '</b></a>';
       }).join('') + '</div>' +
+      '<p style="margin-top:20px"><a class="btn" href="#/jegyzetek">📝 Jegyzeteim és ⭐ kedvenceim</a> <a class="btn" href="#/utvonalak">🧭 Tanulási útvonalak</a> <a class="btn" href="#/felkeszito">📅 Vizsgafelkészítő</a></p>' +
       '<h2>Mentés és betöltés</h2><div class="card pad"><p style="margin-top:0">A haladásod ebben a böngészőben tárolódik. Ha másik gépen vagy telefonon is folytatnád, mentsd el fájlba, és ott töltsd be.</p>' +
       '<div class="row"><button type="button" class="btn primary" id="hx-exp">⬇ Haladás mentése fájlba</button><label class="btn" style="cursor:pointer">⬆ Mentés betöltése<input type="file" accept=".json,application/json" id="hx-imp" hidden></label></div></div>';
     main.querySelector('#hx-exp').addEventListener('click', exportData);
