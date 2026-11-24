@@ -17,7 +17,7 @@ STUDIE.addFacts([
     links: ['lecke:fizika/newton', 'lecke:fiz-alap/nyomas', 'szakszo:fizika-bsc/impulzusmomentum', 'lecke:sport/foci-fizika']
   },
   {
-    id: 'tenisz-federer-237-het', cat: 'sport', sport: 'tenisz', athletes: ['Roger Federer'],
+    id: 'tenisz-federer-237-het', cat: 'sport', sport: 'tenisz', theme: 'edzes', athletes: ['Roger Federer'],
     q: 'Roger Federer **237 hétig egyhuzamban** vezette a világranglistát – fiatalon pedig híresen ingerült, ütőt dobáló junior volt?',
     why: 'Federer 2004 februárjától 2008 augusztusáig, **237 egymást követő héten** át volt világelső – ez máig rekord (összesen 310 hetet töltött az élen).\n\nKevésbé ismert, hogy tinédzserként gyakran **kiabált és ütőt dobált** a pályán. Ő maga mesélte el, hogy tudatos munkával tanulta meg kezelni az érzelmeit, és később épp a **nyugodtsága** lett a védjegye.\n\nA sportpszichológia szerint az érzelemszabályozás **tanulható készség**, mint a fonák: gyakorlással fejlődik.',
     links: ['lecke:sport/sportpszichologia', 'modell:agy#limbikus', 'modell:agy#homlok']
@@ -91,7 +91,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/olimpia', 'lecke:sport/edzeselmelet', 'lecke:sport/test-edzes']
   },
   {
-    id: 'uszas-phelps-alkat', cat: 'sport', sport: 'uszas', athletes: ['Michael Phelps'],
+    id: 'uszas-phelps-alkat', cat: 'sport', sport: 'uszas', theme: 'edzes', athletes: ['Michael Phelps'],
     q: 'Michael Phelps karfesztávolsága **kb. 201 cm**, miközben magassága csak kb. 193 cm – és a beszámolók szerint **5 évig egyetlen napot sem hagyott ki** az edzésből?',
     why: 'Phelps **23 olimpiai aranyat** és összesen **28 érmet** nyert – mindkettő minden idők rekordja; 2008-ban Pekingben egyetlen olimpián **8 aranyat**.\n\nAz alkata (hosszú kar, nagy tenyér és lábfej, hosszú törzs) segítette, de önmagában ez kevés lett volna. Edzője, Bob Bowman szerint évekig **minden nap** edzett, még karácsonykor és születésnapján is – így évente kb. 50 nappal többet gyakorolt, mint aki vasárnaponként pihen.\n\nA tehetség lehetőség; a rendszeresség teszi teljesítménnyé.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/rekordok', 'lecke:sport/sportpszichologia']
@@ -117,7 +117,7 @@ STUDIE.addFacts([
     links: ['lecke:fizika/mertekegysegek-mozgas', 'lecke:fizika/energia-munka', 'lecke:sport/rekordok']
   },
   {
-    id: 'atletika-bolt-gerincferdules', cat: 'sport', sport: 'atletika', athletes: ['Usain Bolt'],
+    id: 'atletika-bolt-gerincferdules', cat: 'sport', sport: 'atletika', theme: 'edzes', athletes: ['Usain Bolt'],
     q: 'Usain Bolt **gerincferdüléssel (szkoliózissal)** lett minden idők leggyorsabb embere?',
     why: 'Bolt gerince oldalirányban görbült, ami az egyik lábára nagyobb terhelést tett, és pályafutása elején gyakoribbá tette a combizom-sérüléseket. Edzőivel ezért különösen sokat dolgozott a **törzs- és hátizmok** erősítésén, hogy azok stabilan tartsák a gerincet.\n\nA sportorvoslás egyik alapelve: egy testi adottság nem feltétlenül akadály, ha **célzott edzéssel** kompenzálják. Bolt 2008 és 2016 között 8 olimpiai aranyat nyert, és a 100 m (9,58) és 200 m (19,19) világcsúcsát is 2009-ben futotta.',
     links: ['lecke:sport/edzeselmelet', 'lecke:bio-alap/emberi-test-1', 'szakszo:anatomia/csont']
@@ -509,7 +509,7 @@ STUDIE.addFacts([
     links: ['lecke:sport/sportpszichologia', 'lecke:informatika/algoritmusok']
   },
   {
-    id: 'sakk-polgar-kiserlet', cat: 'sport', sport: 'sakk', athletes: ['Polgár Judit', 'Polgár Zsuzsa', 'Polgár Zsófia'],
+    id: 'sakk-polgar-kiserlet', cat: 'sport', sport: 'sakk', theme: 'edzes', athletes: ['Polgár Judit', 'Polgár Zsuzsa', 'Polgár Zsófia'],
     q: 'Polgár László pedagógus azt állította, hogy **„a zseni nem születik, hanem nevelhető”** – és mindhárom lánya kiváló sakkozó lett?',
     why: 'Polgár László és felesége lányaikat, Zsuzsát, Zsófiát és Juditot otthon tanították, és a sakkot már kisgyerekkoruktól **játékos, de rendszeres** gyakorlással oktatták. Zsuzsa később női világbajnok lett, Judit minden idők legerősebb női sakkozója, Zsófia is nemzetközi mester.\n\nA családi „kísérlet” nem bizonyítja, hogy bárkiből bármi lehet, hiszen sok tényező hat. Azt viszont jól mutatja, mennyit ér a korán kezdett, **tudatos, örömmel végzett gyakorlás**, a támogató környezet és a magas elvárás együtt.',
     links: ['lecke:sport/sportpszichologia', 'lecke:biologia/genetika', 'modell:agy#homlok']
@@ -547,7 +547,7 @@ STUDIE.addFacts([
     links: ['modell:sziv#bk', 'szakszo:anatomia/percterfogat', 'lecke:biologia/keringes-legzes', 'lecke:sport/test-edzes']
   },
   {
-    id: 'sporttud-alvas-kosar', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-alvas-kosar', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'egy stanfordi kísérletben a kosarasok **büntetődobás-pontossága kb. 9%-kal javult**, miután hetekig többet aludtak?',
     why: 'Cheri Mah és munkatársai (2011) a Stanford Egyetem férfi kosárlabdacsapatának 11 játékosát kérték meg, hogy 5–7 héten át éjszakánként **legalább 10 órát töltsenek ágyban**. Átlagosan közel 2 órával többet aludtak, mint korábban.\n\nAz eredmény: a büntetődobás és a hárompontos dobás pontossága **kb. 9%-kal** javult, a sprintidő kb. 0,7 másodperccel csökkent, a reakcióidő is javult. A kísérlet kicsi volt, kontrollcsoport nélkül, de jól illeszkedik ahhoz, amit tudunk: alvás közben **rögzülnek a tanult mozdulatok**, és regenerálódnak az izmok.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/kosarlabda', 'modell:agy#hipofizis', 'lecke:bio-alap/emberi-test-2']
@@ -559,19 +559,19 @@ STUDIE.addFacts([
     links: ['modell:szem#retina', 'lecke:fizika/hullamok-feny', 'szakszo:anatomia/reflexiv', 'lecke:bio-alap/emberi-test-2']
   },
   {
-    id: 'sporttud-magaslati-edzes', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-magaslati-edzes', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a „**magasan élni, alacsonyan edzeni**” módszerrel a futók egy kísérletben **kb. 13 másodpercet** javítottak az 5000 m-es idejükön?',
     why: 'Magasan kevesebb az oxigén a levegőben, ezért a vese **EPO** hormont termel, ami több **vörösvértest** képzésére serkent – több vörösvértest több oxigént szállít. Csakhogy magaslaton nehéz keményen edzeni.\n\nLevine és Stray-Gundersen 1997-es kísérletében 39 futót osztottak három csoportba. Csak azok javultak egyértelműen, akik **2500 m magasan aludtak, de 1250 m-en edzettek**: 4 hét alatt átlagosan kb. **13 másodpercet** az 5 km-es időn. A hatás egyénenként eltér, és egyeseknél elmarad – ezért a sporttudomány óvatosan fogalmaz.',
     links: ['lecke:biologia/keringes-legzes', 'szakszo:anatomia/oxigen-disszociacio', 'lecke:foldrajz/legkor', 'lecke:sport/edzeselmelet']
   },
   {
-    id: 'sporttud-bemelegites', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-bemelegites', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a bemelegítés lényege tényleg a **„melegítés”**: a melegebb izom gyorsabban és erősebben húzódik össze?',
     why: 'Bemelegítéskor nő az izmok hőmérséklete, és ezzel gyorsulnak az izomrostokban zajló **kémiai reakciók** (a reakciósebesség a hőmérséklettel nő), gyorsabb az idegi ingerületvezetés, és könnyebben adja le az oxigént a hemoglobin. Vizsgálatok szerint az izomhőmérséklet már néhány fokos emelkedése is több százalékkal javíthatja a robbanékony teljesítményt.\n\nA jó bemelegítés **dinamikus**: könnyű futás, lendítések, gyorsítások. A hosszú, statikus nyújtás közvetlenül sprint előtt egyes vizsgálatokban kissé rontotta a teljesítményt – azt inkább edzés utánra érdemes hagyni.',
     links: ['lecke:kemia/reakciok', 'szakszo:kemia-bsc/aktivalasi-energia', 'szakszo:anatomia/izomosszehuzodas', 'lecke:sport/edzeselmelet']
   },
   {
-    id: 'sporttud-folyadek-2-szazalek', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-folyadek-2-szazalek', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'ha a testtömeged **kb. 2%-ának megfelelő folyadékot** elveszíted izzadással, az már **ronthatja az állóképességedet**?',
     why: 'Egy 50 kg-os sportolónál ez csak **1 liter** folyadék – egy meleg napon, intenzív edzésen ennyi akár egy óra alatt is elpárologhat. A folyadékvesztés miatt csökken a vérplazma mennyisége, a szívnek gyorsabban kell vernie, nehezebb leadni a hőt, és romlik a koncentráció is.\n\nAz izzadás a szervezet „hűtőrendszere”: a bőrön elpárolgó víz **hőt von el**. Ezért fontos edzés előtt, közben és után is rendszeresen inni – hosszú, verejtékes terhelésnél az elvesztett **sók** (nátrium) pótlására is figyelni kell.',
     links: ['lecke:sport/taplalkozas', 'lecke:fiz-alap/hotan', 'szakszo:anatomia/homeosztazis', 'szakszo:anatomia/vizeletkepzes']
@@ -607,25 +607,25 @@ STUDIE.addFacts([
     links: ['lecke:sport/sportpszichologia', 'lecke:matematika/szazalek', 'szakszo:valszam/felteteles-valoszinuseg']
   },
   {
-    id: 'sporttud-sokoldalusag', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-sokoldalusag', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a világklasszis sportolók gyerekkorukban **jellemzően több sportágat** űztek, és **később specializálódtak**, mint a „csak” nemzeti szintű társaik?',
     why: 'Güllich, Macnamara és Hambrick 2022-es összefoglaló elemzése (metaanalízise) több mint 6000 sportoló adatait vizsgálta, köztük 772 világklasszisét. A felnőttkori **világklasszisok** gyerekként több sportágban edzettek, **később kezdték** fő sportágukat, és fiatalon **lassabban fejlődtek**, mint a nemzeti szintű sportolók.\n\nJunior korban viszont épp a korán specializálódók voltak jobbak – csak felnőttkorra fordult meg a kép. A sokféle mozgás széles alapot ad, csökkenti a kiégés és a túlterheléses sérülések esélyét.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia', 'lecke:matematika/szazalek']
   },
   {
-    id: 'sporttud-fejlodesi-szemlelet', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-fejlodesi-szemlelet', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a „**fejlődési szemlélet**” (growth mindset) kutatásai szerint **számít, hogyan gondolkodunk a saját képességeinkről** – de a hatás kisebb, mint amit a népszerű könyvek állítanak?',
     why: 'Carol Dweck pszichológus azt írta le, hogy akik a képességeiket **fejleszthetőnek** tartják, könnyebben vállalnak nehéz feladatokat, és a kudarcot tanulási lehetőségnek látják. Akik szerint a tehetség „adott”, hajlamosabbak kerülni a kihívást, nehogy kiderüljön, hogy „nem elég jók”.\n\nNagy, sok iskolát átfogó vizsgálatok szerint a rövid fejlődési szemléletet tanító programok átlagosan **kicsi, de mérhető** javulást hoznak, főleg a gyengébben teljesítő diákoknál. Önmagában nem csodaszer – de a kitartó, okosan tervezett gyakorlással együtt valóban segít.',
     links: ['lecke:sport/sportpszichologia', 'modell:agy#homlok']
   },
   {
-    id: 'sporttud-szuperkompenzacio', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-szuperkompenzacio', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'az edzéstől **nem edzés közben**, hanem **a pihenés alatt** leszel erősebb és gyorsabb?',
     why: 'Az edzés terhelés: kifárasztja az izmokat, csökkenti az energiaraktárakat, apró sérüléseket okoz. A pihenés alatt a szervezet nemcsak helyreállítja ezeket, hanem egy kicsit **„túlépít”**: több fehérjét épít az izmokba, több glikogént raktároz, több mitokondriumot hoz létre – ez a **szuperkompenzáció**.\n\nHa a következő edzés jó időben jön, a teljesítmény lépcsőzetesen nő. Ha viszont túl korán és túl gyakran terhelünk, a szervezetnek nincs ideje alkalmazkodni – ebből lesz a **túledzettség**. Az alvás, az étkezés és a pihenőnapok tehát az edzés részei.',
     links: ['lecke:sport/edzeselmelet', 'modell:sejt#mito', 'szakszo:anatomia/homeosztazis', 'lecke:sport/taplalkozas']
   },
   {
-    id: 'sporttud-tudatos-gyakorlas', cat: 'sport', sport: 'altalanos',
+    id: 'sporttud-tudatos-gyakorlas', cat: 'sport', sport: 'altalanos', theme: 'edzes',
     q: 'a híres „**10 000 órás szabály**” leegyszerűsítés – a kutatások szerint nem az órák száma, hanem a **gyakorlás minősége** a döntő?',
     why: 'Anders Ericsson pszichológus azt vizsgálta, mitől lesz valaki szakértő, és a **tudatos gyakorlás** fogalmát írta le: célzott, a jelenlegi képességeink határát feszegető feladatok, azonnali visszajelzéssel, sok ismétléssel. A „10 000 óra” egy átlagérték volt a kutatásából, amelyet később népszerű könyvek „szabállyá” tettek.\n\nA valóságban a szükséges gyakorlási idő **egyénenként és területenként nagyon eltér**, és a tehetség, az életkor, az edzés minősége is számít. A tanulság mégis érvényes: tíz perc koncentrált, javító szándékú gyakorlás többet ér egy óra gépies ismétlésnél.',
     links: ['lecke:sport/edzeselmelet', 'lecke:sport/sportpszichologia', 'modell:agy#kisagy']
