@@ -31,7 +31,7 @@ STUDIE.addSubject({
             { year: -350000, label: 'kb. 350 000 éve', title: 'Vértesszőlős', text: 'Előember élt a mai Magyarország területén. Kőeszközeit és tűzhelyét is megtalálták.' },
             { year: -10000, label: 'Kr. e. 10 000 körül', title: 'Földművelés kezdete', text: 'A Közel-Keleten az emberek gabonát termesztenek és állatokat tartanak, falvakba települnek.' },
             { year: -3200, label: 'Kr. e. 3200 körül', title: 'Az írás megjelenése', text: 'A sumerok agyagtáblákra írják az **ékírást**, nem sokkal később az egyiptomiak a hieroglifákat.' },
-            { year: -2560, label: 'Kr. e. 2560 körül', title: 'Kheopsz piramisa', text: 'Elkészül Gízában a Nagy Piramis, a fáraó sírja. Csaknem 3800 évig ez volt a világ legmagasabb építménye.' },
+            { year: -2560, label: 'Kr. e. 2560 körül', title: 'Kheopsz piramisa', text: 'Elkészül Gízában a Nagy Piramis, a fáraó sírja. Több mint 3800 évig ez volt a világ legmagasabb építménye.' },
             { year: -776, label: 'Kr. e. 776', title: 'Az első olimpia', text: 'A hagyomány szerint ekkor rendezték az első olümpiai játékokat Zeusz tiszteletére. A görögök ettől számolták az éveket.' },
             { year: -753, label: 'Kr. e. 753', title: 'Róma alapítása', text: 'A monda szerint Romulus ekkor alapította Rómát. A rómaiak ettől az évtől számolták az időt.' },
             { year: -508, label: 'Kr. e. 508', title: 'Athéni demokrácia', text: 'Kleiszthenész reformjai: a hatalom a polgárok népgyűlésének kezébe kerül.' },

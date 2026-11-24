@@ -67,6 +67,6 @@ STUDIE.addQuestions('foldrajz', {
     { q: 'Mi a helyes sorrend a hulladék kezelésében?', options: ['Újrahasznosítás → csökkentés → újrahasználat', 'Égetés → lerakás → gyűjtés', 'Csökkentés → újrahasználat → újrahasznosítás', 'Lerakás → újrahasznosítás → csökkentés'], answer: 2, explain: 'A legjobb hulladék az, ami meg sem keletkezik. Csak ezután jön az újrahasználat, majd az újrahasznosítás.' },
     { q: 'Melyik erőmű termeli Magyarországon a villamos energia közel felét?', options: ['A visontai hőerőmű', 'A bősi vízerőmű', 'Egy szélerőműpark', 'A paksi atomerőmű'], answer: 3, explain: 'A paksi atomerőmű adja a hazai áramtermelés közel felét, szén-dioxid-kibocsátás nélkül.' },
     { q: 'Miért öregszik Magyarország népessége?', options: ['Kevés gyermek születik, és nő a várható élettartam', 'Sok fiatal költözik be', 'Nagyon sok gyermek születik', 'Csökken a várható élettartam'], answer: 0, explain: 'Az alacsony születésszám és a hosszabb élet miatt nő az idősek aránya.' },
-    { q: 'Az ország 4 millió foglalkoztatottjának 65%-a a szolgáltatásokban dolgozik. Hány fő ez?', options: ['650 000', '2 600 000', '1 400 000', '3 500 000'], answer: 1, explain: '4 000 000 · 0,65 = 2 600 000 fő.' }
+    { q: 'Egy ország 4 millió foglalkoztatottjának 65%-a a szolgáltatásokban dolgozik. Hány fő ez?', options: ['650 000', '2 600 000', '1 400 000', '3 500 000'], answer: 1, explain: '4 000 000 · 0,65 = 2 600 000 fő.' }
   ]
 });
