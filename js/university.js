@@ -305,6 +305,7 @@
     c.formulas = c.formulas || [];
     tab = tab || 'szotar';
     var TABS = [['szotar', '📖 Szakszótár'], ['terkep', '🕸️ Fogalomtérkép'], ['kepletek', '∑ Képletek'], ['kartyak', '🃏 Tanulókártyák'], ['kviz', '✔ Kvíz']];
+    setTimeout(function () { var k = main.querySelector('.tabs.big'); if (k) k.insertAdjacentHTML('beforeend', '<a href="#/teszt?targy=' + c.id + '">📝 Teszt</a>'); }, 0);
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/egyetem">Egyetem</a><span>›</span><span>' + esc(c.title) + '</span></nav>' +
       '<div class="subject-head" style="--tile:' + c.color + '"><span class="ico">' + c.icon + '</span><div><h1>' + esc(c.title) + '</h1><p class="lead" style="margin:0">' + esc(c.description) + '</p></div></div>' +
       (c.intro ? '<div class="lesson-body">' + md(c.intro) + '</div>' : '') +

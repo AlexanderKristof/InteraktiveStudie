@@ -282,6 +282,61 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .empty { text-align: center; padding: 40px 16px; color: var(--muted); }
 
 
+/* Tesztközpont */
+.ts-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; margin-top: 16px; }
+.ts-topics { display: grid; gap: 10px; }
+.ts-group summary { display: flex; align-items: center; gap: 12px; padding: 12px 14px; cursor: pointer; list-style: none; }
+.ts-group summary::-webkit-details-marker { display: none; }
+.ts-group summary .ico { font-size: 1.4rem; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; background: color-mix(in srgb, var(--tile) 16%, transparent); flex: none; }
+.ts-gt { flex: 1; min-width: 0; } .ts-gt b { display: block; } .ts-gt small { color: var(--muted); }
+.ts-all { font-size: .88rem; color: var(--fg-2); display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.ts-list { padding: 0 14px 12px; display: grid; gap: 2px; }
+.ts-topic { display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 8px; cursor: pointer; }
+.ts-topic:hover { background: var(--surface-2); }
+.ts-topic span:first-of-type { flex: 1; }
+.ts-topic small { color: var(--muted); font-family: var(--mono); min-width: 28px; text-align: right; }
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex: none; }
+.ts-side { position: sticky; top: 76px; }
+.ts-modes { display: grid; gap: 8px; }
+.ts-modes button { text-align: left; border: 2px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; cursor: pointer; display: grid; gap: 2px; }
+.ts-modes button span { font-size: .85rem; color: var(--fg-2); }
+.ts-modes button.on { border-color: var(--accent); background: var(--accent-soft); }
+.ts-sum { margin: 14px 0 10px; font-size: .93rem; }
+.ts-hist { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: .92rem; }
+.ts-run { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 18px; align-items: start; }
+.ts-run > .ts-top, .ts-run > .bar, .ts-run > .ts-q { grid-column: 1; }
+.ts-top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+.ts-pal { grid-column: 2; grid-row: 1 / span 3; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; position: sticky; top: 76px; }
+.ts-pal button { aspect-ratio: 1; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 650; font-size: .85rem; }
+.ts-pal button.done { background: var(--accent-soft); border-color: var(--accent); }
+.ts-pal button.ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.ts-pal button.bad { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+.ts-pal button.cur { outline: 3px solid var(--accent); outline-offset: 1px; }
+.quiz .opt { display: flex; gap: 12px; align-items: flex-start; }
+.ltr { flex: none; width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--surface-2); font-weight: 750; font-size: .85rem; }
+.quiz .opt.picked { border-color: var(--accent); background: var(--accent-soft); }
+.quiz .opt.picked .ltr { background: var(--accent); color: var(--accent-fg); }
+.quiz .opt.right .ltr { background: var(--ok); color: #fff; }
+.quiz .opt.wrong .ltr { background: var(--bad); color: #fff; }
+.ts-nav { margin-top: 16px; }
+.ts-keys { font-size: .8rem; margin: 10px 0 0; }
+.ts-result { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.ts-score { width: 140px; height: 140px; border-radius: 50%; display: grid; place-items: center; align-content: center; flex: none; border: 8px solid var(--c); background: color-mix(in srgb, var(--c) 10%, var(--surface)); }
+.ts-score b { font-size: 2.2rem; line-height: 1; } .ts-score span { font-size: .85rem; color: var(--fg-2); }
+.ts-score.g5, .ts-score.g4 { --c: var(--ok); } .ts-score.g3, .ts-score.g2 { --c: var(--warn); } .ts-score.g1 { --c: var(--bad); }
+.ts-topicres { display: grid; gap: 8px; }
+.ts-topicres a { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 50px; gap: 12px; align-items: center; padding: 10px 14px; text-decoration: none; color: var(--fg); }
+.ts-topicres b { font-family: var(--mono); text-align: right; }
+.ts-reviews { display: grid; gap: 10px; margin-top: 12px; }
+.ts-rv { padding: 14px 16px; border-left: 4px solid var(--ok); }
+.ts-rv.bad { border-left-color: var(--bad); }
+.ts-rv .q { font-weight: 600; margin: 6px 0; }
+.ts-rv ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+.ts-rv li { display: flex; gap: 8px; align-items: center; padding: 4px 6px; border-radius: 8px; }
+.ts-rv li.right { background: var(--ok-soft); } .ts-rv li.wrong { background: var(--bad-soft); }
+.ts-rv .explain { margin-top: 8px; padding: 8px 12px; border-radius: 8px; background: var(--surface-2); font-size: .93rem; }
+@media (max-width: 900px) { .ts-layout, .ts-run { grid-template-columns: 1fr; } .ts-side { position: static; } .ts-pal { grid-column: 1; grid-row: auto; position: static; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); } .ts-topicres a { grid-template-columns: 1fr 70px 46px; } }
+
 /* Mélységi szint */
 .level-btn { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; height: 38px; padding: 0 12px; cursor: pointer; font-weight: 650; white-space: nowrap; flex: none; }
 .level-btn:hover { background: var(--surface-2); }
