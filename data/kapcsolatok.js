@@ -50,7 +50,28 @@
     'hoszivattyu/cop': ['fizika-bsc/carnot-korfolyamat', 'e-mobilitas/hatasfok'],
     'penzugy/kamat-inflacio': ['analizis/exponencialis-novekedes', 'analizis/vegtelen-sor'],
     'penzugy/befektetes': ['valszam/varhato-ertek', 'valszam/szoras', 'valszam/korrelacio-oksag'],
-    'mat-alap/meres-geometria': ['mechanika/masodrendu-nyomatek']
+    'mat-alap/meres-geometria': ['mechanika/masodrendu-nyomatek'],
+    'penzugy/koltsegvetes': ['kozgazdasagtan/szukosseg', 'kozgazdasagtan/alternativakoltseg'],
+    'penzugy/kamat-inflacio#3': ['kozgazdasagtan/inflacio', 'kozgazdasagtan/jelenertek', 'kozgazdasagtan/monetaris-politika'],
+    'penzugy/hitel': ['kozgazdasagtan/jelenertek'],
+    'allampolgari/europai-unio': ['kozgazdasagtan/komparativ-elony', 'kozgazdasagtan/arfolyam'],
+    'allampolgari/intezmenyek': ['kozgazdasagtan/fiskalis-politika'],
+    'kemia/szerves-elektrokemia#2': ['szerves-kemia/szenvaz', 'szerves-kemia/funkcios-csoport', 'szerves-kemia/alkanok', 'szerves-kemia/alkohol-eter', 'szerves-kemia/polimer'],
+    'biologia/sejt#2': ['szerves-kemia/lipid', 'szerves-kemia/aminosav', 'szerves-kemia/szenhidrat'],
+    'biologia/genetika': ['szerves-kemia/nukleotid'],
+    'kem-alap/molekulak-kepletek': ['kemia-bsc/vsepr', 'szerves-kemia/iupac'],
+    'kem-alap/mindennapok': ['szerves-kemia/polimer'],
+    'kem-alap/atom-periodusos': ['kemia-bsc/elektronkonfiguracio'],
+    'fiz-alap/mozgas': ['mechanika/merev-test'],
+    'fiz-alap/ero-tomeg': ['mechanika/ero', 'mechanika/egyensuly'],
+    'fiz-alap/nyomas': ['mechanika/feszultseg'],
+    'fiz-alap/hotan': ['fizika-bsc/belso-energia', 'fizika-bsc/idealis-gaz'],
+    'hegesztes/femek': ['mechanika/szakitodiagram', 'mechanika/folyashatar', 'mechanika/rugalmassagi-modulus'],
+    'asztalos/fa-anyag': ['mechanika/hooke', 'mechanika/feszultseg'],
+    'rendszeruzem/halozatok': ['algoritmusok/grafabrazolas', 'digitalis-technika/bit'],
+    'rendszeruzem/operacios-rendszerek': ['programozas/parhuzamossag', 'programozas/verem-kupac'],
+    'rendszeruzem/szerverek': ['programozas/verziokezeles'],
+    'rendszeruzem/hardver': ['digitalis-technika/memoriahierarchia', 'digitalis-technika/orajel']
   };
   S.lessonLinks = LINKS;
   Object.keys(LINKS).forEach(function (key) {

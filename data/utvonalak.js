@@ -109,4 +109,61 @@
       { lecke: 'angol/koszones' },
       { teszt: 'mat-alap' }
     ] });
+  P({ id: 'rendszergazda', title: 'Rendszergazda leszek', icon: '🖧', color: '#0e9aa7', level: 'szakma',
+    description: 'A számítógép összeszerelésétől a hálózatokon át az informatikai biztonságig, hibakeresőkkel.',
+    steps: [
+      { lecke: 'informatika/szamitogep' },
+      { modell: 'alaplap' },
+      { lecke: 'rendszeruzem/hardver', note: 'A „Nem indul a számítógép” hibakeresővel gyakorolj!' },
+      { lecke: 'rendszeruzem/operacios-rendszerek' },
+      { lecke: 'informatika/szamrendszerek' },
+      { lecke: 'rendszeruzem/halozatok', note: 'Itt van a „Nincs internet” hibakereső.' },
+      { lecke: 'rendszeruzem/halozati-eszkozok' },
+      { lecke: 'rendszeruzem/szerverek' },
+      { lecke: 'rendszeruzem/biztonsag' },
+      { teszt: 'rendszeruzem' }
+    ] });
+
+  P({ id: 'fa-fem', title: 'Kétkezi szakmák: fa és fém', icon: '🪚', color: '#b7791f', level: 'szakma',
+    description: 'Asztalos és hegesztő alapok: anyagismeret, szerszámok, gépek, és mindenekelőtt a munkavédelem.',
+    steps: [
+      { lecke: 'asztalos/fa-anyag' },
+      { lecke: 'asztalos/keziszerszamok' },
+      { lecke: 'asztalos/gepek', note: 'Gépeknél a biztonság az első!' },
+      { lecke: 'asztalos/kotesek' },
+      { lecke: 'hegesztes/femek' },
+      { lecke: 'hegesztes/eljarasok' },
+      { lecke: 'hegesztes/munkavedelem' },
+      { teszt: 'asztalos' },
+      { teszt: 'hegesztes' }
+    ] });
+
+  P({ id: 'penz-gazdasag', title: 'Pénz, gazdaság, társadalom', icon: '💰', color: '#2f9e6a', level: 'középiskola → egyetem',
+    description: 'A saját pénzügyeidtől a piacok és az infláció működéséig, és hogyan működik az állam és az EU.',
+    steps: [
+      { lecke: 'penzugy/koltsegvetes' },
+      { lecke: 'penzugy/kamat-inflacio' },
+      { szakszo: 'kozgazdasagtan/kereslet' },
+      { szakszo: 'kozgazdasagtan/piaci-egyensuly' },
+      { szakszo: 'kozgazdasagtan/inflacio' },
+      { szakszo: 'kozgazdasagtan/jelenertek' },
+      { lecke: 'allampolgari/intezmenyek' },
+      { lecke: 'allampolgari/europai-unio' },
+      { teszt: 'penzugy' }
+    ] });
+
+  P({ id: 'termtud-78', title: 'Fizika és kémia 7–8. osztályban', icon: '🔭', color: '#2f7bf6', level: 'általános iskola',
+    description: 'Mozgás, energia, anyagok és atomok: a felső tagozatos természettudomány lépésről lépésre, modellekkel.',
+    steps: [
+      { lecke: 'fiz-alap/mozgas' },
+      { lecke: 'fiz-alap/ero-tomeg' },
+      { lecke: 'fiz-alap/energia-munka' },
+      { modell: 'szelturbina' },
+      { lecke: 'kem-alap/anyagok' },
+      { lecke: 'kem-alap/atom-periodusos' },
+      { modell: 'atom' },
+      { modell: 'fold' },
+      { teszt: 'fiz-alap' },
+      { teszt: 'kem-alap' }
+    ] });
 })();
