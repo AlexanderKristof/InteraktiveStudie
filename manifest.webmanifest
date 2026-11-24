@@ -1,0 +1,14 @@
+{
+  "name": "Tudásműhely – interaktív tanulás",
+  "short_name": "Tudásműhely",
+  "description": "Interaktív tananyag offline: szakmák, tantárgyak és a „Mi miből áll?” felfedező.",
+  "lang": "hu",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7fb",
+  "theme_color": "#2357d9",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -27,6 +27,8 @@
   /* Magyar számformátum (tizedesvessző). */
   S.fmt = function (n, d) {
     if (!isFinite(n)) return '∞';
+    var d0 = d == null ? 2 : d, r = Math.round(n * Math.pow(10, d0)) / Math.pow(10, d0);
+    if (r === 0) n = 0; // ne legyen „−0”
     return Number(n).toLocaleString('hu-HU', { maximumFractionDigits: d == null ? 2 : d });
   };
 

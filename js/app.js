@@ -336,6 +336,7 @@
     });
     var seg = path.split('/').filter(Boolean).map(decodeURIComponent);
     S.params = params;
+    document.body.setAttribute('data-page', seg[0] || 'home');
     closePop();
     if (!seg.length) pageHome();
     else if (seg[0] === 'tantargy') pageSubject(seg[1]);

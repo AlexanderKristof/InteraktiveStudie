@@ -293,6 +293,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   .topnav { order: 3; width: 100%; }
   .topnav a { flex: 1; text-align: center; }
   .search { order: 4; flex-basis: 100%; }
+  body[data-page="home"] .topbar .search { display: none; }
   .subject-head .ico { width: 56px; height: 56px; font-size: 1.8rem; }
   .hero .search-big { flex-direction: column; }
   main { padding-top: 16px; }
