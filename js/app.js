@@ -128,7 +128,9 @@
       '<div class="grid">' + models.slice(0, 4).map(modelTile).join('') + '</div>' +
       ((S.courses || []).length ? '<a class="card uni-band" href="#/egyetem" style="text-decoration:none;color:inherit"><span class="ico">🎓</span><span><h2 style="margin:0">Egyetemistáknak</h2>' +
         '<span class="muted">Szakszótár ábrákkal és angol megfelelővel, kattintható képletek, fogalomtérkép és tanulókártyák: ' +
-        S.courses.map(function (c) { return esc(c.title); }).join(', ') + '.</span></span><span class="btn primary">Megnyitás →</span></a>' : '');
+        S.courses.map(function (c) { return esc(c.title); }).join(', ') + '.</span></span><span class="btn primary">Megnyitás →</span></a>' : '') +
+      (S.pageSport ? '<a class="card uni-band sport-band" href="#/sport" style="text-decoration:none;color:inherit;margin-top:14px"><span class="ico">⚽</span><span><h2 style="margin:0">Sport és tudomány</h2>' +
+        '<span class="muted">Foci, Forma–1, kosárlabda, úszás, tenisz és még sok más: a sport fizikája, edzéstudomány, rekordok és igaz történetek a kedvenc sportolóidról.</span></span><span class="btn primary">Megnyitás →</span></a>' : '');
     if (S.bindFacts) S.bindFacts(main);
     main.querySelector('#hero-search').addEventListener('submit', function (e) {
       e.preventDefault();
@@ -500,6 +502,7 @@
     else if (seg[0] === 'tartalom') { setNav(''); title('Tartalomjegyzék'); S.pageTartalom(main); }
     else if (seg[0] === 'beallitasok') { setNav(''); title('Beállítások'); S.pageBeallitasok(); }
     else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
+    else if (seg[0] === 'sport') { setNav('sport'); title('Sport és tudomány'); S.pageSport(main, params); }
     else if (seg[0] === 'tudtad') { setNav('tudtad'); title('Tudtad?'); S.pageTudtad(main, params); }
     else if (seg[0] === 'utvonalak') { setNav(''); title('Tanulási útvonalak'); S.pageUtvonalak(main); }
     else if (seg[0] === 'utvonal') { setNav(''); var pth = (S.paths || []).filter(function (x) { return x.id === seg[1]; })[0]; title(pth ? pth.title : ''); if (!S.pageUtvonal(main, seg[1])) notFound(); }

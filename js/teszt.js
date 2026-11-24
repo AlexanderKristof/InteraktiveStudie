@@ -112,7 +112,7 @@
   }
 
   /* A tesztközpont nagy címsorai: iskolai szintek, egyetem, szakmák, felfedező. */
-  var SECTIONS = [['altalanos', '🎒 Általános iskola'], ['kozep', '🏫 Középiskola'], ['egyetem', '🎓 Egyetem'], ['szakma', '🛠️ Szakmák'], ['felfedezo', '🔍 Mi miből áll? (modellek)']];
+  var SECTIONS = [['altalanos', '🎒 Általános iskola'], ['kozep', '🏫 Középiskola'], ['egyetem', '🎓 Egyetem'], ['szakma', '🛠️ Szakmák'], ['sport', '⚽ Sport és mozgás'], ['felfedezo', '🔍 Mi miből áll? (modellek)']];
   function secOf(g) {
     if (g.id === 'felfedezo') return 'felfedezo';
     if (S.courseById && S.courseById(g.id)) return 'egyetem';

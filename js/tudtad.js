@@ -12,7 +12,7 @@
     ['allatok', '🦆 Állatok'], ['emberi-test', '🫀 Emberi test'], ['novenyek', '🌿 Növények és természet'],
     ['fizika', '⚡ Fizika'], ['kemia', '🧪 Kémia'], ['technika', '⚙️ Technika és járművek'], ['informatika', '💻 Számítógépek'],
     ['vilagur', '🪐 Világűr'], ['fold', '🌍 Föld és időjárás'], ['tortenelem', '🏛️ Történelem'], ['matek', '🔢 Matematika'],
-    ['nyelv', '📖 Nyelv és irodalom'], ['muveszet', '🎵 Zene és művészet'], ['szakmak', '🛠️ Szakmák'], ['etel', '🍳 Ételek és konyha'], ['penz', '💰 Pénz és társadalom']
+    ['nyelv', '📖 Nyelv és irodalom'], ['muveszet', '🎵 Zene és művészet'], ['szakmak', '🛠️ Szakmák'], ['sport', '⚽ Sport'], ['etel', '🍳 Ételek és konyha'], ['penz', '💰 Pénz és társadalom']
   ];
   function catTitle(c) { var x = S.FACT_CATS.filter(function (k) { return k[0] === c; })[0]; return x ? x[1] : '💡 Egyéb'; }
   S.factCatTitle = catTitle;
@@ -62,7 +62,7 @@
     o = o || {};
     var links = (f.links || []).map(linkOf).filter(Boolean).filter(function (x) { return !o.skipHref || x.href.split('?')[0] !== o.skipHref; });
     return '<details class="fact-card" data-fact="' + esc(f.id) + '"' + (o.open ? ' open' : '') + '>' +
-      '<summary><span class="fc-cat">' + esc(catTitle(f.cat)) + '</span><b>💡 Tudtad, hogy ' + S.inline(f.q) + '</b><span class="fc-why">Miért? ▾</span></summary>' +
+      '<summary><span class="fc-cat">' + esc(f.cat === 'sport' && f.sport && S.sportLabel ? S.sportLabel(f.sport) : catTitle(f.cat)) + (f.athletes && f.athletes.length ? ' · ⭐ ' + esc(f.athletes.join(', ')) : '') + '</span><b>💡 Tudtad, hogy ' + S.inline(f.q) + '</b><span class="fc-why">Miért? ▾</span></summary>' +
       '<div class="fc-body">' + S.md(f.why) +
       (links.length ? '<div class="fc-links">' + links.map(function (x) { return '<a class="chip" href="' + x.href + '">' + x.icon + ' ' + esc(x.label) + '</a>'; }).join('') + '</div>' : '') +
       '</div></details>';

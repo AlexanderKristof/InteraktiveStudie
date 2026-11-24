@@ -1,0 +1,18 @@
+/* Szakmai réteg: Informatikai rendszer- és hálózatüzemeltetés */
+STUDIE.addLessonUni('rendszeruzem', {
+  'halozati-eszkozok': {
+    text: '**Strukturált kábelezés.** Az általános célú épületkábelezést az **ISO/IEC 11801** (európai megfelelője az **EN 50173**, Amerikában a **TIA-568**) szabályozza. A rézalapú **csatorna (channel)** legfeljebb 100 m, ebből a fix telepítésű **állandó link (permanent link)** legfeljebb 90 m, a maradék a patch- és csatlakozókábelek. A kategóriák a frekvenciasávot határozzák meg: **Cat5e** 100 MHz, **Cat6** 250 MHz, **Cat6A** 500 MHz. A minősítő mérés (certifikálás) beiktatási csillapítást, közelvégi és távolvégi áthallást (NEXT, FEXT), visszaverődési csillapítást és hosszt mér.\n\n**Kettes réteg.** A switch a beérkező keretek forrás-MAC-címét a **MAC-címtáblába** (CAM) tanulja; ismeretlen cél esetén az összes portra kiküldi (**flooding**). Minden switchport külön **ütközési tartomány**, de a VLAN-ok nélküli switch egyetlen **szórási tartomány**. A **VLAN**-okat az **IEEE 802.1Q** címke (4 bájt, 12 bites VLAN-azonosító) különíti el; a trönkport több VLAN-t visz címkézve. A hurkokat a **feszítőfa-protokoll** (STP, IEEE 802.1D; gyorsabb változata az RSTP, 802.1w) szünteti meg egyes portok blokkolásával; enélkül szórási vihar alakul ki.\n\n**PoE.** Az **IEEE 802.3af** a tápforrásnál (PSE) 15,4 W-ot, a **802.3at** 30 W-ot, a **802.3bt** 60 W-ot (3. típus) és 90 W-ot (4. típus) biztosít; a fogadó eszköz kevesebbet kap a kábelveszteség miatt. Kötegelt kábeleknél a melegedés csökkenti a megengedett hosszt, ezt tervezéskor figyelembe kell venni.\n\n**Optika.** **Többmódusú** szál: 50 µm mag (OM3, OM4), jellemzően 850 nm-en, rövid távon; **egymódusú** szál: kb. 9 µm mag (OS2), 1310 / 1550 nm, kilométeres távolságokra. Az illesztés **SFP/SFP+** modulokkal történik; a hullámhossznak és a száltípusnak egyeznie kell.\n\n**Vezeték nélküli.** **Wi-Fi 6** = IEEE 802.11ax, **Wi-Fi 6E** = 802.11ax a 6 GHz-es sávban, **Wi-Fi 7** = 802.11be. Vállalati környezetben a csatornatervezés (átfedés, csatornaszélesség), a **helyszíni felmérés** és a központi vezérlő a lefedettség és kapacitás kulcsa.',
+    glossary: [
+      { hu: 'strukturált kábelezés', en: 'structured cabling', def: 'Szabványos, hierarchikus épületkábelezési rendszer rendezőkkel, állandó linkekkel és csatlakozókkal.' },
+      { hu: 'állandó link', en: 'permanent link', def: 'A rendező és a fali csatlakozó közötti fix kábelszakasz; legfeljebb 90 m.' },
+      { hu: 'áthallás', en: 'crosstalk (NEXT/FEXT)', def: 'Az egyik érpár jelének nem kívánt átcsatolódása a másikra, a közeli vagy a távoli végen mérve.' },
+      { hu: 'MAC-címtábla', en: 'MAC address table (CAM table)', def: 'A switch táblázata arról, melyik MAC-cím melyik porton érhető el.' },
+      { hu: 'szórási tartomány', en: 'broadcast domain', def: 'Az eszközök köre, amelyhez egy kettes rétegbeli szórásos keret eljut; routert vagy VLAN-határt nem lép át.' },
+      { hu: 'virtuális helyi hálózat', en: 'virtual LAN (VLAN)', def: 'Logikailag elkülönített kettes rétegbeli hálózat ugyanazon a fizikai infrastruktúrán.' },
+      { hu: 'trönkport', en: 'trunk port', def: 'Több VLAN forgalmát 802.1Q-címkézve szállító switchport.' },
+      { hu: 'feszítőfa-protokoll', en: 'Spanning Tree Protocol (STP)', def: 'Kettes rétegbeli hurokmentesítő protokoll, amely redundáns utakat blokkol.' },
+      { hu: 'tápellátás Etherneten', en: 'Power over Ethernet (PoE)', def: 'Egyenáramú tápellátás továbbítása a csavart érpáras adatkábelen.' },
+      { hu: 'egymódusú optikai szál', en: 'single-mode fibre', def: 'Kis magátmérőjű optikai szál, amelyben egy terjedési módus van; nagy távolságra alkalmas.' }
+    ]
+  }
+});
