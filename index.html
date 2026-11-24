@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tudásműhely – interaktív tanulás</title>
+  <meta name="description" content="Ingyenes, offline is működő interaktív tananyag: villanyszerelés, autószerelés, elektromos autók, matematika, történelem, fizika, és a „Mi miből áll?” felfedező.">
+  <meta name="theme-color" content="#2357d9">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Ugrás a tartalomhoz</a>
+  <header class="topbar">
+    <a class="brand" href="#/" aria-label="Tudásműhely – kezdőlap">
+      <span class="brand-mark" aria-hidden="true">◆</span>
+      <span class="brand-name">Tudásműhely</span>
+    </a>
+    <nav class="topnav" aria-label="Fő menü">
+      <a href="#/" data-nav="home">Tantárgyak</a>
+      <a href="#/felfedezo" data-nav="felfedezo">Mi miből áll?</a>
+    </nav>
+    <div class="search" role="search">
+      <input id="search" type="search" placeholder="Keress bármire… (pl. processzor, Ohm, honfoglalás)" autocomplete="off" aria-label="Keresés">
+      <div id="search-pop" class="search-pop" hidden></div>
+    </div>
+    <button id="theme" class="icon-btn" type="button" aria-label="Világos / sötét mód">◐</button>
+  </header>
+
+  <main id="main" tabindex="-1"></main>
+
+  <footer class="foot">
+    <p>Tudásműhely · szabad tananyag · internet nélkül is működik.
+      <a href="#/nevjegy">Hogyan töltsem le?</a></p>
+  </footer>
+
+  <!-- motor -->
+  <script src="js/core.js"></script>
+  <!-- tantárgyak -->
+  <script src="data/tantargyak/villanyszereles.js"></script>
+  <script src="data/tantargyak/autoszereles.js"></script>
+  <script src="data/tantargyak/elektromos-auto.js"></script>
+  <script src="data/tantargyak/matematika.js"></script>
+  <script src="data/tantargyak/fizika.js"></script>
+  <script src="data/tantargyak/tortenelem.js"></script>
+  <!-- „Mi miből áll?” modellek -->
+  <script src="data/modellek/alaplap.js"></script>
+  <script src="data/modellek/processzor.js"></script>
+  <script src="data/modellek/tranzisztor.js"></script>
+  <script src="data/modellek/atom.js"></script>
+  <script src="data/modellek/elektromos-auto.js"></script>
+  <script src="data/modellek/akkucella.js"></script>
+  <script src="data/modellek/benzinmotor.js"></script>
+  <script src="data/modellek/elosztoszekreny.js"></script>
+  <!-- interaktív elemek és az alkalmazás -->
+  <script src="js/widgets.js"></script>
+  <script src="js/explorer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
