@@ -1,6 +1,7 @@
 /* Tantárgy: Fizika */
 STUDIE.addSubject({
   id: 'fizika',
+  stage: 'kozep',
   title: 'Fizika',
   icon: '🪐',
   color: '#2f7bf6',

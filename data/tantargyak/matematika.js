@@ -1,6 +1,7 @@
 /* Tantárgy: Matematika */
 STUDIE.addSubject({
   id: 'matematika',
+  stage: 'kozep',
   title: 'Matematika',
   icon: '➗',
   color: '#7c5cd6',

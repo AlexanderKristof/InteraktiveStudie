@@ -45,7 +45,7 @@
     var groups = [];
     S.subjects.forEach(function (s) {
       var extra = S.bank[s.id] || {};
-      groups.push({ id: s.id, title: s.title, icon: s.icon, color: s.color, kind: 'Tantárgy',
+      groups.push({ id: s.id, title: s.title, icon: s.icon, color: s.color, kind: S.stageTitle(s.stage).replace(/^\S+\s/, ''),
         topics: s.lessons.map(function (l) {
           var qs = (l.quiz || []).concat(extra[l.id] || []).map(function (q, i) { return Object.assign({ id: s.id + '/' + l.id + '/' + i }, q); });
           return { id: l.id, title: l.title, href: '#/lecke/' + s.id + '/' + l.id, questions: qs };

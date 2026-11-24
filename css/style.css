@@ -224,6 +224,15 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .counter button { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 700; }
 .counter b { min-width: 36px; text-align: center; font-family: var(--mono); }
 
+/* Periódusos rendszer */
+.pt-wrap { overflow-x: auto; }
+.pt { display: grid; grid-template-columns: repeat(18, minmax(30px, 1fr)); gap: 3px; min-width: 560px; }
+.pt button { border: 1px solid color-mix(in srgb, var(--c) 60%, transparent); background: color-mix(in srgb, var(--c) 22%, var(--surface)); border-radius: 6px; padding: 2px 0; cursor: pointer; display: grid; line-height: 1.1; }
+.pt button small { font-size: .62rem; color: var(--fg-2); }
+.pt button b { font-size: .92rem; }
+.pt button:hover, .pt button.on { background: var(--c); color: #fff; }
+.pt button.on small, .pt button:hover small { color: #fff; }
+
 /* Felfedező */
 .ex-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 18px; align-items: start; }
 .ex-stage { padding: 12px; position: relative; }

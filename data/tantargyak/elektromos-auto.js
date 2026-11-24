@@ -1,6 +1,7 @@
 /* Tantárgy: Elektromosautó-szerelés */
 STUDIE.addSubject({
   id: 'elektromos-auto',
+  stage: 'szakma',
   title: 'Elektromosautó-szerelés',
   icon: '🔋',
   color: '#2f9e6a',

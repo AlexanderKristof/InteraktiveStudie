@@ -109,13 +109,17 @@
       '<div class="chips">' + ['processzor', 'atom', 'akkumulátor', 'Ohm', 'FI relé', 'Pitagorasz', 'négyütemű motor', 'honfoglalás'].map(function (c) {
         return '<a class="chip" href="#/kereses?q=' + encodeURIComponent(c) + '">' + esc(c) + '</a>';
       }).join('') + '</div>' + lastHtml + '</section>' +
-      '<div class="section-title"><h2>Tantárgyak és szakmák</h2><span class="muted">' + S.subjects.length + ' terület</span></div>' +
-      '<div class="grid">' + S.subjects.map(function (s) {
-        var st = subjectStats(s);
-        return '<a class="card tile" style="--tile:' + s.color + '" href="#/tantargy/' + s.id + '">' +
-          '<span class="ico">' + s.icon + '</span><h3>' + esc(s.title) + '</h3><p>' + esc(s.description) + '</p>' +
-          '<span class="meta">' + st.total + ' lecke · ' + st.done + ' kész</span><span class="bar"><i style="width:' + st.pct + '%"></i></span></a>';
-      }).join('') + '</div>' +
+      S.STAGES.map(function (stg) {
+        var list = S.subjects.filter(function (s) { return (s.stage || 'kozep') === stg[0]; });
+        if (!list.length) return '';
+        return '<div class="section-title"><h2>' + stg[1] + '</h2><span class="muted">' + list.length + ' tantárgy</span></div>' +
+          '<div class="grid">' + list.map(function (s) {
+            var st = subjectStats(s);
+            return '<a class="card tile" style="--tile:' + s.color + '" href="#/tantargy/' + s.id + '">' +
+              '<span class="ico">' + s.icon + '</span><h3>' + esc(s.title) + '</h3><p>' + esc(s.description) + '</p>' +
+              '<span class="meta">' + st.total + ' lecke · ' + st.done + ' kész</span><span class="bar"><i style="width:' + st.pct + '%"></i></span></a>';
+          }).join('') + '</div>';
+      }).join('') +
       '<div class="section-title"><h2>Mi miből áll?</h2><a href="#/felfedezo">Összes →</a></div>' +
       '<p class="muted" style="margin-top:-6px">Szedd szét, kattints rá, nézz bele. Minden alkatrésznél megtudod, mi az, miből van és hogyan gyártják.</p>' +
       '<div class="grid">' + models.slice(0, 4).map(modelTile).join('') + '</div>' +
@@ -141,7 +145,7 @@
     setNav('home'); title(s.title);
     var st = subjectStats(s);
     main.innerHTML =
-      '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>' + esc(s.title) + '</span></nav>' +
+      '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>' + esc(S.stageTitle(s.stage).replace(/^\S+\s/, '')) + '</span><span>›</span><span>' + esc(s.title) + '</span></nav>' +
       '<div class="subject-head" style="--tile:' + s.color + '"><span class="ico">' + s.icon + '</span><div><h1>' + esc(s.title) + '</h1>' +
       '<p class="lead" style="margin:0">' + esc(s.description) + '</p></div></div>' +
       (s.intro ? '<div class="lesson-body">' + md(s.intro) + '</div>' : '') +

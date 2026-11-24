@@ -1,6 +1,7 @@
 /* Tantárgy: Történelem */
 STUDIE.addSubject({
   id: 'tortenelem',
+  stage: 'kozep',
   title: 'Történelem',
   icon: '🏛️',
   color: '#b7791f',

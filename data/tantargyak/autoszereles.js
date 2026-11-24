@@ -1,6 +1,7 @@
 /* Tantárgy: Autószerelés */
 STUDIE.addSubject({
   id: 'autoszereles',
+  stage: 'szakma',
   title: 'Autószerelés',
   icon: '🔧',
   color: '#d9534f',

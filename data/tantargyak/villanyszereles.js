@@ -1,6 +1,7 @@
 /* Tantárgy: Villanyszerelés */
 STUDIE.addSubject({
   id: 'villanyszereles',
+  stage: 'szakma',
   title: 'Villanyszerelés',
   icon: '⚡',
   color: '#f5a524',

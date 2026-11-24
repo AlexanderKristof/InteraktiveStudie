@@ -383,23 +383,73 @@
       var n = a * d + c * b, m = b * d, k = g(n, m);
       return { task: a + '/' + b + ' + ' + c + '/' + d + ' = ? (tizedes törtként)', answer: Math.round(n / m * 100) / 100, tol: 0.01,
         steps: ['Közös nevező: ' + b + '·' + d + ' = ' + m, 'Számláló: ' + a + '·' + d + ' + ' + c + '·' + b + ' = ' + n, 'Eredmény: ' + n + '/' + m + (k > 1 ? ' = ' + n / k + '/' + m / k : '') + ' ≈ ' + fmt(n / m)] };
+    },
+    szamrendszer: function () {
+      var n = ri(5, 255), k = ri(0, 2);
+      if (k === 0) return { task: n + ' (tízes) = ? (kettes számrendszerben)', answerStr: n.toString(2), steps: ['Oszd el sorban 2-vel, és írd le a maradékokat alulról felfelé.', n + ' = ' + n.toString(2) + '₂'] };
+      if (k === 1) { var b = n.toString(2); return { task: b + '₂ = ? (tízes számrendszerben)', answer: n, steps: [b.split('').map(function (d, i) { return d + '·2^' + (b.length - 1 - i); }).join(' + ') + ' = ' + n] }; }
+      return { task: n + ' (tízes) = ? (tizenhatos, hexadecimális)', answerStr: n.toString(16).toUpperCase(), steps: [n + ' = ' + Math.floor(n / 16) + '·16 + ' + (n % 16), 'A 10–15 számjegyek: A–F. Eredmény: ' + n.toString(16).toUpperCase() + '₁₆'] };
+    },
+    oszthatosag: function () {
+      function g(x, y) { return y ? g(y, x % y) : x; }
+      var f = ri(2, 12), a = f * ri(2, 9), b = f * ri(2, 9);
+      if (a === b) b += f;
+      var lnko = g(a, b), lkkt = a * b / lnko;
+      return Math.random() < 0.5
+        ? { task: 'Mennyi (' + a + '; ' + b + ') legnagyobb közös osztója?', answer: lnko, steps: ['Euklideszi algoritmus vagy prímtényezős felbontás: a közös prímtényezők a legkisebb kitevőn.', 'LNKO = ' + lnko] }
+        : { task: 'Mennyi [' + a + '; ' + b + '] legkisebb közös többszöröse?', answer: lkkt, steps: ['LKKT = a · b / LNKO = ' + a + ' · ' + b + ' / ' + lnko, 'LKKT = ' + lkkt] };
+    },
+    negativ: function () {
+      var a = ri(-20, 20), b = ri(-12, 12), op = ['+', '−', '·'][ri(0, 2)];
+      var r = op === '+' ? a + b : op === '−' ? a - b : a * b;
+      function p(x) { return x < 0 ? '(' + x + ')' : '' + x; }
+      return { task: p(a) + ' ' + op + ' ' + p(b) + ' = ?', answer: r,
+        steps: [op === '·' ? 'Szorzásnál: azonos előjelek → pozitív, különbözők → negatív eredmény.' : op === '−' ? 'Negatív szám kivonása = az ellentettjének hozzáadása: ' + a + ' + ' + p(-b) : 'Különböző előjelűeknél: a nagyobb abszolút értékűből vond ki a kisebbet, az előjel a nagyobbé.', '= ' + r] };
+    },
+    mertekegyseg: function () {
+      var T = [['km', 'm', 1000], ['m', 'cm', 100], ['cm', 'mm', 10], ['kg', 'g', 1000], ['t', 'kg', 1000], ['l', 'dl', 10], ['l', 'ml', 1000], ['óra', 'perc', 60], ['perc', 'másodperc', 60], ['m²', 'dm²', 100], ['m²', 'cm²', 10000], ['dm³', 'cm³', 1000], ['m³', 'l', 1000]];
+      var t = T[ri(0, T.length - 1)], v = ri(1, 40) / [1, 2, 4, 5, 10][ri(0, 4)];
+      if (Math.random() < 0.5) return { task: fmt(v) + ' ' + t[0] + ' = ? ' + t[1], answer: v * t[2], tol: 1e-6, steps: ['1 ' + t[0] + ' = ' + t[2] + ' ' + t[1] + ', tehát szorozni kell: ' + fmt(v) + ' · ' + t[2] + ' = ' + fmt(v * t[2]) + ' ' + t[1]] };
+      var w = v * t[2];
+      return { task: fmt(w) + ' ' + t[1] + ' = ? ' + t[0], answer: v, tol: 1e-6, steps: ['1 ' + t[0] + ' = ' + t[2] + ' ' + t[1] + ', tehát osztani kell: ' + fmt(w) + ' / ' + t[2] + ' = ' + fmt(v) + ' ' + t[0]] };
+    },
+    kerulet: function () {
+      var k = ri(0, 4), a = ri(2, 15), b = ri(2, 15), r = ri(1, 10);
+      if (k === 0) return { task: 'Téglalap: a = ' + a + ' cm, b = ' + b + ' cm. Kerülete = ? cm', answer: 2 * (a + b), steps: ['K = 2·(a + b) = 2·(' + a + ' + ' + b + ') = ' + 2 * (a + b) + ' cm'] };
+      if (k === 1) return { task: 'Téglalap: a = ' + a + ' cm, b = ' + b + ' cm. Területe = ? cm²', answer: a * b, steps: ['T = a·b = ' + a + '·' + b + ' = ' + a * b + ' cm²'] };
+      if (k === 2) return { task: 'Háromszög: alap = ' + a + ' cm, magasság = ' + b + ' cm. Területe = ? cm²', answer: a * b / 2, steps: ['T = a·m / 2 = ' + a + '·' + b + ' / 2 = ' + fmt(a * b / 2) + ' cm²'] };
+      if (k === 3) return { task: 'Kör: r = ' + r + ' cm. Területe = ? cm² (π ≈ 3,14, két tizedesre)', answer: Math.round(3.14 * r * r * 100) / 100, tol: 0.06, steps: ['T = r²·π = ' + r + '²·3,14 = ' + fmt(3.14 * r * r) + ' cm²'] };
+      return { task: 'Kocka: a = ' + r + ' cm. Térfogata = ? cm³', answer: r * r * r, steps: ['V = a³ = ' + r + '³ = ' + r * r * r + ' cm³'] };
+    },
+    mol: function () {
+      var S2 = [['H₂O', 18], ['CO₂', 44], ['NaCl', 58.5], ['O₂', 32], ['C', 12], ['CH₄', 16], ['NH₃', 17], ['Fe', 56]];
+      var s = S2[ri(0, S2.length - 1)], n = [0.5, 1, 1.5, 2, 2.5, 3, 4, 5][ri(0, 7)], m = s[1] * n;
+      return Math.random() < 0.5
+        ? { task: fmt(m) + ' g ' + s[0] + ' hány mol? (M = ' + fmt(s[1]) + ' g/mol)', answer: n, tol: 0.01, steps: ['n = m / M = ' + fmt(m) + ' / ' + fmt(s[1]) + ' = ' + fmt(n) + ' mol'] }
+        : { task: fmt(n) + ' mol ' + s[0] + ' tömege hány gramm? (M = ' + fmt(s[1]) + ' g/mol)', answer: m, tol: 0.01, steps: ['m = n · M = ' + fmt(n) + ' · ' + fmt(s[1]) + ' = ' + fmt(m) + ' g'] };
     }
   };
   S.addWidget('gyakorlas', function (el, o) {
     var kind = o.kind || 'egyenlet', cur, streak = 0, total = 0, good = 0;
     el.innerHTML = head(o.title || 'Gyakorolj!', o.help || 'Végtelen sok feladat: mindig újat kapsz. Írd be a választ, és nézd meg a megoldás lépéseit.') +
-      '<div class="practice"><div class="task" id="t"></div><form class="row" id="fm"><input type="text" inputmode="decimal" id="in" aria-label="Válasz" placeholder="válasz">' +
+      '<div class="practice"><div class="task" id="t"></div><form class="row" id="fm"><input type="text" inputmode="' + (kind === 'szamrendszer' ? 'text' : 'decimal') + '" id="in" aria-label="Válasz" placeholder="válasz">' +
       '<button class="btn primary" type="submit">Ellenőrzés</button><button class="btn" type="button" id="nx">Új feladat</button></form>' +
       '<div id="fb" style="margin-top:10px"></div><p class="muted" id="st"></p></div>';
     var $ = function (s) { return el.querySelector(s); };
     function next() { cur = GEN[kind](); $('#t').textContent = cur.task; $('#in').value = ''; $('#fb').innerHTML = ''; }
     $('#fm').addEventListener('submit', function (e) {
       e.preventDefault();
-      var val = parseFloat($('#in').value.replace(',', '.').replace(/\s/g, ''));
-      if (isNaN(val)) { $('#fb').innerHTML = '<div class="w-msg warn">Írj be egy számot!</div>'; return; }
-      var ok = Math.abs(val - cur.answer) <= (cur.tol || 1e-6);
+      var raw = $('#in').value.replace(/\s/g, ''), ok;
+      if (cur.answerStr != null) {
+        if (!raw) { $('#fb').innerHTML = '<div class="w-msg warn">Írj be egy választ!</div>'; return; }
+        ok = raw.toUpperCase().replace(/^0+(?=.)/, '') === cur.answerStr;
+      } else {
+        var val = parseFloat(raw.replace(',', '.'));
+        if (isNaN(val)) { $('#fb').innerHTML = '<div class="w-msg warn">Írj be egy számot!</div>'; return; }
+        ok = Math.abs(val - cur.answer) <= (cur.tol || 1e-6);
+      }
       total++; if (ok) { good++; streak++; } else streak = 0;
-      $('#fb').innerHTML = '<div class="w-msg ' + (ok ? 'ok' : 'bad') + '">' + (ok ? '✔ Helyes!' : '✘ Nem jó. A helyes válasz: ' + fmt(cur.answer)) + '</div>' +
+      $('#fb').innerHTML = '<div class="w-msg ' + (ok ? 'ok' : 'bad') + '">' + (ok ? '✔ Helyes!' : '✘ Nem jó. A helyes válasz: ' + (cur.answerStr != null ? cur.answerStr : fmt(cur.answer))) + '</div>' +
         '<div class="w-formula" style="margin-top:8px">' + cur.steps.map(esc).join('<br>') + '</div>';
       $('#st').textContent = 'Eredmény: ' + good + ' / ' + total + (streak > 1 ? ' · sorozat: ' + streak + ' 🔥' : '');
     });
@@ -594,5 +644,58 @@
       el.querySelector('#m').innerHTML = '<div class="w-msg ' + (P > 125 ? 'bad' : P > 65 ? 'warn' : 'ok') + '">' + (P > 125 ? 'Ezt egy átlagos hűtő már nem bírja: a processzor visszaveszi az órajelet (thermal throttling).' : P > 65 ? 'Erős hűtés kell (asztali, nagy teljesítményű kategória).' : 'Laptopban vagy kis gépben is hűthető.') +
         ' Figyeld meg: a ' + fmt(P / v.v, 0) + ' A-es áramot az alaplap feszültségszabályzójának (VRM) kell előállítania!</div>';
     });
+  });
+  /* ---------- 15. Periódusos rendszer (1–36) ---------- */
+  var PT = [[1,'H','hidrogén',1.008,1,'nf'],[2,'He','hélium',4.003,18,'ng'],[3,'Li','lítium',6.94,1,'af'],[4,'Be','berillium',9.012,2,'aff'],[5,'B','bór',10.81,13,'ff'],
+    [6,'C','szén',12.011,14,'nf'],[7,'N','nitrogén',14.007,15,'nf'],[8,'O','oxigén',15.999,16,'nf'],[9,'F','fluor',18.998,17,'hal'],[10,'Ne','neon',20.18,18,'ng'],
+    [11,'Na','nátrium',22.99,1,'af'],[12,'Mg','magnézium',24.305,2,'aff'],[13,'Al','alumínium',26.982,13,'fem'],[14,'Si','szilícium',28.085,14,'ff'],[15,'P','foszfor',30.974,15,'nf'],
+    [16,'S','kén',32.06,16,'nf'],[17,'Cl','klór',35.45,17,'hal'],[18,'Ar','argon',39.948,18,'ng'],[19,'K','kálium',39.098,1,'af'],[20,'Ca','kalcium',40.078,2,'aff'],
+    [21,'Sc','szkandium',44.956,3,'atm'],[22,'Ti','titán',47.867,4,'atm'],[23,'V','vanádium',50.942,5,'atm'],[24,'Cr','króm',51.996,6,'atm'],[25,'Mn','mangán',54.938,7,'atm'],
+    [26,'Fe','vas',55.845,8,'atm'],[27,'Co','kobalt',58.933,9,'atm'],[28,'Ni','nikkel',58.693,10,'atm'],[29,'Cu','réz',63.546,11,'atm'],[30,'Zn','cink',65.38,12,'atm'],
+    [31,'Ga','gallium',69.723,13,'fem'],[32,'Ge','germánium',72.63,14,'ff'],[33,'As','arzén',74.922,15,'ff'],[34,'Se','szelén',78.971,16,'nf'],[35,'Br','bróm',79.904,17,'hal'],[36,'Kr','kripton',83.798,18,'ng']];
+  var PTCAT = { af: ['Alkálifém', '#f08c2e'], aff: ['Alkáliföldfém', '#d9a520'], atm: ['Átmenetifém', '#e5484d'], fem: ['Egyéb fém', '#8d96a8'], ff: ['Félfém', '#0e9aa7'], nf: ['Nemfém', '#2f9e6a'], hal: ['Halogén', '#2f7bf6'], ng: ['Nemesgáz', '#7c5cd6'] };
+  function econf(z) {
+    var orb = [['1s', 2], ['2s', 2], ['2p', 6], ['3s', 2], ['3p', 6], ['4s', 2], ['3d', 10], ['4p', 6]], left = z, out = [];
+    orb.forEach(function (o) { if (left > 0) { var n = Math.min(left, o[1]); out.push([o[0], n]); left -= n; } });
+    if (z === 24 || z === 29) out.forEach(function (o) { if (o[0] === '4s') o[1] = 1; if (o[0] === '3d') o[1] += 1; });
+    var sup = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+    return out.map(function (o) { return o[0] + String(o[1]).split('').map(function (d) { return sup[+d]; }).join(''); }).join(' ');
+  }
+  S.addWidget('periodusos', function (el, o) {
+    var sel = o.z || 6, game = null;
+    var gas = { 1: 1, 2: 1, 7: 1, 8: 1, 9: 1, 10: 1, 17: 1, 18: 1, 36: 1 };
+    el.innerHTML = head(o.title || 'Periódusos rendszer (az első 36 elem)', o.help || 'Kattints egy elemre a részletekért. A színek az elemcsoportokat jelölik. Próbáld ki a „Találd meg!” játékot is!') +
+      '<div class="pt-wrap"><div class="pt" id="pt"></div></div><div class="chips" style="margin:8px 0">' + Object.keys(PTCAT).map(function (k) {
+        return '<span class="chip" style="--tc:' + PTCAT[k][1] + '"><i class="dot"></i>' + PTCAT[k][0] + '</span>';
+      }).join('') + '</div><div id="d"></div><div class="row" style="margin-top:10px"><button type="button" class="btn" id="g">🎯 Találd meg!</button><span id="gm"></span></div>';
+    var box = el.querySelector('#pt');
+    box.innerHTML = PT.map(function (e) {
+      var per = e[0] <= 2 ? 1 : e[0] <= 10 ? 2 : e[0] <= 18 ? 3 : 4;
+      return '<button type="button" data-z="' + e[0] + '" style="grid-column:' + e[4] + ';grid-row:' + per + ';--c:' + PTCAT[e[5]][1] + '"><small>' + e[0] + '</small><b>' + e[1] + '</b></button>';
+    }).join('');
+    function info() {
+      var e = PT[sel - 1], per = sel <= 2 ? 1 : sel <= 10 ? 2 : sel <= 18 ? 3 : 4;
+      var val = e[4] <= 2 ? e[4] : e[4] >= 13 ? (sel === 2 ? 2 : e[4] - 10) : null;
+      box.querySelectorAll('button').forEach(function (b) { b.classList.toggle('on', +b.dataset.z === sel); });
+      el.querySelector('#d').innerHTML = res([['Elem', e[1] + ' – ' + e[2]], ['Rendszám (protonok)', e[0]], ['Moláris tömeg', fmt(e[3], 3) + ' g/mol'], ['Csoport / periódus', e[4] + '. csoport, ' + per + '. periódus'],
+        ['Kategória', PTCAT[e[5]][0]], ['Halmazállapot (25 °C)', sel === 35 ? 'folyékony' : gas[sel] ? 'gáz' : 'szilárd'], ['Vegyértékelektronok', val != null ? val : 'átmenetifém (d-pálya)'], ['Elektronszerkezet', econf(sel)]]);
+    }
+    box.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var z = +b.dataset.z;
+        if (game) {
+          if (z === game.z) { game.ok++; el.querySelector('#gm').innerHTML = '<span class="w-msg ok">✔ Igen, ez a(z) ' + PT[z - 1][2] + '! (' + game.ok + ' találat)</span>'; sel = z; info(); nextGame(); }
+          else el.querySelector('#gm').innerHTML = '<span class="w-msg bad">✘ Ez a(z) ' + PT[z - 1][2] + '. Keresd tovább: <b>' + PT[game.z - 1][2] + '</b></span>';
+          return;
+        }
+        sel = z; info();
+      });
+    });
+    function nextGame() { game.z = ri(1, 36); el.querySelector('#g').textContent = '🎯 Hol van: ' + PT[game.z - 1][2] + '?'; }
+    el.querySelector('#g').addEventListener('click', function () {
+      if (game) { game = null; this.textContent = '🎯 Találd meg!'; el.querySelector('#gm').innerHTML = ''; return; }
+      game = { ok: 0 }; nextGame(); el.querySelector('#gm').innerHTML = '<span class="muted">Kattints a keresett elemre! (A gombra kattintva kiléphetsz.)</span>';
+    });
+    info();
   });
 })();
