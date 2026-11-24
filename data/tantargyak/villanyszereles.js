@@ -106,7 +106,7 @@ STUDIE.addSubject({
         },
         {
           title: 'Vezetéktípusok',
-          text: '- **MCu (H07V-U)**: tömör rézerű, egyeres vezeték, védőcsőbe húzva.\n- **MKh (H07V-K)**: sodrott, hajlékony ér, elosztószekrényekbe.\n- **NYM-J (MBCu)**: köpenyes, többeres falikábel, vakolat alá vagy falon kívül.\n- **H05VV-F (MT)**: hajlékony, gumi- vagy PVC-köpenyes kábel, készülékekhez és hosszabbítókhoz.'
+          text: '- **MCu (H07V-U)**: tömör rézerű, egyeres vezeték, védőcsőbe húzva.\n- **MKh (H07V-K)**: sodrott, hajlékony ér, elosztószekrényekbe.\n- **NYM-J (MBCu)**: köpenyes, többeres falikábel, vakolat alá vagy falon kívül.\n- **H05VV-F (MT)**: hajlékony, PVC-köpenyes kábel, készülékekhez és hosszabbítókhoz (gumiköpenyes megfelelője pl. a H07RN-F).'
         },
         {
           title: 'Mekkora keresztmetszet kell?',
@@ -134,7 +134,7 @@ STUDIE.addSubject({
         },
         {
           title: 'FI relé: az embert védi',
-          text: 'Az **áram-védőkapcsoló** (ÁVK, köznapi nevén FI relé) folyamatosan összehasonlítja a fázison kimenő és a nullán visszajövő áramot. Ha a kettő eltér, akkor az áram valahol „elszökik”, például egy emberen keresztül a földbe. **30 mA** eltérésnél kb. 30 ms alatt lekapcsol, mielőtt a szív veszélybe kerülne.\n\nA FI relén van egy **T (teszt)** gomb. Ezt félévente érdemes megnyomni: ha a relé lekapcsol, működik.',
+          text: 'Az **áram-védőkapcsoló** (ÁVK, köznapi nevén FI relé) folyamatosan összehasonlítja a fázison kimenő és a nullán visszajövő áramot. Ha a kettő eltér, akkor az áram valahol „elszökik”, például egy emberen keresztül a földbe. Legkésőbb **30 mA** eltérésnél lekapcsol, jellemzően néhány tíz ezredmásodperc alatt (a szabvány általános típusnál legfeljebb 300 ms-ot enged), mielőtt a szív veszélybe kerülne.\n\nA FI relén van egy **T (teszt)** gomb. Ezt félévente érdemes megnyomni: ha a relé lekapcsol, működik.',
           tip: 'A kismegszakító nem véd az áramütéstől! Egy emberen átfolyó 50 mA meg sem kottyan egy 16 A-es kismegszakítónak. Erre van a FI relé.'
         },
         {

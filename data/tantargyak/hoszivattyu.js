@@ -149,7 +149,7 @@ STUDIE.addSubject({
         },
         {
           title: 'Biztonság a hűtőközeggel',
-          text: '- A folyékony hűtőközeg a bőrön **fagyási sérülést** okoz (−40 °C körül forr). Védőszemüveg és -kesztyű kötelező.\n- Zárt térben a kiszivárgó hűtőközeg **kiszorítja az oxigént**, fulladást okozhat.\n- Ha forró felületre vagy lángra kerül, **mérgező bomlástermékek** keletkezhetnek.\n- A hűtőkör **nagy nyomás** alatt van (R32-nél üzem közben a nagynyomású oldalon akár 30 bar fölött), egy hibásan bontott cső vagy szelep balesetet okozhat.'
+          text: '- A folyékony hűtőközeg a bőrön **fagyási sérülést** okoz (légköri nyomáson mélyen fagypont alatt, kb. −40…−50 °C-on forr). Védőszemüveg és -kesztyű kötelező.\n- Zárt térben a kiszivárgó hűtőközeg **kiszorítja az oxigént**, fulladást okozhat.\n- Ha forró felületre vagy lángra kerül, **mérgező bomlástermékek** keletkezhetnek.\n- A hűtőkör **nagy nyomás** alatt van (R32-nél üzem közben a nagynyomású oldalon akár 30 bar fölött), egy hibásan bontott cső vagy szelep balesetet okozhat.'
         }
       ],
       quiz: [

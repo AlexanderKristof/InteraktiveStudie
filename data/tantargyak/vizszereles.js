@@ -148,7 +148,7 @@ STUDIE.addSubject({
       sections: [
         {
           title: 'Gázhoz csak gázszerelő nyúlhat!',
-          text: 'Gázvezetéket és gázkészüléket (kazán, tűzhely, konvektor, vízmelegítő) **kizárólag jogosultsággal rendelkező, nyilvántartott gázszerelő** építhet, cserélhet, javíthat vagy helyezhet át. A munkához sokszor **terv** és a **gázszolgáltató jóváhagyása**, a végén pedig **műszaki biztonsági ellenőrzés** kell.\n\nEz nem bürokrácia: egy rosszul meghúzott kötés robbanást, egy rosszul bekötött kazán szén-monoxid-mérgezést okozhat. Ebben a leckében csak azt tanulod meg, amit **mindenkinek** tudnia kell a biztonsághoz.',
+          text: 'Gázvezetéket és gázkészüléket (kazán, tűzhely, konvektor, vízmelegítő) **kizárólag jogosultsággal rendelkező, nyilvántartott gázszerelő** építhet, cserélhet, javíthat vagy helyezhet át. A munkához sokszor **terv** és a **földgázelosztó jóváhagyása**, a végén pedig **műszaki biztonsági ellenőrzés** kell.\n\nEz nem bürokrácia: egy rosszul meghúzott kötés robbanást, egy rosszul bekötött kazán szén-monoxid-mérgezést okozhat. Ebben a leckében csak azt tanulod meg, amit **mindenkinek** tudnia kell a biztonsághoz.',
           warn: 'Ne szerelj, ne bonts és ne „javíts” semmit gázvezetéken vagy gázkészüléken, még egy flexibilis bekötőcsövet sem!'
         },
         {
@@ -157,7 +157,7 @@ STUDIE.addSubject({
         },
         {
           title: 'Gázszag esetén: azonnal ezt tedd!',
-          text: '1. **Ne kapcsolj** semmit: se villanykapcsolót, se csengőt, se elektromos készüléket. Ne húzz ki dugót sem.\n2. **Ne gyújts lángot**, ne dohányozz.\n3. Ha biztonságosan megteheted, **zárd el a gázt** a főcsapnál (gázmérő előtti elzáró).\n4. **Nyiss ablakot, ajtót**, szellőztess.\n5. **Hagyd el az épületet**, figyelmeztesd a többieket (kopogással, ne csengővel).\n6. **Kint, biztonságos távolságból** hívd a **gázszolgáltató hibabejelentő (gázszivárgási) számát** vagy a **112**-t.',
+          text: '1. **Ne kapcsolj** semmit: se villanykapcsolót, se csengőt, se elektromos készüléket. Ne húzz ki dugót sem.\n2. **Ne gyújts lángot**, ne dohányozz.\n3. Ha biztonságosan megteheted, **zárd el a gázt** a főcsapnál (gázmérő előtti elzáró).\n4. **Nyiss ablakot, ajtót**, szellőztess.\n5. **Hagyd el az épületet**, figyelmeztesd a többieket (kopogással, ne csengővel).\n6. **Kint, biztonságos távolságból** hívd a **helyi földgázelosztó éjjel-nappal hívható hibabejelentő (gázszivárgási) számát** (a gázszámlán és a szolgáltató honlapján megtalálod) vagy a **112**-t.',
           warn: 'A mobiltelefont is csak az épületen kívül használd! Ne menj vissza, amíg a szakember nem engedi.'
         },
         {
@@ -233,7 +233,7 @@ STUDIE.addTrouble({
     szelep: { q: 'Nyitva van a radiátorszelep, és nem ragadt be a termosztatikus fej szeleptüskéje?', check: 'Tekerd a termosztatikus fejet maximumra. Ha leveszed a fejet (általában kézzel lecsavarható), a kis fém tüskének rugózva kell mozognia, ha megnyomod.', answers: [
       { t: 'A tüske beragadt, nem mozdul', next: 'r_tuske' },
       { t: 'Szelep nyitva, a tüske mozog, mégis hideg', next: 'r_dugulas' }] },
-    r_gaz: { result: 'Gázszag: azonnali teendő!', fix: '1. **Ne kapcsolj** semmit (villany, csengő, készülékek), ne húzz ki dugót.\n2. **Ne gyújts lángot**, ne dohányozz.\n3. Ha biztonságosan elérhető, **zárd el a gázt** a főcsapnál.\n4. **Nyiss ablakot, ajtót.**\n5. **Hagyd el az épületet**, figyelmeztesd a többieket.\n6. **Kint**, biztonságos távolságból hívd a **gázszolgáltató hibabejelentőjét** vagy a **112**-t.', level: 'bad', pro: true },
+    r_gaz: { result: 'Gázszag: azonnali teendő!', fix: '1. **Ne kapcsolj** semmit (villany, csengő, készülékek), ne húzz ki dugót.\n2. **Ne gyújts lángot**, ne dohányozz.\n3. Ha biztonságosan elérhető, **zárd el a gázt** a főcsapnál.\n4. **Nyiss ablakot, ajtót.**\n5. **Hagyd el az épületet**, figyelmeztesd a többieket.\n6. **Kint**, biztonságos távolságból hívd a **földgázelosztó éjjel-nappal hívható hibabejelentőjét** vagy a **112**-t.', level: 'bad', pro: true },
     r_nyomas: { result: 'Túl alacsony a rendszernyomás', fix: 'A kazán alacsony nyomásnál védelemből leáll. A kazán kezelési útmutatója szerint a töltőcsapon töltsd fel a rendszert **hidegen** a szokásos értékre (kb. 1,2–1,5 bar), majd légteleníts.\n\nHa a nyomás néhány napon belül újra leesik, valahol szivárog a rendszer: ezt szakembernek kell megkeresnie.', level: 'warn' },
     r_kazanhiba: { result: 'Kazánhiba (gyújtás, érzékelő, szivattyú)', fix: 'Jegyezd fel a hibakódot, és nézd meg a kezelési útmutatóban. A kazánt legfeljebb egyszer próbáld újraindítani a reset gombbal.\n\nHa a hiba megmarad, hívj **gázkészülék-szervizt**. A burkolatot ne szereld le!', level: 'bad', pro: true },
     r_termosztat: { result: 'A szobatermosztát nem kér fűtést', fix: 'Cserélj elemet, ellenőrizd a beállított programot és időt. Vezeték nélküli termosztátnál nézd meg, hogy kapcsolódik-e a vevőegységhez (újrapárosítás az útmutató szerint).', level: 'ok' },
