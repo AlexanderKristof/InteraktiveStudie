@@ -258,6 +258,7 @@
   function pageExplorer(ids) {
     var m = S.models[ids[ids.length - 1]];
     if (!m) return notFound();
+    if (S.logActivity) { S.logActivity('model', m.id); if (ids[ids.length - 1] === 'atom') S.logActivity('deep', ids.length); }
     setNav('felfedezo'); title(m.title);
     S.renderModel(main, m, ids);
   }
@@ -378,6 +379,7 @@
     });
     var seg = path.split('/').filter(Boolean).map(decodeURIComponent);
     S.params = params;
+    if (S.logActivity && seg[0] && seg[0] !== 'haladas') S.logActivity();
     document.body.setAttribute('data-page', seg[0] || 'home');
     closePop();
     if (!seg.length) pageHome();
@@ -388,6 +390,7 @@
     else if (seg[0] === 'egyetem' && seg.length === 1) { setNav('egyetem'); title('Egyetem'); S.pageUniList(main); }
     else if (seg[0] === 'egyetem' && seg[2] === 'fogalom') { setNav('egyetem'); var tt = S.courseById(seg[1]); title(tt ? tt.title : ''); if (!S.pageTerm(main, seg[1], seg[3])) notFound(); }
     else if (seg[0] === 'egyetem') { setNav('egyetem'); var cc = S.courseById(seg[1]); title(cc ? cc.title : ''); if (!S.pageCourse(main, seg[1], seg[2])) notFound(); }
+    else if (seg[0] === 'haladas') { setNav('haladas'); title('Haladásom'); S.pageHaladas(main); }
     else if (seg[0] === 'teszt') { setNav('teszt'); title('Tesztközpont'); S.pageTeszt(main, params); }
     else if (seg[0] === 'kereses') pageSearch(params.q || '');
     else if (seg[0] === 'nevjegy') pageAbout();
