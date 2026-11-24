@@ -111,9 +111,28 @@
     });
   }
 
+  /* A tesztközpont nagy címsorai: iskolai szintek, egyetem, szakmák, felfedező. */
+  var SECTIONS = [['altalanos', '🎒 Általános iskola'], ['kozep', '🏫 Középiskola'], ['egyetem', '🎓 Egyetem'], ['szakma', '🛠️ Szakmák'], ['felfedezo', '🔍 Mi miből áll? (modellek)']];
+  function secOf(g) {
+    if (g.id === 'felfedezo') return 'felfedezo';
+    if (S.courseById && S.courseById(g.id)) return 'egyetem';
+    var sj = S.subjects.filter(function (x) { return x.id === g.id; })[0];
+    return sj ? (sj.stage || 'kozep') : 'kozep';
+  }
   S.pageTeszt = function (main, params) {
     if (params && params.d) { var cfg = decodeCfg(params.d); if (cfg && cfg.s) return sharedTest(main, cfg); }
     var groups = buildGroups(), st = stats();
+    function groupHtml(g) {
+        var n = 0; g.topics.forEach(function (t) { n += t.questions.length; });
+        return '<details class="card ts-group" style="--tile:' + g.color + '"' + (g.topics.some(function (t) { return sel[g.id + '/' + t.id]; }) ? ' open' : '') + '>' +
+          '<summary><span class="ico">' + g.icon + '</span><span class="ts-gt"><b>' + esc(g.title) + '</b><small>' + g.kind + ' · ' + n + ' kérdés</small></span>' +
+          '<label class="ts-all" onclick="event.stopPropagation()"><input type="checkbox" data-group="' + g.id + '"> mind</label></summary>' +
+          '<div class="ts-list">' + g.topics.map(function (t) {
+            var key = g.id + '/' + t.id, p = topicPct(st, key);
+            return '<label class="ts-topic"><input type="checkbox" data-key="' + key + '"' + (sel[key] ? ' checked' : '') + '><span>' + esc(t.title) + '</span>' +
+              (p != null ? '<span class="badge ' + (p >= 80 ? 'l1' : p >= 60 ? 'l2' : 'l3') + '">' + p + '%</span>' : '') + '<small>' + t.questions.length + '</small></label>';
+          }).join('') + '</div></details>';
+    }
     var saved = S.store.get('teszt.setup', { mode: 'azonnali', count: 20, sel: null });
     var sel = {};
     if (params.targy) groups.forEach(function (g) { if (g.id === params.targy) g.topics.forEach(function (t) { sel[g.id + '/' + t.id] = 1; }); });
@@ -132,16 +151,14 @@
       (weak.length ? '<div class="note warn"><b class="t">Gyenge pontjaid: ezeket érdemes gyakorolni</b><div class="chips" style="margin-top:6px">' + weak.slice(0, 6).map(function (w) {
         return '<button type="button" class="chip" data-weak="' + w.g.id + '/' + w.t.id + '">' + w.g.icon + ' ' + esc(w.t.title) + ' · ' + w.p + '%</button>';
       }).join('') + '</div></div>' : '') +
-      '<div class="ts-layout"><div class="ts-topics">' + groups.map(function (g) {
-        var n = 0; g.topics.forEach(function (t) { n += t.questions.length; });
-        return '<details class="card ts-group" style="--tile:' + g.color + '"' + (g.topics.some(function (t) { return sel[g.id + '/' + t.id]; }) ? ' open' : '') + '>' +
-          '<summary><span class="ico">' + g.icon + '</span><span class="ts-gt"><b>' + esc(g.title) + '</b><small>' + g.kind + ' · ' + n + ' kérdés</small></span>' +
-          '<label class="ts-all" onclick="event.stopPropagation()"><input type="checkbox" data-group="' + g.id + '"> mind</label></summary>' +
-          '<div class="ts-list">' + g.topics.map(function (t) {
-            var key = g.id + '/' + t.id, p = topicPct(st, key);
-            return '<label class="ts-topic"><input type="checkbox" data-key="' + key + '"' + (sel[key] ? ' checked' : '') + '><span>' + esc(t.title) + '</span>' +
-              (p != null ? '<span class="badge ' + (p >= 80 ? 'l1' : p >= 60 ? 'l2' : 'l3') + '">' + p + '%</span>' : '') + '<small>' + t.questions.length + '</small></label>';
-          }).join('') + '</div></details>';
+      '<div class="ts-layout"><div class="ts-topics">' + SECTIONS.map(function (sec) {
+        var gs = groups.filter(function (g) { return secOf(g) === sec[0]; });
+        if (!gs.length) return '';
+        var qn = 0; gs.forEach(function (g) { g.topics.forEach(function (t) { qn += t.questions.length; }); });
+        var any = gs.some(function (g) { return g.topics.some(function (t) { return sel[g.id + '/' + t.id]; }); });
+        return '<details class="ts-section" data-sec="' + sec[0] + '"' + (any ? ' open' : '') + '><summary class="ts-sec-head"><span class="ts-sec-title">' + sec[1] + '</span>' +
+          '<span class="ts-sec-meta">' + gs.length + ' ' + (sec[0] === 'felfedezo' ? 'csoport' : sec[0] === 'egyetem' ? 'kurzus' : 'tantárgy') + ' · ' + qn + ' kérdés · <b data-seccount="' + sec[0] + '"></b></span>' +
+          '<label class="ts-all" onclick="event.stopPropagation()"><input type="checkbox" data-section="' + sec[0] + '"> mind</label></summary><div class="ts-sec-body">' + gs.map(groupHtml).join('') + '</div></details>';
       }).join('') + '</div>' +
       '<aside class="card pad ts-side"><h3>Beállítások</h3>' +
       '<p class="muted" style="margin:0 0 4px">Visszajelzés</p><div class="ts-modes">' +
@@ -172,6 +189,13 @@
         var k = g.topics.filter(function (t) { return sel[g.id + '/' + t.id]; }).length;
         i.checked = k === g.topics.length; i.indeterminate = k > 0 && k < g.topics.length;
       });
+      main.querySelectorAll('[data-section]').forEach(function (i) {
+        var tot = 0, k = 0;
+        groups.forEach(function (g) { if (secOf(g) !== i.dataset.section) return; g.topics.forEach(function (t) { tot++; if (sel[g.id + '/' + t.id]) k++; }); });
+        i.checked = tot > 0 && k === tot; i.indeterminate = k > 0 && k < tot;
+        var lab = main.querySelector('[data-seccount="' + i.dataset.section + '"]');
+        if (lab) lab.textContent = k ? k + ' téma kijelölve' : '';
+      });
       var avail = selected().length, n = count ? Math.min(count, avail) : avail;
       main.querySelector('#ts-sum').innerHTML = avail ? '<b>' + n + '</b> kérdés a kiválasztott <b>' + avail + '</b> közül, ' + (mode === 'vizsga' ? 'vizsga módban.' : 'azonnali visszajelzéssel.') : 'Jelölj ki legalább egy témát!';
       main.querySelector('#ts-start').disabled = !avail;
@@ -181,6 +205,15 @@
       i.addEventListener('change', function () {
         var g = groups.filter(function (x) { return x.id === i.dataset.group; })[0];
         g.topics.forEach(function (t) { if (i.checked) sel[g.id + '/' + t.id] = 1; else delete sel[g.id + '/' + t.id]; });
+        paint();
+      });
+    });
+    main.querySelectorAll('[data-section]').forEach(function (i) {
+      i.addEventListener('change', function () {
+        groups.forEach(function (g) {
+          if (secOf(g) !== i.dataset.section) return;
+          g.topics.forEach(function (t) { if (i.checked) sel[g.id + '/' + t.id] = 1; else delete sel[g.id + '/' + t.id]; });
+        });
         paint();
       });
     });
