@@ -262,7 +262,7 @@
       }
       var p = byId[game.order[game.i]].p;
       game.tries = 0;
-      b.innerHTML = '<span class="muted">' + (game.i + 1) + ' / ' + game.order.length + '</span> Hol van: <b>' + esc(p.name) + '</b>? <span class="muted">Kattints rá a rajzon!</span> <span class="gm-score">✔ ' + game.first + '</span>';
+      b.innerHTML = '<span class="muted">' + (game.i + 1) + ' / ' + game.order.length + '</span> <span>Hol van: <b>' + esc(p.name) + '</b>?</span> <span class="muted">Kattints rá a rajzon!</span> <span class="gm-score">✔ ' + game.first + '</span>';
     }
     function flash(g, cls) { g.classList.add(cls); setTimeout(function () { g.classList.remove(cls); }, 650); }
     function gameClick(g) {

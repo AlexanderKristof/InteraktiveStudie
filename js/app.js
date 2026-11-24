@@ -508,6 +508,21 @@
     S.store.set('theme', theme);
   });
 
+  /* ---------- telepítés alkalmazásként (ha a böngésző felajánlja) ---------- */
+  var installEvt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault(); installEvt = e;
+    var foot = document.querySelector('.foot p');
+    if (foot && !document.getElementById('install-btn')) {
+      foot.insertAdjacentHTML('beforeend', ' · <button type="button" class="linkish" id="install-btn">📲 Telepítés alkalmazásként</button>');
+      document.getElementById('install-btn').addEventListener('click', function () {
+        if (!installEvt) return;
+        installEvt.prompt();
+        installEvt.userChoice.then(function () { installEvt = null; var b = document.getElementById('install-btn'); if (b) b.remove(); });
+      });
+    }
+  });
+
   /* ---------- offline mód (csak webszerverről futtatva) ---------- */
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
