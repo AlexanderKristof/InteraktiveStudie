@@ -502,6 +502,8 @@
     else if (seg[0] === 'tartalom') { setNav(''); title('Tartalomjegyzék'); S.pageTartalom(main); }
     else if (seg[0] === 'beallitasok') { setNav(''); title('Beállítások'); S.pageBeallitasok(); }
     else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
+    else if (seg[0] === 'nyelvek') { setNav('nyelvek'); title('Nyelvek'); S.pageNyelvek(main); }
+    else if (seg[0] === 'nyelv') { setNav('nyelvek'); var lc = S.langById(seg[1]); title(lc ? lc.title : ''); if (!S.pageNyelv(main, seg[1])) notFound(); }
     else if (seg[0] === 'sport') { setNav('sport'); title('Sport és tudomány'); S.pageSport(main, params); }
     else if (seg[0] === 'tudtad') { setNav('tudtad'); title('Tudtad?'); S.pageTudtad(main, params); }
     else if (seg[0] === 'utvonalak') { setNav(''); title('Tanulási útvonalak'); S.pageUtvonalak(main); }

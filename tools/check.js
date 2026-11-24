@@ -160,6 +160,24 @@ Object.keys(S.lessonUni || {}).forEach(k => {
   (u.glossary || []).forEach((g, i) => { if (!g.hu || !g.def || !(g.en || g.latin)) err(w + ' szótár #' + (i + 1), 'hu, def és en/latin kell'); markup(w, g.def); });
 });
 
+/* Nyelvi tanfolyamok */
+const langIds = new Set();
+(S.langCourses || []).forEach(c => {
+  const w = 'nyelv ' + c.id;
+  if (langIds.has(c.id)) err(w, 'ismétlődő id'); langIds.add(c.id);
+  if (!c.units || !c.units.length) err(w, 'nincs egység');
+  const uids = new Set();
+  (c.units || []).forEach((u, ui) => {
+    const wu = w + '/' + (u.id || ui);
+    if (!u.id || uids.has(u.id)) err(wu, 'hiányzó vagy ismétlődő egység-id'); uids.add(u.id);
+    if (!u.words || u.words.length < 6) err(wu, 'legalább 6 szó kell (a feladatokhoz)');
+    (u.words || []).forEach((x, i) => { if (!Array.isArray(x) || !x[0] || !x[1]) err(wu + ' szó #' + (i + 1), '[célnyelv, magyar] kell'); });
+    const dup = {}; (u.words || []).forEach(x => { if (dup[x[0]]) warn(wu, 'ismétlődő szó: ' + x[0]); dup[x[0]] = 1; });
+    (u.sentences || []).forEach((x, i) => { if (!Array.isArray(x) || !x[0] || !x[1]) err(wu + ' mondat #' + (i + 1), '[célnyelv, magyar] kell'); });
+    if (u.tip) markup(wu, u.tip);
+  });
+});
+
 /* Tudtad? tények */
 const factIds = new Set(), CATS = new Set((S.FACT_CATS || []).map(c => c[0]));
 (S.facts || []).forEach((f, i) => {
@@ -176,7 +194,7 @@ const factIds = new Set(), CATS = new Set((S.FACT_CATS || []).map(c => c[0]));
 });
 
 console.log('Tantárgyak: ' + S.subjects.length + ', leckék: ' + lessonCount + ', leckekvíz-kérdések: ' + quizCount + ', kérdésbank: ' + bankCount);
-console.log('Modellek: ' + Object.keys(S.models).length + ', egyetemi kurzusok: ' + (S.courses || []).length + ', szakszavak: ' + termCount + ', hibakeresők: ' + Object.keys(S.troubles || {}).length + ', tények: ' + (S.facts || []).length);
+console.log('Modellek: ' + Object.keys(S.models).length + ', egyetemi kurzusok: ' + (S.courses || []).length + ', szakszavak: ' + termCount + ', hibakeresők: ' + Object.keys(S.troubles || {}).length + ', tények: ' + (S.facts || []).length + ', nyelvek: ' + (S.langCourses || []).length);
 if (warns.length) console.log('\nFigyelmeztetések (' + warns.length + '):\n  ' + warns.slice(0, 40).join('\n  ') + (warns.length > 40 ? '\n  …' : ''));
 if (errors.length) { console.log('\nHIBÁK (' + errors.length + '):\n  ' + errors.join('\n  ')); process.exit(1); }
 console.log('\n✔ Nincs hiba.');
