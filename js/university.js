@@ -24,6 +24,62 @@
   }
   S.mathHtml = mathHtml;
 
+  /* ---------- tudásgráf: hivatkozások a szintek között ----------
+   * Szakszó-hivatkozás formája: 'kurzusId/fogalomId' (pl. 'digitalis-technika/mosfet').
+   * - modell alkatrésze:  terms: ['digitalis-technika/mosfet']
+   * - lecke:              terms: [...]
+   * - szakszó:            prereq: ['lecke:villanyszereles/alapfogalmak', 'modell:tranzisztor', 'digitalis-technika/bit']  */
+  S.resolveTerm = function (ref) {
+    var p = String(ref).split('/'), c = S.courseById(p[0]), t = c && termById(c, p[1]);
+    return t ? { c: c, t: t, href: '#/egyetem/' + c.id + '/fogalom/' + t.id } : null;
+  };
+  S.termCards = function (refs, title) {
+    var list = (refs || []).map(S.resolveTerm).filter(Boolean);
+    if (!list.length) return '';
+    return '<div class="term-refs">' + (title ? '<b class="tr-title">' + title + '</b>' : '') + '<div class="tr-grid">' + list.map(function (r) {
+      return '<a class="tr-card" style="--tc:' + topicColor(r.c, r.t.topic) + '" href="' + r.href + '"><b>' + esc(r.t.term) + '</b>' +
+        (r.t.en ? '<small>🇬🇧 ' + esc(r.t.en) + '</small>' : '') + '<span>' + S.inline(r.t.short) + '</span><em>' + esc(r.c.title) + ' →</em></a>';
+    }).join('') + '</div></div>';
+  };
+  /* Hol fordul elő egy szakszó a valóságban? (modellek alkatrészei, leckék) */
+  function usages(c, t) {
+    var ref = c.id + '/' + t.id, out = [];
+    Object.keys(S.models).forEach(function (k) {
+      var m = S.models[k];
+      if ((m.uni && (m.uni.terms || []).indexOf(ref) >= 0)) out.push({ icon: m.icon, label: m.title, href: '#/felfedezo/' + m.id });
+      m.parts.forEach(function (p) {
+        if ((p.terms || []).indexOf(ref) >= 0) out.push({ icon: m.icon, label: m.title + ' › ' + p.name, href: '#/felfedezo/' + m.id + '?resz=' + p.id });
+      });
+    });
+    S.subjects.forEach(function (s) {
+      s.lessons.forEach(function (l) {
+        if ((l.terms || []).indexOf(ref) >= 0) out.push({ icon: s.icon, label: s.title + ' › ' + l.title, href: '#/lecke/' + s.id + '/' + l.id });
+      });
+    });
+    return out;
+  }
+  function prereqLinks(t) {
+    return (t.prereq || []).map(function (r) {
+      var m;
+      if ((m = /^lecke:(.+)\/(.+)$/.exec(r))) {
+        var s = S.subjects.filter(function (x) { return x.id === m[1]; })[0], l = s && s.lessons.filter(function (x) { return x.id === m[2]; })[0];
+        return l ? { icon: s.icon, label: s.title + ' › ' + l.title, href: '#/lecke/' + s.id + '/' + l.id } : null;
+      }
+      if ((m = /^modell:(.+)$/.exec(r))) return S.models[m[1]] ? { icon: S.models[m[1]].icon, label: S.models[m[1]].title, href: '#/felfedezo/' + m[1] } : null;
+      var rt = S.resolveTerm(r);
+      return rt ? { icon: rt.c.icon, label: rt.t.term, href: rt.href } : null;
+    }).filter(Boolean);
+  }
+  /* Szakszavak, amelyek egy leckére mint előismeretre épülnek. */
+  S.termsBuildingOn = function (sid, lid) {
+    var key = 'lecke:' + sid + '/' + lid, out = [];
+    S.courses.forEach(function (c) { c.terms.forEach(function (t) { if ((t.prereq || []).indexOf(key) >= 0) out.push(c.id + '/' + t.id); }); });
+    return out;
+  };
+  function linkList(items) {
+    return '<div class="chips" style="margin-top:4px">' + items.map(function (u) { return '<a class="chip" href="' + u.href + '">' + u.icon + ' ' + esc(u.label) + '</a>'; }).join('') + '</div>';
+  }
+
   /* Kétirányú kapcsolatok a fogalmak között (ha A → B, akkor B is látja A-t). */
   function links(c) {
     if (c._links) return c._links;
@@ -76,11 +132,14 @@
       (t.visual ? '<figure class="term-visual">' + t.visual + (t.caption ? '<figcaption>' + S.inline(t.caption) + '</figcaption>' : '') + '</figure>' : '') +
       (t.text ? md(t.text) : '') +
       fs.map(function (i) { return formulaHtml(c.formulas[i], i); }).join('') +
+      (t.widget ? '<div class="widget card" data-widget="' + esc(JSON.stringify(t.widget)) + '"></div>' : '') +
       (t.example ? '<div class="note tip"><b class="t">Példa</b>' + md(t.example) + '</div>' : '') +
       (t.pitfall ? '<div class="note warn"><b class="t">Gyakori hiba</b>' + md(t.pitfall) + '</div>' : '') +
       (rel.length ? '<p class="muted" style="margin-bottom:4px">Kapcsolódó fogalmak:</p><div class="chips" style="margin-top:0">' + rel.map(function (r) {
         var rt = termById(c, r); return '<a class="chip" href="#/egyetem/' + c.id + '/fogalom/' + r + '">' + esc(rt.term) + '</a>';
       }).join('') + '</div>' : '') +
+      (!compact && prereqLinks(t).length ? '<div class="note"><b class="t">🎒 Előismeret: ha valami nem világos, ezekkel kezdd</b>' + linkList(prereqLinks(t)) + '</div>' : '') +
+      (!compact && usages(c, t).length ? '<div class="note tip"><b class="t">🔧 Hol találkozol vele a valóságban?</b>' + linkList(usages(c, t)) + '</div>' : '') +
       ((t.models || []).filter(function (m) { return S.models[m]; }).length ? '<div class="related" style="margin-top:12px">' + t.models.filter(function (m) { return S.models[m]; }).map(function (m) {
         return '<a class="btn" href="#/felfedezo/' + m + '">' + S.models[m].icon + ' Nézz bele: ' + esc(S.models[m].title) + '</a>';
       }).join('') + '</div>' : '') +
@@ -295,6 +354,7 @@
         var t = termById(c, id);
         body.querySelector('#map-side').innerHTML = termHtml(c, t, true) + '<p><a class="btn primary" href="#/egyetem/' + c.id + '/fogalom/' + id + '">Teljes leírás →</a></p>';
         bindFormulas(body.querySelector('#map-side'), c.formulas);
+        S.mountWidgets(body.querySelector('#map-side'));
       };
       svg.querySelectorAll('.node').forEach(function (g) {
         g.addEventListener('click', function () { pick(g.dataset.id); });
@@ -322,6 +382,7 @@
       '<nav class="pager">' + (prev ? '<a class="btn" href="#/egyetem/' + c.id + '/fogalom/' + prev.id + '">← ' + esc(prev.term) + '</a>' : '<span></span>') +
       (next ? '<a class="btn" href="#/egyetem/' + c.id + '/fogalom/' + next.id + '">' + esc(next.term) + ' →</a>' : '<a class="btn" href="#/egyetem/' + c.id + '">Vissza a szótárhoz</a>') + '</nav>';
     bindFormulas(main, c.formulas);
+    S.mountWidgets(main);
     return true;
   };
 })();

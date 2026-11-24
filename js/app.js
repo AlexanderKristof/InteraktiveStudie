@@ -182,6 +182,7 @@
       (models.length ? '<h2>Nézz bele!</h2><p class="muted">Ehhez a leckéhez kapcsolódó szétszedhető modellek:</p><div class="related">' + models.map(function (m) {
         return '<a class="btn" href="#/felfedezo/' + m + '">' + S.models[m].icon + ' ' + esc(S.models[m].title) + '</a>';
       }).join('') + '</div>' : '') +
+      uniBox(s, l) +
       (l.quiz && l.quiz.length ? '<h2 id="kviz">Ellenőrizd magad!</h2><div class="quiz card" id="quiz"></div>' : '') +
       '<div class="row" style="margin-top:22px"><button type="button" class="btn" id="done"></button></div>' +
       '<nav class="pager">' + (prev ? '<a class="btn" href="#/lecke/' + s.id + '/' + prev.id + '">← ' + esc(prev.title) + '</a>' : '<span></span>') +
@@ -209,6 +210,23 @@
     mountWidgets(main);
     if (l.quiz && l.quiz.length) S.renderQuiz(main.querySelector('#quiz'), l.quiz, key);
   }
+
+  /* Egyetemi kitekintés a lecke végén: a lecke saját hivatkozásai + azok a szakszavak, amelyek erre a leckére épülnek. */
+  function uniBox(s, l) {
+    if (!S.termCards) return '';
+    var refs = (l.terms || []).concat(S.termsBuildingOn(s.id, l.id)).filter(function (r, i, a) { return a.indexOf(r) === i && S.resolveTerm(r); });
+    if (!refs.length) return '';
+    if (S.level !== 'egyetem') {
+      return '<div class="note uni-hint"><b class="t">🎓 Egyetemi kitekintés</b><p>' + refs.length + ' egyetemi szakszó épül erre a leckére (pl. ' +
+        refs.slice(0, 3).map(function (r) { var x = S.resolveTerm(r); return '<a href="' + x.href + '">' + esc(x.t.term) + '</a>'; }).join(', ') +
+        '). <button type="button" class="linkish" data-level="egyetem">Váltás egyetemi szintre</button></p></div>';
+    }
+    return '<h2>🎓 Egyetemi kitekintés</h2><p class="muted">Ugyanez a téma mélyebben, a pontos szakszavakkal és angol megfelelőjükkel:</p>' + S.termCards(refs);
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-level]');
+    if (b && b.tagName === 'BUTTON') S.setLevel(b.dataset.level);
+  });
 
   function pageExplorerList() {
     setNav('felfedezo'); title('Mi miből áll?');
@@ -392,6 +410,21 @@
   });
   document.addEventListener('click', function (e) { if (!e.target.closest('.search')) closePop(); });
   pop.addEventListener('click', function () { closePop(); input.blur(); });
+
+  /* ---------- mélységi szint: iskolai / egyetemi ---------- */
+  S.level = S.store.get('level', 'iskolai');
+  var levelBtn = document.getElementById('level');
+  function paintLevel() {
+    levelBtn.innerHTML = S.level === 'egyetem' ? '🎓 <span>Egyetemi</span>' : '🎒 <span>Iskolai</span>';
+    levelBtn.title = 'Mélységi szint: ' + (S.level === 'egyetem' ? 'egyetemi (elmélet, képletek, angol szakszavak)' : 'iskolai és szakmai') + '. Kattints a váltáshoz!';
+    document.documentElement.setAttribute('data-level', S.level);
+  }
+  S.setLevel = function (lv) {
+    S.level = lv; S.store.set('level', lv); paintLevel();
+    var y = window.scrollY; route(); window.scrollTo(0, y);
+  };
+  levelBtn.addEventListener('click', function () { S.setLevel(S.level === 'egyetem' ? 'iskolai' : 'egyetem'); });
+  paintLevel();
 
   /* ---------- téma ---------- */
   var theme = S.store.get('theme', null);

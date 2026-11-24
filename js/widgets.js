@@ -532,4 +532,67 @@
     });
     paint();
   });
+  /* ---------- 13. MOSFET kimeneti karakterisztika (egyetemi) ---------- */
+  S.addWidget('mosfet-iv', function (el, o) {
+    el.innerHTML = head(o.title || 'MOSFET kimeneti karakterisztika: I_D(U_DS)', o.help || 'Négyzetes (Shichman–Hodges) modell, n-csatornás MOSFET. Állítsd a gate-feszültséget, a drain-feszültséget és a hőmérsékletet: a piros pont a munkapont. Melegben csökken a mozgékonyság (és a küszöbfeszültség), ezért kisebb lesz a telítési áram.') +
+      '<div class="w-grid"><div class="w-ctrl">' + rng('ugs', 'Gate–source feszültség (U_GS)', 0, 5, 0.1, 3, 'V') + rng('uds', 'Drain–source feszültség (U_DS)', 0, 5, 0.05, 2, 'V') +
+      rng('t', 'Hőmérséklet', -40, 150, 5, 25, '°C') + '<div id="r"></div><div id="m"></div></div>' +
+      '<div class="w-out"><svg class="w-svg" viewBox="0 0 360 260" id="p"></svg><div class="w-formula">lineáris: I_D = k·[(U_GS − U_T)·U_DS − U_DS²/2]·(1 + λ·U_DS)<br>telítés: I_D = (k/2)·(U_GS − U_T)²·(1 + λ·U_DS)</div></div></div>';
+    var X0 = 44, Y0 = 228, W = 300, H = 210, IMAX = 40;
+    function model(T) {
+      var TK = T + 273.15;
+      return { k: 2 * Math.pow(TK / 300, -1.5), ut: 0.7 - 0.002 * (TK - 300), lam: 0.05 };
+    }
+    function id(m, ugs, uds) {
+      var ov = ugs - m.ut;
+      if (ov <= 0) return 0;
+      if (uds < ov) return m.k * (ov * uds - uds * uds / 2) * (1 + m.lam * uds);
+      return m.k / 2 * ov * ov * (1 + m.lam * uds);
+    }
+    function sx(u) { return X0 + u / 5 * W; }
+    function sy(i) { return Y0 - Math.min(i, IMAX) / IMAX * H; }
+    bind(el, function (v) {
+      var m = model(v.t), s = '';
+      for (var g = 0; g <= 5; g++) s += '<line x1="' + sx(g) + '" y1="' + Y0 + '" x2="' + sx(g) + '" y2="' + (Y0 - H) + '" class="svg-grid"/><text x="' + sx(g) + '" y="' + (Y0 + 16) + '" text-anchor="middle" font-size="11" class="svg-muted">' + g + '</text>';
+      for (var i = 0; i <= IMAX; i += 10) s += '<line x1="' + X0 + '" y1="' + sy(i) + '" x2="' + (X0 + W) + '" y2="' + sy(i) + '" class="svg-grid"/><text x="' + (X0 - 6) + '" y="' + (sy(i) + 4) + '" text-anchor="end" font-size="11" class="svg-muted">' + i + '</text>';
+      s += '<text x="' + (X0 + W) + '" y="' + (Y0 + 30) + '" text-anchor="end" font-size="11" class="svg-muted">U_DS [V]</text><text x="6" y="' + (Y0 - H - 6) + '" font-size="11" class="svg-muted">I_D [mA]</text>';
+      // telítési határ (U_DS = U_GS − U_T) parabolája
+      var b = '';
+      for (var u = 0; u <= 4.6; u += 0.1) { var ib = m.k / 2 * u * u * (1 + m.lam * u); b += (u ? 'L' : 'M') + sx(u).toFixed(1) + ' ' + sy(ib).toFixed(1); }
+      s += '<path d="' + b + '" fill="none" stroke="var(--muted)" stroke-dasharray="4 4"/>';
+      [1, 2, 3, 4, 5].forEach(function (g) {
+        var d = '';
+        for (var x = 0; x <= 5.001; x += 0.05) d += (x ? 'L' : 'M') + sx(x).toFixed(1) + ' ' + sy(id(m, g, x)).toFixed(1);
+        s += '<path d="' + d + '" fill="none" stroke="#8d96a8" stroke-width="1.5"/><text x="' + (X0 + W + 3) + '" y="' + (sy(id(m, g, 5)) + 4) + '" font-size="10" class="svg-muted">' + g + 'V</text>';
+      });
+      var cur = '';
+      for (var x2 = 0; x2 <= 5.001; x2 += 0.05) cur += (x2 ? 'L' : 'M') + sx(x2).toFixed(1) + ' ' + sy(id(m, v.ugs, x2)).toFixed(1);
+      var I = id(m, v.ugs, v.uds);
+      s += '<path d="' + cur + '" fill="none" stroke="#2f7bf6" stroke-width="3"/><circle cx="' + sx(v.uds) + '" cy="' + sy(I) + '" r="6" fill="#e5484d" stroke="var(--surface)" stroke-width="2"/>';
+      el.querySelector('#p').innerHTML = s;
+      var ov = v.ugs - m.ut, reg = ov <= 0 ? 'lezárt (cut-off)' : v.uds < ov ? 'lineáris / trióda' : 'telítéses (aktív)';
+      var gm = ov <= 0 ? 0 : v.uds < ov ? m.k * v.uds : m.k * ov * (1 + m.lam * v.uds);
+      el.querySelector('#r').innerHTML = res([['Munkatartomány', reg], ['Drain-áram (I_D)', fmt(I, 2) + ' mA'], ['Küszöbfeszültség (U_T)', fmt(m.ut, 3) + ' V'], ['U_DS,sat = U_GS − U_T', ov > 0 ? fmt(ov, 2) + ' V' : '–'], ['Meredekség (g_m)', fmt(gm, 2) + ' mS'], ['k (μ·C_ox·W/L)', fmt(m.k, 2) + ' mA/V²']]);
+      el.querySelector('#m').innerHTML = '<div class="w-msg ' + (ov <= 0 ? 'warn' : 'ok') + '">' + (ov <= 0 ? 'U_GS < U_T: nincs inverziós csatorna, a tranzisztor zárva van (digitálisan: kikapcsolt állapot).'
+        : v.uds < ov ? 'Lineáris tartomány: a csatorna végig kialakult, a tranzisztor vezérelt ellenállásként viselkedik (digitálisan: bekapcsolt kapcsoló).'
+          : 'Telítés: a csatorna a drain felől elzáródott (pinch-off), az áram alig függ U_DS-től. Analóg erősítők itt dolgoznak.') + '</div>';
+    });
+  });
+
+  /* ---------- 14. Processzor teljesítményfelvétele (egyetemi) ---------- */
+  S.addWidget('cpu-teljesitmeny', function (el, o) {
+    el.innerHTML = head(o.title || 'Mennyit fogyaszt egy processzor? P = α·C·V²·f + P_szivárgás', o.help || 'Állítsd a paramétereket, és figyeld, hogyan nő a hőtermelés. A feszültség négyzetesen számít!') +
+      '<div class="w-grid"><div class="w-ctrl">' + rng('f', 'Órajel (f)', 0.5, 6, 0.1, 4, 'GHz') + rng('v', 'Tápfeszültség (V)', 0.6, 1.5, 0.01, 1.2, 'V') +
+      rng('c', 'Kapcsolt kapacitás (C)', 2, 60, 1, 25, 'nF') + rng('a', 'Aktivitási tényező (α)', 0.05, 0.6, 0.01, 0.2, '') + rng('il', 'Szivárgási áram', 0, 40, 1, 10, 'A') +
+      '</div><div class="w-out"><svg class="w-svg" viewBox="0 0 360 150" id="b"></svg><div id="r"></div><div id="m"></div></div></div>';
+    bind(el, function (v) {
+      var pd = v.a * v.c * v.v * v.v * v.f, pl = v.il * v.v, P = pd + pl, sc = 320 / Math.max(250, P);
+      el.querySelector('#b').innerHTML = '<rect x="20" y="40" width="' + (pd * sc).toFixed(1) + '" height="40" fill="#f08c2e" rx="4"/><rect x="' + (20 + pd * sc).toFixed(1) + '" y="40" width="' + (pl * sc).toFixed(1) + '" height="40" fill="#7c5cd6" rx="4"/>' +
+        '<line x1="' + (20 + 125 * sc) + '" y1="26" x2="' + (20 + 125 * sc) + '" y2="96" stroke="#e5484d" stroke-dasharray="4 3" stroke-width="2"/><text x="' + (16 + 125 * sc) + '" y="22" font-size="11" text-anchor="end" fill="#e5484d">asztali hűtés határa ~125 W</text>' +
+        '<rect x="20" y="112" width="12" height="12" fill="#f08c2e"/><text x="38" y="122" font-size="11" class="svg-text">dinamikus (kapcsolás)</text><rect x="180" y="112" width="12" height="12" fill="#7c5cd6"/><text x="198" y="122" font-size="11" class="svg-text">statikus (szivárgás)</text>';
+      el.querySelector('#r').innerHTML = res([['Dinamikus', fmt(pd, 1) + ' W'], ['Szivárgási', fmt(pl, 1) + ' W'], ['Összesen', fmt(P, 1) + ' W'], ['Áramfelvétel', fmt(P / v.v, 0) + ' A']]);
+      el.querySelector('#m').innerHTML = '<div class="w-msg ' + (P > 125 ? 'bad' : P > 65 ? 'warn' : 'ok') + '">' + (P > 125 ? 'Ezt egy átlagos hűtő már nem bírja: a processzor visszaveszi az órajelet (thermal throttling).' : P > 65 ? 'Erős hűtés kell (asztali, nagy teljesítményű kategória).' : 'Laptopban vagy kis gépben is hűthető.') +
+        ' Figyeld meg: a ' + fmt(P / v.v, 0) + ' A-es áramot az alaplap feszültségszabályzójának (VRM) kell előállítania!</div>';
+    });
+  });
 })();

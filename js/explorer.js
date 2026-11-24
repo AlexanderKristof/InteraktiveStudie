@@ -51,6 +51,11 @@
       (m.history && m.history.length ? '<h2>Történet: mikor és hogyan alakult ki?</h2><ul class="history">' + m.history.map(function (h) {
         return '<li><b>' + esc(h.year) + '</b>' + S.inline(h.text) + '</li>';
       }).join('') + '</ul>' : '') +
+      (m.uni ? (S.level === 'egyetem'
+        ? '<h2>🎓 Egyetemi mélység</h2><div class="lesson-body">' + md(m.uni.text || '') + '</div>' + (m.uni.widgets || []).map(function (w) {
+          return '<div class="widget card" data-widget="' + esc(JSON.stringify(w)) + '"></div>';
+        }).join('') + (S.termCards ? S.termCards(m.uni.terms, 'Kapcsolódó szakszavak') : '')
+        : '<div class="note uni-hint" style="margin-top:24px"><b class="t">🎓 Egyetemistáknak</b><p>Ehhez a modellhez paraméterezhető szimuláció, képletek és angol szakszavak is tartoznak. <button type="button" class="linkish" data-level="egyetem">Váltás egyetemi szintre</button></p></div>') : '') +
       (m.quiz && m.quiz.length ? '<h2>Ellenőrizd magad!</h2><div class="quiz card" id="ex-quiz"></div>' : '');
 
     var svg = root.querySelector('#ex-svg');
@@ -86,7 +91,8 @@
         return;
       }
       var e = byId[selId], p = e.p;
-      var tabs = [['what', 'Mi ez?', p.what], ['made', 'Miből van?', p.madeOf], ['how', 'Hogyan készül?', p.how]]
+      var uni = S.level === 'egyetem';
+      var tabs = [['what', 'Mi ez?', p.what], ['made', 'Miből van?', p.madeOf], ['how', 'Hogyan készül?', p.how]].concat(uni && p.uni ? [['uni', '🎓 Egyetemi háttér', p.uni]] : [])
         .filter(function (t) { return t[2]; });
       if (!tabs.some(function (t) { return t[0] === tab; })) tab = tabs[0] ? tabs[0][0] : 'what';
       var cur = tabs.filter(function (t) { return t[0] === tab; })[0];
@@ -96,6 +102,9 @@
           return '<button type="button" role="tab" aria-selected="' + (t[0] === tab) + '" class="' + (t[0] === tab ? 'on' : '') + '" data-tab="' + t[0] + '">' + t[1] + '</button>';
         }).join('') + '</div>' +
         '<div>' + md(cur ? cur[2] : '') + '</div>' +
+        (uni && p.en ? '<p class="muted" style="margin:6px 0 0">🇬🇧 ' + esc(p.en) + '</p>' : '') +
+        (uni && S.termCards ? S.termCards(p.terms, 'Szakszavak ehhez az alkatrészhez') : '') +
+        (!uni && (p.uni || (p.terms && p.terms.length)) ? '<p class="muted" style="font-size:.88rem;margin-top:10px">🎓 Ehhez az alkatrészhez egyetemi magyarázat is tartozik. <button type="button" class="linkish" data-level="egyetem">Egyetemi szint</button></p>' : '') +
         (p.fact ? '<div class="fact">' + S.inline(p.fact) + '</div>' : '') +
         (link ? '<p style="margin-top:14px"><a class="btn primary" href="#/felfedezo/' + trail.concat(p.link).join('/') + '">🔍 Nézz bele: ' + esc(link.title) + ' →</a></p>' : '') +
         (p.lesson ? '<p><a class="btn" href="#/lecke/' + p.lesson + '">📘 Kapcsolódó lecke</a></p>' : '') +
@@ -171,6 +180,7 @@
     if (stepsBox) paintStep();
     if (m.quiz && m.quiz.length) S.renderQuiz(root.querySelector('#ex-quiz'), m.quiz, 'model/' + m.id);
 
+    if (S.mountWidgets) S.mountWidgets(root);
     applyTransforms();
     var pre = S.params && S.params.resz;
     if (pre && byId[pre]) select(pre); else paintInfo();

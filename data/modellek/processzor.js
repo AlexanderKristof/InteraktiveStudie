@@ -48,63 +48,78 @@
     intro: 'A processzor utasításokat hajt végre: összead, összehasonlít, adatot mozgat, másodpercenként több milliárdszor. Amit kívülről látsz, az csak a **tokozás**. Az igazi munkát egy apró **szilícium lapka** végzi a fém fedél alatt.',
     parts: [
       {
-        id: 'ihs', z: 5, name: 'Hőelosztó fedél (IHS)', svg: ihs, explode: [0, -240],
+        id: 'ihs', z: 5, name: 'Hőelosztó fedél (IHS)', en: 'integrated heat spreader (IHS)',
+        uni: 'A hőelvezetés **termikus ellenállások soros láncaként** modellezhető (lapka → TIM → fedél → hővezető paszta → hűtő → levegő): `ΔT = P · ΣR_th`. Egy 150 W-os processzornál már 0,1 K/W többlet-ellenállás is 15 °C-kal melegebb lapkát jelent. A réz hővezetési tényezője kb. 400 W/(m·K), az alumíniumé kb. 235 W/(m·K): ezért réz a fedél. A hőáram a **Fourier-törvényt** követi: `q = −λ · dT/dx`.', svg: ihs, explode: [0, -240],
         what: 'A processzor tetején látható fémlap. Védi a törékeny szilícium lapkát, és a lapka hőjét nagy felületen elosztja, hogy a hűtő jól el tudja vezetni.',
         madeOf: '**Réz**, mert nagyon jól vezeti a hőt, vékony **nikkel** bevonattal a korrózió ellen. Ettől ezüstös a színe.',
         how: 'Rézlemezből sajtolják, megmunkálják, majd galvanizálással nikkelezik. A gyárban ragasztóval rögzítik a hordozóhoz, és ráírják (lézerrel gravírozzák) a típust és a sorozatszámot.',
         fact: 'A régi processzorokon nem volt fedél: a hűtő közvetlenül a csupasz lapkára feküdt, és könnyű volt letörni a sarkát.'
       },
       {
-        id: 'tim', z: 4, name: 'Hővezető réteg (TIM)', svg: tim, explode: [0, -150],
+        id: 'tim', z: 4, name: 'Hővezető réteg (TIM)', en: 'thermal interface material (TIM)',
+        uni: 'A TIM teljesítményét a **termikus impedancia** jellemzi (mm²·K/W). Az indium forrasz hővezetése kb. 80 W/(m·K), egy jó paszta csak 5–10 W/(m·K), ezért a forrasztott fedél akár 10–20 °C-kal hűvösebb lapkát ad. A rétegvastagság (BLT, bond line thickness) néhány tíz mikrométer.', svg: tim, explode: [0, -150],
         what: 'Vékony réteg a lapka és a fedél között. A két fémfelület mikroszkopikus egyenetlenségei közé levegő szorulna, ami rossz hővezető. Ez a réteg kitölti a réseket.',
         madeOf: 'Drágább processzoroknál **indium** fémforrasz, olcsóbbaknál szilikon alapú **hővezető paszta**, amelyben fém-oxid vagy kerámia por van.',
         how: 'Az indiumot vékony fóliaként a lapkára helyezik, és kemencében megolvasztják, így összeforrasztja a lapkát a fedéllel. A pasztát adagolóval viszik fel.'
       },
       {
-        id: 'die', z: 2, name: 'Szilícium lapka (die)', svg: die, explode: [0, -75], badge: [374, 208], link: 'tranzisztor',
+        id: 'die', z: 2, name: 'Szilícium lapka (die)', svg: die, explode: [0, -75], badge: [374, 208], link: 'tranzisztor', en: 'die',
+        terms: ['digitalis-technika/cmos', 'digitalis-technika/mosfet', 'digitalis-technika/moore'],
+        uni: 'A litográfia felbontását a **Rayleigh-kritérium** adja: `CD = k₁ · λ / NA`, ahol λ a fény hullámhossza (EUV: 13,5 nm), NA a numerikus apertúra (0,33, a High-NA gépeknél 0,55), k₁ pedig folyamatfüggő tényező (~0,3). A „3 nm-es” technológia neve ma már marketingnév: a legkisebb fémvezeték-osztás kb. 20–30 nm. A kihozatal (yield) a **Poisson-modellel** becsülhető: `Y = e^(−D₀·A)`, ahol D₀ a hibasűrűség, A a lapka területe. Ezért drágák a nagy lapkák, és ezért terjedtek el a chipletek.',
         what: 'Ez maga a „chip”: egy kb. 1–2 cm² területű, alig fél milliméter vastag szilíciumdarab. A felszínén **több milliárd tranzisztor** és több tíz kilométernyi mikroszkopikus rézvezeték van, 10–15 rétegben egymás fölött.',
         madeOf: '99,9999999%-os tisztaságú **szilícium** egykristály. Erre jönnek a **réz** összeköttetések, szigetelő **szilícium-dioxid** és más speciális anyagok (pl. hafnium-oxid). Egyes rétegekbe bór, foszfor vagy arzén atomokat juttatnak (ez az adalékolás).',
         how: 'Homokból (kvarcból) tiszta szilíciumot állítanak elő, abból hengert (ingotot) növesztenek, majd vékony szeletekre (waferekre) vágják. Egy waferen több száz lapka készül egyszerre **fotolitográfiával**: fénnyel „rajzolják” rá a mintákat, rétegről rétegre, több száz lépésben. A teljes folyamatot lent, a gyártási lépéseknél nézheted végig.',
         fact: 'Egy mai csúcsprocesszor tranzisztorai olyan kicsik, hogy egy vörösvérsejt területére több millió elférne.'
       },
       {
-        id: 'cores', z: 3, name: 'Processzormagok', svg: cores, explode: [0, -75], link: 'tranzisztor',
+        id: 'cores', z: 3, name: 'Processzormagok', en: 'CPU cores',
+        terms: ['digitalis-technika/alu', 'digitalis-technika/futoszalag', 'digitalis-technika/regiszter', 'digitalis-technika/elagazasbecsles', 'digitalis-technika/isa'],
+        uni: 'Egy modern mag **szuperskalár, sorrenden kívüli (out-of-order)** végrehajtású: ciklusonként 4–8 utasítást hív le és dekódol, átnevezi a regisztereket a hamis függőségek kiküszöbölésére, és egy több száz bejegyzéses átrendező puffer (ROB) tartja meg a program szerinti sorrendet. A teljesítményt az IPC (instructions per cycle) és az órajel szorzata adja.', svg: cores, explode: [0, -75], link: 'tranzisztor',
         what: 'A magok (core) végzik a tényleges számolást. Mindegyik önálló „mini processzor” saját számolóegységgel (ALU), vezérlőegységgel és regiszterekkel. Több maggal több feladat fut párhuzamosan.',
         madeOf: 'Ugyanaz a szilícium, csak itt a tranzisztorok logikai kapukká (ÉS, VAGY, NEM) vannak összekötve, ezekből épülnek fel az összeadók és szorzók.',
         how: 'A mérnökök hardverleíró nyelven (pl. Verilog) „programozzák” a mag felépítését. Szoftverek alakítják ezt tranzisztorok elrendezésévé, és több éves tervezés, szimuláció és tesztelés után kerül gyártásba.'
       },
       {
-        id: 'cache', z: 3, name: 'Gyorsítótár (cache)', svg: cache, explode: [0, -75],
+        id: 'cache', z: 3, name: 'Gyorsítótár (cache)', en: 'cache (L1/L2/L3)',
+        terms: ['digitalis-technika/cache', 'digitalis-technika/memoriahierarchia'],
+        uni: 'Egy SRAM cella 6 tranzisztorból áll (6T): két keresztbe kötött inverter tárolja a bitet, két hozzáférési tranzisztor köti a bitvonalakra. A cache **halmazasszociatív**: a cím középső bitjei választják ki a halmazt, a felső bitek (tag) azonosítják a sort. Tipikus L1: 32–48 KB, 8–12 utas, 64 bájtos sorok.', svg: cache, explode: [0, -75],
         what: 'Nagyon gyors, kis méretű memória közvetlenül a lapkán. Ide kerülnek a legtöbbet használt adatok, hogy a magoknak ne kelljen a sokkal lassabb RAM-ra várniuk.',
         madeOf: 'SRAM cellák: bitenként 6 tranzisztor. Ezért drága és nagy helyet foglal, de nagyon gyors.',
         how: 'Ugyanabban a gyártási folyamatban készül, mint a magok. Szabályos, ismétlődő mintázatáról a lapkafotókon könnyű felismerni.',
         fact: 'Az L1 cache kb. 1 ns alatt válaszol, a RAM kb. 80–100 ns alatt. Ha az L1 egy másodperc lenne, a RAM majdnem két perc.'
       },
       {
-        id: 'imc', z: 3, name: 'Memóriavezérlő és I/O', svg: imc, explode: [0, -75],
+        id: 'imc', z: 3, name: 'Memóriavezérlő és I/O', en: 'integrated memory controller (IMC), I/O',
+        terms: ['digitalis-technika/dram'],
+        uni: 'A DDR5 interfész csatornánként 2 × 32 bites alcsatornával dolgozik, a PCIe 5.0 sávonként 32 GT/s sebességű, 128b/130b kódolású soros kapcsolat. Ilyen sebességnél a vezeték már **tápvonalként** viselkedik: impedanciaillesztés és kiegyenlítés (equalization) kell, különben a jelvisszaverődések lerontják a „szemábrát”.', svg: imc, explode: [0, -75],
         what: 'Ez az egység tartja a kapcsolatot a külvilággal: a RAM-mal, a videokártyával (PCI Express) és az alaplap többi részével.',
         madeOf: 'Tranzisztorok, valamint nagy áramú meghajtó- és vevőáramkörök, amelyek a lapka szélén lévő kivezetésekhez kapcsolódnak.',
         how: 'A lapkával együtt gyártják. A lapka alján apró forrasztógolyók (bumpok) kötik össze a hordozóval: a lapkát fejjel lefelé fordítva forrasztják rá (flip-chip technológia).'
       },
       {
-        id: 'gpu', z: 3, name: 'Integrált grafika (iGPU)', svg: gpu, explode: [0, -75],
+        id: 'gpu', z: 3, name: 'Integrált grafika (iGPU)', en: 'integrated graphics processing unit (iGPU)', svg: gpu, explode: [0, -75],
         what: 'Sok processzorban van beépített grafikus egység, ami a képet állítja elő a monitor számára. Sok kicsi, egyszerű számolóegységből áll, amelyek egyszerre sok képpontot számolnak.',
         madeOf: 'Szilícium tranzisztorok, ugyanúgy, mint a magokban, csak másképp szervezve: sok egyszerű egység dolgozik párhuzamosan.',
         how: 'A lapka része, együtt gyártják a többi egységgel.'
       },
       {
-        id: 'substrate', z: 1, name: 'Hordozó (szubsztrát)', svg: substrate, explode: [0, 0],
+        id: 'substrate', z: 1, name: 'Hordozó (szubsztrát)', en: 'package substrate', svg: substrate, explode: [0, 0],
         what: 'Zöld vagy barna, többrétegű kis nyomtatott áramkör. A lapka apró, sűrű kivezetéseit „széthúzza” az alaplapi foglalathoz illeszkedő, nagyobb érintkezőkre. A rajta ülő apró alkatrészek kondenzátorok, ezek simítják a tápfeszültséget.',
         madeOf: 'Üvegszálas vagy speciális műgyanta rétegek (pl. ABF fólia), köztük vékony **rézvezetékekkel** és furatokkal.',
         how: 'Rétegenként laminálják (préselik), a rézvezetékeket maratással alakítják ki, a rétegeket lézerrel fúrt, rézzel kitöltött furatok kötik össze. Végül ráforrasztják a lapkát és a kondenzátorokat.'
       },
       {
-        id: 'pads', z: 0, name: 'Érintkezők (LGA)', svg: pads, explode: [0, 90], link: 'alaplap',
+        id: 'pads', z: 0, name: 'Érintkezők (LGA)', en: 'land grid array (LGA)', svg: pads, explode: [0, 90], link: 'alaplap',
         what: 'A processzor alján több mint ezer aranyozott érintkező. Ezek fekszenek rá az alaplapi foglalat rugós tűire, és ezeken keresztül kap a processzor tápot és adatot. (A rajzon külön rétegként látszanak, valójában a hordozó alján vannak.)',
         madeOf: 'Réz érintkezőfelületek vékony **nikkel** és **arany** bevonattal. Az arany nem oxidálódik, így évtizedekig jó marad az érintkezés.',
         how: 'A hordozó gyártásakor alakítják ki, majd galvanizálással aranyozzák. Régebbi processzoroknál (PGA) tűk voltak az alján, ma a tűk inkább az alaplapi foglalatban vannak.'
       }
     ],
+    uni: {
+      text: 'Egyetemi szemmel a processzor három, egymásba ágyazott rendszer: **félvezető-fizikai** (tranzisztorok), **logikai** (kapuk, tárolók, futószalag) és **termikus–elektromos** (teljesítmény, hő, tápellátás). A lenti szimulációban a teljesítményfelvétel két fő összetevőjét vizsgálhatod: a kapcsolgatásból adódó dinamikus és a szivárgásból adódó statikus teljesítményt.',
+      widgets: [{ type: 'cpu-teljesitmeny' }],
+      terms: ['digitalis-technika/cmos', 'digitalis-technika/orajel', 'digitalis-technika/futoszalag', 'digitalis-technika/cache', 'digitalis-technika/moore']
+    },
     steps: [
       { icon: '🏖️', title: 'Homokból szilícium', text: 'A kiindulási anyag a **kvarchomok** (szilícium-dioxid, SiO₂). Ívkemencében, kb. 2000 °C-on szénnel redukálják: így kb. 98%-os „kohászati” szilícium lesz belőle. Ezt vegyi úton (gázzá alakítva, desztillálva) tovább tisztítják **99,9999999%-ra** (ez a „kilenc kilences” tisztaság).' },
       { icon: '🧪', title: 'Egykristály növesztése', text: 'A tiszta szilíciumot kb. 1420 °C-on megolvasztják. Egy kis „oltókristályt” mártanak bele, majd lassan forgatva kihúzzák (ez a **Czochralski-eljárás**). Így egy 30 cm átmérőjű, akár 2 m hosszú, tökéletes egykristály henger (**ingot**) nő, amelyben minden atom szabályos rácsban áll.' },
