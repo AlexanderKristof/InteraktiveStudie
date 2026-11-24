@@ -698,4 +698,32 @@
     });
     info();
   });
+  /* ---------- 16. Párosító játék ---------- */
+  S.addWidget('parositas', function (el, o) {
+    var pairs = o.pairs || [], left, right, sel = null, done = 0, miss = 0;
+    function start() {
+      var pick = S.shuffle(pairs).slice(0, Math.min(o.count || 6, pairs.length));
+      left = pick.map(function (p, i) { return { t: p[0], k: i }; });
+      right = S.shuffle(pick.map(function (p, i) { return { t: p[1], k: i }; }));
+      sel = null; done = 0; miss = 0; paint();
+    }
+    function paint() {
+      el.innerHTML = head(o.title || 'Párosítsd össze!', o.help || 'Kattints egy elemre a bal oldalon, majd a hozzá tartozóra a jobb oldalon.') +
+        '<div class="pair-grid"><div>' + left.map(function (x, i) { return '<button type="button" class="pair-btn' + (x.ok ? ' ok' : sel === i ? ' sel' : '') + '" data-l="' + i + '"' + (x.ok ? ' disabled' : '') + '>' + S.inline(x.t) + '</button>'; }).join('') + '</div>' +
+        '<div>' + right.map(function (x, i) { return '<button type="button" class="pair-btn' + (x.ok ? ' ok' : '') + '" data-r="' + i + '"' + (x.ok ? ' disabled' : '') + '>' + S.inline(x.t) + '</button>'; }).join('') + '</div></div>' +
+        '<div id="pm" style="margin-top:8px">' + (done === left.length ? '<div class="w-msg ok">Kész! ' + (miss ? miss + ' tévesztéssel.' : 'Hibátlanul! 🎉') + '</div>' : '') + '</div>' +
+        '<button type="button" class="btn" id="pn" style="margin-top:8px">Új kör</button>';
+      el.querySelectorAll('[data-l]').forEach(function (b) { b.addEventListener('click', function () { sel = +b.dataset.l; paint(); }); });
+      el.querySelectorAll('[data-r]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (sel == null) { el.querySelector('#pm').innerHTML = '<div class="w-msg warn">Előbb a bal oldalon válassz!</div>'; return; }
+          var r = right[+b.dataset.r];
+          if (r.k === left[sel].k) { r.ok = left[sel].ok = true; done++; sel = null; paint(); }
+          else { miss++; b.classList.add('bad'); setTimeout(function () { b.classList.remove('bad'); }, 500); }
+        });
+      });
+      el.querySelector('#pn').addEventListener('click', start);
+    }
+    start();
+  });
 })();

@@ -256,6 +256,14 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .tb-fix { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; }
 .tb-fix p, .tb-fix ul { margin: 6px 0 0; }
 
+/* Párosító */
+.pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pair-grid > div { display: grid; gap: 6px; align-content: start; }
+.pair-btn { text-align: left; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; }
+.pair-btn.sel { border-color: var(--accent); background: var(--accent-soft); }
+.pair-btn.ok { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); cursor: default; }
+.pair-btn.bad { border-color: var(--bad); background: var(--bad-soft); }
+
 /* Periódusos rendszer */
 .pt-wrap { overflow-x: auto; }
 .pt { display: grid; grid-template-columns: repeat(18, minmax(30px, 1fr)); gap: 3px; min-width: 560px; }
