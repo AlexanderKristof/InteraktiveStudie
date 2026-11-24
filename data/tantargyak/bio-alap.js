@@ -58,7 +58,7 @@ STUDIE.addSubject({
       level: 1, minutes: 15,
       summary: 'Gyökér, szár, levél és virág: hogyan vesz fel vizet a növény, hogyan készít táplálékot fényből, és hogyan lesz a virágból termés.',
       tags: ['növény', 'gyökér', 'gyökérszőr', 'szár', 'farész', 'háncsrész', 'évgyűrű', 'levél', 'gázcserenyílás', 'klorofill', 'zöld színtest', 'fotoszintézis', 'sejtlégzés', 'párologtatás', 'virág', 'porzó', 'termő', 'megporzás', 'megtermékenyítés', 'mag', 'termés'],
-      models: ['sejt'],
+      models: ['sejt', 'level'],
       sections: [
         {
           title: 'A gyökér: horgony és szívószál',

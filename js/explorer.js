@@ -13,7 +13,10 @@
     ['elektromos-auto', 'akkucella', 'atom'],
     ['okostelefon', 'processzor', 'tranzisztor', 'atom'],
     ['napelempanel', 'atom'],
-    ['dns', 'atom']
+    ['dns', 'atom'],
+    ['atomeromu', 'atom'],
+    ['agy', 'sejt', 'dns', 'atom'],
+    ['level', 'atom']
   ];
 
   S.renderModel = function (root, m, trail) {

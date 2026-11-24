@@ -9,18 +9,19 @@ Nem kell hozzá internet, regisztráció vagy telepítés: egy sima weboldal, am
 
 | Szint | Tantárgyak |
 |---|---|
-| 🎒 Általános iskola (5–8.) | Matematika, Magyar nyelv és irodalom, Természettudomány, Fizika (7–8.), Kémia (7–8.), Angol nyelv (alapok) |
+| 🎒 Általános iskola (5–8.) | Matematika, Magyar nyelv és irodalom, Történelem, Természettudomány, Fizika (7–8.), Kémia (7–8.), Biológia (7–8.), Angol nyelv (alapok) |
 | 🏫 Középiskola | Matematika, Fizika, Kémia, Biológia, Történelem, Földrajz, Informatika, Pénzügyi ismeretek, Állampolgári ismeretek |
-| 🛠️ Szakmák | Villanyszerelés, Autószerelés, Elektromosautó-szerelés, Napelemes rendszerek, Hőszivattyú és klímatechnika, Víz-, gáz- és fűtésszerelés, Asztalos és faipar, Hegesztés és fémmegmunkálás, Informatikai rendszer- és hálózatüzemeltetés |
+| 🛠️ Szakmák | Villanyszerelés, Autószerelés, Elektromosautó-szerelés, Napelemes rendszerek, Hőszivattyú és klímatechnika, Víz-, gáz- és fűtésszerelés, Asztalos és faipar, Hegesztés és fémmegmunkálás, Informatikai rendszer- és hálózatüzemeltetés, Szakács és vendéglátás, Építőipar és kőműves |
 
 Interaktív elemek: Ohm-törvény, soros/párhuzamos kapcsolás, feszültségesés, animált négyütemű motor, fogaskerék-áttétel,
 akkupakk-tervező, függvényábrázoló, Pitagorasz-tétel, ferde hajítás, atomépítő, periódusos rendszer, idővonal-játék,
 párosító játék, végtelen gyakorló feladatok (12 típus), **kapcsolás-építő** (lámpa bekötése, váltókapcsolás) és
-**hibakereső szimulátor** (17 döntési fa, pl. „Nem indul az autó”, „Leold a FI relé”, „Nem melegszik a radiátor”).
+**hibakereső szimulátor** (21 döntési fa, pl. „Nem indul az autó”, „Leold a FI relé”, „Nem melegszik a radiátor”).
 
 **„Mi miből áll?” felfedező.** Szétszedhető, kattintható modellek (processzor, alaplap, tranzisztor, atom,
 elektromos autó, akkucella, benzinmotor, elosztószekrény, sejt, szív, DNS, napelempanel, okostelefon, hőszivattyú,
-szélturbina, emberi szem, sugárhajtómű, a Föld szerkezete). Minden alkatrésznél megtudod:
+szélturbina, emberi szem, sugárhajtómű, a Föld szerkezete, atomerőmű, villanymotor, emberi agy, növényi levél).
+Minden modellnél van **„Keresd meg!” játék**: a program kiírja az alkatrész nevét, neked a rajzon kell megtalálnod. Minden alkatrésznél megtudod:
 
 - **Mi ez?**: mire való
 - **Miből van?**: milyen anyagokból készül
@@ -30,9 +31,9 @@ Minden modellhez tartozik egy lépésről lépésre végigvehető gyártási fol
 A modellek egymásba ágyazhatók, így le lehet ásni egészen az atomokig:
 **alaplap → processzor → tranzisztor → atom**.
 
-**🎓 Egyetem – szakszótár és vizuális jegyzet** BSc-s hallgatóknak (15 kurzus: digitális technika, villamosmérnöki alapok,
+**🎓 Egyetem – szakszótár és vizuális jegyzet** BSc-s hallgatóknak (17 kurzus: digitális technika, villamosmérnöki alapok,
 e-mobilitás, analízis, fizika, lineáris algebra, valószínűségszámítás és statisztika, algoritmusok, általános kémia,
-műszaki mechanika, programozás, analóg elektronika, anatómia és élettan, közgazdaságtan, szerves kémia):
+műszaki mechanika, programozás, analóg elektronika, anatómia és élettan, közgazdaságtan, szerves kémia, szabályozástechnika, adatbázisok):
 
 - **Szakszótár**: definíció, részletes magyarázat, angol megfelelő, ábra, példa, „gyakori hiba”
 - **Képlet-boncoló**: a képlet minden jelére kattintva megmutatja a jelentését és a mértékegységét
@@ -52,14 +53,18 @@ Tanároknak: **nyomtatható feladatlap** megoldókulccsal. A kezdőlapon **napi 
 **📅 Vizsga- és dolgozatfelkészítő.** Megadod, miből (tantárgy/kurzus, témák) és mikor írsz: napokra bontott tanulási terv,
 felkészültségi mérő, **időre menő próbavizsga** és nyomtatható összefoglaló („puska”). A kezdőlap emlékeztet a legközelebbi vizsgára.
 
-**🧭 Tanulási útvonalak.** 12 célirányos, tantárgyakon átívelő terv (pl. „Villanyszerelő leszek”, „Rendszergazda leszek”,
+**🧭 Tanulási útvonalak.** 15 célirányos, tantárgyakon átívelő terv (pl. „Villanyszerelő leszek”, „Rendszergazda leszek”,
 „Érettségire készülök: matematika”, „Mérnöki alapozó”), lépésenkénti haladással.
 
 **🔗 Osztálydolgozat-link.** A tanár a Tesztközpontban linket készít; minden diák ugyanazt a kérdés- és válaszsorrendet kapja,
 névvel és opcionális időkorláttal.
 
 **🔊 Felolvasás, ⭐ kedvencek, 📝 jegyzetek** minden leckénél, modellnél és szakszónál; a „Jegyzeteim” oldalon egyben, nyomtathatóan.
-A kereső elgépelést is tűr („procesor” → processzor).
+A kereső elgépelést is tűr („procesor” → processzor). A **📚 Tartalomjegyzék** minden tartalmat egy helyen, szűrhetően mutat.
+
+**⚙ Beállítások:** betűméret, magas kontraszt, animációk kikapcsolása, felolvasási sebesség. Tanároknak: **🖨 nyomtatható tanmenet** minden tantárgyhoz.
+
+**Tényellenőrzés:** a szakmai biztonsági és szabályozási részeket (villanyszerelés, villanyautó, gáz, F-gáz, napelem, hegesztés, faipar), valamint a történelmi, irodalmi, állampolgári és földrajzi tényeket internetes forrásokkal ellenőriztük és javítottuk.
 
 **📈 Haladásom.** Tanulási sorozat, aktivitásnaptár, kitűzők, és a haladás **mentése/betöltése fájlba** (géphez nem kötött).
 
@@ -120,6 +125,7 @@ js/hibakereses.js     hibakereső szimulátor (döntési fák)
 js/kapcsolas.js       kapcsolás-építő játék
 js/haladas.js         haladás, kitűzők, mentés/betöltés
 js/eszkozok.js        kedvencek, felolvasás, jegyzetek
+js/tartalom.js        teljes tartalomjegyzék
 data/                 a tananyag
 sw.js, manifest       offline mód és telepíthetőség
 tools/build-single.js egyfájlos változat készítése

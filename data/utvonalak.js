@@ -152,6 +152,45 @@
       { teszt: 'penzugy' }
     ] });
 
+  P({ id: 'emberi-test', title: 'Az emberi test titkai', icon: '🫀', color: '#c2417a', level: 'általános iskola → egyetem',
+    description: 'A szívtől az agyon és a szemen át a sejtekig, felfedezőkkel; a végén egyetemi kitekintés az élettanba.',
+    steps: [
+      { lecke: 'bio-alap/emberi-test-1' },
+      { modell: 'sziv' },
+      { lecke: 'bio-alap/emberi-test-2' },
+      { modell: 'agy' },
+      { modell: 'szem' },
+      { lecke: 'biologia/keringes-legzes' },
+      { szakszo: 'anatomia/akcios-potencial' },
+      { szakszo: 'anatomia/percterfogat' },
+      { teszt: 'bio-alap' }
+    ] });
+
+  P({ id: 'energia-jovo', title: 'Honnan jön az áram?', icon: '⚡', color: '#2f9e6a', level: 'középiskola',
+    description: 'Atomerőmű, szélturbina, napelem és villanymotor: hogyan termeljük és használjuk az elektromos energiát.',
+    steps: [
+      { lecke: 'fizika/energia-munka' },
+      { modell: 'atomeromu' },
+      { modell: 'szelturbina' },
+      { modell: 'napelempanel' },
+      { lecke: 'fizika/elektromossag' },
+      { modell: 'villanymotor' },
+      { modell: 'elosztoszekreny' },
+      { szakszo: 'villamosmernoki/haromfazisu-rendszer' },
+      { teszt: 'fizika' }
+    ] });
+
+  P({ id: 'konyha', title: 'Konyhai alapok és élelmiszer-biztonság', icon: '👨‍🍳', color: '#f08c2e', level: 'szakma',
+    description: 'Higiénia, hőmérsékletek, allergének és biztonságos konyhai munka – vizsgafelkészítővel.',
+    steps: [
+      { lecke: 'szakacs/higienia' },
+      { lecke: 'szakacs/homerseklet', note: 'Próbáld ki az „Ételmérgezés gyanúja” hibakeresőt!' },
+      { lecke: 'szakacs/allergenek' },
+      { lecke: 'szakacs/technologia' },
+      { lecke: 'szakacs/munkavedelem' },
+      { teszt: 'szakacs' }
+    ] });
+
   P({ id: 'termtud-78', title: 'Fizika és kémia 7–8. osztályban', icon: '🔭', color: '#2f7bf6', level: 'általános iskola',
     description: 'Mozgás, energia, anyagok és atomok: a felső tagozatos természettudomány lépésről lépésre, modellekkel.',
     steps: [

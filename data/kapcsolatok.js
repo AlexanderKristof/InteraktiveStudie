@@ -80,7 +80,18 @@
     'biologia/keringes-legzes': ['anatomia/sziv-ciklus', 'anatomia/percterfogat', 'anatomia/vernyomas', 'anatomia/ekg', 'anatomia/gazcsere'],
     'biologia/ideg-hormon-emesztes': ['anatomia/neuron', 'anatomia/szinapszis', 'anatomia/akcios-potencial', 'anatomia/inzulin-glukagon', 'anatomia/emesztes'],
     'biologia/sejt#3': ['anatomia/membranpotencial', 'anatomia/hamszovet'],
-    'termeszet/emberi-test': ['anatomia/csont', 'anatomia/izomszovet', 'anatomia/sziv-ciklus']
+    'termeszet/emberi-test': ['anatomia/csont', 'anatomia/izomszovet', 'anatomia/sziv-ciklus'],
+    'bio-alap/emberi-test-1': ['anatomia/sziv-ciklus', 'anatomia/gazcsere', 'anatomia/emesztes'],
+    'bio-alap/emberi-test-2': ['anatomia/neuron', 'anatomia/reflexiv', 'anatomia/latas'],
+    'bio-alap/novenyek': ['szerves-kemia/szenhidrat'],
+    'informatika/programozas#3': ['adatbazis/select', 'adatbazis/relacio'],
+    'informatika/adatbiztonsag#2': ['adatbazis/sql-injection', 'adatbazis/tranzakcio'],
+    'rendszeruzem/szerverek#2': ['adatbazis/nosql', 'adatbazis/cap-tetel', 'adatbazis/index'],
+    'hoszivattyu/karbantartas': ['szabalyozas/ketallasu', 'szabalyozas/pid-szabalyozo'],
+    'elektromos-auto/motor-inverter#3': ['szabalyozas/pid-szabalyozo', 'szabalyozas/visszacsatolas'],
+    'autoszereles/diagnosztika': ['szabalyozas/visszacsatolas', 'szabalyozas/tempomat'],
+    'fiz-alap/hotan#2': ['szabalyozas/ketallasu'],
+    'matematika/linearis-fuggveny#2': ['szabalyozas/pt1-tag']
   };
   S.lessonLinks = LINKS;
   Object.keys(LINKS).forEach(function (key) {
