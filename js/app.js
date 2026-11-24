@@ -110,7 +110,7 @@
       '<form class="search-big" id="hero-search"><input type="search" name="q" placeholder="Mi érdekel? pl. processzor, atom, Ohm-törvény…" aria-label="Keresés"><button class="btn primary" type="submit">Keresés</button></form>' +
       '<div class="chips">' + ['processzor', 'atom', 'akkumulátor', 'Ohm', 'FI relé', 'Pitagorasz', 'négyütemű motor', 'honfoglalás'].map(function (c) {
         return '<a class="chip" href="#/kereses?q=' + encodeURIComponent(c) + '">' + esc(c) + '</a>';
-      }).join('') + '</div>' + lastHtml + '</section>' +
+      }).join('') + '</div>' + lastHtml + dailyHtml() + '</section>' +
       S.STAGES.map(function (stg) {
         var list = S.subjects.filter(function (s) { return (s.stage || 'kozep') === stg[0]; });
         if (!list.length) return '';
@@ -134,6 +134,16 @@
       if (q) location.hash = '#/kereses?q=' + encodeURIComponent(q);
     });
   }
+
+  function dailyHtml() {
+    if (!S.startDaily) return '';
+    var dl = S.store.get('daily', {}), got = dl[S.dailyKey()];
+    return '<div class="card daily"><span class="ico">🗓️</span><span><b>Napi kihívás</b><small>' + (got != null ? 'Ma már megvolt: ' + got + ' / 5 helyes. Holnap újabb jön!' : '5 vegyes kérdés az egész tananyagból. Mindenkinek ugyanaz a mai sor!') + '</small></span>' +
+      '<button type="button" class="btn ' + (got != null ? '' : 'primary') + '" id="daily-go">' + (got != null ? 'Újra' : 'Indítás →') + '</button></div>';
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target && e.target.id === 'daily-go') { setNav('teszt'); title('Napi kihívás'); S.startDaily(main); }
+  });
 
   function modelTile(m) {
     return '<a class="card tile" style="--tile:' + (m.color || '#2357d9') + '" href="#/felfedezo/' + m.id + '">' +

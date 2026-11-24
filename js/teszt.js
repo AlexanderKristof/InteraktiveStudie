@@ -193,8 +193,22 @@
     w.document.open(); w.document.write(html); w.document.close();
   }
 
+  /* ---------- napi kihívás: dátumból kevert, mindenkinek ugyanaz az 5 kérdés ---------- */
+  function seeded(seed) { return function () { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }; }
+  S.dailyKey = function () { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
+  S.startDaily = function (main) {
+    var all = [];
+    var uni = S.level === 'egyetem';
+    buildGroups().filter(function (g) { return uni ? g.kind === 'Egyetem' || g.id === 'felfedezo' || g.kind === 'Középiskola' : g.kind !== 'Egyetem'; }).forEach(function (g) { g.topics.forEach(function (t) { t.questions.forEach(function (q) { if (q.options.length === 4) all.push({ q: q, g: g, t: t }); }); }); });
+    var key = S.dailyKey() + (uni ? 'u' : ''), seed = 0;
+    for (var i = 0; i < key.length; i++) seed = (seed * 31 + key.charCodeAt(i)) % 4294967296;
+    var rnd = seeded(seed);
+    for (var j = all.length - 1; j > 0; j--) { var k = Math.floor(rnd() * (j + 1)); var tmp = all[j]; all[j] = all[k]; all[k] = tmp; }
+    run(main, all.slice(0, 5), 'azonnali', 'napi');
+  };
+
   /* ---------- a teszt futtatása ---------- */
-  function run(main, items, mode) {
+  function run(main, items, mode, kind) {
     var qs = items.map(function (it) {
       var opts = S.shuffle(it.q.options.map(function (t, k) { return { t: t, ok: k === it.q.answer }; }));
       return { q: it.q, g: it.g, t: it.t, opts: opts, pick: null, locked: false };
@@ -279,6 +293,7 @@
       var hist = S.store.get('teszt.history', []);
       hist.unshift({ pct: pct, n: qs.length, mode: mode, date: new Date().toLocaleDateString('hu-HU') + ' ' + new Date().toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' }) });
       S.store.set('teszt.history', hist.slice(0, 30));
+      if (kind === 'napi') { var dl = S.store.get('daily', {}); dl[S.dailyKey()] = ok; S.store.set('daily', dl); }
       var wrong = qs.filter(function (x) { return x.pick == null || !x.opts[x.pick].ok; });
       var filter = 'mind';
 

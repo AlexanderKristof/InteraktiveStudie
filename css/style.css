@@ -134,6 +134,9 @@ main { flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 24px 16
 .chain a { text-decoration: none; }
 .chain .arrow { color: var(--muted); }
 
+.daily { display: flex; gap: 14px; align-items: center; padding: 14px 18px; margin-top: 14px; max-width: 640px; }
+.daily .ico { font-size: 1.8rem; } .daily > span:nth-child(2) { flex: 1; } .daily b { display: block; } .daily small { color: var(--fg-2); }
+
 /* Tantárgy */
 .subject-head { display: flex; gap: 18px; align-items: center; margin-bottom: 8px; }
 .subject-head .ico { font-size: 2.4rem; width: 72px; height: 72px; display: grid; place-items: center; border-radius: 18px; background: color-mix(in srgb, var(--tile, var(--accent)) 16%, transparent); flex: none; }
