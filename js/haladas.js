@@ -15,6 +15,7 @@
       var seen = S.store.get('seenModels', {});
       if (!seen[id]) { seen[id] = d; S.store.set('seenModels', seen); }
     }
+    if (kind === 'term' && id) { var st = S.store.get('seenTerms', {}); if (!st[id]) { st[id] = d; S.store.set('seenTerms', st); } }
     if (kind === 'deep' && id) S.store.set('deepest', Math.max(S.store.get('deepest', 0), id));
   };
 
@@ -65,7 +66,8 @@
       ['⚡', 'Megállíthatatlan', '7 napos tanulási sorozat.', x.best >= 7],
       ['🔍', 'Felfedező', '5 különböző modellt néztél meg.', x.seen >= 5],
       ['⚛️', 'Mélyfúró', 'Lejutottál az alaplaptól az atomig.', x.deepest >= 4],
-      ['🃏', 'Szótárbúvár', '20 egyetemi szakszó az 5. dobozban.', x.cards5 >= 20]
+      ['🃏', 'Szótárbúvár', '20 egyetemi szakszó az 5. dobozban.', x.cards5 >= 20],
+      ['🧭', 'Célba értem', 'Teljesítettél egy tanulási útvonalat.', (S.paths || []).some(function (p) { return p.steps.every(function (st) { var r = S.pathStep(st); return !r || r.done; }); })]
     ];
     x.subjects.forEach(function (r) { list.push([r.s.icon, r.s.title + ' mestere', 'Minden lecke kész ebből: ' + r.s.title + '.', r.total > 0 && r.done === r.total]); });
     return list;

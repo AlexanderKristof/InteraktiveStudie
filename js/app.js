@@ -111,6 +111,7 @@
       '<div class="chips">' + ['processzor', 'atom', 'akkumulátor', 'Ohm', 'FI relé', 'Pitagorasz', 'négyütemű motor', 'honfoglalás'].map(function (c) {
         return '<a class="chip" href="#/kereses?q=' + encodeURIComponent(c) + '">' + esc(c) + '</a>';
       }).join('') + '</div>' + lastHtml + dailyHtml() + '</section>' +
+      ((S.paths || []).length ? '<div class="section-title"><h2>🧭 Válassz célt</h2><a href="#/utvonalak">Összes útvonal →</a></div><p class="muted" style="margin-top:-6px">Lépésről lépésre végigvezető tanulási tervek, tantárgyakon átívelve.</p><div class="grid">' + S.pathCards(4) + '</div>' : '') +
       S.STAGES.map(function (stg) {
         var list = S.subjects.filter(function (s) { return (s.stage || 'kozep') === stg[0]; });
         if (!list.length) return '';
@@ -430,8 +431,10 @@
     else if (seg[0] === 'felfedezo' && seg.length === 1) pageExplorerList();
     else if (seg[0] === 'felfedezo') pageExplorer(seg.slice(1));
     else if (seg[0] === 'egyetem' && seg.length === 1) { setNav('egyetem'); title('Egyetem'); S.pageUniList(main); }
-    else if (seg[0] === 'egyetem' && seg[2] === 'fogalom') { setNav('egyetem'); var tt = S.courseById(seg[1]); title(tt ? tt.title : ''); if (!S.pageTerm(main, seg[1], seg[3])) notFound(); }
+    else if (seg[0] === 'egyetem' && seg[2] === 'fogalom') { if (S.logActivity) S.logActivity('term', seg[1] + '/' + seg[3]); setNav('egyetem'); var tt = S.courseById(seg[1]); title(tt ? tt.title : ''); if (!S.pageTerm(main, seg[1], seg[3])) notFound(); }
     else if (seg[0] === 'egyetem') { setNav('egyetem'); var cc = S.courseById(seg[1]); title(cc ? cc.title : ''); if (!S.pageCourse(main, seg[1], seg[2])) notFound(); }
+    else if (seg[0] === 'utvonalak') { setNav(''); title('Tanulási útvonalak'); S.pageUtvonalak(main); }
+    else if (seg[0] === 'utvonal') { setNav(''); var pth = (S.paths || []).filter(function (x) { return x.id === seg[1]; })[0]; title(pth ? pth.title : ''); if (!S.pageUtvonal(main, seg[1])) notFound(); }
     else if (seg[0] === 'haladas') { setNav('haladas'); title('Haladásom'); S.pageHaladas(main); }
     else if (seg[0] === 'teszt') { setNav('teszt'); title('Tesztközpont'); S.pageTeszt(main, params); }
     else if (seg[0] === 'kereses') pageSearch(params.q || '');

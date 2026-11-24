@@ -139,6 +139,18 @@ Object.values(S.troubles || {}).forEach(tr => {
   (tr.lessons || []).forEach(l => { if (!lessonExists(l)) err(w, 'ismeretlen lecke: ' + l); });
 });
 
+/* Tanulási útvonalak */
+(S.paths || []).forEach(p => {
+  p.steps.forEach((st, i) => {
+    const w = 'útvonal ' + p.id + ' lépés ' + (i + 1);
+    if (st.lecke && !lessonExists(st.lecke)) err(w, 'ismeretlen lecke: ' + st.lecke);
+    if (st.modell && !S.models[st.modell]) err(w, 'ismeretlen modell: ' + st.modell);
+    if (st.szakszo && !termExists(st.szakszo)) err(w, 'ismeretlen szakszó: ' + st.szakszo);
+    if (st.teszt && !subj[st.teszt] && !(S.courseById && S.courseById(st.teszt))) err(w, 'ismeretlen teszt-csoport: ' + st.teszt);
+    if (!st.lecke && !st.modell && !st.szakszo && !st.teszt) err(w, 'üres lépés');
+  });
+});
+
 console.log('Tantárgyak: ' + S.subjects.length + ', leckék: ' + lessonCount + ', leckekvíz-kérdések: ' + quizCount + ', kérdésbank: ' + bankCount);
 console.log('Modellek: ' + Object.keys(S.models).length + ', egyetemi kurzusok: ' + (S.courses || []).length + ', szakszavak: ' + termCount + ', hibakeresők: ' + Object.keys(S.troubles || {}).length);
 if (warns.length) console.log('\nFigyelmeztetések (' + warns.length + '):\n  ' + warns.slice(0, 40).join('\n  ') + (warns.length > 40 ? '\n  …' : ''));

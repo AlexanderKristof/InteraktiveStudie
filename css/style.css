@@ -245,6 +245,20 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .bdg span { font-size: 2rem; } .bdg small { color: var(--muted); font-size: .78rem; }
 .bdg.got { opacity: 1; filter: none; border-color: var(--warn); background: color-mix(in srgb, var(--warn-soft) 60%, var(--surface)); }
 
+/* Tanulási útvonalak */
+.path { list-style: none; padding: 0; margin: 10px 0 0; position: relative; display: grid; gap: 10px; }
+.path li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 10px; align-items: center; position: relative; }
+.path li::before { content: ""; position: absolute; left: 19px; top: 40px; bottom: -14px; width: 2px; background: var(--line); }
+.path li:last-child::before { display: none; }
+.pnum { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-2); font-weight: 750; color: var(--fg-2); position: relative; z-index: 1; border: 2px solid var(--line); }
+.path li.done .pnum { background: var(--ok); color: #fff; border-color: var(--ok); }
+.path li.next .pnum { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.path a.card { display: flex; gap: 12px; align-items: center; padding: 10px 14px; text-decoration: none; color: var(--fg); }
+.path li.next a.card { border-color: var(--accent); }
+.path li.done a.card { opacity: .75; }
+.path .ico { font-size: 1.4rem; flex: none; }
+.path .t { display: grid; min-width: 0; } .path .t small { color: var(--muted); font-size: .8rem; } .path .t span { color: var(--fg-2); font-size: .88rem; }
+
 /* Hibakereső */
 .tb-trail .linkish { text-align: left; }
 .tb-trail { margin: 6px 0 12px; padding-left: 22px; font-size: .9rem; color: var(--fg-2); display: grid; gap: 2px; }
