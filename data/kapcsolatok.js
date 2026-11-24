@@ -71,7 +71,16 @@
     'rendszeruzem/halozatok': ['algoritmusok/grafabrazolas', 'digitalis-technika/bit'],
     'rendszeruzem/operacios-rendszerek': ['programozas/parhuzamossag', 'programozas/verem-kupac'],
     'rendszeruzem/szerverek': ['programozas/verziokezeles'],
-    'rendszeruzem/hardver': ['digitalis-technika/memoriahierarchia', 'digitalis-technika/orajel']
+    'rendszeruzem/hardver': ['digitalis-technika/memoriahierarchia', 'digitalis-technika/orajel'],
+    'fizika/elektromossag#3': ['elektronika/pn-atmenet', 'elektronika/dioda-karakterisztika'],
+    'fiz-alap/elektromossag-feny': ['elektronika/led', 'elektronika/egyeniranyito'],
+    'elektromos-auto/motor-inverter#2': ['elektronika/mosfet-kapcsolo', 'elektronika/h-hid', 'elektronika/kapcsolasi-veszteseg'],
+    'napelem/bekotes#2': ['elektronika/kapcsolouzemu-tap'],
+    'napelem/mukodes#2': ['elektronika/pn-atmenet'],
+    'biologia/keringes-legzes': ['anatomia/sziv-ciklus', 'anatomia/percterfogat', 'anatomia/vernyomas', 'anatomia/ekg', 'anatomia/gazcsere'],
+    'biologia/ideg-hormon-emesztes': ['anatomia/neuron', 'anatomia/szinapszis', 'anatomia/akcios-potencial', 'anatomia/inzulin-glukagon', 'anatomia/emesztes'],
+    'biologia/sejt#3': ['anatomia/membranpotencial', 'anatomia/hamszovet'],
+    'termeszet/emberi-test': ['anatomia/csont', 'anatomia/izomszovet', 'anatomia/sziv-ciklus']
   };
   S.lessonLinks = LINKS;
   Object.keys(LINKS).forEach(function (key) {

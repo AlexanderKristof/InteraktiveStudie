@@ -225,7 +225,7 @@
         fact: 'Ha hirtelen sok új „legyecske” vagy villanás jelenik meg a látótérben, azonnal szemorvoshoz kell menni: ez retinaszakadás jele lehet.'
       },
       {
-        id: 'retina', z: 3, name: 'Ideghártya (retina): csapok és pálcikák', svg: retina, explode: [36, 0], badge: [392, 394], link: 'sejt', en: 'retina: rods and cones, bipolar and ganglion cells, RPE',
+        id: 'retina', terms: ['anatomia/latas', 'anatomia/neuron'], z: 3, name: 'Ideghártya (retina): csapok és pálcikák', svg: retina, explode: [36, 0], badge: [392, 394], link: 'sejt', en: 'retina: rods and cones, bipolar and ganglion cells, RPE',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A szem belső, vékony hártyája, a szem **képérzékelője**. Kb. **120 millió pálcikát** és **6 millió csapot** tartalmaz. A **pálcikák** nagyon érzékenyek, gyenge fényben (szürkületben, éjszaka) dolgoznak, de színeket nem látnak. A **csapok** erős fényben működnek, és háromféle (kékre, zöldre, vörösre legérzékenyebb) típusuk adja a **színlátást**. Meglepő módon a fényérzékelő sejtek a retina **legkülső** rétegében vannak: a fénynek előbb a többi sejtrétegen kell áthaladnia (lásd a nagyított rajzot).',
         madeOf: 'Kb. 0,2–0,5 mm vastag, tíz rétegű **idegszövet**: belülről kifelé a látóidegrostok és a **dúcsejtek**, a **bipoláris sejtek** (és összekötő sejtek), majd a **csapok** és a **pálcikák**, végül a sötét **pigmenthám**, amely elnyeli a szórt fényt, és táplálja, „karbantartja” a fotoreceptorokat. A pálcikákban a **rodopszin** (látóbíbor), a csapokban hasonló **opszin** festékek nyelik el a fényt; ezek az **A-vitaminból** készülő retinált tartalmazzák.',
@@ -242,7 +242,7 @@
         fact: 'A látótér közepén csak kb. 2 fokos, nagyjából hüvelykujjköröm-nyi területen látunk igazán élesen; a szemünk ezért ugrál másodpercenként többször (szakkádok).'
       },
       {
-        id: 'latoideg', z: 6, name: 'Látóideg és vakfolt', svg: nerve, explode: [92, 0], badge: [532, 205], en: 'optic nerve and optic disc (blind spot)',
+        id: 'latoideg', terms: ['anatomia/latas'], z: 6, name: 'Látóideg és vakfolt', svg: nerve, explode: [92, 0], badge: [532, 205], en: 'optic nerve and optic disc (blind spot)',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A látóideg viszi a retina jeleit az agyba. Kb. **1,2 millió idegrostból** áll, amelyek a retina dúcsejtjeiből indulnak, és a szem hátsó részén, egy pontban, a **látóidegfőben** lépnek ki. Ezen a helyen nincsenek fényérzékelő sejtek: ez a **vakfolt**. Azért nem vesszük észre, mert a két szem látótere fedi egymást, és az agy a hiányt a környezet alapján „kitölti”.',
         madeOf: '**Velőshüvelyes idegrostokból** (a dúcsejtek nyúlványai), támasztó sejtekből és három agyburokból álló hüvelyből. A közepén fut a retinát ellátó **központi artéria és véna**, amelyek a látóidegfőben ágaznak szét a retinán (a szemtükörrel ezeket látja az orvos).',
