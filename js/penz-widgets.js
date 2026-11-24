@@ -41,7 +41,7 @@
     el.innerHTML = head('Bérkalkulátor: bruttóból nettó', 'A munkaszerződésben a **bruttó** bér áll; ebből vonják le a személyi jövedelemadót (**SZJA, 15 %**) és a társadalombiztosítási járulékot (**TB-járulék, 18,5 %**). A munkáltató ezen felül **szociális hozzájárulási adót** (**13 %**) fizet. A kulcsok a 2026-os szabályok szerintiek, de átírhatók; a pontos kedvezményekről mindig a NAV oldala a mérvadó.') +
       '<div class="pw-grid">' + field('b-br', 'Havi bruttó bér', 400000, 'Ft') + field('b-szja', 'SZJA', 15, '%') + field('b-tb', 'TB-járulék', 18.5, '%') + field('b-szo', 'Szocho (munkáltató)', 13, '%') + '</div>' +
       '<label class="pw-chk"><input type="checkbox" id="b-25"> 25 év alatti vagyok (SZJA-mentesség)</label>' +
-      '<div id="b-cap" class="pw-grid" hidden>' + field('b-plafon', 'A mentesség havi felső határa', '', 'Ft', ' placeholder="NAV-on közzétett összeg"') + '</div>' +
+      '<div id="b-cap" class="pw-grid" hidden>' + field('b-plafon', 'A mentesség havi felső határa', '', 'Ft', ' placeholder="2026: kb. 715 765 Ft – ellenőrizd a NAV-on"') + '</div>' +
       '<div class="pw-grid">' + field('b-csk', 'Családi kedvezmény (havi adóalap-csökkentés, ha jár)', 0, 'Ft') + '</div>' +
       '<div id="b-out"></div>';
     function calc() {
