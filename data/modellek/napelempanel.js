@@ -165,7 +165,7 @@
     color: '#f5a524',
     category: 'Energia',
     keywords: 'napelem napelemes panel modul fotovoltaikus PV szolár szilícium cella monokristályos p–n átmenet EVA laminálás edzett üveg hátlap backsheet bypass dióda csatlakozódoboz MC4 inverter PERC TOPCon wafer ingot háztartási kiserőmű',
-    summary: 'Egy háztetőn álló napelem panel 40–60 vékony szilíciumszeletből és néhány gondosan összepréselt rétegből áll – és 25–30 évig termel áramot.',
+    summary: 'Egy háztetőn álló napelem panel 54–72 vékony szilíciumszeletből és néhány gondosan összepréselt rétegből áll – és 25–30 évig termel áramot.',
     scale: 'kb. 1,1 × 1,7–2,3 m, 3–4 cm vastag, 20–28 kg; egy cella 18–21 cm széles és kb. 0,15 mm vastag',
     viewBox: '0 0 560 640',
     backdrop: backdrop,
@@ -203,7 +203,7 @@
         madeOf: '**Monokristályos szilícium** szelet, kb. 0,13–0,15 mm vastag. Az alapanyag enyhén **bórral** adalékolt (p-típus), a felső vékony rétege **foszforral** (n-típus) – vagy fordítva az újabb TOPCon cellákban. A kék-fekete színt a **szilícium-nitrid** tükröződésgátló réteg adja. A felszínen vékony **ezüst** vonalak (ujjak) gyűjtik az áramot, hátul **alumínium** vagy ezüst réteg van.',
         how: 'Kvarcból tiszta poliszilíciumot, abból egykristály-hengert (ingotot) gyártanak, ezt drótfűrésszel szeletekre vágják. A szeletek felszínét lúgban mikroszkopikus **piramisokká** marják, majd foszfort diffundáltatnak beléjük (így jön létre a p–n átmenet). Végül tükröződésgátló réteg és szitanyomással felvitt fémezés kerül rájuk. A teljes folyamatot lent, a lépéseknél nézheted végig.',
         uni: 'A cella egy nagy felületű **fotodióda**. Egydiódás modellje: `I = I_L − I_0·(exp(qV/(n·k·T)) − 1) − (V + I·R_s)/R_sh`, ahol I_L a fényáram, I_0 a sötétáram. Fontos jellemzők: **üresjárási feszültség** (U_oc ≈ 0,7 V), **rövidzárási áram** (I_sc, kb. 40 mA/cm²), **kitöltési tényező** `FF = P_max/(U_oc·I_sc)` (≈ 0,8), és a hatásfok `η = P_max/(E·A)`, standard körülmények között (STC: 1000 W/m², 25 °C, AM1,5 spektrum). A szilícium tiltott sávja 1,12 eV: a kisebb energiájú fotonok elnyeletlenül áthaladnak, a nagyobbak többletenergiája hővé válik. Ezért egy szilícium cella elméleti határa kb. **29%** (Shockley–Queisser-határ a rekombinációval együtt). A teljesítmény hőmérsékleti együtthatója kb. −0,3…−0,4 %/K: nyári hőségben a panel kevesebbet termel.',
-        fact: 'A legjobb laboratóriumi szilícium cellák hatásfoka ma kb. 27%, a boltban kapható paneleké 20–23%. Egy panel a fény kb. ötödét alakítja árammá – ez meglepően jó egy mozgó alkatrész nélküli eszköztől!'
+        fact: 'A legjobb laboratóriumi szilícium cellák hatásfoka ma már 27% fölötti, a boltban kapható paneleké 20–23%. Egy panel a fény kb. ötödét alakítja árammá – ez meglepően jó egy mozgó alkatrész nélküli eszköztől!'
       },
       {
         id: 'szalag', z: 5, name: 'Cellaösszekötő szalagok (busbar)', en: 'cell interconnect ribbons, busbars', svg: ribbons, explode: [26, -52], badge: B(-55, 12, 2),

@@ -294,7 +294,7 @@
       { year: '2007', text: 'Az Apple bemutatja az **iPhone**-t: nagy kapacitív **többujjas érintőképernyő**, valódi webböngésző, szinte gombok nélkül. 2008-ban megnyílik az **App Store**.' },
       { year: '2008', text: 'Megjelenik az első **Android** telefon (HTC Dream / T-Mobile G1). A nyílt rendszer miatt ma a telefonok kb. háromnegyede androidos.' },
       { year: '2016', text: 'Terjednek a **többkamerás** rendszerek (kettő, később három-négy kamera): széles, ultraszéles és teleobjektív, a képeket szoftver fésüli össze.' },
-      { year: '2019', text: 'Megjelennek az első **összecsukható** telefonok hajlékony OLED kijelzővel, és elindulnak az első **5G** hálózatok, Magyarországon is.' },
+      { year: '2019', text: 'Piacra kerülnek a nagy gyártók első **összecsukható** telefonjai hajlékony OLED kijelzővel, és elindulnak az első **5G** hálózatok, Magyarországon is.' },
       { year: 'ma', text: 'Évente kb. **1,2 milliárd** okostelefont adnak el. A fejlesztések fő iránya a beépített **mesterséges intelligencia**, a jobb kamera, a hosszabb akkuidő és a **javíthatóság**.' }
     ],
     quiz: [

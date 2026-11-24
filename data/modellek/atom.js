@@ -118,7 +118,7 @@
         what: 'Az atom közepén lévő apró, rendkívül sűrű golyó. Itt van az atom tömegének **99,9%-a**, pedig az átmérője csak tízezred–százezred része az atoménak. A szilícium magjában **14 proton** és (a leggyakoribb változatban) **14 neutron** van. A protonok száma határozza meg, melyik elemről van szó: 14 proton = szilícium, 6 = szén, 8 = oxigén.',
         madeOf: 'Protonokból és neutronokból (közös nevükön **nukleonok**). Ezeket az **erős kölcsönhatás** tartja össze, amely sokkal erősebb, mint a protonok közti elektromos taszítás, de csak nagyon kis (kb. 10⁻¹⁵ m-es) távolságon hat.',
         how: 'A szilícium magja nem a Földön készült: **csillagok belsejében** jött létre, ahol több milliárd fokon könnyebb atommagok olvadtak össze (magfúzió), majd egy **szupernóva-robbanás** szórta szét. A lépéseket lent követheted.',
-        fact: 'Ha egy teáskanálnyi anyagot csak atommagokból (üres tér nélkül) raknánk össze, az több száz millió tonnát nyomna. A neutroncsillagok nagyjából ilyen sűrűek.'
+        fact: 'Ha egy teáskanálnyi anyagot csak atommagokból (üres tér nélkül) raknánk össze, az kb. egymilliárd tonnát nyomna. A neutroncsillagok nagyjából ilyen sűrűek.'
       },
       {
         id: 'proton', z: 5, name: 'Proton', svg: prot, explode: [-100, 215], badge: [C[0] - 36, C[1] + 20],

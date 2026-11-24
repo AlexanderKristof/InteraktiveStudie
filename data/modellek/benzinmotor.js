@@ -241,7 +241,7 @@
       { year: '1876', text: 'Nikolaus Otto megépíti az első működő **négyütemű** motort. Róla nevezik a benzinmotort **Otto-motornak**.' },
       { year: '1886', text: 'Carl Benz szabadalmaztatja benzinmotoros **autóját**, ugyanebben az évben Gottlieb Daimler is motoros kocsit épít.' },
       { year: '1893', text: '**Bánki Donát** és **Csonka János** feltalálja a **porlasztót** (karburátort), ami egyenletesen keveri a benzint a levegővel.' },
-      { year: '1908', text: 'A Ford T-modell a futószalagnak köszönhetően milliók számára teszi elérhetővé a benzinmotoros autót.' },
+      { year: '1908', text: 'A Ford T-modell (1913-tól futószalagon gyártva) milliók számára teszi elérhetővé a benzinmotoros autót.' },
       { year: '1980-as évek', text: 'A porlasztót felváltja az elektronikus **befecskendezés**, és megjelenik a kipufogógázt tisztító **katalizátor**.' },
       { year: 'ma', text: 'A modern motorok turbófeltöltővel, közvetlen befecskendezéssel és **hibrid** rendszerekkel kevesebbet fogyasztanak. Hatásfokuk a legjobb esetben kb. 40%.' }
     ],

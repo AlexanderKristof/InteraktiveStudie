@@ -265,7 +265,7 @@
         madeOf: 'Vastag falú, **rozsdamentes** vagy rozsdamentes béléses **acélcsövek** (50–80 cm belső átmérő). A szivattyú nagy teljesítményű villanymotorral hajtott **centrifugálszivattyú**, a nyomástartó kb. 10–15 m magas acéltartály. A víz nagyon tiszta, bórsavat és pH-állító vegyszert tartalmaz.',
         how: 'A csöveket kovácsolják vagy öntik, és a helyszínen hegesztik össze; minden varratot ellenőriznek. Indításkor a fűtőpálcák felforralják a nyomástartó felső részének vizét, így jön létre a gőzpárna. Ha a nyomás nő, a permetező hideg vizet fecskendez a gőzbe (az lecsapódik, a nyomás csökken); ha csökken, a fűtőpálcák kapcsolnak be.',
         uni: 'A szállított hőteljesítmény `Q̇ = ṁ · c_p · ΔT`: kb. 1400 MW hőhöz és 30 K melegedéshez (`c_p ≈ 5,4 kJ/(kg·K)` 300 °C-on) kb. 8–9 t/s tömegáram kell. Paks VVER-440 blokkjaiban **hat** hurok van, mindegyikben főkeringtető szivattyúval és vízszintes gőzfejlesztővel; a nyugati PWR-ekben 2–4 hurok. A nyomástartóban a víz és a gőz **telítési állapotban** van: a nyomást a gőzpárna hőmérséklete szabja meg, ezért fűtéssel és permetezéssel szabályozható. A szivattyúk nagy forgó tömege **lendkerékként** működik: áramkimaradáskor a víz még percekig áramlik, közben beindul a természetes cirkuláció.',
-        fact: 'Egy főkeringtető szivattyú óránként több ezer köbméter vizet mozgat: egy olimpiai medencét néhány perc alatt átforgatna.'
+        fact: 'Egy nagy főkeringtető szivattyú óránként akár 20 000 köbméter vizet mozgat: egy olimpiai medencét kevesebb mint negyed óra alatt átforgatna.'
       },
       {
         id: 'gozfejleszto', z: 3, name: 'Gőzfejlesztő', svg: sg, explode: [45, -25], badge: [259, 340], en: 'steam generator (U-tube heat exchanger)',
@@ -347,7 +347,7 @@
       { icon: '📦', title: '9. A kiégett üzemanyag kezelése', text: 'A 3–5 év után kivett kazetták még erősen sugároznak és **melegszenek** (remanens hő). Először évekig a reaktor melletti **pihentető medencében** hűlnek a víz alatt, majd **száraz tárolóba** kerülnek (Pakson a kiégett kazetták átmeneti tárolójába, a KKÁT-ba). Hosszú távon **mélységi geológiai tárolóban** helyezik el őket; Finnországban (Onkalo) már épül ilyen. A kis és közepes aktivitású hulladékot Magyarországon **Bátaapáti** mélyében helyezik el.', parts: ['futoelemek'] }
     ],
     history: [
-      { year: '1938–39', text: '**Otto Hahn** és **Fritz Strassmann** kimutatja, hogy a neutronnal besugárzott urán báriumot „termel”; **Lise Meitner** és **Otto Frisch** megmagyarázza: az atommag **kettéhasad**. A láncreakció lehetőségét már 1933-ban felismerte és szabadalmaztatta **Szilárd Leó**.' },
+      { year: '1938–39', text: '**Otto Hahn** és **Fritz Strassmann** kimutatja, hogy a neutronnal besugárzott urán báriumot „termel”; **Lise Meitner** és **Otto Frisch** megmagyarázza: az atommag **kettéhasad**. A láncreakció lehetőségét már 1933-ban felismerte, és 1934-ben szabadalmaztatta **Szilárd Leó**.' },
       { year: '1942', text: 'Chicagóban **Enrico Fermi** és csapata (köztük **Szilárd Leó**) elindítja a **Chicago Pile-1** (CP-1) grafitmoderált reaktort: december 2-án jön létre az első mesterséges, szabályozott, önfenntartó láncreakció.' },
       { year: '1954', text: 'A Szovjetunióban, **Obnyinszkban** üzembe áll az első atomerőmű, amely áramot ad a hálózatra (kb. 5 MW villamos teljesítménnyel).' },
       { year: '1956', text: 'Angliában megnyílik a **Calder Hall** atomerőmű, az első ipari méretű, a hálózatot folyamatosan ellátó atomerőmű. 1957-ben az USA-ban Shippingportban indul az első nyomottvizes erőművi reaktor.' },

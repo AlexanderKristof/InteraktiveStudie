@@ -69,7 +69,7 @@
         what: 'Ez maga a „chip”: egy kb. 1–2 cm² területű, alig fél milliméter vastag szilíciumdarab. A felszínén **több milliárd tranzisztor** és több tíz kilométernyi mikroszkopikus rézvezeték van, 10–15 rétegben egymás fölött.',
         madeOf: '99,9999999%-os tisztaságú **szilícium** egykristály. Erre jönnek a **réz** összeköttetések, szigetelő **szilícium-dioxid** és más speciális anyagok (pl. hafnium-oxid). Egyes rétegekbe bór, foszfor vagy arzén atomokat juttatnak (ez az adalékolás).',
         how: 'Homokból (kvarcból) tiszta szilíciumot állítanak elő, abból hengert (ingotot) növesztenek, majd vékony szeletekre (waferekre) vágják. Egy waferen több száz lapka készül egyszerre **fotolitográfiával**: fénnyel „rajzolják” rá a mintákat, rétegről rétegre, több száz lépésben. A teljes folyamatot lent, a gyártási lépéseknél nézheted végig.',
-        fact: 'Egy mai csúcsprocesszor tranzisztorai olyan kicsik, hogy egy vörösvérsejt területére több millió elférne.'
+        fact: 'Egy mai csúcsprocesszor tranzisztorai olyan kicsik, hogy egy vörösvérsejt területére több ezer is elférne.'
       },
       {
         id: 'cores', z: 3, name: 'Processzormagok', en: 'CPU cores',

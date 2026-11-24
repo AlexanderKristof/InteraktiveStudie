@@ -309,7 +309,7 @@
         madeOf: 'Ugyanabból áll, mint a DNS többi része: nukleotidok sorozatából. Egy gén néhány száz bázispártól több millió bázispárig terjedhet. Az elején egy **promóter** szakasz jelzi, hol kell elkezdeni a leolvasást.',
         how: 'Amikor a sejtnek szüksége van a fehérjére, a gént **átírja** (transzkripció) egy mRNS-másolatra, ezt pedig a riboszómák **lefordítják** (transzláció) aminosav-sorrenddé. A gének a szülőktől öröklődnek: minden génből egy példányt anyádtól, egyet apádtól kaptál.',
         uni: 'Az eukarióta gén **exonokból** és **intronokból** áll; az elsődleges átiratból a spliceoszóma vágja ki az intronokat. **Alternatív splicing** révén egy génről több fehérjeváltozat készülhet (az emberi gének >90%-ánál). A génexpressziót cisz-elemek (promóter, enhanszer, szilenszer), transzkripciós faktorok és epigenetikai jelek (CpG-metiláció, hisztonmódosítások) szabályozzák. A centrális dogma: DNS → RNS → fehérje (kivétel pl. a reverz transzkripció).',
-        fact: 'A leghosszabb ismert emberi gén, a disztrofiné, kb. 2,2 millió bázispár; átírása kb. 16 órát vesz igénybe.'
+        fact: 'Az egyik leghosszabb emberi gén, a disztrofiné, kb. 2,2 millió bázispár; átírása kb. 16 órát vesz igénybe.'
       },
       {
         id: 'kromoszoma', z: 7, name: 'Kromoszóma és hisztonok', svg: chromo, explode: [8, 6], link: 'sejt', lesson: 'biologia/sejt', en: 'chromosome, histones, nucleosome, chromatin',
@@ -330,7 +330,7 @@
       },
       {
         id: 'meret', z: 1, name: 'Méretek: menet és átmérő', svg: dims, explode: [24, 0], badge: [DX, (yP0 + yP1) / 2 + 56], en: 'helical pitch and diameter (B-DNA)',
-        what: 'A kettős spirál **2 nm** átmérőjű, és kb. **3,4 nm**-enként tesz meg egy teljes fordulatot, ez alatt kb. **10,5 bázispár** követi egymást. A spirál **jobbmenetes**, mint egy átlagos csavar.',
+        what: 'A kettős spirál **2 nm** átmérőjű, és kb. **3,4–3,6 nm**-enként tesz meg egy teljes fordulatot, ez alatt kb. **10,5 bázispár** követi egymást. A spirál **jobbmenetes**, mint egy átlagos csavar.',
         madeOf: 'A méreteket a molekula felépítése határozza meg: a bázispárok kb. 0,34 nm-re vannak egymástól, és mindegyik kb. 34°-kal elfordul az előzőhöz képest. 10,5 × 34° ≈ 360°, vagyis egy teljes kör.',
         how: 'A méreteket **röntgendiffrakcióval** mérték meg: a DNS-szálakról készült felvételek (pl. Rosalind Franklin híres **51-es fotója**) X alakú mintázatából lehetett kiszámolni a spirál átmérőjét és menetemelkedését.',
         uni: 'A spirális szerkezet diffrakciós képe Bessel-függvényekkel írható le (Cochran–Crick–Vand, 1952): a rétegvonalak közti távolság a menetemelkedés reciproka, a „hiányzó” 4. rétegvonal a két szál fáziseltolását mutatja (kis és nagy árok). A DNS-nek más formái is vannak: az **A-DNS** (víztelenebb, 11 bp/menet, szélesebb) és a balmenetes **Z-DNS** (váltakozó GC-szekvenciákban).',

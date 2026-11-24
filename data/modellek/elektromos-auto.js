@@ -126,7 +126,7 @@
         what: 'Az autó „héja”: utastér, ajtók, motorháztető, csomagtartó. Elektromos autóknál különösen fontos, hogy **jó légellenállású** legyen, mert autópálya-tempónál az energia nagy része a levegő félretolására megy el.',
         madeOf: 'Nagy szilárdságú **acél** és egyre több **alumínium**, mert a nehéz akku miatt máshol spórolni kell a tömeggel. Szélvédő és ablakok: rétegelt és edzett **üveg**. Lökhárítók: műanyag.',
         how: 'Hatalmas présgépek sajtolják ki a lemezekből a darabokat, majd robotok **ponthegesztéssel** és ragasztással állítják össze a vázat. Utána festőüzembe kerül: korróziógátló fürdő, alapozó, színes festék, lakk. Néhány gyártó a hátsó vázat egyetlen óriási alumíniumöntvényként készíti (**gigaöntés**).',
-        fact: 'A villanyautók légellenállási tényezője gyakran 0,23 alatti, ami jobb, mint a legtöbb sportautóé.'
+        fact: 'A legáramvonalasabb villanyautók légellenállási tényezője 0,20–0,23 körüli, ami jobb, mint a legtöbb sportautóé.'
       },
       {
         id: 'battery', terms: ['e-mobilitas/cellakemia', 'e-mobilitas/soc', 'e-mobilitas/soh'], z: 2, name: 'Nagyfeszültségű akkumulátor', svg: batt, explode: [0, 45], link: 'akkucella', badge: B(0, 30, 38),
@@ -149,7 +149,7 @@
       },
       {
         id: 'gear', z: 3, name: 'Reduktor és féltengelyek', svg: gear, explode: T(-150, 5, 38, 92, 382),
-        what: 'A villanymotor akár 15–20 ezer fordulat/perccel forog, a kerekeknek viszont csak kb. 1500 kell autópályán. A **reduktor** fogaskerekekkel kb. 9-szeresére lassít, és ennyivel növeli a nyomatékot. Benne van a **differenciálmű** is, ami kanyarban engedi, hogy a két kerék eltérő sebességgel forogjon. Sebességváltó nem kell.',
+        what: 'A villanymotor akár 15–20 ezer fordulat/perccel forog, a kerekeknek viszont autópálya-tempónál is csak kb. 1000–1500. A **reduktor** fogaskerekekkel kb. 9-szeresére lassít, és ennyivel növeli a nyomatékot. Benne van a **differenciálmű** is, ami kanyarban engedi, hogy a két kerék eltérő sebességgel forogjon. Sebességváltó nem kell.',
         madeOf: 'Edzett **acél** fogaskerekek, alumínium ház, hajtóműolaj. A féltengelyek acélból vannak, a végükön homokinetikus csuklókkal.',
         how: 'A fogaskerekeket kovácsolják, lefogazzák, edzik, majd köszörülik, hogy nagyon halkan fussanak (villanyautóban nincs motorzaj, ami elnyomná a fogaskerekek zúgását).'
       },
@@ -215,7 +215,7 @@
       { year: '1899', text: 'A „La Jamais Contente” nevű villanyautó elsőként lépi át a **100 km/h**-t.' },
       { year: '1900 körül', text: 'Az USA-ban az autók kb. harmada elektromos, de az olcsó benzin és az önindító miatt később eltűnnek.' },
       { year: '1996', text: 'A GM EV1 az első modern, sorozatgyártott villanyautó, de a programot leállítják.' },
-      { year: '2008–2010', text: 'Megjelenik a Tesla Roadster és a Nissan Leaf: elsőként használnak **lítiumion akkut** nagy sorozatban.' },
+      { year: '2008–2010', text: 'Megjelenik a Tesla Roadster és a Nissan Leaf: a **lítiumion akkus** villanyautók nagy sorozatban is megjelennek.' },
       { year: '2020-as évek', text: 'Terjednek a **800 V-os** rendszerek, a hőszivattyúk és az olcsóbb **LFP** akkuk. Magyarországon is épülnek akkumulátor- és villanyautó-gyárak.' }
     ],
     quiz: [
