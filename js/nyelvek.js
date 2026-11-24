@@ -32,7 +32,7 @@
 
   /* ---------- összehasonlítás ---------- */
   function strip(s) { return String(s).toLowerCase().replace(/[.,!?¿¡;:"„”“«»()。、！？]/g, ' ').replace(/[’`´]/g, '\'').replace(/\s+/g, ' ').trim(); }
-  function noAcc(s) { return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss') : s; }
+  function noAcc(s) { return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').replace(/œ/g, 'oe').replace(/æ/g, 'ae') : s; }
   function judge(input, answers) {
     var a = strip(input);
     for (var i = 0; i < answers.length; i++) if (a === strip(answers[i])) return 'ok';
