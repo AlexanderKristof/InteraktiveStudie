@@ -1,0 +1,28 @@
+# Minden feltöltésnél: a tananyag ellenőrzése és az egyfájlos offline változat elkészítése.
+name: Ellenőrzés és egyfájlos változat
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ellenorzes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Tananyag ellenőrzése
+        run: node tools/check.js
+      - name: Egyfájlos offline változat
+        run: node tools/build-single.js
+      - name: Az elkészült fájl feltöltése
+        uses: actions/upload-artifact@v4
+        with:
+          name: tudasmuhely-offline
+          path: dist/tudasmuhely-offline.html

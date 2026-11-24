@@ -72,6 +72,12 @@ Minden tartalom egy-egy egyszerű JavaScript fájl, nincs szükség fordításra
   `akkupakk`, `fuggveny`, `pitagorasz`, `gyakorlas`, `idovonal`, `hajitas`, `atomepito`, `mosfet-iv`, `cpu-teljesitmeny`.
   Leckében: `widget: { type: 'ohm', options: {} }`.
 
+A tananyag ellenőrzése (hivatkozások, kvízek, kérdésbank, hibakereső fák). A GitHub ezt minden feltöltéskor automatikusan lefuttatja:
+
+```
+node tools/check.js
+```
+
 Az egyfájlos változat újragenerálása (Node.js kell hozzá):
 
 ```
