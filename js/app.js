@@ -211,13 +211,16 @@
     var models = (l.models || []).filter(function (m) { return S.models[m]; });
     /* Egyetemi szinten az egyetemi szakszavak kerülnek előre, az iskolai magyarázat lenyitható részbe. */
     var uniRefs = S.termCards ? (l.terms || []).concat(S.termsBuildingOn ? S.termsBuildingOn(s.id, l.id) : []).filter(function (r, i, a) { return a.indexOf(r) === i && S.resolveTerm(r); }) : [];
-    var uniView = S.level === 'egyetem';
+    var uniView = S.level === 'egyetem', lu = S.lessonUni[key];
     var uniTop = '';
     if (uniView) {
-      uniTop = uniRefs.length
-        ? '<section class="uni-top card pad"><h2>🎓 Egyetemi szint</h2><p class="muted">Ez a téma egyetemi mélységben, pontos szakszavakkal, angol (és ahol van, latin) megfelelővel és képletekkel. Az iskolai magyarázat lent, lenyitható részben van.</p>' + S.termCards(uniRefs) + '</section>'
+      var hasUni = uniRefs.length || lu;
+      uniTop = hasUni ? '<section class="uni-top card pad"><h2>🎓 Egyetemi / szakmai szint</h2>' +
+          (lu && lu.text ? '<div class="uni-text">' + S.md(lu.text) + '</div>' : '') +
+          (lu && lu.glossary && lu.glossary.length ? glossaryHtml(lu.glossary) : '') +
+          (uniRefs.length ? S.termCards(uniRefs, lu ? 'Kapcsolódó egyetemi szakszavak' : '') : '') + '</section>'
         : '<div class="note uni-hint"><b class="t">🎓 Egyetemi nézet</b><p>Ehhez a leckéhez még nincs külön egyetemi kiegészítés, ezért az iskolai anyagot látod. Nézz körül az <a href="#/egyetem">egyetemi kurzusok</a> között!</p></div>';
-      if (uniRefs.length) { body = '<details class="school-fold"><summary>🎒 Iskolai magyarázat (alapok) – kattints a lenyitáshoz</summary>' + body + widgets + '</details>'; widgets = ''; }
+      if (hasUni) { body = '<details class="school-fold"><summary>🎒 Iskolai magyarázat (alapok) – kattints a lenyitáshoz</summary>' + body + widgets + '</details>'; widgets = ''; }
     }
     main.innerHTML =
       '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/tantargy/' + s.id + '">' + esc(s.title) + '</a><span>›</span><span>' + (idx + 1) + '. lecke</span></nav>' +
@@ -261,9 +264,17 @@
   }
 
   /* Egyetemi kitekintés a lecke végén: a lecke saját hivatkozásai + azok a szakszavak, amelyek erre a leckére épülnek. */
+  function glossaryHtml(g) {
+    return '<h3>📖 Szakszótár</h3><div class="table-wrap"><table class="gloss"><thead><tr><th>Magyar</th><th>Szakmai / nemzetközi név</th><th>Jelentés</th></tr></thead><tbody>' +
+      g.map(function (x) {
+        return '<tr><td><b>' + esc(x.hu) + '</b></td><td>' + (x.latin ? '<span class="sci-name">' + esc(x.latin) + '</span><br>' : '') + (x.en ? '<small>🇬🇧 ' + esc(x.en) + '</small>' : '') + '</td><td>' + S.inline(x.def || '') + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
   function uniBox(s, l) {
     if (!S.termCards) return '';
     var refs = (l.terms || []).concat(S.termsBuildingOn(s.id, l.id)).filter(function (r, i, a) { return a.indexOf(r) === i && S.resolveTerm(r); });
+    var lu = S.lessonUni[s.id + '/' + l.id];
+    if (!refs.length && lu && S.level !== 'egyetem') return '<div class="note uni-hint"><b class="t">🎓 Szakmai / egyetemi szint</b><p>Ehhez a leckéhez mélyebb, szaknyelvi kiegészítés is tartozik' + (lu.glossary ? ' (' + lu.glossary.length + ' szakszó angol' + (lu.glossary.some(function (x) { return x.latin; }) ? ' és latin' : '') + ' megfelelővel)' : '') + '. <button type="button" class="linkish" data-level="egyetem">Váltás egyetemi szintre</button></p></div>';
     if (!refs.length) return '';
     if (S.level !== 'egyetem') {
       return '<div class="note uni-hint"><b class="t">🎓 Egyetemi kitekintés</b><p>' + refs.length + ' egyetemi szakszó épül erre a leckére (pl. ' +
@@ -327,6 +338,8 @@
       index.push({ kind: 'Tantárgy', icon: s.icon, title: s.title, sub: s.description, href: '#/tantargy/' + s.id, text: s.description + ' ' + (s.intro || '') });
       s.lessons.forEach(function (l) {
         var txt = [l.summary, (l.tags || []).join(' ')].concat((l.sections || []).map(function (x) { return (x.title || '') + ' ' + (x.text || '') + ' ' + (x.tip || '') + ' ' + (x.warn || ''); })).join(' ');
+        var lu = S.lessonUni[s.id + '/' + l.id];
+        if (lu) txt += ' ' + lu.text + ' ' + (lu.glossary || []).map(function (g) { return g.hu + ' ' + (g.en || '') + ' ' + (g.latin || ''); }).join(' ');
         index.push({ kind: 'Lecke', icon: s.icon, title: l.title, sub: s.title + ' · ' + l.summary, href: '#/lecke/' + s.id + '/' + l.id, text: txt, tags: (l.tags || []).join(' ') });
       });
     });
@@ -540,7 +553,15 @@
   S.setLevel = function (lv) {
     S.level = lv; S.store.set('level', lv); paintLevel();
     var y = window.scrollY; route(); window.scrollTo(0, y);
+    toast(lv === 'egyetem' ? '🎓 Egyetemi nézet: szakmai (latin/angol) nevek és mélyebb leírások mindenhol.' : '🎒 Iskolai nézet: közérthető magyarázatok.');
   };
+  var toastTimer;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2600);
+  }
   levelBtn.addEventListener('click', function () { S.setLevel(S.level === 'egyetem' ? 'iskolai' : 'egyetem'); });
   paintLevel();
 

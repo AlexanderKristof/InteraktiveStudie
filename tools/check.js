@@ -151,6 +151,15 @@ Object.values(S.troubles || {}).forEach(tr => {
   });
 });
 
+/* Leckék egyetemi/szakmai rétege */
+Object.keys(S.lessonUni || {}).forEach(k => {
+  const u = S.lessonUni[k], w = 'szakmai réteg ' + k;
+  if (!lessonExists(k)) err(w, 'ismeretlen lecke');
+  if (!u.text) err(w, 'hiányzó text');
+  markup(w, u.text);
+  (u.glossary || []).forEach((g, i) => { if (!g.hu || !g.def || !(g.en || g.latin)) err(w + ' szótár #' + (i + 1), 'hu, def és en/latin kell'); markup(w, g.def); });
+});
+
 /* Tudtad? tények */
 const factIds = new Set(), CATS = new Set((S.FACT_CATS || []).map(c => c[0]));
 (S.facts || []).forEach((f, i) => {

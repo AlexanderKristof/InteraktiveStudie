@@ -10,6 +10,9 @@
   S.widgets = {};
 
   S.addSubject = function (s) { S.subjects.push(s); };
+  /* Leckék egyetemi/szakmai rétege: STUDIE.addLessonUni('tantárgy', { leckeId: { text, glossary: [{ hu, en, latin, def }] } }) */
+  S.lessonUni = {};
+  S.addLessonUni = function (sid, map) { Object.keys(map).forEach(function (k) { S.lessonUni[sid + '/' + k] = map[k]; }); };
   /* Iskolai szintek a tantárgyakhoz (subject.stage). */
   S.STAGES = [['altalanos', '🎒 Általános iskola (5–8. osztály)'], ['kozep', '🏫 Középiskola'], ['szakma', '🛠️ Szakmák']];
   S.stageTitle = function (id) { var x = S.STAGES.filter(function (s) { return s[0] === (id || 'kozep'); })[0]; return x ? x[1] : ''; };
