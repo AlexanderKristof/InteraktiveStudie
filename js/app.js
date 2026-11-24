@@ -4,6 +4,7 @@
   var S = window.STUDIE;
   var esc = S.esc, md = S.md, norm = S.norm;
   var main = document.getElementById('main');
+  if (S.attachTroubles) S.attachTroubles();
   var LEVELS = { 1: ['kezdő', 'l1'], 2: ['haladó', 'l2'], 3: ['profi', 'l3'] };
 
   /* ---------- haladás ---------- */
@@ -277,6 +278,13 @@
       m.parts.forEach(function (p) {
         index.push({ kind: 'Alkatrész', icon: m.icon, title: p.name, sub: m.title + ' · ' + p.what, href: '#/felfedezo/' + m.id + '?resz=' + p.id, text: [p.what, p.madeOf, p.how, p.fact].join(' ') });
       });
+    });
+    Object.keys(S.troubles || {}).forEach(function (k) {
+      var t = S.troubles[k], ref = (t.lessons || [])[0];
+      if (!ref) return;
+      var sid = ref.split('/')[0], sub = S.subjects.filter(function (x) { return x.id === sid; })[0];
+      index.push({ kind: 'Hibakereső', icon: '🛠️', title: t.title, sub: (sub ? sub.title + ' · ' : '') + 'lépésről lépésre hibakeresés', href: '#/lecke/' + ref,
+        text: t.intro + ' ' + Object.keys(t.nodes).map(function (n) { return (t.nodes[n].q || '') + ' ' + (t.nodes[n].result || ''); }).join(' ') });
     });
     (S.courses || []).forEach(function (c) {
       index.push({ kind: 'Egyetem', icon: c.icon, title: c.title, sub: c.description, href: '#/egyetem/' + c.id, text: c.description + ' ' + (c.intro || '') });
