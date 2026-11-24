@@ -734,3 +734,19 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .train-band > span:nth-child(2) { flex: 1; display: grid; gap: 2px; }
 .train-band small { color: var(--muted); }
 .train-band.on { box-shadow: 0 0 0 2px var(--accent) inset; }
+
+/* 💰 pénzügyi kalkulátorok */
+.pw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin: 10px 0; }
+.pw-f { display: grid; gap: 4px; font-size: .9rem; }
+.pw-f > span:first-child { color: var(--muted); }
+.pw-in { display: flex; align-items: center; gap: 6px; }
+.pw-in input, .pw-f select { width: 100%; padding: 8px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; }
+.pw-chk { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+.pw-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.pw-table td { padding: 7px 4px; border-bottom: 1px solid var(--line); }
+.pw-table td:last-child { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pw-table tr.sum td { font-size: 1.1rem; border-bottom: 2px solid var(--fg); }
+.pw-table tr.muted td { color: var(--muted); font-size: .9rem; }
+.pw-bar { display: flex; height: 14px; border-radius: 99px; overflow: hidden; margin: 10px 0 4px; background: var(--line); }
+.pw-bar i { display: block; height: 100%; }
+.pw-chart { width: 100%; max-height: 180px; margin-top: 6px; }
