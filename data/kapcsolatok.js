@@ -91,7 +91,10 @@
     'elektromos-auto/motor-inverter#3': ['szabalyozas/pid-szabalyozo', 'szabalyozas/visszacsatolas'],
     'autoszereles/diagnosztika': ['szabalyozas/visszacsatolas', 'szabalyozas/tempomat'],
     'fiz-alap/hotan#2': ['szabalyozas/ketallasu'],
-    'matematika/linearis-fuggveny#2': ['szabalyozas/pt1-tag']
+    'matematika/linearis-fuggveny#2': ['szabalyozas/pt1-tag'],
+    'enek-zene/hang-alapjai': ['fizika-bsc/hullamegyenlet', 'fizika-bsc/doppler'],
+    'vizualis/szinek': ['fizika-bsc/interferencia'],
+    'vizualis/digitalis-kep': ['digitalis-technika/bit']
   };
   S.lessonLinks = LINKS;
   Object.keys(LINKS).forEach(function (key) {

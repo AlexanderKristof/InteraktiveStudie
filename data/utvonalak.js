@@ -191,6 +191,20 @@
       { teszt: 'szakacs' }
     ] });
 
+  P({ id: 'muveszet', title: 'Zene és képzőművészet', icon: '🎨', color: '#7c5cd6', level: 'általános iskola',
+    description: 'Kottaolvasás a zongorán, szolmizáció, zenetörténet, színkeverés és művészettörténet: a művészetek alapjai játékosan.',
+    steps: [
+      { lecke: 'enek-zene/hang-alapjai' },
+      { lecke: 'enek-zene/kottaolvasas', note: 'Próbáld ki a zongorát és a hangköz-felismerő játékot!' },
+      { lecke: 'enek-zene/szolmizacio' },
+      { lecke: 'enek-zene/zenetortenet' },
+      { lecke: 'vizualis/szinek', note: 'Itt van a színkeverő.' },
+      { lecke: 'vizualis/perspektiva' },
+      { lecke: 'vizualis/muveszettortenet-2' },
+      { teszt: 'enek-zene' },
+      { teszt: 'vizualis' }
+    ] });
+
   P({ id: 'termtud-78', title: 'Fizika és kémia 7–8. osztályban', icon: '🔭', color: '#2f7bf6', level: 'általános iskola',
     description: 'Mozgás, energia, anyagok és atomok: a felső tagozatos természettudomány lépésről lépésre, modellekkel.',
     steps: [

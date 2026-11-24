@@ -9,13 +9,13 @@ Nem kell hozzá internet, regisztráció vagy telepítés: egy sima weboldal, am
 
 | Szint | Tantárgyak |
 |---|---|
-| 🎒 Általános iskola (5–8.) | Matematika, Magyar nyelv és irodalom, Történelem, Természettudomány, Fizika (7–8.), Kémia (7–8.), Biológia (7–8.), Angol nyelv (alapok) |
+| 🎒 Általános iskola (5–8.) | Matematika, Magyar nyelv és irodalom, Történelem, Természettudomány, Fizika (7–8.), Kémia (7–8.), Biológia (7–8.), Angol nyelv (alapok), Ének-zene, Vizuális kultúra |
 | 🏫 Középiskola | Matematika, Fizika, Kémia, Biológia, Történelem, Földrajz, Informatika, Pénzügyi ismeretek, Állampolgári ismeretek |
 | 🛠️ Szakmák | Villanyszerelés, Autószerelés, Elektromosautó-szerelés, Napelemes rendszerek, Hőszivattyú és klímatechnika, Víz-, gáz- és fűtésszerelés, Asztalos és faipar, Hegesztés és fémmegmunkálás, Informatikai rendszer- és hálózatüzemeltetés, Szakács és vendéglátás, Építőipar és kőműves |
 
 Interaktív elemek: Ohm-törvény, soros/párhuzamos kapcsolás, feszültségesés, animált négyütemű motor, fogaskerék-áttétel,
 akkupakk-tervező, függvényábrázoló, Pitagorasz-tétel, ferde hajítás, atomépítő, periódusos rendszer, idővonal-játék,
-párosító játék, végtelen gyakorló feladatok (12 típus), **kapcsolás-építő** (lámpa bekötése, váltókapcsolás) és
+párosító játék, **zongora** (hangok, skálák, akkordok, hangköz-felismerés), **színkeverő** (fény és festék), végtelen gyakorló feladatok (12 típus), **kapcsolás-építő** (lámpa bekötése, váltókapcsolás) és
 **hibakereső szimulátor** (21 döntési fa, pl. „Nem indul az autó”, „Leold a FI relé”, „Nem melegszik a radiátor”).
 
 **„Mi miből áll?” felfedező.** Szétszedhető, kattintható modellek (processzor, alaplap, tranzisztor, atom,
@@ -53,7 +53,7 @@ Tanároknak: **nyomtatható feladatlap** megoldókulccsal. A kezdőlapon **napi 
 **📅 Vizsga- és dolgozatfelkészítő.** Megadod, miből (tantárgy/kurzus, témák) és mikor írsz: napokra bontott tanulási terv,
 felkészültségi mérő, **időre menő próbavizsga** és nyomtatható összefoglaló („puska”). A kezdőlap emlékeztet a legközelebbi vizsgára.
 
-**🧭 Tanulási útvonalak.** 15 célirányos, tantárgyakon átívelő terv (pl. „Villanyszerelő leszek”, „Rendszergazda leszek”,
+**🧭 Tanulási útvonalak.** 16 célirányos, tantárgyakon átívelő terv (pl. „Villanyszerelő leszek”, „Rendszergazda leszek”,
 „Érettségire készülök: matematika”, „Mérnöki alapozó”), lépésenkénti haladással.
 
 **🔗 Osztálydolgozat-link.** A tanár a Tesztközpontban linket készít; minden diák ugyanazt a kérdés- és válaszsorrendet kapja,
@@ -64,7 +64,9 @@ A kereső elgépelést is tűr („procesor” → processzor). A **📚 Tartalo
 
 **⚙ Beállítások:** betűméret, magas kontraszt, animációk kikapcsolása, felolvasási sebesség. Tanároknak: **🖨 nyomtatható tanmenet** minden tantárgyhoz.
 
-**Tényellenőrzés:** a szakmai biztonsági és szabályozási részeket (villanyszerelés, villanyautó, gáz, F-gáz, napelem, hegesztés, faipar), valamint a történelmi, irodalmi, állampolgári és földrajzi tényeket internetes forrásokkal ellenőriztük és javítottuk.
+**🃏 Tanulókártyák** minden tantárgyhoz (a kvíz- és bankkérdésekből, Leitner-módszerrel).
+
+**Tényellenőrzés:** a szakmai biztonsági és szabályozási részeket (villanyszerelés, villanyautó, gáz, F-gáz, napelem, hegesztés, faipar), valamint a történelmi, irodalmi, állampolgári, földrajzi, biológiai, a felfedező-modellekben szereplő tényeket internetes forrásokkal ellenőriztük és javítottuk, a számolós kérdéseket (több mint 800) pedig egyenként újraszámoltuk.
 
 **📈 Haladásom.** Tanulási sorozat, aktivitásnaptár, kitűzők, és a haladás **mentése/betöltése fájlba** (géphez nem kötött).
 
@@ -126,6 +128,7 @@ js/kapcsolas.js       kapcsolás-építő játék
 js/haladas.js         haladás, kitűzők, mentés/betöltés
 js/eszkozok.js        kedvencek, felolvasás, jegyzetek
 js/tartalom.js        teljes tartalomjegyzék
+js/kartyak.js         tantárgyi tanulókártyák
 data/                 a tananyag
 sw.js, manifest       offline mód és telepíthetőség
 tools/build-single.js egyfájlos változat készítése
