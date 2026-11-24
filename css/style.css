@@ -228,6 +228,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .ex-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 18px; align-items: start; }
 .ex-stage { padding: 12px; position: relative; }
 .ex-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.zoom-btns { display: inline-flex; gap: 4px; }
+.zoom-btns .btn { padding: 6px 11px; }
+.ex-svg.zoomed { cursor: grab; }
 .ex-toolbar .scale { margin-left: auto; font-size: .85rem; color: var(--muted); }
 .ex-svg { width: 100%; height: auto; display: block; background: var(--stage); border-radius: 12px; border: 1px solid var(--line); touch-action: manipulation; }
 .ex-svg .part { cursor: pointer; transition: transform .7s cubic-bezier(.2,.8,.2,1), opacity .25s; }

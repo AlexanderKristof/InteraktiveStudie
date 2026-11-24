@@ -238,6 +238,9 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .ex-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 18px; align-items: start; }
 .ex-stage { padding: 12px; position: relative; }
 .ex-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.zoom-btns { display: inline-flex; gap: 4px; }
+.zoom-btns .btn { padding: 6px 11px; }
+.ex-svg.zoomed { cursor: grab; }
 .ex-toolbar .scale { margin-left: auto; font-size: .85rem; color: var(--muted); }
 .ex-svg { width: 100%; height: auto; display: block; background: var(--stage); border-radius: 12px; border: 1px solid var(--line); touch-action: manipulation; }
 .ex-svg .part { cursor: pointer; transition: transform .7s cubic-bezier(.2,.8,.2,1), opacity .25s; }
@@ -7521,6 +7524,7 @@ STUDIE.addQuestions('tortenelem', {
       '<div class="ex-stage card"><div class="ex-toolbar">' +
       '<button type="button" class="btn primary" id="ex-explode">⇱ Szétszedés</button>' +
       '<button type="button" class="btn on" id="ex-badges">① Számok</button>' +
+      '<span class="zoom-btns"><button type="button" class="btn" id="ex-zin" aria-label="Nagyítás">＋</button><button type="button" class="btn" id="ex-zout" aria-label="Kicsinyítés">−</button><button type="button" class="btn" id="ex-zreset" aria-label="Teljes nézet">⟲</button></span>' +
       (m.scale ? '<span class="scale">Valódi méret: ' + esc(m.scale) + '</span>' : '') + '</div>' +
       '<svg class="ex-svg" id="ex-svg" viewBox="' + vb + '" role="group" aria-label="' + esc(m.title) + ' alkatrészei">' +
       (m.backdrop || '') + partsSvg + '<g id="ex-parts-end"></g>' + (m.overlay || '') + '<g id="ex-badges-layer"></g></svg>' +
@@ -7616,7 +7620,91 @@ STUDIE.addQuestions('tortenelem', {
       svg.querySelectorAll('.part, .badge-g').forEach(function (g) {
         g.classList.toggle('sel', !!(ids && ids.indexOf(g.dataset.id) >= 0));
       });
+      hlIds = ids && ids.length ? ids : null;
+      if (hlIds) zoomToParts(hlIds); else zoomTo(base);
     }
+
+    /* ---------- nagyítás: viewBox animálása ---------- */
+    var hlIds = null;
+    var base = (function () { var v = vb.split(/[\s,]+/).map(Number); return { x: v[0], y: v[1], w: v[2], h: v[3] }; })();
+    var cur = { x: base.x, y: base.y, w: base.w, h: base.h }, anim = null;
+    function setVB(v) {
+      cur = v;
+      svg.setAttribute('viewBox', v.x.toFixed(1) + ' ' + v.y.toFixed(1) + ' ' + v.w.toFixed(1) + ' ' + v.h.toFixed(1));
+      var zoomed = v.w < base.w * 0.98;
+      // a számjelölők nagyításkor ne nőjenek túl nagyra
+      var k = Math.max(0.45, Math.min(1, v.w / base.w));
+      badgeLayer.querySelectorAll('circle').forEach(function (c) { c.setAttribute('r', (11 * k).toFixed(2)); });
+      badgeLayer.querySelectorAll('text').forEach(function (t) { t.style.fontSize = (12 * k).toFixed(2) + 'px'; });
+      svg.classList.toggle('zoomed', zoomed);
+      svg.style.touchAction = zoomed ? 'none' : 'manipulation';
+    }
+    function zoomTo(t) {
+      // a képarány mindig az eredeti marad
+      var ar = base.w / base.h;
+      if (t.w / t.h > ar) { var nh = t.w / ar; t = { x: t.x, y: t.y - (nh - t.h) / 2, w: t.w, h: nh }; }
+      else { var nw = t.h * ar; t = { x: t.x - (nw - t.w) / 2, y: t.y, w: nw, h: t.h }; }
+      if (t.w > base.w * 1.5) t = { x: base.x, y: base.y, w: base.w, h: base.h };
+      var from = cur, t0 = null;
+      if (anim) cancelAnimationFrame(anim);
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return setVB(t);
+      function step(ts) {
+        if (t0 == null) t0 = ts;
+        var k = Math.min(1, (ts - t0) / 550), e = 1 - Math.pow(1 - k, 3);
+        setVB({ x: from.x + (t.x - from.x) * e, y: from.y + (t.y - from.y) * e, w: from.w + (t.w - from.w) * e, h: from.h + (t.h - from.h) * e });
+        if (k < 1) anim = requestAnimationFrame(step); else anim = null;
+      }
+      anim = requestAnimationFrame(step);
+    }
+    function zoomToParts(ids) {
+      var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      ids.forEach(function (id) {
+        var g = svg.querySelector('.part[data-id="' + id + '"]'), bb;
+        try { bb = g.getBBox(); } catch (e) { return; }
+        var p = byId[id].p, d = exploded && p.explode ? p.explode : [0, 0];
+        x0 = Math.min(x0, bb.x + d[0]); y0 = Math.min(y0, bb.y + d[1]);
+        x1 = Math.max(x1, bb.x + bb.width + d[0]); y1 = Math.max(y1, bb.y + bb.height + d[1]);
+      });
+      if (!isFinite(x0)) return;
+      var w = x1 - x0, h = y1 - y0, pad = Math.max(w, h) * 0.35 + 20;
+      // ne nagyítson túl: legfeljebb kb. 4-szeres
+      var minW = base.w / 4, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+      var W = Math.max(w + pad * 2, minW), H = Math.max(h + pad * 2, minW * base.h / base.w);
+      zoomTo({ x: cx - W / 2, y: cy - H / 2, w: W, h: H });
+    }
+    function zoomBy(f) {
+      var cx = cur.x + cur.w / 2, cy = cur.y + cur.h / 2, w = Math.min(base.w * 1.2, Math.max(base.w / 8, cur.w * f)), h = w * base.h / base.w;
+      zoomTo({ x: cx - w / 2, y: cy - h / 2, w: w, h: h });
+    }
+    root.querySelector('#ex-zin').addEventListener('click', function () { zoomBy(0.7); });
+    root.querySelector('#ex-zout').addEventListener('click', function () { zoomBy(1.43); });
+    root.querySelector('#ex-zreset').addEventListener('click', function () { zoomTo(base); });
+    // touchpad csippentés / Ctrl + görgő
+    svg.addEventListener('wheel', function (e) {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      zoomBy(e.deltaY > 0 ? 1.12 : 0.89);
+    }, { passive: false });
+    // húzással mozgatás nagyított állapotban
+    var drag = null, dragged = false;
+    svg.addEventListener('pointerdown', function (e) {
+      if (!svg.classList.contains('zoomed')) return;
+      drag = { x: e.clientX, y: e.clientY, vb: cur, id: e.pointerId }; dragged = false;
+    });
+    svg.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!dragged && Math.abs(dx) + Math.abs(dy) < 6) return;
+      if (!dragged) { dragged = true; try { svg.setPointerCapture(e.pointerId); } catch (er) { /* nem támogatott */ } }
+      var s = drag.vb.w / svg.clientWidth;
+      if (anim) { cancelAnimationFrame(anim); anim = null; }
+      setVB({ x: drag.vb.x - dx * s, y: drag.vb.y - dy * s, w: drag.vb.w, h: drag.vb.h });
+    });
+    function endDrag() { drag = null; setTimeout(function () { dragged = false; }, 0); }
+    svg.addEventListener('pointerup', endDrag);
+    svg.addEventListener('pointercancel', endDrag);
+    // húzás után ne számítson kattintásnak
+    svg.addEventListener('click', function (e) { if (dragged) { e.stopPropagation(); e.preventDefault(); } }, true);
 
     svg.querySelectorAll('.part').forEach(function (g) {
       g.addEventListener('click', function () { select(g.dataset.id === selId ? null : g.dataset.id); });
@@ -7633,6 +7721,7 @@ STUDIE.addQuestions('tortenelem', {
       exploded = !exploded;
       exBtn.textContent = exploded ? '⇲ Összerakás' : '⇱ Szétszedés';
       applyTransforms();
+      if (hlIds) zoomToParts(hlIds);
     });
     var bBtn = root.querySelector('#ex-badges');
     bBtn.addEventListener('click', function () {
