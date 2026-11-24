@@ -42,7 +42,7 @@
       '<button type="button" class="btn on" id="ex-badges">① Számok</button>' +
       (m.scale ? '<span class="scale">Valódi méret: ' + esc(m.scale) + '</span>' : '') + '</div>' +
       '<svg class="ex-svg" id="ex-svg" viewBox="' + vb + '" role="group" aria-label="' + esc(m.title) + ' alkatrészei">' +
-      (m.backdrop || '') + partsSvg + (m.overlay || '') + '<g id="ex-badges-layer"></g></svg>' +
+      (m.backdrop || '') + partsSvg + '<g id="ex-parts-end"></g>' + (m.overlay || '') + '<g id="ex-badges-layer"></g></svg>' +
       '<div class="part-chips" id="ex-chips">' + m.parts.map(function (p, i) {
         return '<button type="button" data-id="' + p.id + '"><i>' + (i + 1) + '</i>' + esc(p.name) + '</button>';
       }).join('') + '</div></div>' +
@@ -125,7 +125,12 @@
       root.querySelectorAll('#ex-chips button').forEach(function (b) { b.classList.toggle('on', b.dataset.id === id); });
       paintInfo();
     }
+    /* A kijelölt alkatrész(eke)t előrehozzuk, hogy ne takarja el semmi; kijelölés nélkül visszaáll az eredeti sorrend. */
+    var partsEnd = svg.querySelector('#ex-parts-end');
+    var origOrder = Array.prototype.slice.call(svg.querySelectorAll('.part'));
     function highlight(ids) {
+      origOrder.forEach(function (g) { svg.insertBefore(g, partsEnd); });
+      if (ids && ids.length) origOrder.forEach(function (g) { if (ids.indexOf(g.dataset.id) >= 0) svg.insertBefore(g, partsEnd); });
       svg.classList.toggle('has-sel', !!(ids && ids.length));
       svg.querySelectorAll('.part, .badge-g').forEach(function (g) {
         g.classList.toggle('sel', !!(ids && ids.indexOf(g.dataset.id) >= 0));
