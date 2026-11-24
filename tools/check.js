@@ -186,6 +186,7 @@ const factIds = new Set(), CATS = new Set((S.FACT_CATS || []).map(c => c[0]));
   if (!CATS.has(f.cat)) err(w, 'ismeretlen kategória: ' + f.cat);
   if (!f.q || !f.why) err(w, 'hiányzó q vagy why');
   if (f.cat === 'sport' && !(S.SPORTS || []).some(x => x[0] === f.sport)) err(w, 'ismeretlen sportág: ' + f.sport);
+  if (f.theme && f.theme !== 'edzes') err(w, 'ismeretlen téma: ' + f.theme);
   markup(w, f.q); markup(w, f.why);
   (f.links || []).forEach(l => { if (!S.factLink(l)) err(w, 'hibás hivatkozás: ' + l); });
   if (f.links && f.links.some(l => l.indexOf('modell:') === 0 && l.indexOf('#') > 0)) {

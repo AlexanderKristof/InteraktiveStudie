@@ -22,7 +22,7 @@
   }
 
   S.pageSport = function (main, params) {
-    var sp = params && params.sp || '', who = params && params.ki || '', q = '';
+    var sp = params && params.sp || '', who = params && params.ki || '', q = '', theme = params && params.tema || '';
     var all = sportFacts(), ath = athletes();
     var subj = S.subjects.filter(function (s) { return s.id === 'sport'; })[0];
     var counts = {};
@@ -34,6 +34,8 @@
       '<div class="sport-grid" id="sp-grid">' + S.SPORTS.filter(function (s) { return counts[s[0]]; }).map(function (s) {
         return '<button type="button" class="sport-tile" data-sp="' + s[0] + '"><span class="ico">' + s[1] + '</span><b>' + s[2] + '</b><small>' + counts[s[0]] + ' érdekesség</small></button>';
       }).join('') + '</div>' +
+      (all.some(function (f) { return f.theme === 'edzes'; }) ? '<button type="button" class="card train-band" id="sp-train"><span class="ico">🏋️</span><span><b>Így edzenek a legjobbak</b>' +
+        '<small>Agyedzés, vizualizáció, alvás, regeneráció, technika: ' + all.filter(function (f) { return f.theme === 'edzes'; }).length + ' tudományos edzéstitok sportolóktól</small></span><span class="btn primary">Mutasd →</span></button>' : '') +
       '<section class="card pad" style="margin-top:16px"><h2 style="margin-top:0">⭐ Ki a kedvenc sportolód?</h2>' +
       '<input type="search" id="sp-who" placeholder="Írd be a nevét, pl. Messi, Hosszú Katinka, Verstappen…" style="width:100%">' +
       '<div class="chips" id="sp-ath" style="margin-top:10px"></div></section>' +
@@ -55,13 +57,14 @@
     function paint() {
       main.querySelectorAll('#sp-grid [data-sp]').forEach(function (b) { b.classList.toggle('on', b.dataset.sp === sp); });
       paintAth();
-      var items = all.filter(function (f) { return (!sp || f.sport === sp) && (!who || (f.athletes || []).indexOf(who) >= 0); });
-      var head = who ? '⭐ ' + esc(who) : sp ? esc(S.sportLabel(sp)) : '💡 Válogatás minden sportágból';
-      if (!who && !sp) items = S.shuffle(items.slice()).slice(0, 12);
-      list.innerHTML = '<div class="section-title"><h2>' + head + '</h2>' + (sp || who ? '<button type="button" class="linkish" id="sp-reset">Összes sportág</button>' : '<button type="button" class="linkish" id="sp-more">🎲 Másik 12</button>') + '</div>' +
+      var items = all.filter(function (f) { return (!sp || f.sport === sp) && (!who || (f.athletes || []).indexOf(who) >= 0) && (!theme || f.theme === theme); });
+      var head = (theme ? '🏋️ Így edzenek a legjobbak' + (sp ? ' · ' : '') : '') + (who ? '⭐ ' + esc(who) : sp ? esc(S.sportLabel(sp)) : theme ? '' : '💡 Válogatás minden sportágból');
+      if (!who && !sp && !theme) items = S.shuffle(items.slice()).slice(0, 12);
+      var tb = main.querySelector('#sp-train'); if (tb) tb.classList.toggle('on', !!theme);
+      list.innerHTML = '<div class="section-title"><h2>' + head + '</h2>' + (sp || who || theme ? '<button type="button" class="linkish" id="sp-reset">Összes sportág</button>' : '<button type="button" class="linkish" id="sp-more">🎲 Másik 12</button>') + '</div>' +
         (items.length ? items.map(function (f) { return S.factCard(f, { open: !!who && items.length <= 3 }); }).join('') : '<p class="muted">Még nincs ilyen érdekesség.</p>');
       S.bindFacts(list);
-      var r = list.querySelector('#sp-reset'); if (r) r.addEventListener('click', function () { sp = ''; who = ''; paint(); });
+      var r = list.querySelector('#sp-reset'); if (r) r.addEventListener('click', function () { sp = ''; who = ''; theme = ''; paint(); });
       var m = list.querySelector('#sp-more'); if (m) m.addEventListener('click', paint);
     }
     main.querySelector('#sp-grid').addEventListener('click', function (e) {
@@ -73,6 +76,8 @@
       var b = e.target.closest('[data-who]'); if (!b) return;
       who = b.dataset.who; paint(); list.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+    var trb = main.querySelector('#sp-train');
+    if (trb) trb.addEventListener('click', function () { theme = theme ? '' : 'edzes'; who = ''; paint(); list.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     main.querySelector('#sp-who').addEventListener('input', function (e) { q = e.target.value; paintAth(); });
     paint();
     return true;

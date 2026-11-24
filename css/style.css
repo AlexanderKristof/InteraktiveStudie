@@ -728,3 +728,9 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .lr-score > div { display: grid; padding: 10px 16px; border-radius: 12px; border: 2px solid var(--line); min-width: 90px; }
 .lr-score b { font-size: 1.4rem; }
 @media (max-width: 600px) { .lp-node { transform: translateX(calc(var(--off, 0) / 2)); } .lr-q { font-size: 1.15rem; } }
+
+.train-band { display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 14px; padding: 16px 18px; text-align: left; cursor: pointer; font: inherit; color: var(--fg); border: 1px solid var(--line); }
+.train-band .ico { font-size: 2rem; }
+.train-band > span:nth-child(2) { flex: 1; display: grid; gap: 2px; }
+.train-band small { color: var(--muted); }
+.train-band.on { box-shadow: 0 0 0 2px var(--accent) inset; }
