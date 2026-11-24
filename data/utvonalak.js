@@ -219,4 +219,41 @@
       { teszt: 'fiz-alap' },
       { teszt: 'kem-alap' }
     ] });
+  P({ id: 'felnott-leszek', title: 'Felnőtt leszek: pénz, papírok, önálló élet', icon: '🧭', color: '#0ea5e9', level: 'középiskola',
+    description: 'Amit az iskola ritkán tanít meg: bérpapír, adóbevallás, ÁFA, bankszámla, munkaszerződés, hivatalos ügyek és a saját háztartás.',
+    steps: [
+      { lecke: 'felnott-elet/okmanyok', note: 'Kezdd a papírokkal: mi kell, és hol intézed.' },
+      { lecke: 'felnott-elet/ugyintezes-online' },
+      { lecke: 'penz-mindennap/szamlak-kartyak' },
+      { lecke: 'penz-mindennap/afa-szamla', note: 'Próbáld ki az ÁFA-kalkulátort!' },
+      { lecke: 'penz-mindennap/diakmunka' },
+      { lecke: 'penz-mindennap/berpapir', note: 'A bérkalkulátorral számold ki a saját nettódat.' },
+      { lecke: 'penz-mindennap/szja-bevallas' },
+      { lecke: 'felnott-elet/munkaszerzodes' },
+      { lecke: 'penz-mindennap/megtakaritas-ongondoskodas' },
+      { lecke: 'penz-mindennap/lakhatas-rezsi' },
+      { lecke: 'haztartas/fozes-alapok' },
+      { lecke: 'haztartas/elsosegely', note: 'Életet menthet: ezt mindenki tanulja meg.' },
+      { teszt: 'penz-mindennap' }
+    ] });
+
+  P({ id: 'konyvelo', title: 'Könyvelő, pénzügyes, könyvvizsgáló leszek', icon: '📊', color: '#7c3aed', level: 'középiskola → egyetem',
+    description: 'A háztartási pénzügyektől a kettős könyvvitelen át a könyvvizsgálatig és a vállalati pénzügyekig.',
+    steps: [
+      { lecke: 'penzugy/koltsegvetes' },
+      { lecke: 'penzugy/kamat-inflacio' },
+      { lecke: 'penz-mindennap/afa-szamla' },
+      { szakszo: 'szamvitel/eszkozok-forrasok', note: 'Az alap: eszközök = források.' },
+      { szakszo: 'szamvitel/kettos-konyvvitel' },
+      { szakszo: 'szamvitel/merleg' },
+      { szakszo: 'szamvitel/eredmenykimutatas' },
+      { szakszo: 'szamvitel/afa-konyvelese' },
+      { szakszo: 'adozas/afa-mukodese' },
+      { szakszo: 'adozas/szja-rendszer' },
+      { szakszo: 'vallalati-penzugy/penz-idoerteke' },
+      { szakszo: 'vallalati-penzugy/npv' },
+      { szakszo: 'konyvvizsgalat/konyvvizsgalat-celja' },
+      { szakszo: 'konyvvizsgalat/lenyegesseg' },
+      { teszt: 'szamvitel', note: 'Ha jól megy, folytasd a Könyvvizsgálat kurzussal.' }
+    ] });
 })();

@@ -31,7 +31,7 @@ Minden modellhez tartozik egy lépésről lépésre végigvehető gyártási fol
 A modellek egymásba ágyazhatók, így le lehet ásni egészen az atomokig:
 **alaplap → processzor → tranzisztor → atom**.
 
-**🎓 Egyetem – szakszótár és vizuális jegyzet** BSc-s hallgatóknak (17 kurzus: digitális technika, villamosmérnöki alapok,
+**🎓 Egyetem – szakszótár és vizuális jegyzet** BSc-s hallgatóknak (21 kurzus: digitális technika, villamosmérnöki alapok,
 e-mobilitás, analízis, fizika, lineáris algebra, valószínűségszámítás és statisztika, algoritmusok, általános kémia,
 műszaki mechanika, programozás, analóg elektronika, anatómia és élettan, közgazdaságtan, szerves kémia, szabályozástechnika, adatbázisok):
 
@@ -82,6 +82,13 @@ Adat: `data/nyelvek/*.js` – `STUDIE.addLangCourse({ id, title, flag, tts, unit
 
 **🎓 Szakmai réteg minden leckéhez.** Egyetemi nézetben minden lecke tetején mélyebb, szaknyelvi magyarázat és szakszótár (magyar – latin – angol).
 Adat: `data/szakmai/*.js` – `STUDIE.addLessonUni('tantárgy', { lecke: { text, glossary } })`.
+
+**🧭 Felnőtt élet – amit az iskola nem tanít.** Pénz a mindennapokban (ÁFA, számla, SZJA-bevallás, bérpapír, diákmunka, bank, megtakarítás, biztosítás, albérlet, fogyasztóvédelem),
+Hivatalos ügyek és a munka világa (okmányok, Ügyfélkapu+/DÁP, egészségügy, álláskeresés, munkaszerződés, vállalkozás, szerződések, jogosítvány),
+Önálló élet és háztartás (főzés, takarítás, javítások, elsősegély, energia, tanulás, lelki egészség). Interaktív **ÁFA-, bér- és megtakarítás-kalkulátor**.
+Az összegek a 2026-os szabályok szerintiek; minden lecke a hivatalos forrásra (NAV, magyarorszag.hu) is mutat.
+
+**🎓 Gazdasági kurzusok:** Számvitel, Könyvvizsgálat, Vállalati pénzügyek, Adózás és adójog.
 
 **📈 Haladásom.** Tanulási sorozat, aktivitásnaptár, kitűzők, és a haladás **mentése/betöltése fájlba** (géphez nem kötött).
 
