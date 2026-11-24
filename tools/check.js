@@ -151,8 +151,22 @@ Object.values(S.troubles || {}).forEach(tr => {
   });
 });
 
+/* Tudtad? tények */
+const factIds = new Set(), CATS = new Set((S.FACT_CATS || []).map(c => c[0]));
+(S.facts || []).forEach((f, i) => {
+  const w = 'tény ' + (f.id || '#' + i);
+  if (!f.id) err(w, 'hiányzó id'); else if (factIds.has(f.id)) err(w, 'ismétlődő id'); else factIds.add(f.id);
+  if (!CATS.has(f.cat)) err(w, 'ismeretlen kategória: ' + f.cat);
+  if (!f.q || !f.why) err(w, 'hiányzó q vagy why');
+  markup(w, f.q); markup(w, f.why);
+  (f.links || []).forEach(l => { if (!S.factLink(l)) err(w, 'hibás hivatkozás: ' + l); });
+  if (f.links && f.links.some(l => l.indexOf('modell:') === 0 && l.indexOf('#') > 0)) {
+    f.links.forEach(l => { const m = /^modell:([^#]+)#(.+)$/.exec(l); if (m && !S.models[m[1]].parts.some(p => p.id === m[2])) err(w, 'nincs ilyen alkatrész: ' + l); });
+  }
+});
+
 console.log('Tantárgyak: ' + S.subjects.length + ', leckék: ' + lessonCount + ', leckekvíz-kérdések: ' + quizCount + ', kérdésbank: ' + bankCount);
-console.log('Modellek: ' + Object.keys(S.models).length + ', egyetemi kurzusok: ' + (S.courses || []).length + ', szakszavak: ' + termCount + ', hibakeresők: ' + Object.keys(S.troubles || {}).length);
+console.log('Modellek: ' + Object.keys(S.models).length + ', egyetemi kurzusok: ' + (S.courses || []).length + ', szakszavak: ' + termCount + ', hibakeresők: ' + Object.keys(S.troubles || {}).length + ', tények: ' + (S.facts || []).length);
 if (warns.length) console.log('\nFigyelmeztetések (' + warns.length + '):\n  ' + warns.slice(0, 40).join('\n  ') + (warns.length > 40 ? '\n  …' : ''));
 if (errors.length) { console.log('\nHIBÁK (' + errors.length + '):\n  ' + errors.join('\n  ')); process.exit(1); }
 console.log('\n✔ Nincs hiba.');

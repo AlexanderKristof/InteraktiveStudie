@@ -104,12 +104,16 @@
             (uniMode ? '<p class="note" style="font-size:.9rem">🎓 Ehhez a modellhez még nincs külön egyetemi áttekintés; az alkatrészeknél a szakmai leírást látod, ahol van.</p>' : '') +
             '<p class="muted">Kattints egy alkatrészre a rajzon vagy a listában. A <b>Szétszedés</b> gombbal szétnyithatod a darabokat.</p>';
         }
+        var mFacts = S.factsFor ? S.factsFor('modell:' + m.id) : [];
+        if (mFacts.length) { info.insertAdjacentHTML('beforeend', '<div class="fact-tab"><b>💡 Tudtad?</b>' + mFacts.map(function (f) { return S.factCard(f, { skipHref: '#/felfedezo/' + m.id }); }).join('') + '</div>'); S.bindFacts(info); }
         return;
       }
       var e = byId[selId], p = e.p;
       var uni = uniMode;
       var tabs = (uni && p.uni ? [['uni', '🎓 Szakmai leírás', p.uni]] : []).concat([['what', uni ? 'Mi ez? (alapok)' : 'Mi ez?', p.what], ['made', 'Miből van?', p.madeOf], ['how', 'Hogyan készül?', p.how]])
         .filter(function (t) { return t[2]; });
+      var pFacts = S.factsFor ? S.factsFor('modell:' + m.id + '#' + p.id) : [];
+      if (p.fact || pFacts.length) tabs.push(['fact', '💡 Tudtad?' + (pFacts.length + (p.fact ? 1 : 0) > 1 ? ' (' + (pFacts.length + (p.fact ? 1 : 0)) + ')' : ''), 'x']);
       if (!tabs.some(function (t) { return t[0] === tab; })) tab = tabs[0] ? tabs[0][0] : 'what';
       var cur = tabs.filter(function (t) { return t[0] === tab; })[0];
       var link = p.link && S.models[p.link];
@@ -117,15 +121,16 @@
         '<div class="tabs" role="tablist">' + tabs.map(function (t) {
           return '<button type="button" role="tab" aria-selected="' + (t[0] === tab) + '" class="' + (t[0] === tab ? 'on' : '') + '" data-tab="' + t[0] + '">' + t[1] + '</button>';
         }).join('') + '</div>' +
-        '<div>' + md(cur ? cur[2] : '') + '</div>' +
+        (tab === 'fact' ? '<div class="fact-tab">' + (p.fact ? '<div class="fact">💡 ' + S.inline(p.fact) + '</div>' : '') + pFacts.map(function (f) { return S.factCard(f, { open: pFacts.length === 1 && !p.fact, skipHref: '#/felfedezo/' + m.id }); }).join('') + '</div>'
+          : '<div>' + md(cur ? cur[2] : '') + '</div>') +
         (uni && !p.latin && !p.en ? '' : '') +
         (uni && S.termCards ? S.termCards(p.terms, 'Szakszavak ehhez az alkatrészhez') : '') +
         (!uni && (p.uni || (p.terms && p.terms.length)) ? '<p class="muted" style="font-size:.88rem;margin-top:10px">🎓 Ehhez az alkatrészhez egyetemi magyarázat is tartozik. <button type="button" class="linkish" data-level="egyetem">Egyetemi szint</button></p>' : '') +
-        (p.fact ? '<div class="fact">' + S.inline(p.fact) + '</div>' : '') +
         (link ? '<p style="margin-top:14px"><a class="btn primary" href="#/felfedezo/' + trail.concat(p.link).join('/') + '">🔍 Nézz bele: ' + esc(link.title) + ' →</a></p>' : '') +
         (p.lesson ? '<p><a class="btn" href="#/lecke/' + p.lesson + '">📘 Kapcsolódó lecke</a></p>' : '') +
         '<div class="row" style="margin-top:12px"><button type="button" class="btn" id="ex-prev">←</button><button type="button" class="btn" id="ex-next">→</button>' +
         '<button type="button" class="btn" id="ex-clear">Áttekintés</button></div>';
+      if (S.bindFacts) S.bindFacts(info);
       info.querySelectorAll('[data-tab]').forEach(function (b) {
         b.addEventListener('click', function () { tab = b.dataset.tab; paintInfo(); });
       });

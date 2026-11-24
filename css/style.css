@@ -623,3 +623,20 @@ h3.letter { margin: 18px 0 8px; color: var(--muted); font-size: 1rem; border-bot
   .topbar, .foot, .widget, .quiz, .pager { display: none !important; }
   body { background: #fff; color: #000; }
 }
+
+/* 💡 Tudtad? */
+.fact-card { border: 1px solid var(--line); border-left: 4px solid #f5b400; border-radius: 12px; background: var(--card); margin: 10px 0; }
+.fact-card > summary { list-style: none; cursor: pointer; padding: 12px 14px; display: grid; gap: 4px; }
+.fact-card > summary::-webkit-details-marker { display: none; }
+.fact-card .fc-cat { font-size: .78rem; color: var(--muted); }
+.fact-card .fc-why { font-size: .85rem; color: var(--accent); font-weight: 600; }
+.fact-card[open] .fc-why { display: none; }
+.fact-card .fc-body { padding: 0 14px 12px; border-top: 1px dashed var(--line); padding-top: 10px; }
+.fact-card .fc-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.fact-box { margin-top: 26px; }
+.fact-tab { margin-top: 10px; }
+.fact-tab > b { display: block; margin-top: 14px; }
+.fact-day { margin-top: 14px; }
+.fact-day .t { font-size: 1rem; }
+.fact-sec h2 { margin-top: 24px; }
+#ft-cats .chip.on { background: var(--accent); color: #fff; border-color: var(--accent); }

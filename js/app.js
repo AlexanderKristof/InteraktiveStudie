@@ -110,7 +110,7 @@
       '<form class="search-big" id="hero-search"><input type="search" name="q" placeholder="Mi érdekel? pl. processzor, atom, Ohm-törvény…" aria-label="Keresés"><button class="btn primary" type="submit">Keresés</button></form>' +
       '<div class="chips">' + ['processzor', 'atom', 'akkumulátor', 'Ohm', 'FI relé', 'Pitagorasz', 'négyütemű motor', 'honfoglalás'].map(function (c) {
         return '<a class="chip" href="#/kereses?q=' + encodeURIComponent(c) + '">' + esc(c) + '</a>';
-      }).join('') + '<a class="chip" href="#/tartalom" style="border-style:dashed">📚 Teljes tartalomjegyzék</a></div>' + lastHtml + dailyHtml() + examHtml() + '</section>' +
+      }).join('') + '<a class="chip" href="#/tartalom" style="border-style:dashed">📚 Teljes tartalomjegyzék</a></div>' + lastHtml + dailyHtml() + examHtml() + factDayHtml() + '</section>' +
       ((S.paths || []).length ? '<div class="section-title"><h2>🧭 Válassz célt</h2><a href="#/utvonalak">Összes útvonal →</a></div><p class="muted" style="margin-top:-6px">Lépésről lépésre végigvezető tanulási tervek, tantárgyakon átívelve.</p><div class="grid">' + S.pathCards(4) + '</div>' : '') +
       S.STAGES.map(function (stg) {
         var list = S.subjects.filter(function (s) { return (s.stage || 'kozep') === stg[0]; });
@@ -129,6 +129,7 @@
       ((S.courses || []).length ? '<a class="card uni-band" href="#/egyetem" style="text-decoration:none;color:inherit"><span class="ico">🎓</span><span><h2 style="margin:0">Egyetemistáknak</h2>' +
         '<span class="muted">Szakszótár ábrákkal és angol megfelelővel, kattintható képletek, fogalomtérkép és tanulókártyák: ' +
         S.courses.map(function (c) { return esc(c.title); }).join(', ') + '.</span></span><span class="btn primary">Megnyitás →</span></a>' : '');
+    if (S.bindFacts) S.bindFacts(main);
     main.querySelector('#hero-search').addEventListener('submit', function (e) {
       e.preventDefault();
       var q = e.target.q.value.trim();
@@ -139,6 +140,11 @@
   function examHtml() {
     if (!S.examReminder) return '';
     return S.examReminder() || '<a class="card daily" href="#/felkeszito" style="text-decoration:none;color:inherit"><span class="ico">📅</span><span><b>Dolgozatot vagy vizsgát írsz?</b><small>Add meg, miből és mikor: napokra bontott tervet, próbavizsgát és összefoglalót kapsz.</small></span><span class="btn">Tervet kérek →</span></a>';
+  }
+  function factDayHtml() {
+    var f = S.factOfDay && S.factOfDay();
+    if (!f) return '';
+    return '<div class="fact-day"><div class="row" style="justify-content:space-between;align-items:baseline;gap:8px"><b class="t">💡 A nap ténye</b><a href="#/tudtad">Összes érdekesség (' + S.facts.length + ') →</a></div>' + S.factCard(f) + '</div>';
   }
   function dailyHtml() {
     if (!S.startDaily) return '';
@@ -178,6 +184,14 @@
       }).join('') + '</ol>';
   }
 
+  /* Érdekességek a leckéhez: előbb a közvetlenül hozzá kötöttek, aztán a tantárgy többi ténye közül naponta váltakozva */
+  function lessonFacts(sid, key) {
+    if (!S.factsFor) return [];
+    var own = S.factsFor('lecke:' + key), rest = S.factsFor('tantargy:' + sid, { subject: sid }).filter(function (f) { return own.indexOf(f) < 0; });
+    var off = rest.length ? (new Date().getDate() + key.length) % rest.length : 0;
+    return own.concat(rest.slice(off).concat(rest.slice(0, off))).slice(0, Math.max(own.length, 2)).slice(0, 4);
+  }
+
   function pageLesson(sid, lid) {
     var s = subjectById(sid);
     var idx = s ? s.lessons.findIndex(function (l) { return l.id === lid; }) : -1;
@@ -215,6 +229,7 @@
         return '<a class="btn" href="#/felfedezo/' + m + '">' + S.models[m].icon + ' ' + esc(S.models[m].title) + '</a>';
       }).join('') + '</div>' : '') +
       (uniView ? '' : uniBox(s, l)) +
+      (S.factBox ? S.factBox(lessonFacts(s.id, key), '💡 Tudtad?', true) : '') +
       (l.quiz && l.quiz.length ? '<h2 id="kviz">Ellenőrizd magad!</h2><div class="quiz card" id="quiz"></div>' : '') +
       '<div class="row" style="margin-top:22px"><button type="button" class="btn" id="done"></button></div>' +
       '<nav class="pager">' + (prev ? '<a class="btn" href="#/lecke/' + s.id + '/' + prev.id + '">← ' + esc(prev.title) + '</a>' : '<span></span>') +
@@ -223,6 +238,7 @@
         return sec.title ? '<li><a href="#sec-' + i + '" data-jump="sec-' + i + '">' + esc(sec.title) + '</a></li>' : '';
       }).join('') + (l.quiz ? '<li><a href="#kviz" data-jump="kviz">Kvíz</a></li>' : '') + '</ol></aside></div>';
 
+    if (S.bindFacts) S.bindFacts(main);
     if (S.bindTools) S.bindTools(main, 'lecke:' + key, { title: l.title, href: '#/lecke/' + key, kind: s.title + ' · lecke', icon: s.icon }, main.querySelector('.lesson-body'));
     var doneBtn = main.querySelector('#done');
     function paintDone() {
@@ -334,6 +350,9 @@
         index.push({ kind: 'Szakszó', icon: c.icon, title: t.term, sub: c.title + ' · ' + t.short, href: '#/egyetem/' + c.id + '/fogalom/' + t.id,
           text: [t.short, t.text, t.example, t.pitfall].join(' '), tags: (t.en || '') + ' ' + (t.tags || '') });
       });
+    });
+    (S.facts || []).forEach(function (f) {
+      index.push({ kind: 'Tudtad?', icon: '💡', title: 'Tudtad, hogy ' + f.q.replace(/\*\*/g, ''), sub: S.factCatTitle(f.cat), href: '#/tudtad?f=' + encodeURIComponent(f.id), text: f.why });
     });
     index.forEach(function (it) { it.nt = norm(it.title); it.nx = norm(it.text); it.ng = norm(it.tags || ''); });
   }
@@ -468,6 +487,7 @@
     else if (seg[0] === 'tartalom') { setNav(''); title('Tartalomjegyzék'); S.pageTartalom(main); }
     else if (seg[0] === 'beallitasok') { setNav(''); title('Beállítások'); S.pageBeallitasok(); }
     else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
+    else if (seg[0] === 'tudtad') { setNav('tudtad'); title('Tudtad?'); S.pageTudtad(main, params); }
     else if (seg[0] === 'utvonalak') { setNav(''); title('Tanulási útvonalak'); S.pageUtvonalak(main); }
     else if (seg[0] === 'utvonal') { setNav(''); var pth = (S.paths || []).filter(function (x) { return x.id === seg[1]; })[0]; title(pth ? pth.title : ''); if (!S.pageUtvonal(main, seg[1])) notFound(); }
     else if (seg[0] === 'haladas') { setNav('haladas'); title('Haladásom'); S.pageHaladas(main); }
