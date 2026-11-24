@@ -27,6 +27,14 @@ Minden modellhez tartozik egy lépésről lépésre végigvehető gyártási fol
 A modellek egymásba ágyazhatók, így le lehet ásni egészen az atomokig:
 **alaplap → processzor → tranzisztor → atom**.
 
+**🎓 Egyetem – szakszótár és vizuális jegyzet** BSc-s hallgatóknak (digitális technika, villamosmérnöki alapok,
+e-mobilitás, analízis, fizika):
+
+- **Szakszótár**: definíció, részletes magyarázat, angol megfelelő, ábra, példa, „gyakori hiba”
+- **Képlet-boncoló**: a képlet minden jelére kattintva megmutatja a jelentését és a mértékegységét
+- **Fogalomtérkép**: a fogalmak hálózata, ami megmutatja, mi mivel függ össze
+- **Tanulókártyák** Leitner-módszerrel, és minden alkalommal újragenerált **kvíz**
+
 Ezen kívül: **kereső** az összes tartalomban (ékezet nélkül is működik), haladásmentés, világos és sötét mód,
 mobilbarát felület.
 
@@ -45,6 +53,7 @@ Minden tartalom egy-egy egyszerű JavaScript fájl, nincs szükség fordításra
 
 - Tantárgyak: `data/tantargyak/*.js`. A minta a `villanyszereles.js`.
 - Modellek: `data/modellek/*.js`. A minta a `processzor.js`.
+- Egyetemi kurzusok: `data/egyetem/*.js`. A minta a `digitalis-technika.js`.
 - Új fájlt az `index.html`-ben kell felvenni egy `<script>` sorral.
 - Szövegjelölés: `**félkövér**`, `` `képlet` ``, `- ` felsorolás, `1. ` számozott lista, üres sor új bekezdés,
   `[[processzor|link a felfedezőbe]]`.
@@ -67,6 +76,7 @@ js/core.js            regiszter, szövegjelölés, rajzsegéd (izometrikus 3D)
 js/widgets.js         interaktív kísérletek
 js/explorer.js        „Mi miből áll?” felfedező
 js/app.js             oldalak, keresés, kvíz, haladás
+js/university.js      egyetemi rész: szakszótár, képletek, fogalomtérkép, kártyák
 data/                 a tananyag
 sw.js, manifest       offline mód és telepíthetőség
 tools/build-single.js egyfájlos változat készítése

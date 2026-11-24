@@ -118,7 +118,10 @@
       }).join('') + '</div>' +
       '<div class="section-title"><h2>Mi miből áll?</h2><a href="#/felfedezo">Összes →</a></div>' +
       '<p class="muted" style="margin-top:-6px">Szedd szét, kattints rá, nézz bele. Minden alkatrésznél megtudod, mi az, miből van és hogyan gyártják.</p>' +
-      '<div class="grid">' + models.slice(0, 4).map(modelTile).join('') + '</div>';
+      '<div class="grid">' + models.slice(0, 4).map(modelTile).join('') + '</div>' +
+      ((S.courses || []).length ? '<a class="card uni-band" href="#/egyetem" style="text-decoration:none;color:inherit"><span class="ico">🎓</span><span><h2 style="margin:0">Egyetemistáknak</h2>' +
+        '<span class="muted">Szakszótár ábrákkal és angol megfelelővel, kattintható képletek, fogalomtérkép és tanulókártyák: ' +
+        S.courses.map(function (c) { return esc(c.title); }).join(', ') + '.</span></span><span class="btn primary">Megnyitás →</span></a>' : '');
     main.querySelector('#hero-search').addEventListener('submit', function (e) {
       e.preventDefault();
       var q = e.target.q.value.trim();
@@ -252,6 +255,13 @@
         index.push({ kind: 'Alkatrész', icon: m.icon, title: p.name, sub: m.title + ' · ' + p.what, href: '#/felfedezo/' + m.id + '?resz=' + p.id, text: [p.what, p.madeOf, p.how, p.fact].join(' ') });
       });
     });
+    (S.courses || []).forEach(function (c) {
+      index.push({ kind: 'Egyetem', icon: c.icon, title: c.title, sub: c.description, href: '#/egyetem/' + c.id, text: c.description + ' ' + (c.intro || '') });
+      c.terms.forEach(function (t) {
+        index.push({ kind: 'Szakszó', icon: c.icon, title: t.term, sub: c.title + ' · ' + t.short, href: '#/egyetem/' + c.id + '/fogalom/' + t.id,
+          text: [t.short, t.text, t.example, t.pitfall].join(' '), tags: (t.en || '') + ' ' + (t.tags || '') });
+      });
+    });
     index.forEach(function (it) { it.nt = norm(it.title); it.nx = norm(it.text); it.ng = norm(it.tags || ''); });
   }
   function search(q) {
@@ -271,7 +281,7 @@
         if (!s) return; // minden szónak szerepelnie kell
         sc += s;
       }
-      if (it.kind === 'Lecke' || it.kind === 'Felfedező') sc += 2;
+      if (it.kind === 'Lecke' || it.kind === 'Felfedező' || it.kind === 'Szakszó') sc += 2;
       out.push({ it: it, sc: sc });
     });
     out.sort(function (a, b) { return b.sc - a.sc; });
@@ -343,6 +353,9 @@
     else if (seg[0] === 'lecke') pageLesson(seg[1], seg[2]);
     else if (seg[0] === 'felfedezo' && seg.length === 1) pageExplorerList();
     else if (seg[0] === 'felfedezo') pageExplorer(seg.slice(1));
+    else if (seg[0] === 'egyetem' && seg.length === 1) { setNav('egyetem'); title('Egyetem'); S.pageUniList(main); }
+    else if (seg[0] === 'egyetem' && seg[2] === 'fogalom') { setNav('egyetem'); var tt = S.courseById(seg[1]); title(tt ? tt.title : ''); if (!S.pageTerm(main, seg[1], seg[3])) notFound(); }
+    else if (seg[0] === 'egyetem') { setNav('egyetem'); var cc = S.courseById(seg[1]); title(cc ? cc.title : ''); if (!S.pageCourse(main, seg[1], seg[2])) notFound(); }
     else if (seg[0] === 'kereses') pageSearch(params.q || '');
     else if (seg[0] === 'nevjegy') pageAbout();
     else notFound();
