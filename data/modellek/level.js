@@ -275,7 +275,7 @@
     intro: 'A rajz egy lomblevél **keresztmetszete**, mintha egy borotvapengével keresztbe vágtuk volna (jobbra lent látod, hol). Felülről lefelé: a viaszos **kutikula**, a **felső bőrszövet**, a sűrű, zöld **oszlopos alapszövet**, a lazább, légjáratos **szivacsos alapszövet** a **levéllérrel**, végül az **alsó bőrszövet** a **gázcserenyílásokkal**.\n\nA levél a **fotoszintézis** helye: a sejtek **zöld színtestjeiben** (kloroplasztiszaiban) a **klorofill** elnyeli a napfényt, és energiájával **vízből és szén-dioxidból cukrot** készít, melléktermékként **oxigén** szabadul fel. A nagyításokon a színtest belseje, a klorofill-molekula és egy levélsejt látszik. A **Szétszedés** gombbal a rétegeket széthúzhatod.',
     parts: [
       {
-        id: 'kutikula', z: 6, name: 'Kutikula', svg: kutikula, explode: [0, -34], badge: [150, 126], en: 'cuticle (cutin and epicuticular wax)',
+        id: 'kutikula', z: 6, name: 'Kutikula', svg: kutikula, explode: [0, -34], badge: [150, 126], en: 'cuticle (cutin and epicuticular wax)', latin: 'cuticula',
         lesson: 'termeszet/novenyek',
         what: 'A levél felszínét borító vékony, **viaszos, vízhatlan bevonat**, mint egy átlátszó lakkréteg. Megakadályozza, hogy a levél **kiszáradjon**, lepergeti a vizet és a port, védi a levelet a kórokozóktól és részben az UV-sugárzástól. Mivel **átlátszó**, a fény akadálytalanul átjut rajta. A levél alsó oldalán is van, de ott általában vékonyabb.',
         madeOf: 'A **kutin** nevű, zsírsavakból felépülő, hálózatos anyagból, amelybe és amelyre **viaszok** rakódnak. Sok növényen a viasz parányi kristálykákat, pikkelyeket alkot: ettől lesz pl. a káposztalevél vagy a szilva „hamvas”.',
@@ -284,7 +284,7 @@
         fact: 'A lótuszvirág levelén a víz gyöngyként gurul le, és magával viszi a sarat: a növény a mocsárban is tiszta marad.'
       },
       {
-        id: 'felso', z: 5, name: 'Felső bőrszövet', svg: felso, explode: [0, -20], badge: [214, 150], en: 'upper epidermis',
+        id: 'felso', z: 5, name: 'Felső bőrszövet', svg: felso, explode: [0, -20], badge: [214, 150], en: 'upper epidermis', latin: 'epidermis superior',
         lesson: 'termeszet/novenyek',
         what: 'A levél felső felszínén egyetlen sejtsorból álló **határoló réteg**. Védi a belső szöveteket a sérüléstől, a kiszáradástól és a kórokozóktól, közben **átengedi a fényt**. A sejtjei általában **nem tartalmaznak** zöld színtestet: olyanok, mint egy átlátszó ablaksor a zöld „gyár” fölött.',
         madeOf: 'Szorosan, hézag nélkül illeszkedő, lapos **élő sejtekből**, amelyek felszíne felé eső fala vastagabb, és a **kutikulát** választja ki. Sok növényen a bőrszövetből **szőrök** nőnek ki, amelyek árnyékolnak, csökkentik a párologtatást, vagy (mint a csalánon) védekeznek.',
@@ -293,7 +293,7 @@
         fact: 'A csalán szőrei apró üvegampullák: a hegyük letörik, és a bőrbe hangyasavat és hisztamint tartalmazó nedvet fecskendeznek.'
       },
       {
-        id: 'oszlopos', z: 4, name: 'Oszlopos alapszövet (paliszád)', svg: oszlopos, explode: [0, -6], badge: [258, 204], en: 'palisade mesophyll (palisade parenchyma)',
+        id: 'oszlopos', z: 4, name: 'Oszlopos alapszövet (paliszád)', svg: oszlopos, explode: [0, -6], badge: [258, 204], en: 'palisade mesophyll (palisade parenchyma)', latin: 'mesophyllum palisadicum',
         lesson: 'termeszet/novenyek',
         what: 'A felső bőrszövet alatt, a levél felszínére merőlegesen, sűrűn álló, hosszúkás sejtek sora: a levél **fő fotoszintetizáló rétege**. Itt van a legtöbb **zöld színtest** (sejtenként akár 30–50), és ide érkezik a legtöbb fény. Az oszlopos elrendezés olyan, mint sok egymás mellé állított kémcső: a fény mélyen behatol a sejtekbe, és útja során több színtesten is áthalad.',
         madeOf: 'Vékony falú, élő **alapszöveti** (parenchima) sejtekből. Minden sejt közepét egy nagy **vakuólum** tölti ki, a sejtplazma és benne a **színtestek** vékony rétegben a sejtfal mentén helyezkednek el. A sejtek között keskeny **légjáratok** futnak, amelyeken a szén-dioxid eljut hozzájuk.',
@@ -302,7 +302,7 @@
         fact: 'Egy négyzetmilliméternyi levélfelület alatt kb. félmillió zöld színtest dolgozik.'
       },
       {
-        id: 'szivacsos', z: 2, name: 'Szivacsos alapszövet és sejtközötti járatok', svg: szivacsos, explode: [0, 10], badge: [232, 336], en: 'spongy mesophyll, intercellular air spaces, bundle sheath',
+        id: 'szivacsos', z: 2, name: 'Szivacsos alapszövet és sejtközötti járatok', svg: szivacsos, explode: [0, 10], badge: [232, 336], en: 'spongy mesophyll, intercellular air spaces, bundle sheath', latin: 'mesophyllum spongiosum',
         lesson: 'termeszet/novenyek',
         what: 'Az oszlopos réteg alatti, lazán elhelyezkedő, szabálytalan alakú sejtek rétege, köztük nagy **sejtközötti járatokkal** (légjáratokkal). Olyan, mint egy szivacs: a gázcserenyílásokon beáramló **szén-dioxid** a járatokban szétterjed, és minden sejthez eljut; az **oxigén** és a **vízpára** ugyanitt távozik. Sejtjei is fotoszintetizálnak, de kevesebb színtestük van. A levélér körül a sejtek szoros gyűrűt (**nyalábhüvelyt**) alkotnak.',
         madeOf: 'Vékony falú, élő **alapszöveti** sejtekből, kevesebb színtesttel; a levél térfogatának akár harmadát-felét **levegő** tölti ki. A sejtek nedves fala felé nyílnak a járatok: a gázok a falon lévő vízhártyában oldódva jutnak be a sejtekbe.',
@@ -311,7 +311,7 @@
         fact: 'A levél belső felülete (a járatok falának összterülete) a külső felület 10–40-szerese is lehet.'
       },
       {
-        id: 'sztoma', z: 8, name: 'Gázcserenyílás (sztóma) és zárósejtek', svg: sztoma, explode: [0, 34], badge: [470, 406], en: 'stoma (pl. stomata) and guard cells',
+        id: 'sztoma', z: 8, name: 'Gázcserenyílás (sztóma) és zárósejtek', svg: sztoma, explode: [0, 34], badge: [470, 406], en: 'stoma (pl. stomata) and guard cells', latin: 'stoma (pl. stomata)',
         lesson: 'termeszet/novenyek',
         what: 'Az alsó bőrszövet apró, **nyitható-zárható résnyílásai**, amelyeket két bab (vese) alakú **zárósejt** fog közre. Ezeken át lép be a fotoszintézishez szükséges **szén-dioxid**, és itt távozik az **oxigén** és a **vízpára**. A zárósejtek a növény **„szelepei”**: fényben és ha van elég víz, kinyitnak; sötétben vagy szárazságban bezárnak, hogy a növény ne veszítsen túl sok vizet.',
         madeOf: 'Két **élő, színtestet tartalmazó** zárósejtből (a többi bőrszöveti sejtben általában nincs színtest), amelyek fala **egyenetlenül vastag**: a rés felé eső fal vastag és merev, a külső vékony és rugalmas. A nyílás fölött egy nagyobb légüreg, a **légudvar** található.',
@@ -320,7 +320,7 @@
         fact: 'A napraforgó egyetlen levelén több millió gázcserenyílás van, és egy nyári napon egy nagyobb fa több száz liter vizet párologtat el rajtuk keresztül.'
       },
       {
-        id: 'also', z: 7, name: 'Alsó bőrszövet', svg: also, explode: [0, 24], badge: [330, 384], en: 'lower epidermis',
+        id: 'also', z: 7, name: 'Alsó bőrszövet', svg: also, explode: [0, 24], badge: [330, 384], en: 'lower epidermis', latin: 'epidermis inferior',
         lesson: 'termeszet/novenyek',
         what: 'A levél fonákát borító egysejtrétegű bőrszövet, rajta vékonyabb **kutikulával**. Abban különbözik a felsőtől, hogy itt van a **gázcserenyílások** többsége: az árnyékos, hűvösebb alsó oldalon kevesebb víz párolog el a nyílásokon át. Gyakran szőrös, ami a felszín közelében „álló” párás levegőréteget tart meg.',
         madeOf: 'Hézag nélkül illeszkedő, színtelen, élő **bőrszöveti sejtekből**, köztük elszórtan a **zárósejtpárokkal**. Felülnézetben a sejtek gyakran hullámos falúak, és kirakós játékként kapcsolódnak egymásba.',
@@ -329,7 +329,7 @@
         fact: 'Ha egy levelet a fonákjával felfelé ragasztunk vazelinnel befestett üveglapra, jóval lassabban hervad el, mint ha a színét kenjük be: a víz főként az alsó oldalon párolog.'
       },
       {
-        id: 'faresz', z: 3, name: 'Levélér: farész (xilém)', svg: faresz, explode: [0, 4], badge: [330, 264], en: 'xylem of the vascular bundle (leaf vein)',
+        id: 'faresz', z: 3, name: 'Levélér: farész (xilém)', svg: faresz, explode: [0, 4], badge: [330, 264], en: 'xylem of the vascular bundle (leaf vein)', latin: 'xylema',
         lesson: 'termeszet/novenyek', terms: ['kemia-bsc/intermolekularis'],
         what: 'A levélerek (szállítónyalábok) **felső**, a levél színe felé eső része. A **vizet és az oldott ásványi sókat** szállítja a gyökértől a száron át a levélbe. A víz egy részét a fotoszintézis használja fel, a nagyobb része a levélből **elpárolog**, és ez a párolgás **szívja** fel a vizet egészen a gyökerekből.',
         madeOf: '**Elhalt**, üres, csőszerű sejtekből: a **vízszállító csövek** (tracheák) és a **vízszállító sejtek** (tracheidák) faluk vastag és **fásodott** (lignin), sokszor gyűrűs vagy csavarvonalas megvastagodással, ami megakadályozza, hogy a cső összelapuljon. A csöveket élő faparenchima-sejtek kísérik.',
@@ -338,7 +338,7 @@
         fact: 'A legmagasabb fák (kb. 115 m-es mamutfenyők) tetejére a víz egyetlen szivattyú nélkül, pusztán a párolgás „szívóerejével” jut fel.'
       },
       {
-        id: 'hancsresz', z: 3, name: 'Levélér: háncsrész (floém)', svg: hancsresz, explode: [0, 20], badge: [330, 324], en: 'phloem of the vascular bundle (sieve tubes, companion cells)',
+        id: 'hancsresz', z: 3, name: 'Levélér: háncsrész (floém)', svg: hancsresz, explode: [0, 20], badge: [330, 324], en: 'phloem of the vascular bundle (sieve tubes, companion cells)', latin: 'phloema',
         lesson: 'termeszet/novenyek', terms: ['szerves-kemia/szenhidrat'],
         what: 'A levélerek **alsó**, a fonák felé eső része. A levélben készült **cukrot** (főként **szacharózt**, azaz répacukrot) oldat formájában szállítja oda, ahol szükség van rá, vagy ahol a növény raktároz: a növekvő hajtáscsúcsba, a gyökerekbe, a termésekbe, a gumókba. A víz a farészben jellemzően egy irányba (felfelé), a cukoroldat a háncsban **bármely irányba** áramolhat.',
         madeOf: '**Élő** sejtekből: a cukoroldatot a **rostacsövek** vezetik, amelyek egymás fölötti sejtjeit szitaszerűen átlyuggatott harántfalak (**rostalemezek**) kötik össze. A rostacsősejtekből hiányzik a sejtmag; az életműködésüket a mellettük lévő kis, sűrű plazmájú **kísérősejtek** tartják fenn.',
@@ -347,7 +347,7 @@
         fact: 'A juharszirup a cukorjuhar törzsében tavasszal felfelé áramló cukros nedvből készül: kb. 40 liter nedvből lesz 1 liter szirup.'
       },
       {
-        id: 'kloroplasztisz', z: 5, name: 'Zöld színtest (kloroplasztisz)', svg: kloro, explode: [0, 0], badge: [580, 100], en: 'chloroplast: thylakoid, granum, stroma',
+        id: 'kloroplasztisz', z: 5, name: 'Zöld színtest (kloroplasztisz)', svg: kloro, explode: [0, 0], badge: [580, 100], en: 'chloroplast: thylakoid, granum, stroma', latin: 'chloroplastus (thylakoidum, granum, stroma)',
         lesson: 'biologia/sejt', terms: ['kemia-bsc/redoxi', 'kemia-bsc/elektrodpotencial', 'kemia-bsc/ph'],
         what: 'A fotoszintézis **„üzeme”**: a levélsejtekben lévő, kb. 5–10 µm-es, lencse alakú sejtalkotó. Belsejében lapos, zsákszerű hártyák, a **tilakoidok** vannak, amelyek pénzérmékhez hasonló oszlopokba, **gránumokba** rendeződnek. A tilakoidhártyában ül a **klorofill**: itt zajlik a **fényszakasz** (fényelnyelés, a víz bontása, energiatárolás). A tilakoidokat körülvevő folyadékban, a **sztrómában** épül fel a cukor a **Calvin-ciklusban**.',
         madeOf: '**Kettős hártya** határolja. Belül a tilakoidhártyákban a fényelnyelő festékek (klorofillok, karotinoidok) fehérjékhez kötve, nagy **fotokémiai rendszerekbe** (fotoszisztémákba) rendeződnek, mellettük elektronszállító fehérjék és az **ATP-szintáz** „turbinái”. A sztrómában enzimek (köztük a **RuBisCO**), saját **DNS**, riboszómák és **keményítőszemcsék** vannak.',
@@ -356,7 +356,7 @@
         fact: 'A RuBisCO valószínűleg a Föld leggyakoribb fehérjéje, mégis lassú enzim: másodpercenként csak kb. 3 CO₂-molekulát köt meg, ezért kell belőle ennyi.'
       },
       {
-        id: 'klorofill', z: 5, name: 'Klorofill-molekula', svg: klorofill, explode: [0, 0], badge: [572, 372], en: 'chlorophyll a (porphyrin ring with Mg²⁺, phytol tail)',
+        id: 'klorofill', z: 5, name: 'Klorofill-molekula', svg: klorofill, explode: [0, 0], badge: [572, 372], en: 'chlorophyll a (porphyrin ring with Mg²⁺, phytol tail)', latin: 'chlorophyllum a',
         link: 'atom', lesson: 'biologia/sejt', terms: ['fizika-bsc/fotoeffektus', 'kemia-bsc/molekulapalya'],
         what: 'A növények **zöld festékanyaga**, amely **elnyeli a napfényt**, és energiáját a fotoszintézis számára hasznosítja. Főleg a **kék** és a **vörös** fényt nyeli el; a **zöld** fényt alig, azt visszaveri és átengedi: ezért látjuk zöldnek a leveleket. Ősszel, amikor a klorofill lebomlik, előtűnnek a mellette lévő **sárga és narancs** színű karotinoidok.',
         madeOf: 'Egy lapos, négy kis gyűrűből összekapcsolódó **porfirinvázból** („fej”) és egy hosszú, 20 szénatomos **fitol-láncból** („farok”) áll. A fej közepén egy **magnéziumion** ül, amelyet négy **nitrogénatom** fog közre. Képlete (klorofill-a): C₅₅H₇₂O₅N₄Mg. A fej sok **váltakozó egyszeres és kettős kötése** (konjugált rendszere) miatt képes a látható fény elnyelésére.',
@@ -365,7 +365,7 @@
         fact: 'A klorofill szerkezete feltűnően hasonlít a vér hemjére: ott a gyűrű közepén magnézium helyett vas ül.'
       },
       {
-        id: 'sejtfal', z: 5, name: 'Sejtfal és vakuólum (egy levélsejt)', svg: sejt, explode: [0, 0], badge: [140, 494], en: 'plant cell wall (cellulose) and central vacuole (tonoplast)',
+        id: 'sejtfal', z: 5, name: 'Sejtfal és vakuólum (egy levélsejt)', svg: sejt, explode: [0, 0], badge: [140, 494], en: 'plant cell wall (cellulose) and central vacuole (tonoplast)', latin: 'paries cellularis, vacuola centralis (tonoplastus)',
         link: 'sejt', lesson: 'biologia/sejt', terms: ['szerves-kemia/szenhidrat', 'szerves-kemia/polimer'],
         what: 'A növényi sejteket – az állati sejtekkel ellentétben – szilárd **sejtfal** veszi körül, a belsejük nagy részét pedig egy hatalmas, folyadékkal teli **vakuólum** (sejtnedvűr) tölti ki. A kettő együtt adja a sejtek **feszességét**: a vakuólum vizet szív magába, és belülről a falnak nyomódik, mint a felfújt belső gumi a köpenynek. Ettől áll ki a levél; ha a növény vizet veszít, a nyomás csökken, és a levél **lekonyul** (hervad).',
         madeOf: 'A sejtfal fő anyaga a **cellulóz**: hosszú szőlőcukor-láncok, amelyek erős rostokba (mikrofibrillumokba) állnak össze, és amelyeket **hemicellulóz** és **pektin** ragaszt össze. A szomszédos sejtek falán apró csatornák (**plazmodezmák**) vezetnek át. A vakuólumot saját hártya határolja; benne víz, sók, cukrok, savak, festékek (pl. a vörös antociánok) és tartalékanyagok vannak.',

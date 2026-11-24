@@ -262,7 +262,7 @@
     intro: 'Az agy a test **irányítóközpontja**: itt alakulnak ki az érzetek, a gondolatok, az érzelmek és az emlékek, és innen indulnak a mozgások parancsai. A rajzon a **bal agyfélteke** látszik oldalról: a **nagyagy kérge** négy lebenyre osztható (**homlok-, fali, halánték- és nyakszirti lebeny**), alatta hátul a **kisagy**, lent az **agytörzs**, amely a **gerincvelőben** folytatódik.\n\nJobbra fent a félteke **belső oldala** látszik (mintha középen kettévágnánk az agyat): itt van a **köztiagy**, az **agyalapi mirigy**, a két féltekét összekötő **kérgestest** és az emlékezésben, érzelmekben fontos **limbikus rendszer**. Lent az agyat burkoló **agyhártyák** és az agyat felépítő **idegsejtek** nagyítva. A **Szétszedés** gombbal a lebenyeket széthúzhatod.',
     parts: [
       {
-        id: 'homlok', z: 4, name: 'Homloklebeny', svg: homlok, explode: [-28, -14], badge: [112, 214], en: 'frontal lobe (primary motor cortex, prefrontal cortex, Broca’s area)',
+        id: 'homlok', z: 4, name: 'Homloklebeny', svg: homlok, explode: [-28, -14], badge: [112, 214], en: 'frontal lobe (primary motor cortex, prefrontal cortex, Broca’s area)', latin: 'lobus frontalis',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/kozponti-kornyeki'],
         what: 'A nagyagy **legnagyobb** lebenye, a homlok mögött, a **központi barázdáig** tart. Ez a „vezérigazgató”: itt történik a **tervezés, döntés, figyelem, önkontroll**, itt dől el, mit teszünk, és mit nem. A hátsó szélén húzódik a **mozgatókéreg**, amely az akaratlagos mozgások parancsait küldi az izmokhoz, alul pedig (legtöbbünknél a bal féltekében) a **Broca-terület**, amely a beszéd **előállításához** kell.',
         madeOf: 'Mint minden lebeny, kívül **szürkeállományból** (kéreg: az idegsejtek sejttestjei, kb. 2–4 mm vastag, hat rétegben) és alatta **fehérállományból** (a sejtek velőhüvelyes nyúlványai) áll. A felszínt **tekervények** (gyrusok) és **barázdák** (sulcusok) teszik ráncossá: így fér el a kb. 0,2 m²-es kéreg (egy kis asztallapnyi) a koponyában. A mozgatókéregben vannak a test legnagyobb idegsejtjei, a **Betz-féle óriás piramissejtek**.',
@@ -271,7 +271,7 @@
         fact: 'A felnőtt agykéreg kb. 16 milliárd idegsejtet tartalmaz; ha kiteríthetnénk, kb. 2000 cm² lenne, nagyjából három 30 cm-es pizza területe.'
       },
       {
-        id: 'fali', z: 4, name: 'Fali lebeny', svg: fali, explode: [6, -26], badge: [392, 132], en: 'parietal lobe (primary somatosensory cortex)',
+        id: 'fali', z: 4, name: 'Fali lebeny', svg: fali, explode: [6, -26], badge: [392, 132], en: 'parietal lobe (primary somatosensory cortex)', latin: 'lobus parietalis',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/kozponti-kornyeki'],
         what: 'A fejtető alatti lebeny, a központi barázda **mögött**. Elülső sávja az **érzőkéreg**: ide érkeznek a bőrből, az izmokból és az ízületekből az **érintés, nyomás, hő, fájdalom** és a testhelyzet jelei. A lebeny hátsó része a **térbeli tájékozódás** központja: tudja, hol vannak a végtagjaink és a tárgyak körülöttünk, segít a kéz mozgását a látott tárgyhoz igazítani, és a számolásban is szerepe van.',
         madeOf: 'Hatrétegű **kéregből** és alatta fehérállományból. Az érzőkéreg sejtjei **oszlopokba** rendeződnek: egy-egy oszlop egy kis bőrterület egyféle ingerére (pl. rezgés vagy tartós nyomás) válaszol. A **szemcsés (granuláris)** IV. réteg itt különösen vastag, mert ide fut be a talamuszból érkező rostok többsége.',
@@ -280,7 +280,7 @@
         fact: 'Az érzőkéreg „térképén” a kéz és az ajak sokkal nagyobb területet foglal el, mint az egész hát: ezért érezzük az ujjbegyünkkel a legfinomabb részleteket.'
       },
       {
-        id: 'halantek', z: 4, name: 'Halántéklebeny', svg: halantek, explode: [-8, 24], badge: [200, 300], en: 'temporal lobe (auditory cortex, Wernicke’s area)',
+        id: 'halantek', z: 4, name: 'Halántéklebeny', svg: halantek, explode: [-8, 24], badge: [200, 300], en: 'temporal lobe (auditory cortex, Wernicke’s area)', latin: 'lobus temporalis',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A halánték mögötti, alsó lebeny, amelyet felülről a mély **oldalsó (Sylvius-) barázda** választ el. Felső részén van a **hallókéreg**, mögötte (többnyire a bal féltekében) a **Wernicke-terület**, amely a beszéd **megértéséhez** kell. Alsó része a látott tárgyak és **arcok felismerésében** fontos, a belsejében pedig az emlékezéshez szükséges **hippokampusz** és az érzelmeket értékelő **amigdala** rejtőzik.',
         madeOf: 'Kéregből és fehérállományból; a belső, „régebbi” részén egyszerűbb, háromrétegű kéreg is van (a hippokampusz körül). Az oldalsó barázda mélyén egy további, „elrejtett” kéregterület, az **inzula** (sziget) is található.',
@@ -289,7 +289,7 @@
         fact: 'A Wernicke-afáziás beteg folyékonyan, gyorsan beszél, de mondatai értelmetlenek, és ő maga sem érti, amit mondanak neki.'
       },
       {
-        id: 'nyakszirti', z: 4, name: 'Nyakszirti lebeny', svg: nyakszirti, explode: [26, -6], badge: [428, 214], en: 'occipital lobe (primary visual cortex)',
+        id: 'nyakszirti', z: 4, name: 'Nyakszirti lebeny', svg: nyakszirti, explode: [26, -6], badge: [428, 214], en: 'occipital lobe (primary visual cortex)', latin: 'lobus occipitalis',
         link: 'szem', terms: ['anatomia/latas'],
         what: 'Az agy **leghátsó**, a tarkó mögötti lebenye: a **látás** központja. A szemből érkező jelek a talamuszon át az itteni **elsődleges látókéregbe** jutnak, ahol az agy először rakja össze a vonalakat, éleket, színeket és mozgásokat. Innen két úton halad tovább az információ: a halántéklebeny felé („**mi** ez?”) és a fali lebeny felé („**hol** van, hogyan nyúljak érte?”).',
         madeOf: 'Kéregből és fehérállományból. Az elsődleges látókéreg főként a lebeny **belső** felszínén, egy mély barázda (sarkantyúbarázda) két partján fekszik; a metszetén egy szabad szemmel is látható fehér csík fut végig (Gennari-csík), ezért **csíkolt kéregnek** is nevezik.',
@@ -298,7 +298,7 @@
         fact: 'Ha a tarkónkat beütjük, „csillagokat látunk”: a látókéreg mechanikus ingerlése is fényérzetet kelt.'
       },
       {
-        id: 'kisagy', z: 2, name: 'Kisagy', svg: kisagy, explode: [22, 24], badge: [468, 340], en: 'cerebellum',
+        id: 'kisagy', z: 2, name: 'Kisagy', svg: kisagy, explode: [22, 24], badge: [468, 340], en: 'cerebellum', latin: 'cerebellum',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/kozponti-kornyeki'],
         what: 'A nagyagy hátsó része alatt, a tarkóban ülő, sűrűn barázdált „kis agy”. A mozgások **finomhangolója**: összeveti a tervezett mozgást a ténylegessel, és menet közben korrigál, így lesz a mozgás **pontos, összerendezett és sima**. Felel az **egyensúlyért**, a testtartásért és a begyakorolt mozgások (biciklizés, gépelés) **automatizálásáért**. Bár csak az agy tömegének kb. 10%-a, itt van az **idegsejtek több mint fele**.',
         madeOf: 'Vékony, párhuzamos **lemezkékbe** (foliumokba) gyűrt kéregből és fehérállományból; metszetben a fehérállomány faágszerű rajzolatot ad (**életfa**). A kéreg három rétegű; a középső rétegben sorakoznak a hatalmas, legyezőszerű dendritfájú **Purkinje-sejtek**, a legalsóban a parányi **szemcsesejtek** milliárdjai.',
@@ -307,7 +307,7 @@
         fact: 'A kisagyban kb. 69 milliárd idegsejt van, a nagyagykéregben csak kb. 16 milliárd.'
       },
       {
-        id: 'agytorzs', z: 1, name: 'Agytörzs (középagy, híd, nyúltvelő)', svg: agytorzs, explode: [-8, 22], badge: [314, 380], en: 'brainstem: midbrain, pons, medulla oblongata',
+        id: 'agytorzs', z: 1, name: 'Agytörzs (középagy, híd, nyúltvelő)', svg: agytorzs, explode: [-8, 22], badge: [314, 380], en: 'brainstem: midbrain, pons, medulla oblongata', latin: 'truncus encephali (mesencephalon, pons, medulla oblongata)',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/reflexiv', 'anatomia/kozponti-kornyeki'],
         what: 'Az agy „szára”, amely a gerincvelőt köti össze a nagyaggyal. Fentről lefelé három része a **középagy**, a **híd** és a **nyúltvelő**. Itt futnak át a fel- és lefelé haladó **pályák**, innen ered a 12 pár **agyideg** többsége, és itt vannak az **életfenntartó központok**: a **légzés, a szívműködés és a vérnyomás** szabályozása, a nyelés, köhögés, tüsszentés, hányás reflexei. Az agytörzs hálózatos állománya tart **ébren**.',
         madeOf: 'A gerincvelővel ellentétben itt a szürkeállomány nem egy darabban, hanem **magvakra** (idegsejtcsoportokra) szétszórva ül a fehérállomány pályái között. A híd elülső, kidomborodó részét harántul futó rostok alkotják, amelyek a nagyagyat a kisagyhoz kapcsolják. A nyúltvelő elején két hosszanti duzzanat, a **piramisok** látszik: ezekben futnak le a mozgatókéreg parancsai.',
@@ -316,7 +316,7 @@
         fact: 'A nyúltvelő csak kb. 3 cm hosszú, mégis nélküle egyetlen percig sem tudnánk lélegezni.'
       },
       {
-        id: 'koztiagy', z: 6, name: 'Köztiagy: talamusz és hipotalamusz', svg: koztiagy, explode: [0, 0], badge: [690, 150], en: 'diencephalon: thalamus and hypothalamus',
+        id: 'koztiagy', z: 6, name: 'Köztiagy: talamusz és hipotalamusz', svg: koztiagy, explode: [0, 0], badge: [690, 150], en: 'diencephalon: thalamus and hypothalamus', latin: 'diencephalon (thalamus, hypothalamus)',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/homeosztazis'],
         what: 'Az agy közepén, a két félteke között ülő rész. Nagyobbik része a tojás alakú **talamusz** (látótelep): ez a kéreg **„kapuőre”**, a szaglás kivételével minden érzékszervi jel itt kapcsolódik át, mielőtt a kéregbe jutna, és itt dől el, mire figyelünk. Alatta ül a csak kb. 4 g-os **hipotalamusz**, a **belső környezet** szabályozója: a testhőmérséklet, az **éhség, szomjúság**, az alvás–ébrenlét ritmusa és a hormonrendszer irányítása tartozik hozzá.',
         madeOf: 'Mindkettő **szürkeállományú magvak** sokaságából áll; a talamusz kb. 50 magot, a hipotalamusz egy tucatnyit tartalmaz. A hipotalamusz idegsejtjei között **hormontermelő** (neuroszekréciós) sejtek is vannak, és itt van a test „főórája”, a **szuprakiazmatikus mag** is, közvetlenül a látóideg-kereszteződés fölött.',
@@ -325,7 +325,7 @@
         fact: 'A lázat a hipotalamusz „termosztátjának” átállítása okozza: ezért fázunk és vacogunk a láz felszálló szakaszában, pedig már melegebb a testünk a szokásosnál.'
       },
       {
-        id: 'hipofizis', z: 7, name: 'Agyalapi mirigy (hipofízis)', svg: hipofizis, explode: [-12, 16], badge: [580, 238], en: 'pituitary gland (hypophysis)',
+        id: 'hipofizis', z: 7, name: 'Agyalapi mirigy (hipofízis)', svg: hipofizis, explode: [-12, 16], badge: [580, 238], en: 'pituitary gland (hypophysis)', latin: 'hypophysis (glandula pituitaria)',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/homeosztazis'],
         what: 'Borsónyi (kb. 0,5 g-os) mirigy, amely egy vékony nyélen lóg a hipotalamusz alatt, a koponyaalap egy csontos mélyedésében (törökülés). A hormonrendszer **„karmestere”**: hormonjaival a **pajzsmirigyet, a mellékvesét, az ivarmirigyeket** irányítja, és ő termeli a **növekedési hormont** is. A hipotalamusz utasításait hajtja végre, így köti össze az **idegrendszert** a **hormonrendszerrel**.',
         madeOf: 'Két, eltérő eredetű részből áll: az **elülső lebeny** (adenohipofízis) valódi **mirigyhám**, többféle hormontermelő sejttel; a **hátsó lebeny** (neurohipofízis) viszont **idegszövet**: a hipotalamusz idegsejtjeinek nyúlványai végződnek benne, és ezek ürítik a vérbe hormonjaikat.',
@@ -334,7 +334,7 @@
         fact: 'A növekedési hormon főleg mély alvás közben szabadul fel: a gyerekek valóban „alvás közben nőnek”.'
       },
       {
-        id: 'kergestest', z: 5, name: 'Kérgestest', svg: kergestest, explode: [0, -16], badge: [594, 120], en: 'corpus callosum',
+        id: 'kergestest', z: 5, name: 'Kérgestest', svg: kergestest, explode: [0, -16], badge: [594, 120], en: 'corpus callosum', latin: 'corpus callosum',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A két agyféltekét összekötő, ív alakú, vastag **„hídpillér”** a hosszanti agyrés mélyén. Rajta keresztül cserélnek információt a féltekék, így működik az agy egységesen: pl. a bal kézzel megfogott tárgy nevét (amit a jobb félteke érez) a bal félteke nyelvi területei ki tudják mondani.',
         madeOf: 'Kb. **200 millió** idegsejt-nyúlványból (axonból) álló **fehérállomány**, nagyrészt velőhüvelyes rostokkal: ezért fehér. Elülső, ívben lehajló vége a **térd**, a hátsó, megvastagodott vége a **párna**; az elülső részen a homloklebenyeket, a hátsón a nyakszirti és halántéklebenyeket kötik össze a rostok.',
@@ -343,7 +343,7 @@
         fact: 'Bár az agyunk két féltekéje kissé eltérően dolgozik, a „bal agyféltekés” és „jobb agyféltekés” emberek népszerű elmélete tudományosan nem igazolható.'
       },
       {
-        id: 'limbikus', z: 8, name: 'Limbikus rendszer: hippokampusz és amigdala', svg: limbikus, explode: [16, 20], badge: [690, 214], en: 'limbic system: hippocampus and amygdala',
+        id: 'limbikus', z: 8, name: 'Limbikus rendszer: hippokampusz és amigdala', svg: limbikus, explode: [16, 20], badge: [690, 214], en: 'limbic system: hippocampus and amygdala', latin: 'systema limbicum (hippocampus, corpus amygdaloideum)',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/szinapszis'],
         what: 'A halántéklebeny belső, mély részén, a köztiagy körül gyűrűt alkotó struktúrák. A csikóhal alakú **hippokampusz** az új **emlékek** kialakításához kell: a napi élményeket ideiglenesen tárolja, majd (főként **alvás közben**) átadja a kéregnek tartós megőrzésre, és a **térbeli tájékozódásban** is fontos. A mandula alakú **amigdala** az **érzelmek**, különösen a **félelem** gyors értékelője: veszélyt jelző ingerre még azelőtt riaszt, hogy tudatosulna.',
         madeOf: 'A hippokampusz egy feltekeredett, ősibb, **háromrétegű kéreg**, amelynek kimenő rostjai a **fornix** (boltozat) ívén jutnak a köztiagyba. Az amigdala egy tucat **magból** álló szürkeállomány-csomó a hippokampusz elülső vége előtt. (A rajzon a középmetszetre vetítve látszanak, valójában oldalt, a halántéklebeny mélyén ülnek.)',
@@ -352,7 +352,7 @@
         fact: 'A londoni taxisofőrök hippokampuszának hátsó része az évekig tartó útvonaltanulás után mérhetően megnagyobbodik.'
       },
       {
-        id: 'agyhartya', z: 3, name: 'Agyhártyák és agy-gerincvelői folyadék', svg: agyhartya, explode: [0, 0], badge: [40, 486], en: 'meninges (dura mater, arachnoid mater, pia mater) and cerebrospinal fluid',
+        id: 'agyhartya', z: 3, name: 'Agyhártyák és agy-gerincvelői folyadék', svg: agyhartya, explode: [0, 0], badge: [40, 486], en: 'meninges (dura mater, arachnoid mater, pia mater) and cerebrospinal fluid', latin: 'meninges (dura mater, arachnoidea mater, pia mater), liquor cerebrospinalis',
         lesson: 'termeszet/emberi-test',
         what: 'Az agyat és a gerincvelőt **három hártya** burkolja: kívül a vastag, szívós **kemény agyhártya**, középen a vékony **pókhálóhártya**, legbelül a tekervényekhez simuló **lágy agyhártya**. A pókhálóhártya alatt kering az **agy-gerincvelői folyadék** (liquor): ebben az agy szinte **úszik**, ami tompítja az ütéseket, és kb. 1,4 kg-os súlyát mintegy 50 g-ra „könnyíti”. A liquor tápanyagot szállít és a salakanyagokat is elviszi.',
         madeOf: 'A kemény agyhártya tömött, **kollagénrostos kötőszövet**, amely a koponyacsont belső felszínéhez nőtt. A pókhálóhártya finom kötőszöveti hártya, amelyből pókhálószerű **gerendák** nyúlnak le. A lágy agyhártya egyetlen vékony réteg, sok **érrel**. A liquor víztiszta folyadék: kevés fehérje, glükóz és sók; mennyisége kb. **150 ml**.',
@@ -361,7 +361,7 @@
         fact: 'Az agyban nincsenek fájdalomérző receptorok, a fejfájás nagy részét a hártyák és az erek receptorai okozzák. Ezért lehet egyes agyműtéteket ébren is végezni.'
       },
       {
-        id: 'neuron', z: 3, name: 'Idegsejt-hálózat (neuronok és szinapszisok)', svg: neuron, explode: [0, 0], badge: [534, 438], en: 'neural network: neurons, dendrites, myelinated axon, synapse',
+        id: 'neuron', z: 3, name: 'Idegsejt-hálózat (neuronok és szinapszisok)', svg: neuron, explode: [0, 0], badge: [534, 438], en: 'neural network: neurons, dendrites, myelinated axon, synapse', latin: 'neuron (dendritum, axon), synapsis',
         link: 'sejt', lesson: 'biologia/sejt', terms: ['anatomia/neuron', 'anatomia/szinapszis', 'anatomia/akcios-potencial', 'anatomia/membranpotencial'],
         what: 'Az agy építőkövei az **idegsejtek** (neuronok): elektromos és kémiai jelekkel kommunikálnak. Minden neuron a **dendritjein** fogadja a jeleket, a **sejttestben** „összegzi” őket, és ha elég erős az inger, az **axonján** elektromos impulzust (akciós potenciált) küld tovább. A sejtek a **szinapszisokban** kapcsolódnak: itt az elektromos jel **kémiai jellé** (ingerületátvivő anyaggá) alakul. Egy neuron akár **10 000** másikkal is kapcsolatban állhat.',
         madeOf: 'Az idegsejt ugyanazokból a sejtalkotókból áll, mint a többi sejt (sejtmag, mitokondriumok, riboszómák), csak hosszú **nyúlványai** vannak. Sok axont **velőhüvely** (zsírszerű mielin) szigetel, amelyet a gliasejtek tekernek köréjük; a hüvelyt rendszeresen **befűződések** szakítják meg. A neuronokat legalább annyi **gliasejt** veszi körül, amely táplálja, védi és tisztítja őket.',

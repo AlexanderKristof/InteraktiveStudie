@@ -20,6 +20,8 @@
   ];
 
   S.renderModel = function (root, m, trail) {
+    var uniMode = S.level === 'egyetem';
+    function sci(p) { return p.latin || p.en || ''; }
     var exploded = false, selId = null, tab = 'what', step = 0;
     var vb = m.viewBox || '0 0 600 420';
 
@@ -41,7 +43,7 @@
 
     root.innerHTML =
       '<nav class="crumbs">' + crumbs + '</nav>' +
-      '<h1>' + m.icon + ' ' + esc(m.title) + '</h1><p class="lead">' + esc(m.summary) + '</p>' + (S.toolsHtml ? S.toolsHtml('modell:' + m.id) : '') +
+      '<h1>' + m.icon + ' ' + esc(m.title) + (uniMode ? ' <span class="lvl-badge">🎓 Egyetemi nézet</span>' : '') + '</h1><p class="lead">' + esc(m.summary) + '</p>' + (S.toolsHtml ? S.toolsHtml('modell:' + m.id) : '') +
       '<div class="ex-layout">' +
       '<div class="ex-stage card"><div class="ex-toolbar">' +
       '<button type="button" class="btn primary" id="ex-explode">⇱ Szétszedés</button>' +
@@ -52,7 +54,7 @@
       '<svg class="ex-svg" id="ex-svg" viewBox="' + vb + '" role="group" aria-label="' + esc(m.title) + ' alkatrészei">' +
       (m.backdrop || '') + partsSvg + '<g id="ex-parts-end"></g>' + (m.overlay || '') + '<g id="ex-badges-layer"></g></svg>' +
       '<div class="part-chips" id="ex-chips">' + m.parts.map(function (p, i) {
-        return '<button type="button" data-id="' + p.id + '"><i>' + (i + 1) + '</i>' + esc(p.name) + '</button>';
+        return '<button type="button" data-id="' + p.id + '"><i>' + (i + 1) + '</i>' + (uniMode && sci(p) ? '<span class="chip-sci">' + esc(sci(p)) + '</span><small>' + esc(p.name) + '</small>' : esc(p.name)) + '</button>';
       }).join('') + '</div></div>' +
       '<aside class="ex-info card" id="ex-info" aria-live="polite"></aside></div>' +
       (m.steps && m.steps.length ? '<h2>Hogyan készül? – lépésről lépésre</h2><div class="steps card" id="ex-steps"></div>' : '') +
@@ -94,23 +96,29 @@
 
     function paintInfo() {
       if (!selId) {
-        info.innerHTML = '<h3>Fedezd fel!</h3>' + md(m.intro || '') +
-          '<p class="muted">Kattints egy alkatrészre a rajzon vagy a listában. A <b>Szétszedés</b> gombbal szétnyithatod a darabokat.</p>';
+        if (uniMode && m.uni && m.uni.text) {
+          info.innerHTML = '<h3>🎓 Egyetemi áttekintés</h3>' + md(m.uni.text) +
+            '<p class="muted">Kattints egy alkatrészre: a szakmai (latin/angol) nevét és egyetemi szintű leírását látod. Az iskolai magyarázat a „Mi ez? (alapok)” fülön marad elérhető.</p>';
+        } else {
+          info.innerHTML = '<h3>Fedezd fel!</h3>' + md(m.intro || '') +
+            (uniMode ? '<p class="note" style="font-size:.9rem">🎓 Ehhez a modellhez még nincs külön egyetemi áttekintés; az alkatrészeknél a szakmai leírást látod, ahol van.</p>' : '') +
+            '<p class="muted">Kattints egy alkatrészre a rajzon vagy a listában. A <b>Szétszedés</b> gombbal szétnyithatod a darabokat.</p>';
+        }
         return;
       }
       var e = byId[selId], p = e.p;
-      var uni = S.level === 'egyetem';
-      var tabs = [['what', 'Mi ez?', p.what], ['made', 'Miből van?', p.madeOf], ['how', 'Hogyan készül?', p.how]].concat(uni && p.uni ? [['uni', '🎓 Egyetemi háttér', p.uni]] : [])
+      var uni = uniMode;
+      var tabs = (uni && p.uni ? [['uni', '🎓 Szakmai leírás', p.uni]] : []).concat([['what', uni ? 'Mi ez? (alapok)' : 'Mi ez?', p.what], ['made', 'Miből van?', p.madeOf], ['how', 'Hogyan készül?', p.how]])
         .filter(function (t) { return t[2]; });
       if (!tabs.some(function (t) { return t[0] === tab; })) tab = tabs[0] ? tabs[0][0] : 'what';
       var cur = tabs.filter(function (t) { return t[0] === tab; })[0];
       var link = p.link && S.models[p.link];
-      info.innerHTML = '<h3><span class="n">' + e.n + '</span>' + esc(p.name) + '</h3>' +
+      info.innerHTML = '<h3><span class="n">' + e.n + '</span>' + (uni && sci(p) ? '<span><span class="sci-name">' + esc(sci(p)) + '</span><small class="muted sci-sub">' + esc(p.name) + (p.latin && p.en ? ' · 🇬🇧 ' + esc(p.en) : '') + '</small></span>' : esc(p.name)) + '</h3>' +
         '<div class="tabs" role="tablist">' + tabs.map(function (t) {
           return '<button type="button" role="tab" aria-selected="' + (t[0] === tab) + '" class="' + (t[0] === tab ? 'on' : '') + '" data-tab="' + t[0] + '">' + t[1] + '</button>';
         }).join('') + '</div>' +
         '<div>' + md(cur ? cur[2] : '') + '</div>' +
-        (uni && p.en ? '<p class="muted" style="margin:6px 0 0">🇬🇧 ' + esc(p.en) + '</p>' : '') +
+        (uni && !p.latin && !p.en ? '' : '') +
         (uni && S.termCards ? S.termCards(p.terms, 'Szakszavak ehhez az alkatrészhez') : '') +
         (!uni && (p.uni || (p.terms && p.terms.length)) ? '<p class="muted" style="font-size:.88rem;margin-top:10px">🎓 Ehhez az alkatrészhez egyetemi magyarázat is tartozik. <button type="button" class="linkish" data-level="egyetem">Egyetemi szint</button></p>' : '') +
         (p.fact ? '<div class="fact">' + S.inline(p.fact) + '</div>' : '') +
@@ -128,7 +136,7 @@
 
     function select(id, keepTab) {
       selId = id;
-      if (!keepTab) tab = 'what';
+      if (!keepTab) tab = uniMode && id && byId[id].p.uni ? 'uni' : 'what';
       highlight(id ? [id] : null);
       root.querySelectorAll('#ex-chips button').forEach(function (b) { b.classList.toggle('on', b.dataset.id === id); });
       paintInfo();
@@ -265,7 +273,7 @@
       }
       var p = byId[game.order[game.i]].p;
       game.tries = 0;
-      b.innerHTML = '<span class="muted">' + (game.i + 1) + ' / ' + game.order.length + '</span> <span>Hol van: <b>' + esc(p.name) + '</b>?</span> <span class="muted">Kattints rá a rajzon!</span> <span class="gm-score">✔ ' + game.first + '</span>';
+      b.innerHTML = '<span class="muted">' + (game.i + 1) + ' / ' + game.order.length + '</span> <span>Hol van: <b>' + esc(uniMode && sci(p) ? sci(p) : p.name) + '</b>?</span> <span class="muted">Kattints rá a rajzon!</span> <span class="gm-score">✔ ' + game.first + '</span>';
     }
     function flash(g, cls) { g.classList.add(cls); setTimeout(function () { g.classList.remove(cls); }, 650); }
     function gameClick(g) {

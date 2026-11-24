@@ -275,6 +275,16 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .toc-terms { margin: 6px 0 2px; font-size: .9rem; line-height: 1.7; }
 @media print { .toc-item { border: 0; padding: 0; } #toc-q, #toc-open, #toc-print { display: none; } }
 
+.lvl-badge { font-size: .9rem; vertical-align: middle; background: var(--accent); color: var(--accent-fg); padding: 3px 10px; border-radius: 999px; font-weight: 650; }
+.sci-name { display: block; font-style: italic; font-family: Georgia, "Times New Roman", serif; font-size: 1.15rem; }
+.sci-sub { display: block; font-size: .82rem; font-weight: 500; }
+.part-chips .chip-sci { font-style: italic; font-family: Georgia, serif; }
+.part-chips button small { color: var(--muted); margin-left: 4px; }
+.uni-top { border-left: 5px solid #7c5cd6; margin: 6px 0 18px; }
+.uni-top h2 { margin-top: 0; }
+.school-fold { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 6px 16px; margin: 10px 0; }
+.school-fold > summary { cursor: pointer; font-weight: 650; padding: 8px 0; }
+
 /* Beállítások, akadálymentesség */
 .settings { display: grid; gap: 16px; max-width: 640px; }
 .settings > div { display: grid; gap: 6px; }
@@ -836,7 +846,7 @@ h3.letter { margin: 18px 0 8px; color: var(--muted); font-size: 1rem; border-bot
     if (!list.length) return '';
     return '<div class="term-refs">' + (title ? '<b class="tr-title">' + title + '</b>' : '') + '<div class="tr-grid">' + list.map(function (r) {
       return '<a class="tr-card" style="--tc:' + topicColor(r.c, r.t.topic) + '" href="' + r.href + '"><b>' + esc(r.t.term) + '</b>' +
-        (r.t.en ? '<small>🇬🇧 ' + esc(r.t.en) + '</small>' : '') + '<span>' + S.inline(r.t.short) + '</span><em>' + esc(r.c.title) + ' →</em></a>';
+        (r.t.latin ? '<small class="sci-name" style="font-size:.85rem">' + esc(r.t.latin) + '</small>' : '') + (r.t.en ? '<small>🇬🇧 ' + esc(r.t.en) + '</small>' : '') + '<span>' + S.inline(r.t.short) + '</span><em>' + esc(r.c.title) + ' →</em></a>';
     }).join('') + '</div></div>';
   };
   /* Hol fordul elő egy szakszó a valóságban? (modellek alkatrészei, leckék) */
@@ -925,7 +935,7 @@ h3.letter { margin: 18px 0 8px; color: var(--muted); font-size: 1rem; border-bot
     var fs = (t.formulas || []).map(function (fid) { return c.formulas.findIndex(function (f) { return f.id === fid; }); }).filter(function (i) { return i >= 0; });
     return '<article class="term" style="--tc:' + col + '">' +
       '<div class="row" style="gap:6px"><span class="topic-chip">' + esc(topicTitle(c, t.topic)) + '</span>' + (t.en ? '<span class="badge" title="angolul">🇬🇧 ' + esc(t.en) + '</span>' : '') + '</div>' +
-      '<h' + (compact ? '3' : '1') + ' class="term-title">' + esc(t.term) + '</h' + (compact ? '3' : '1') + '>' +
+      '<h' + (compact ? '3' : '1') + ' class="term-title">' + esc(t.term) + (t.latin ? ' <span class="sci-name" style="display:inline;font-size:.6em;font-weight:500">(' + esc(t.latin) + ')</span>' : '') + '</h' + (compact ? '3' : '1') + '>' +
       '<p class="term-short">' + S.inline(t.short) + '</p>' +
       (t.visual ? '<figure class="term-visual">' + t.visual + (t.caption ? '<figcaption>' + S.inline(t.caption) + '</figcaption>' : '') + '</figure>' : '') +
       (t.text ? md(t.text) : '') +
@@ -1186,6 +1196,9 @@ h3.letter { margin: 18px 0 8px; color: var(--muted); font-size: 1rem; border-bot
     c.formulas = c.formulas || [];
     var sorted = sortTerms(c.terms), i = sorted.indexOf(t), prev = sorted[i - 1], next = sorted[i + 1];
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/egyetem">Egyetem</a><span>›</span><a href="#/egyetem/' + c.id + '">' + esc(c.title) + '</a><span>›</span><span>' + esc(t.term) + '</span></nav>' +
+      (S.level !== 'egyetem' ? '<div class="note" style="margin-bottom:14px"><b class="t">🎒 Iskolai szinten vagy</b><p>Ez egy egyetemi szakszó. ' +
+        (prereqLinks(t).length ? 'Ha még új, ezekkel kezdd: ' + prereqLinks(t).map(function (u) { return '<a href="' + u.href + '">' + u.icon + ' ' + esc(u.label) + '</a>'; }).join(', ') + '. ' : '') +
+        '<button type="button" class="linkish" data-level="egyetem">Váltás egyetemi szintre</button></p></div>' : '') +
       (S.toolsHtml ? S.toolsHtml('szakszo:' + c.id + '/' + t.id) : '') +
       '<div class="lesson-body term-page">' + termHtml(c, t, false) + '</div>' +
       '<nav class="pager">' + (prev ? '<a class="btn" href="#/egyetem/' + c.id + '/fogalom/' + prev.id + '">← ' + esc(prev.term) + '</a>' : '<span></span>') +
@@ -12072,7 +12085,7 @@ STUDIE.addSubject({
     intro: 'A tested kb. **37 ezer milliárd** sejtből áll. Mindegyik egy apró, hártyával határolt **gyár**: van „igazgatósága” (**sejtmag**), „erőműve” (**mitokondrium**), „gyártósora” (**riboszóma** és **endoplazmatikus retikulum**), „csomagolóüzeme” (**Golgi-készülék**), „hulladékfeldolgozója” (**lizoszóma**) és „váza” (**sejtváz**). A rajz egy általános állati sejt metszete: valódi sejtjeink alakja és sejtalkotóinak aránya a feladatuktól függően nagyon eltérő.\n\nLent lépésről lépésre követheted, hogyan **készül egy fehérje** a sejtben. A **Szétszedés** gombbal széthúzhatod a sejtalkotókat.',
     parts: [
       {
-        id: 'hartya', terms: ['anatomia/membranpotencial'], z: 2, name: 'Sejthártya', svg: mem, explode: [0, 0], badge: E(CX, CY, RX - 5, RY - 5, 1.05), en: 'plasma membrane (cell membrane)',
+        id: 'hartya', terms: ['anatomia/membranpotencial'], z: 2, name: 'Sejthártya', svg: mem, explode: [0, 0], badge: E(CX, CY, RX - 5, RY - 5, 1.05), en: 'plasma membrane (cell membrane)', latin: 'membrana cellularis (plasmalemma)',
         what: 'A sejtet körülvevő, kb. **7–10 nm** vékony hártya. Elválasztja a sejt belsejét a környezetétől, és **válogat**: egyes anyagokat átenged, másokat nem (ez a **féligáteresztő** képesség). A benne ülő fehérjék csatornaként, szállítóként, „antennaként” (receptorként) és azonosító „névtáblaként” működnek.',
         madeOf: '**Foszfolipid kettős rétegből**: a molekulák vízkedvelő „feje” (a rajzon rózsaszín pöttyök) kifelé, a víztaszító „farka” (sárga sáv) befelé néz. Ebbe **fehérjék** (lila) ágyazódnak, a külső oldalukhoz gyakran **cukorláncok** kapcsolódnak (zöld ágacskák). A rétegek közé **koleszterin** ékelődik, ez szabályozza a hártya rugalmasságát.',
         how: 'A foszfolipidek vízben **maguktól** rendeződnek kettős réteggé, mert így a víztaszító farkak védve vannak a víztől. A hártya új anyagai a **sima ER-ben** készülnek, és vezikulákkal jutnak a felszínre: amikor egy hólyag beleolvad a hártyába, a saját membránja is a sejthártya része lesz. A hártya **folyékony**: a molekulák oldalirányban folyamatosan mozognak benne (folyékony mozaik modell).',
@@ -12080,7 +12093,7 @@ STUDIE.addSubject({
         fact: 'Ha egy sejthártyát olyan vastagra nagyítanánk, mint egy papírlap, maga a sejt kb. egy focilabda méretű lenne.'
       },
       {
-        id: 'plazma', z: 0, name: 'Sejtplazma (citoplazma)', svg: cyto, explode: [0, 0], badge: [170, 222], en: 'cytoplasm, cytosol',
+        id: 'plazma', z: 0, name: 'Sejtplazma (citoplazma)', svg: cyto, explode: [0, 0], badge: [170, 222], en: 'cytoplasm, cytosol', latin: 'cytoplasma (cytosolum)',
         what: 'A sejthártyán belüli teljes tér a sejtmag kivételével. Folyékony része a **citoszol**, ebben „úsznak” a sejtalkotók. Itt zajlik a sejt anyagcsere-folyamatainak jó része, például a szőlőcukor lebontásának első lépése (**glikolízis**) és sok fehérje elkészítése.',
         madeOf: 'Kb. **70–80% víz**, benne oldott **ionok** (K⁺, Na⁺, Cl⁻, Ca²⁺), **tápanyagok** (szőlőcukor, aminosavak), több ezer féle **enzim** és más fehérje. Olyan sűrűn van benne fehérje, hogy inkább kocsonyás, mint vizes.',
         how: 'A citoszol folyamatosan megújul: a sejt a sejthártyán keresztül veszi fel a vizet és a tápanyagokat, a saját fehérjéit a szabad riboszómákon gyártja, a régieket pedig lebontja (pl. a **proteaszóma** nevű fehérjebontó „darálóval”). Sejtosztódáskor a citoplazma kettéfűződik, és a két utódsejt osztozik rajta.',
@@ -12088,7 +12101,7 @@ STUDIE.addSubject({
         fact: 'A citoplazma nem áll: a sejtváz motorfehérjéi folyamatosan „kevergetik”, a sejtalkotók másodpercenként mikrométereket tehetnek meg.'
       },
       {
-        id: 'mag', z: 3, name: 'Sejtmag (maghártyával)', svg: nuc, explode: [-38, 12], badge: [N.x - 52, N.y + 50], en: 'nucleus, nuclear envelope, nuclear pore',
+        id: 'mag', z: 3, name: 'Sejtmag (maghártyával)', svg: nuc, explode: [-38, 12], badge: [N.x - 52, N.y + 50], en: 'nucleus, nuclear envelope, nuclear pore', latin: 'nucleus (involucrum nucleare, porus nuclearis)',
         what: 'A sejt **irányítóközpontja**: itt tárolódik az örökítőanyag, a **DNS**, és itt íródnak át a gének mRNS-re. A sejtmagot **kettős maghártya** veszi körül, amelyen **magpórusok** (a rajzon a hártya „kapui”) vannak: ezeken át lépnek ki az mRNS-ek és a riboszóma-alegységek, és ezeken jutnak be a magba szükséges fehérjék.',
         madeOf: 'Két foszfolipid membránból (a külső a durva ER folytatása), a pórusokat óriási, kb. 30 féle fehérjéből álló **pórus-komplexek** alkotják. Belül a **magplazmában** van a kromatin és a sejtmagvacska; a belső hártyát a **lamina** nevű fehérjeháló erősíti.',
         how: 'A maghártya sejtosztódáskor **szétesik** apró hólyagokra, hogy a kromoszómák szétválhassanak, majd az osztódás végén az utódsejtekben a kromoszómák köré **újra összeáll**. A legtöbb sejtünknek egy magja van, de a vörösvérsejtek érésük során elveszítik, a vázizomrostokban viszont több száz is lehet.',
@@ -12096,7 +12109,7 @@ STUDIE.addSubject({
         fact: 'Egy átlagos emberi sejt magja kb. 6 µm átmérőjű, mégis belefér közel **2 méternyi** DNS.'
       },
       {
-        id: 'kromatin', z: 4, name: 'Kromatin (DNS)', svg: chrom, explode: [-38, 12], badge: [N.x - 30, N.y + 18], en: 'chromatin (DNA + histones)',
+        id: 'kromatin', z: 4, name: 'Kromatin (DNS)', svg: chrom, explode: [-38, 12], badge: [N.x - 30, N.y + 18], en: 'chromatin (DNA + histones)', latin: 'chromatinum',
         what: 'A sejtmagban lévő **DNS** és a hozzá kötődő fehérjék együttese. A DNS-ben vannak a **gének**: ezek a fehérjék „receptjei”. Az emberi sejtben 46 DNS-molekula (**kromoszóma**) van, kb. **20 000 fehérjét kódoló** génnel. A lazább részek (eukromatin) aktívak, a sűrűbbek (heterokromatin, a hártya mentén sötét foltok) többnyire „kikapcsoltak”.',
         madeOf: 'A **DNS** két, egymás köré tekeredő szálból áll (kettős spirál). Ezek **nukleotidokból** épülnek fel, négyféle bázissal: A, T, G, C; a párok mindig A–T és G–C. A DNS **hiszton** fehérjék köré tekeredik, mint cérna az orsóra: így alakulnak ki a **nukleoszómák** (a „gyöngysor”).',
         how: 'Sejtosztódás előtt a DNS **megkettőződik** (replikáció): a két szál szétválik, és mindegyik mellé egy új, kiegészítő szál épül. Osztódáskor a kromatin erősen feltekeredik, ekkor látszanak mikroszkóppal a jellegzetes X alakú **kromoszómák**. Az osztódások között ismét kitekeredik, hogy a gének leolvashatók legyenek.',
@@ -12104,7 +12117,7 @@ STUDIE.addSubject({
         fact: 'Ha egy sejtmag összes DNS-ét kinyújtanánk, kb. 2 m hosszú lenne; a tested összes sejtjének DNS-e pedig többször megjárná a Föld–Nap távolságot oda-vissza.'
       },
       {
-        id: 'magvacska', z: 5, name: 'Sejtmagvacska', svg: nucl, explode: [-38, 12], en: 'nucleolus',
+        id: 'magvacska', z: 5, name: 'Sejtmagvacska', svg: nucl, explode: [-38, 12], en: 'nucleolus', latin: 'nucleolus',
         what: 'Sötétebb, sűrű terület a sejtmagban, **nincs saját hártyája**. Ez a **riboszómák „gyára”**: itt készül a riboszómák RNS-e (rRNS), és itt állnak össze a riboszóma-alegységek. Az erősen fehérjetermelő sejtekben (pl. mirigysejtekben) nagy, és akár több is lehet.',
         madeOf: 'A riboszómális RNS génjeit hordozó **DNS-szakaszokból**, frissen átírt **rRNS-ből** és sok **fehérjéből**, köztük a citoplazmából behozott riboszómafehérjékből.',
         how: 'Akkor alakul ki, amikor az rRNS-gének átírása beindul: a sok átíródó RNS és a hozzá kötődő fehérjék egy sűrű „csomót” hoznak létre. Osztódáskor **eltűnik**, majd az utódsejtekben az rRNS-gének körül újra kialakul. A kész alegységek a magpórusokon át jutnak ki a citoplazmába.',
@@ -12112,7 +12125,7 @@ STUDIE.addSubject({
         fact: 'Egy gyorsan növekvő emlőssejt percenként több ezer riboszóma-alegységet készít.'
       },
       {
-        id: 'der', z: 3, name: 'Durva endoplazmatikus retikulum', svg: rer, explode: [20, -44], en: 'rough endoplasmic reticulum (RER)',
+        id: 'der', z: 3, name: 'Durva endoplazmatikus retikulum', svg: rer, explode: [20, -44], en: 'rough endoplasmic reticulum (RER)', latin: 'reticulum endoplasmaticum granulosum',
         what: 'Lapos, egymásra rétegzett hártyazsákok (**ciszternák**) rendszere a sejtmag körül. Azért „durva”, mert a külső felszínét **riboszómák** borítják (a rajzon sötét pöttyök). Itt készülnek azok a fehérjék, amelyek a **sejthártyába** kerülnek, a sejtből **kiválasztódnak** (pl. emésztőenzimek, hormonok, ellenanyagok), vagy a lizoszómákba jutnak.',
         madeOf: 'Egyetlen foszfolipid membránból, amely egy összefüggő belső teret (**lument**) zár körül. A membrán közvetlenül folytatódik a **külső maghártyába**. A lumenben a fehérjék feltekeredését segítő **dajkafehérjék** (chaperonok) vannak.',
         how: 'Az ER membránja folyamatosan nő: új foszfolipideket a saját membránjába épít be, és ezekből fűződnek le a vezikulák. Ha egy sejtnek több fehérjét kell termelnie (pl. az ellenanyagot gyártó plazmasejteknek), a durva ER többszörösére **megnövekszik**. A riboszómák nem végleg ülnek rajta: csak akkor kötődnek hozzá, ha éppen ER-be szánt fehérjét gyártanak.',
@@ -12120,7 +12133,7 @@ STUDIE.addSubject({
         fact: 'Egy hasnyálmirigy-sejtben a durva ER felülete többszöröse a sejthártyáénak.'
       },
       {
-        id: 'ser', z: 3, name: 'Sima endoplazmatikus retikulum', svg: ser, explode: [18, 50], en: 'smooth endoplasmic reticulum (SER)',
+        id: 'ser', z: 3, name: 'Sima endoplazmatikus retikulum', svg: ser, explode: [18, 50], en: 'smooth endoplasmic reticulum (SER)', latin: 'reticulum endoplasmaticum nongranulosum',
         what: 'Elágazó **csövek** hálózata, amelynek felszínén **nincsenek riboszómák**. Itt készülnek a **lipidek**: a hártyák foszfolipidjei, a koleszterin és a szteroidhormonok (pl. nemi hormonok). A májsejtekben a sima ER **méregtelenít** (pl. gyógyszereket, alkoholt alakít át), az izomsejtekben pedig **kalciumot** tárol, amelynek felszabadulása az izom összehúzódását indítja.',
         madeOf: 'Ugyanolyan foszfolipid membránból, mint a durva ER, amellyel össze is függ. A membránjában a lipidgyártás és a méregtelenítés **enzimjei** ülnek.',
         how: 'A durva ER folytatásaként, annak membránjából alakul ki. Ha egy anyag (pl. egy gyógyszer) tartósan sok méregtelenítő munkát ad a májnak, a sima ER **megnagyobbodik** a májsejtekben: ezért kell egyes gyógyszerekből idővel nagyobb adag.',
@@ -12128,7 +12141,7 @@ STUDIE.addSubject({
         fact: 'A sima és a durva ER együtt alkothatja a sejt összes membránjának akár a felét.'
       },
       {
-        id: 'riboszoma', z: 6, name: 'Riboszómák', svg: ribo, explode: [20, -44], badge: [196, 160], en: 'ribosomes (80S: 60S + 40S subunits)',
+        id: 'riboszoma', z: 6, name: 'Riboszómák', svg: ribo, explode: [20, -44], badge: [196, 160], en: 'ribosomes (80S: 60S + 40S subunits)', latin: 'ribosoma',
         what: 'Apró **fehérjegyártó gépek**: a sejtmagból érkező **mRNS** utasításai alapján aminosavakat fűznek össze fehérjévé. A szabadon lebegők (néha gyöngysorszerű csoportokban, **poliszómákban**) a citoszolban maradó fehérjéket készítik, az ER-hez kötöttek a kiválasztásra vagy hártyába szánt fehérjéket.',
         madeOf: 'Két alegységből (egy kisebből és egy nagyobból), amelyek **riboszómális RNS-ből** (rRNS) és kb. 80 féle **fehérjéből** állnak. Nincs hártyájuk. Egy riboszóma kb. 25–30 nm átmérőjű: a rajzon sokszorosan felnagyítva látszanak.',
         how: 'Alegységeik a **sejtmagvacskában** állnak össze, és külön-külön jutnak ki a magpórusokon. A citoplazmában csak akkor kapcsolódnak össze, amikor egy mRNS-hez kötődnek, és a fehérje elkészülte után ismét szétválnak. Egy sejtben **több millió** riboszóma lehet.',
@@ -12136,7 +12149,7 @@ STUDIE.addSubject({
         fact: 'A riboszóma fehérjeépítő közepe **RNS-ből** van, nem fehérjéből: ez az egyik érv amellett, hogy az élet korai formáiban az RNS volt a „mindenes” molekula (RNS-világ hipotézis).'
       },
       {
-        id: 'golgi', z: 3, name: 'Golgi-készülék', svg: golgi, explode: [54, -8], en: 'Golgi apparatus (cis/trans Golgi network)',
+        id: 'golgi', z: 3, name: 'Golgi-készülék', svg: golgi, explode: [54, -8], en: 'Golgi apparatus (cis/trans Golgi network)', latin: 'complexus golgiensis',
         what: 'Lapos, ívelt hártyazsákok kötege: a sejt **„posta- és csomagolóüzeme”**. Az ER-ből érkező fehérjéket és lipideket **átalakítja** (pl. cukorláncokat kapcsol rájuk), **szétválogatja** és „címkével” látja el, majd vezikulákba csomagolva elküldi őket a rendeltetési helyükre: a sejthártyához, a sejten kívülre vagy a lizoszómákba.',
         madeOf: '4–8 egymásra rétegzett, lapos membránzsákból (**ciszternából**). Van egy **fogadó (cis)** oldala, amely az ER felé néz, és egy **szállító (trans)** oldala, amely a sejthártya felé. A ciszternákban különböző módosító **enzimek** vannak.',
         how: 'A Golgi folyamatosan megújul: a cis oldalon az ER-ből érkező vezikulák összeolvadnak, és új ciszternát hoznak létre, amely fokozatosan „vándorol” a trans oldal felé, miközben az enzimjei változnak (**ciszterna-érés**), a trans oldalon pedig hólyagokra esik szét. Sejtosztódáskor apró darabokra bomlik, és az utódsejtekben újra összeáll.',
@@ -12144,7 +12157,7 @@ STUDIE.addSubject({
         fact: 'Camillo **Golgi** olasz orvos 1898-ban egy ezüstsós festéssel fedezte fel, de sokáig sokan festési hibának (műterméknek) tartották. Csak az elektronmikroszkóp igazolta, hogy tényleg létezik.'
       },
       {
-        id: 'mito', z: 4, name: 'Mitokondriumok', svg: mitos, explode: [-56, 4], badge: [132, 176], en: 'mitochondria',
+        id: 'mito', z: 4, name: 'Mitokondriumok', svg: mitos, explode: [-56, 4], badge: [132, 176], en: 'mitochondria', latin: 'mitochondrium',
         what: 'A sejt **„erőművei”**: a tápanyagokból (pl. szőlőcukorból, zsírsavakból) oxigén felhasználásával **ATP**-t állítanak elő, ez a sejt „energiapénze”. Ez a **sejtlégzés**, melléktermékként szén-dioxid és víz keletkezik. Az energiaigényes sejtekben (szívizom, idegsejt, májsejt) több ezer mitokondrium is lehet.',
         madeOf: '**Kettős membránból**: a külső sima, a belső pedig **redőzött** (a redők neve **kriszta**), így nagy felületen férnek el rajta a légzési enzimek. A belső teret (**mátrix**) enzimek töltik ki, és van benne **saját DNS** és **saját riboszómák** is.',
         how: 'Mitokondrium nem keletkezhet a semmiből: a meglévők **kettéosztódással** szaporodnak (mint a baktériumok), és össze is olvadhatnak. A sérült darabokat a sejt lebontja. Egy **ősi baktérium** leszármazottai, amelyet sok százmillió éve egy másik sejt bekebelezett, de nem emésztett meg (**endoszimbiózis**). A mitokondriumainkat kizárólag **anyánktól** örököljük, a petesejtből.',
@@ -12152,7 +12165,7 @@ STUDIE.addSubject({
         fact: 'Egy ember naponta nagyjából a **saját testtömegének megfelelő** mennyiségű ATP-t állít elő és használ el újra.'
       },
       {
-        id: 'lizoszoma', z: 4, name: 'Lizoszómák', svg: lys, explode: [-40, 20], badge: [96, 244], en: 'lysosomes',
+        id: 'lizoszoma', z: 4, name: 'Lizoszómák', svg: lys, explode: [-40, 20], badge: [96, 244], en: 'lysosomes', latin: 'lysosoma',
         what: 'Apró, gömb alakú hólyagok, a sejt **„emésztő- és újrahasznosító üzemei”**. Lebontják a sejtbe bekebelezett anyagokat és kórokozókat, valamint a sejt saját elöregedett, sérült alkotóit (ez az **autofágia**). A lebontásból származó építőköveket (aminosavakat, cukrokat) a sejt újra felhasználja.',
         madeOf: 'Egyetlen membránból, amely kb. **50 féle bontóenzimet** (pl. fehérje-, zsír-, nukleinsav-bontó enzimeket) zár magába. Belül **savas** a kémhatás (pH ≈ 4,5–5), és az enzimek csak ilyen savas közegben működnek jól: ha kiszabadulnak a semleges kémhatású citoszolba, alig ártanak.',
         how: 'Enzimjeik a **durva ER** riboszómáin készülnek, a **Golgi-készülékben** kapnak egy különleges „címkét”, ennek alapján a Golgi külön vezikulákba válogatja őket. Ezek a hólyagok összeolvadnak a bekebelezett anyagot tartalmazó hólyagokkal, és így alakul ki az érett lizoszóma. A savas kémhatást a membránjukban ülő **protonpumpák** hozzák létre.',
@@ -12160,7 +12173,7 @@ STUDIE.addSubject({
         fact: 'A fehérvérsejtek (falósejtek) lizoszómái semmisítik meg a bekebelezett baktériumokat.'
       },
       {
-        id: 'vezikula', z: 5, name: 'Vezikulák (hólyagok)', svg: vesic, explode: [38, 26], badge: [566, 236], en: 'vesicles (transport, secretory), exocytosis',
+        id: 'vezikula', z: 5, name: 'Vezikulák (hólyagok)', svg: vesic, explode: [38, 26], badge: [566, 236], en: 'vesicles (transport, secretory), exocytosis', latin: 'vesiculae (exocytosis)',
         what: 'Apró, hártyával határolt **„szállítókapszulák”**. Anyagokat visznek a sejtalkotók között: az ER-ből a Golgiba, a Golgiból a sejthártyához. A sejthártyával összeolvadva kiürítik a tartalmukat a sejten kívülre (**exocitózis**, a rajzon jobbra, a hártyánál), a hártyából lefűződve pedig anyagot vesznek fel a sejtbe (**endocitózis**).',
         madeOf: 'Egyetlen foszfolipid membránból, benne a szállított anyaggal: például **hormonnal** (inzulin), **emésztőenzimmel**, **ingerületátvivő anyaggal** (az idegsejtekben), vagy a sejthártyába szánt fehérjékkel.',
         how: 'Egy membrán (pl. az ER vagy a Golgi hártyája) kis része **kidudorodik és lefűződik**, ebben burokfehérjék segítenek, amelyek „kosárként” fogják közre a hólyagot. A vezikula a **sejtváz** mikrotubulusain, motorfehérjék segítségével halad a célja felé. Ott a hártyák speciális fehérjéi „cipzárként” összekapcsolódnak, és a két membrán **összeolvad**.',
@@ -12168,7 +12181,7 @@ STUDIE.addSubject({
         fact: 'Egyetlen idegvégződés másodpercenként akár több száz vezikulát is kiüríthet, mindegyikben néhány ezer ingerületátvivő molekulával.'
       },
       {
-        id: 'sejtvaz', z: 1, name: 'Sejtváz és centriólumok', svg: skel, explode: [0, 0], badge: [CS[0] + 2, CS[1] + 30], en: 'cytoskeleton (microtubules, actin filaments), centrosome, centrioles',
+        id: 'sejtvaz', z: 1, name: 'Sejtváz és centriólumok', svg: skel, explode: [0, 0], badge: [CS[0] + 2, CS[1] + 30], en: 'cytoskeleton (microtubules, actin filaments), centrosome, centrioles', latin: 'cytoskeleton (microtubulus, microfilamentum), centrosoma, centriolum',
         what: 'Fehérjeszálakból álló belső **„csontváz és sínhálózat”**. Formát ad a sejtnek, rögzíti a sejtalkotókat, ezen „sínen” szállítják a vezikulákat, és ez teszi lehetővé a sejt mozgását és osztódását. A **mikrotubulusok** (kék vonalak) a mag melletti **sejtközpontból** indulnak ki, amelynek közepén két, egymásra merőleges **centriólum** ül. A hártya alatt az **aktinszálak** hálója (szaggatott vonal) erősíti a sejt felszínét.',
         madeOf: 'Háromféle fehérjeszálból: **mikrotubulusok** (tubulin fehérjéből álló üreges csövek, kb. 25 nm), **aktin mikrofilamentumok** (vékony, kb. 7 nm-es szálak) és **intermedier filamentumok** (kötélszerű, szakítószilárd szálak, pl. keratin). A centriólumok 9 × 3 mikrotubulusból álló kis hengerek.',
         how: 'A szálak **folyamatosan épülnek és bomlanak**: a fehérje-alegységek az egyik végükön hozzákapcsolódnak, a másikon leválnak, így a sejtváz percek alatt átrendeződhet. Sejtosztódáskor a centriólumok megkettőződnek, a két sejtközpont a sejt két pólusára vándorol, és a köztük kialakuló **magorsó** mikrotubulusai húzzák szét a kromoszómákat.',
@@ -12176,6 +12189,10 @@ STUDIE.addSubject({
         fact: 'A csillók és az ondósejt ostora is mikrotubulusokból épül fel, ugyanabban a „9 + 2”-es elrendezésben.'
       }
     ],
+    uni: {
+      text: 'Az eukarióta sejt egyetemi szemmel **kompartmentalizált reakciótér**: a membránok elválasztják egymástól az összeférhetetlen folyamatokat, és ionok, metabolitok koncentrációgradienseit tartják fenn.\n\n**Membrántranszport:** a kis apoláris molekulák (O₂, CO₂) egyszerű diffúzióval jutnak át a lipid kettősrétegen (Fick-törvény), az ionok és poláris molekulák **csatornákon** és **hordozókon** keresztül (facilitált diffúzió). Gradiens ellenében **primer aktív transzport** (pl. Na⁺/K⁺-ATPáz: 3 Na⁺ ki, 2 K⁺ be ATP-nként) vagy a Na⁺-gradiensre épülő **szekunder aktív transzport** (pl. SGLT1 Na⁺–glükóz kotranszporter) dolgozik. Egy ion hajtóerejét az elektrokémiai potenciál adja: `Δμ = RT·ln(c_be/c_ki) + zFΔψ`.\n\n**Endomembránrendszer és a fehérjeszintézis útja:** a sejtmagban átírt és érett mRNS a magpórusokon át a citoszolba jut. A szekréciós és membránfehérjék szignálpeptidjét az SRP ismeri fel, és a riboszómát a **durva ER**-hez irányítja (kotranszlációs transzlokáció, Sec61). Az ER-ben történik a feltekeredés, a diszulfidhidak kialakítása és az N-glikoziláció, majd COPII-vezikulák viszik a fehérjét a **Golgi-készülékbe** (cis → trans érés, glikánmódosítás), végül a transz-Golgi-hálózatból szekréciós vezikulákba, a lizoszómákba (mannóz-6-foszfát jel) vagy a plazmamembránba kerül.\n\n**ATP-szintézis:** a glikolízis a citoszolban, a citrátkör és a **terminális oxidáció** a mitokondriumban zajlik. A légzési lánc a belső membránon át **protonmotoros erőt** hoz létre (`Δp = Δψ − 2,303·(RT/F)·ΔpH`, kb. 150–200 mV), ezt az F₀F₁-ATP-szintáz forgó mechanizmusa (Boyer, Walker) alakítja ATP-vé (**kemiozmotikus elmélet**, Mitchell, 1961). Egy glükózmolekula teljes oxidációja kb. 30–32 ATP-t ad.',
+      terms: ['anatomia/membranpotencial', 'kemia-bsc/gibbs', 'kemia-bsc/redoxi', 'kemia-bsc/elektrodpotencial', 'szerves-kemia/aminosav', 'szerves-kemia/peptidkotes', 'szerves-kemia/lipid', 'szerves-kemia/nukleotid']
+    },
     steps: [
       { icon: '📡', title: 'Jel érkezik: egy gén bekapcsol', text: 'Tegyük fel, hogy a hasnyálmirigy egyik sejtjének **inzulint** kell termelnie. A sejthártya receptorai jelet kapnak (pl. emelkedett vércukorszint), a jel eljut a sejtmagba, és ott a **kromatin** a megfelelő gén körül **fellazul**, hogy a gén leolvasható legyen.', parts: ['hartya', 'kromatin'] },
       { icon: '📝', title: 'Átírás (transzkripció)', when: 'a sejtmagban', text: 'Az **RNS-polimeráz** enzim szétnyitja a DNS kettős spirálját a gén szakaszán, és az egyik szálról **másolatot** készít: egy **mRNS** (hírvivő RNS) molekulát. A DNS a magban marad, csak a „receptről” készült másolat indul útnak. Az mRNS-ről még a magban kivágják a nem kódoló szakaszokat (intronokat).', parts: ['kromatin', 'mag'] },
@@ -12346,7 +12363,7 @@ STUDIE.addSubject({
     intro: 'A szív valójában **két pumpa egymás mellett**. A **jobb szívfél** (a rajz bal oldalán, kék) a testből visszaérkező, oxigénszegény vért a **tüdőbe** pumpálja (kis vérkör). A **bal szívfél** (piros) a tüdőből érkező, oxigéndús vért az egész **testbe** hajtja (nagy vérkör). Mindkét oldalon egy **pitvar** fogadja a vért, és egy erősebb **kamra** pumpálja tovább. A **billentyűk** szelepként biztosítják, hogy a vér csak egy irányba áramoljon.\n\nLent egy **szívverés** lépéseit követheted, az EKG-görbével együtt. A **Szétszedés** gombbal széthúzhatod az üregeket és az ereket.',
     parts: [
       {
-        id: 'jp', z: 3, name: 'Jobb pitvar', svg: ra, explode: [-46, -14], badge: [184, 262], en: 'right atrium',
+        id: 'jp', z: 3, name: 'Jobb pitvar', svg: ra, explode: [-46, -14], badge: [184, 262], en: 'right atrium', latin: 'atrium dextrum',
         what: 'A szív jobb felső ürege. Ide érkezik a testből visszatérő, **oxigénszegény** vér a felső és az alsó üres visszéren, valamint a szív saját vénás vére a koszorús öblön át. A falában van a **szinuszcsomó**, a szív természetes „karmestere”. A pitvar kifelé egy kis zsákszerű nyúlványban, a **fülcsében** folytatódik.',
         madeOf: 'Vékony, kb. 2 mm-es **szívizomfalból**, amelyet belülről sima hártya (**endocardium**), kívülről a szívburok belső lemeze (**epicardium**) borít. A fülcsében az izom bordázott (fésűs izmok).',
         how: 'Az embrióban a szív kezdetben egyetlen **egyenes cső**, amely a 3. héten már ver. A 4. héttől ez a cső S alakban **meghajlik**, és a pitvari rész a kamrai rész fölé és mögé kerül. Később válaszfalak osztják jobb és bal pitvarra, de a falukban egy nyílás (**ovális ablak**) születésig nyitva marad, mert a magzat még nem a tüdejével lélegzik. Működés: a kamrák elernyedésekor a vér **passzívan** átfolyik rajta a jobb kamrába, a végén pedig a pitvar összehúzódása még kb. 20%-ot „ráprésel”.',
@@ -12354,7 +12371,7 @@ STUDIE.addSubject({
         fact: 'Az ovális ablak születés után általában bezáródik, de kb. minden negyedik embernél egy apró rés megmarad (nyitott foramen ovale). Ez legtöbbször nem okoz panaszt.'
       },
       {
-        id: 'jk', z: 3, name: 'Jobb kamra', svg: rv, explode: [-40, 22], badge: [214, 384], en: 'right ventricle',
+        id: 'jk', z: 3, name: 'Jobb kamra', svg: rv, explode: [-40, 22], badge: [214, 384], en: 'right ventricle', latin: 'ventriculus dexter',
         what: 'A jobb pitvar alatti, előre néző kamra. A **tüdőartérián** át a **tüdőbe** pumpálja az oxigénszegény vért, ahol az leadja a szén-dioxidot és oxigént vesz fel. Mivel a tüdő közel van, és az erei tágak, ehhez **kis nyomás** is elég: a jobb kamra fala ezért vékonyabb, mint a balé.',
         madeOf: 'Kb. 3–5 mm vastag **szívizomfalból**. Belső felszínét izomgerendák (trabeculák) teszik egyenetlenné, és innen erednek a **szemölcsizmok** is, amelyekhez inak (ínhúrok) kötik a vitorlás billentyű lemezeit.',
         how: 'Az embrionális szívcső kamrai részéből és a kiáramlási pályából alakul ki; a két kamrát az 5–8. héten növő **kamrai sövény** választja szét. Magzatkorban a jobb kamra legalább annyi munkát végez, mint a bal (a tüdő helyett a vér nagy része a nyitott Botallo-vezetéken át az aortába jut). Születés után a tüdőerek ellenállása hirtelen leesik, és a jobb kamra fala relatíve elvékonyodik.',
@@ -12362,7 +12379,7 @@ STUDIE.addSubject({
         fact: 'Bár a két kamra eltérő erővel dolgozik, **pontosan ugyanannyi** vért pumpálnak percenként, különben a vér az egyik körben felhalmozódna.'
       },
       {
-        id: 'bp', z: 3, name: 'Bal pitvar', svg: la, explode: [46, -18], badge: [402, 262], en: 'left atrium',
+        id: 'bp', z: 3, name: 'Bal pitvar', svg: la, explode: [46, -18], badge: [402, 262], en: 'left atrium', latin: 'atrium sinistrum',
         what: 'A szív bal felső ürege, valójában a szív **leghátsó** része (a rajz egyszerűsít). Ide érkezik a **tüdővénákon** át a tüdőből az **oxigéndús** vér, és innen jut a mitralis billentyűn át a bal kamrába.',
         madeOf: 'Vékony, kb. 2–3 mm-es **szívizomfalból**, belül sima felszínnel; csak a fülcséje bordázott. Közvetlenül a nyelőcső előtt fekszik.',
         how: 'Fejlődéskor a tüdővénák törzse **beépül** a bal pitvar falába: ezért ér be ma négy külön véna. A pitvarokat két, egymásra boruló válaszfal (septum primum és secundum) választja szét, a köztük maradt ovális ablak születéskor a bal pitvari nyomás növekedése miatt „becsukódik”, mint egy lengőajtó. Működése ugyanolyan, mint a jobb pitvaré: tároló, átvezető és rásegítő pumpa.',
@@ -12370,7 +12387,7 @@ STUDIE.addSubject({
         fact: 'Mivel a bal pitvar közvetlenül a nyelőcső előtt van, a nyelőcsövön át is meg lehet ultrahanggal vizsgálni (TEE).'
       },
       {
-        id: 'bk', terms: ['anatomia/percterfogat', 'anatomia/vernyomas'], z: 3, name: 'Bal kamra', svg: lv, explode: [36, 16], badge: [398, 410], en: 'left ventricle',
+        id: 'bk', terms: ['anatomia/percterfogat', 'anatomia/vernyomas'], z: 3, name: 'Bal kamra', svg: lv, explode: [36, 16], badge: [398, 410], en: 'left ventricle', latin: 'ventriculus sinister',
         what: 'A szív **legerősebb** ürege, ez alkotja a **szívcsúcsot**. Az aortán át az **egész testbe** pumpálja az oxigéndús vért, ezért nagy nyomást kell létrehoznia (nyugalomban kb. 120 Hgmm-t). Egy összehúzódással kb. **70 ml** vért lök ki (verőtérfogat), percenként kb. 5 litert.',
         madeOf: '10–12 mm vastag **szívizomfalból**, kb. háromszor vastagabbal, mint a jobb kamráé. Az izomrostok spirálisan, több rétegben futnak, ezért összehúzódáskor a kamra egyszerre **rövidül, szűkül és csavarodik**, mint egy kicsavart törölköző.',
         how: 'A szívcső kamrai részének bal oldalából fejlődik. Születés után, amikor a teljes nagy vérkört egyedül kell ellátnia, a fala gyorsan megvastagszik. Felnőttkorban a szívizomsejtek már alig osztódnak: a szív edzésre vagy magas vérnyomásra a sejtek **megnagyobbodásával** (hipertrófia) válaszol. Az elhalt izomsejteket (pl. szívinfarktus után) **heg** pótolja.',
@@ -12378,7 +12395,7 @@ STUDIE.addSubject({
         fact: 'Nyugalomban a bal kamra teljesítménye kb. **1,3 watt**: egy élet alatt annyi munkát végez, amennyi kb. 40 tonna (egy megrakott kamion) feljuttatásához kellene a Mount Everest tetejére.'
       },
       {
-        id: 'sovey', z: 4, name: 'Kamrai sövény', svg: sept, explode: [0, 22], badge: [313, 360], en: 'interventricular septum',
+        id: 'sovey', z: 4, name: 'Kamrai sövény', svg: sept, explode: [0, 22], badge: [313, 360], en: 'interventricular septum', latin: 'septum interventriculare',
         what: 'A két kamrát elválasztó izmos fal. Megakadályozza, hogy az oxigénszegény és az oxigéndús vér keveredjen, és **mindkét kamra** összehúzódásában részt vesz. Benne fut az ingerületvezető rendszer **His-kötege** és két szára.',
         madeOf: 'Nagyobb részben vastag **szívizomból** (izmos rész), a tetején egy kis területen vékony, **kötőszövetes hártyából** (hártyás rész), a billentyűk közelében.',
         how: 'Az embrióban a 4–8. hét között alakul ki: alulról az izmos sövény nő felfelé, felülről pedig a kiáramlási pályát kettéosztó, spirálisan csavarodó **aortopulmonális sövény** nő le hozzá; a kettő a hártyás résznél forr össze. Ha ez nem sikerül tökéletesen, **kamrai sövényhiány** (VSD) marad: ez a leggyakoribb veleszületett szívhiba.',
@@ -12386,7 +12403,7 @@ STUDIE.addSubject({
         fact: 'A kamrai sövényhiány kb. 1000 újszülöttből 2–3-nál fordul elő; a kis nyílások gyakran maguktól bezáródnak.'
       },
       {
-        id: 'vitorlas', terms: ['anatomia/sziv-ciklus'], z: 5, name: 'Vitorlás billentyűk', svg: av, explode: [0, 4], badge: [372, 392], en: 'atrioventricular valves: tricuspid & mitral (bicuspid) valve',
+        id: 'vitorlas', terms: ['anatomia/sziv-ciklus'], z: 5, name: 'Vitorlás billentyűk', svg: av, explode: [0, 4], badge: [372, 392], en: 'atrioventricular valves: tricuspid & mitral (bicuspid) valve', latin: 'valva atrioventricularis (tricuspidalis / mitralis)',
         what: 'A pitvarok és a kamrák közti **egyirányú szelepek**. A jobb oldali **háromhegyű (tricuspidalis)**, a bal oldali **kéthegyű (mitralis)** billentyű. Amikor a kamra elernyed, a lemezek lefelé nyílnak, és a vér beáramlik; amikor a kamra összehúzódik, a vér nyomása **becsapja** őket, így a vér nem folyhat vissza a pitvarba. A becsapódásuk adja az **első szívhangot**.',
         madeOf: 'Vékony, erős **kötőszöveti lemezekből** (vitorlákból), amelyeket endocardium borít. A lemezek szélét **ínhúrok** kötik a kamrafalból kiálló **szemölcsizmokhoz**, mint az ejtőernyő zsinórjai: ezek akadályozzák meg, hogy a vitorlák a pitvar felé „kifordulhassanak”.',
         how: 'A pitvar–kamrai nyílás körüli **endocardiális párnákból** fejlődnek, az 5–8. héten: a párnák szövete elvékonyodik, a kamrafal izomgerendái pedig ínhúrokká és szemölcsizmokká alakulnak. Működésük teljesen **passzív**: csak a két oldaluk közti nyomáskülönbség nyitja és zárja őket, idegek vagy izmok nem mozgatják.',
@@ -12394,7 +12411,7 @@ STUDIE.addSubject({
         fact: 'A „mitralis” név onnan ered, hogy a két vitorla egy püspöksüvegre (mitra) emlékeztette a régi anatómusokat.'
       },
       {
-        id: 'zsebes', terms: ['anatomia/sziv-ciklus'], z: 5, name: 'Zsebes billentyűk', svg: semi, explode: [0, -4], badge: [318, 300], en: 'semilunar valves: pulmonary & aortic valve',
+        id: 'zsebes', terms: ['anatomia/sziv-ciklus'], z: 5, name: 'Zsebes billentyűk', svg: semi, explode: [0, -4], badge: [318, 300], en: 'semilunar valves: pulmonary & aortic valve', latin: 'valvae semilunares (valva trunci pulmonalis, valva aortae)',
         what: 'A kamrák kiáramlási nyílásainál ülő szelepek: a **tüdőartéria** kezdeténél a **pulmonalis**, az **aorta** kezdeténél az **aortabillentyű**. Mindkettő **három** félhold alakú „zsebből” áll. Kamrai összehúzódáskor a vér a falhoz nyomja őket, és kiáramlik; utána a visszafelé induló vér **megtölti a zsebeket**, azok összezárnak. Ez adja a **második szívhangot**.',
         madeOf: 'Vékony, rugalmas **kötőszöveti** lemezekből, endocardiummal borítva. Nincsenek ínhúrjaik: a zsebek alakja önmagában biztosítja a zárást.',
         how: 'A kiáramlási pálya (truncus arteriosus) falának párnáiból alakulnak ki, ugyanakkor, amikor a közös kiáramlási csövet a spirális sövény **aortára és tüdőartériára** osztja. Működésük passzív, a nyomáskülönbség nyitja és zárja őket.',
@@ -12402,7 +12419,7 @@ STUDIE.addSubject({
         fact: 'A zsebes billentyűk egy élet alatt több mint **2,5 milliárdszor** nyílnak és zárnak.'
       },
       {
-        id: 'aorta', z: 1, name: 'Aorta (főverőér)', svg: aorta, explode: [14, -14], badge: [376, 90], en: 'aorta (ascending aorta, aortic arch, descending aorta)',
+        id: 'aorta', z: 1, name: 'Aorta (főverőér)', svg: aorta, explode: [14, -14], badge: [376, 90], en: 'aorta (ascending aorta, aortic arch, descending aorta)', latin: 'aorta (pars ascendens, arcus aortae, pars descendens)',
         what: 'A test **legnagyobb artériája** (kb. 2,5–3 cm átmérőjű). A bal kamrából indul felfelé, **ívben** hátra és balra kanyarodik (aortaív), majd a gerinc előtt lefelé halad. Az ívből erednek a fejet és a karokat ellátó nagy erek, a kezdetéből pedig a szívet ellátó **koszorúerek**.',
         madeOf: 'Háromrétegű falból: belül sima **endothel**, középen vastag, **rugalmas rostokban** gazdag réteg simaizommal, kívül kötőszövet. A rugalmas rostok miatt a fala rugalmas, mint egy gumicső.',
         how: 'Az embrióban a kiáramlási pálya kettéválásából, valamint a kezdetben szimmetrikusan elhelyezkedő **garatívartériák** átalakulásából jön létre; ezek közül a bal 4. ív lesz az aortaív. Működés: systoléban a fala **kitágul** és energiát tárol, diastoléban visszahúzódva továbbnyomja a vért (**szélkazán-hatás**), így a véráramlás a szívverések között sem áll le.',
@@ -12410,7 +12427,7 @@ STUDIE.addSubject({
         fact: 'Egy átlagos ember aortáján naponta kb. **7000 liter** vér halad át.'
       },
       {
-        id: 'truncus', z: 2, name: 'Tüdőartéria (truncus pulmonalis)', svg: trunk, explode: [-10, -16], badge: [312, 232], en: 'pulmonary trunk, pulmonary arteries',
+        id: 'truncus', z: 2, name: 'Tüdőartéria (truncus pulmonalis)', svg: trunk, explode: [-10, -16], badge: [312, 232], en: 'pulmonary trunk, pulmonary arteries', latin: 'truncus pulmonalis, arteriae pulmonales',
         what: 'A jobb kamrából induló nagy ér, amely az aorta előtt felfelé haladva **két ágra** (jobb és bal tüdőartériára) oszlik, és a tüdőbe viszi az **oxigénszegény** vért. Ez az egyetlen artéria (az ágaival együtt), amelyben oxigénszegény vér folyik: az artéria szó ugyanis azt jelenti, hogy az ér **a szívtől elvezet**, nem azt, hogy oxigéndús vér van benne.',
         madeOf: 'Az aortához hasonló, rugalmas falú artéria, de vékonyabb fallal, mert benne a nyomás kb. ötöde az aortáénak.',
         how: 'Az embrionális kiáramlási pálya kettéosztódásából jön létre, a két ág a 6. garatívartériából fejlődik. Magzatkorban a tüdőartéria és az aorta között egy összekötő ér, a **Botallo-vezeték** (ductus arteriosus) működik, amely a vért a még nem lélegző tüdő mellett elvezeti. Ez születés után néhány napon belül bezáródik.',
@@ -12418,7 +12435,7 @@ STUDIE.addSubject({
         fact: 'A vér egy teljes kis vérköri útja (jobb kamrától bal pitvarig) csak kb. **4–5 másodpercig** tart.'
       },
       {
-        id: 'urestvisszer', z: 1, name: 'Felső és alsó üres visszér', svg: cavae, explode: [-46, 0], badge: [212, 150], en: 'superior & inferior vena cava',
+        id: 'urestvisszer', z: 1, name: 'Felső és alsó üres visszér', svg: cavae, explode: [-46, 0], badge: [212, 150], en: 'superior & inferior vena cava', latin: 'vena cava superior et inferior',
         what: 'A két legnagyobb véna, amelyek a jobb pitvarba torkollnak. A **felső üres visszér** a fejből, a nyakból és a karokból, az **alsó üres visszér** a törzsből és a lábakból hozza vissza az **oxigénszegény** vért. Nincs a torkolatuknál valódi billentyű.',
         madeOf: 'Vékony, kevés izmot tartalmazó falból: a vénákban a nyomás alacsony (néhány Hgmm), ezért falukat nem kell erősnek lenniük, viszont **tágulékonyak**, és sok vért tudnak tárolni.',
         how: 'Az embrióban kezdetben szimmetrikusan, mindkét oldalon futó vénás törzsek (kardinális vénák) közül a **jobb oldaliak** maradnak meg és nagyobbodnak meg, a bal oldaliak nagyrészt visszafejlődnek. A vért a vénákban a belégzéskor kialakuló **szívóhatás**, a lábizmok összehúzódása („izompumpa”) és a vénabillentyűk segítik vissza a szív felé.',
@@ -12426,7 +12443,7 @@ STUDIE.addSubject({
         fact: 'Az alsó üres visszér a test legnagyobb átmérőjű vénája: kb. 2,5–3 cm.'
       },
       {
-        id: 'tudoveak', z: 1, name: 'Tüdővénák', svg: pvein, explode: [56, -18], badge: [520, 268], en: 'pulmonary veins',
+        id: 'tudoveak', z: 1, name: 'Tüdővénák', svg: pvein, explode: [56, -18], badge: [520, 268], en: 'pulmonary veins', latin: 'venae pulmonales',
         what: 'Általában **négy** ér (két-két mindkét tüdőből), amelyek a tüdőből a **bal pitvarba** hozzák vissza a vért. Ezek az egyetlen vénák, amelyekben **oxigéndús** vér folyik. (A rajzon egyszerűsítve mind a négy jobbról érkezik; a valóságban a jobb tüdővénák a szív mögött, a test jobb oldala felől futnak be.)',
         madeOf: 'Vékony falú vénák, a bal pitvari torkolatuknál a falukba **szívizom-hüvely** nyúlik be. Billentyűjük nincs.',
         how: 'Az embrióban a bal pitvar hátsó falából egyetlen közös tüdővéna nő a fejlődő tüdő felé. Ez elágazik, majd a törzse fokozatosan **beolvad** a bal pitvar falába, így végül négy külön nyílás marad. Ha ez rosszul sikerül, a tüdővénák rossz helyre (pl. a jobb pitvarba) torkollhatnak.',
@@ -12434,7 +12451,7 @@ STUDIE.addSubject({
         fact: 'Az artéria és a véna megkülönböztetése az áramlás irányán múlik: artéria = a szívből el, véna = a szívbe vissza. Ezért van oxigéndús vér a tüdővénákban.'
       },
       {
-        id: 'koszorus', terms: ['anatomia/gazcsere'], z: 6, name: 'Koszorúerek', svg: coron, explode: [0, 0], badge: [176, 348], en: 'coronary arteries (RCA, LAD, LCx)',
+        id: 'koszorus', terms: ['anatomia/gazcsere'], z: 6, name: 'Koszorúerek', svg: coron, explode: [0, 0], badge: [176, 348], en: 'coronary arteries (RCA, LAD, LCx)', latin: 'arteriae coronariae (dextra et sinistra)',
         what: 'A szívizom **saját vérellátását** biztosító artériák, amelyek koszorúként veszik körül a szívet. Az aorta kezdetéből ered a **jobb** és a **bal koszorúér**. A bal hamar két ágra oszlik: az **elülső leszálló ág** a két kamra közti barázdában fut a szívcsúcs felé, a **körbefutó ág** pedig a bal pitvar és a bal kamra határán kerüli meg a szívet.',
         madeOf: 'Izmos falú artériák, kb. 3–4 mm-es átmérővel. A falukban kórosan **zsíros–meszes lerakódás** (érelmeszesedés, plakk) alakulhat ki, amely szűkíti őket.',
         how: 'Az embrióban a szív felszínén kialakuló érhálózatból fejlődnek, amely csak utólag kapcsolódik be az aortába. Különlegességük, hogy főleg **diastoléban** telnek meg: a szív összehúzódásakor az izom összenyomja a falában futó ereket. Ha egy koszorúér elzáródik (pl. vérrög a plakkon), az általa ellátott izomrész oxigén nélkül marad és elhal: ez a **szívinfarktus**.',
@@ -12442,7 +12459,7 @@ STUDIE.addSubject({
         fact: 'A szív a test tömegének kb. 0,5%-a, de nyugalomban a perctérfogat kb. **5%-át** kapja a koszorúereken át.'
       },
       {
-        id: 'inger', terms: ['anatomia/ekg', 'anatomia/akcios-potencial'], z: 7, name: 'Ingerképző és -vezető rendszer', svg: condSys, explode: [0, 0], badge: [238, 262], en: 'cardiac conduction system: SA node, AV node, bundle of His, bundle branches, Purkinje fibres',
+        id: 'inger', terms: ['anatomia/ekg', 'anatomia/akcios-potencial'], z: 7, name: 'Ingerképző és -vezető rendszer', svg: condSys, explode: [0, 0], badge: [238, 262], en: 'cardiac conduction system: SA node, AV node, bundle of His, bundle branches, Purkinje fibres', latin: 'complexus stimulans cordis (nodus sinuatrialis, nodus atrioventricularis, fasciculus atrioventricularis)',
         what: 'Különleges szívizomsejtek hálózata, amely **elindítja és összehangolja** a szívverést. A **szinuszcsomó** (SA) a jobb pitvar falában percenként kb. 60–80 ingerületet „gyárt”, ezek a pitvarokon át a **pitvar–kamrai (AV) csomóba** jutnak. Az AV-csomó kicsit **késleltet**, hogy a pitvarok előbb kiürülhessenek, majd a **His-köteg**, annak **két szára** és a **Purkinje-rostok** villámgyorsan szétviszik az ingerületet a kamrákban.',
         madeOf: 'Átalakult **szívizomsejtekből**, amelyek kevés összehúzódó fehérjét tartalmaznak, viszont képesek **maguktól** ingerületet keltani (automácia), illetve különösen gyorsan vezetik azt. Nem idegek! Az idegrendszer csak gyorsítja (szimpatikus) vagy lassítja (bolygóideg) a működésüket.',
         how: 'A szívcső már a 3–4. héten ritmusosan húzódik össze; a vezetőrendszer a 4–8. héten specializálódik ki a szívizomsejtekből, a kamrák és a sövény kialakulásával párhuzamosan. Működés: a szinuszcsomó sejtjeinek nyugalmi potenciálja **lassan magától emelkedik**, és ha eléri a küszöböt, akciós potenciál indul; az ingerület a sejtek közti réskapcsolatokon (gap junction) terjed sejtről sejtre. Ha a szinuszcsomó leáll, az AV-csomó (40–60/perc) vagy a kamrai rostok (20–40/perc) veszik át a ritmust, illetve **pacemaker** pótolhatja.',
@@ -12450,6 +12467,10 @@ STUDIE.addSubject({
         fact: 'A szív a testből kivéve, megfelelő oldatban még órákig tovább ver: az ütemet saját maga adja, nem az agy.'
       }
     ],
+    uni: {
+      text: 'A szív egyetemi szemmel **két sorba kapcsolt, ritmikusan működő nyomáspumpa**, amelynek teljesítményét a telődés, a kontraktilitás és az utóterhelés együtt szabja meg.\n\n**Szívciklus:** a kamrai systole az **izovolumetriás kontrakcióval** kezdődik (mind a négy billentyű zárt, a nyomás meredeken nő), majd a zsebes billentyűk nyitásával az **ejekció** következik. A diastole **izovolumetriás relaxációval** indul, a vitorlás billentyűk nyitása után gyors, majd lassú telődés és végül a pitvari systole jön. A folyamatot a kamrai **nyomás–térfogat hurok** szemlélteti, amelynek területe a szív verésenkénti külső munkája.\n\n**Frank–Starling-mechanizmus:** a nagyobb végdiastolés térfogat jobban megnyújtja a szarkomereket, ami az aktin–miozin átfedés optimalizálásával és a troponin C Ca²⁺-érzékenységének növekedésével nagyobb verőtérfogatot eredményez. Így a két kamra kimenete ütésről ütésre kiegyenlítődik.\n\n**Ingerületvezetés:** a szinuszcsomó pacemaker-sejtjei (I_f áram, T- és L-típusú Ca²⁺-csatornák) spontán depolarizálódnak; az ingerület a pitvarokon át az AV-csomóba jut, ahol kb. 0,1 s-ot késik (a pitvarok így a kamrák előtt húzódnak össze), majd a His-köteg, a Tawara-szárak és a Purkinje-rostok gyorsan szétterítik a kamrákban. Ezt követi az EKG P-hulláma, QRS-komplexuma és T-hulláma.\n\n**Perctérfogat:** `CO = HR · SV`, nyugalomban kb. 70/min · 70 ml ≈ 5 l/min; a verőtérfogatot az előterhelés, a kontraktilitás (szimpatikus β₁-hatás) és az utóterhelés határozza meg, az ejekciós frakció `EF = SV / EDV` normálisan 55–70%.',
+      terms: ['anatomia/sziv-ciklus', 'anatomia/percterfogat', 'anatomia/vernyomas', 'anatomia/ekg', 'anatomia/akcios-potencial', 'anatomia/szarkomer', 'anatomia/izomosszehuzodas', 'anatomia/gazcsere']
+    },
     steps: [
       { icon: '😌', title: 'Elernyedés és telődés (diastole)', when: 'kb. 0,5 s nyugalomban', text: 'A kamrák elernyedtek. A **vitorlás billentyűk nyitva** vannak, a zsebesek zárva. A testből a vér az **üres visszereken** át a jobb pitvarba, a tüdőből a **tüdővénákon** át a bal pitvarba folyik, és onnan **passzívan** tovább a kamrákba: a kamrák kb. 80%-ig megtelnek, mielőtt a pitvarok egyáltalán összehúzódnának. Ilyenkor kapják vérüket a **koszorúerek** is.', parts: ['urestvisszer', 'tudoveak', 'jp', 'bp', 'vitorlas', 'koszorus'] },
       { icon: '⚡', title: 'A szinuszcsomó „tüzel” – P hullám', text: 'A **szinuszcsomó** sejtjeinek feszültsége magától eléri a küszöböt: ingerület indul, és kb. 0,1 s alatt szétterjed **mindkét pitvaron**. Az EKG-n ez a kis **P hullám**.', parts: ['inger', 'jp', 'bp'] },
@@ -13654,7 +13675,7 @@ STUDIE.addSubject({
     intro: 'A **DNS** (dezoxiribonukleinsav) az élőlények örökítőanyaga. Két hosszú szálból áll, amelyek egymás köré csavarodva **kettős spirált** alkotnak, mint egy megcsavart kötélhágcsó. A hágcsó két „korlátja” a **cukor-foszfát gerinc**, a „fokai” a **bázispárok**.\n\nA négy bázis (**A, T, G, C**) sorrendje hordozza az információt, ahogy a betűk sorrendje egy mondatban. A párosodás szabálya egyszerű: **A mindig T-vel, G mindig C-vel** áll párban. Ezért az egyik szál meghatározza a másikat, és ezért tud a DNS pontosan **lemásolódni**.',
     parts: [
       {
-        id: 'gerinc', z: 3, name: 'Cukor-foszfát gerinc', svg: backbone, explode: [0, 0], badge: [s1(Y0 + 120)[0], Y0 + 120], en: 'sugar–phosphate backbone',
+        id: 'gerinc', z: 3, name: 'Cukor-foszfát gerinc', svg: backbone, explode: [0, 0], badge: [s1(Y0 + 120)[0], Y0 + 120], en: 'sugar–phosphate backbone', latin: 'sugar–phosphate backbone (phosphodiester backbone)',
         what: 'A kettős spirál két „korlátja”. Mindkét szál felváltva **cukorból** és **foszfátcsoportból** álló, hosszú lánc, a bázisok pedig befelé, a spirál tengelye felé lógnak róla. A két szál **ellentétes irányú** (antiparallel): az egyik 5′→3′, a másik 3′→5′ irányban fut (a rajzon a végeken jelölve).',
         madeOf: 'Felváltva **dezoxiribóz** cukorból és **foszfátcsoportból**, amelyeket erős **kovalens kötések** (foszfodiészter-kötések) kapcsolnak össze. A foszfátok negatív töltése miatt a DNS savas, és vízben jól oldódik.',
         how: 'A sejtben az enzimek (DNS-polimerázok) építik fel: mindig a lánc 3′ végéhez kapcsolnak hozzá egy újabb nukleotidot. Így a szál csak **5′→3′ irányban** nőhet. A kapcsolódáshoz szükséges energiát maga a beépülő nukleotid hozza: három foszfátjából kettő lehasad.',
@@ -13663,7 +13684,7 @@ STUDIE.addSubject({
         fact: 'A két szál olyan, mint két, egymással szemben haladó autópálya-sáv: ugyanazon a „hídon” futnak, de ellentétes irányba.'
       },
       {
-        id: 'dezoxiriboz', z: 5, name: 'Dezoxiribóz (cukor)', svg: sug, explode: [-26, 0], badge: [s2(Y0 + step * 18.5)[0], Y0 + step * 18.5], en: 'deoxyribose (2′-deoxy-D-ribose)',
+        id: 'dezoxiriboz', z: 5, name: 'Dezoxiribóz (cukor)', svg: sug, explode: [-26, 0], badge: [s2(Y0 + step * 18.5)[0], Y0 + step * 18.5], en: 'deoxyribose (2′-deoxy-D-ribose)', latin: 'desoxyribosum (2-desoxy-D-ribosum)',
         what: 'Öt szénatomos cukor (**pentóz**), a rajzon rózsaszín ötszögek. Minden nukleotidban egy van: ehhez kapcsolódik az egyik oldalon a **foszfát**, a másikon a **bázis**. A neve onnan jön, hogy a ribózhoz képest a 2′ szénatomjáról **hiányzik egy oxigén** (de-oxi).',
         madeOf: '5 szén-, 10 hidrogén- és 4 oxigénatom (C₅H₁₀O₄). A szénatomokat 1′-től 5′-ig számozzák (a vessző, „vonás” jelzi, hogy a cukoré, nem a bázisé). A bázis az 1′, a következő foszfát a 3′, az előző az 5′ szénatomhoz kötődik.',
         how: 'A sejt a ribonukleotidokból állítja elő: a **ribonukleotid-reduktáz** enzim eltávolítja a 2′ szénatom OH-csoportját. Ez az egyetlen út, amellyel a sejt DNS-építőkövet tud gyártani, ezért fontos célpontja egyes rákellenes gyógyszereknek.',
@@ -13671,7 +13692,7 @@ STUDIE.addSubject({
         fact: 'A DNS és az RNS közti egyik fő különbség ez az egyetlen hiányzó oxigénatom.'
       },
       {
-        id: 'foszfat', z: 6, name: 'Foszfátcsoport', svg: pho, explode: [-52, 0], badge: [s1(Y0 + step * 21)[0], Y0 + step * 21], en: 'phosphate group (phosphodiester linkage)',
+        id: 'foszfat', z: 6, name: 'Foszfátcsoport', svg: pho, explode: [-52, 0], badge: [s1(Y0 + step * 21)[0], Y0 + step * 21], en: 'phosphate group (phosphodiester linkage)', latin: 'phosphas (phosphodiester)',
         what: 'A gerinc másik építőeleme, a rajzon narancssárga golyók. Minden foszfát két szomszédos cukrot köt össze: az egyik cukor **3′**, a másik **5′** szénatomjához kapcsolódik. Ettől lesz a szálnak iránya.',
         madeOf: 'Egy **foszforatom** körül négy **oxigénatom** (PO₄). Az egyik oxigén negatív töltésű, ezért a DNS-molekula egésze erősen negatív töltésű.',
         how: 'A nukleotidok **trifoszfát** formában (pl. dATP) érkeznek. Beépüléskor két foszfát lehasad, és az energia felszabadul; a megmaradt foszfát köti össze a cukrokat.',
@@ -13680,7 +13701,7 @@ STUDIE.addSubject({
         fact: 'Ugyanez a foszfátcsoport van az ATP-ben, a sejt „energiavalutájában” is.'
       },
       {
-        id: 'bazisok', z: 2, name: 'Nitrogénbázisok (A, T, G, C)', svg: bases, explode: [0, 0], badge: [CX + 6, Y0 + step * 9.5], lesson: 'biologia/genetika', en: 'nucleobases: adenine, thymine, guanine, cytosine',
+        id: 'bazisok', z: 2, name: 'Nitrogénbázisok (A, T, G, C)', svg: bases, explode: [0, 0], badge: [CX + 6, Y0 + step * 9.5], lesson: 'biologia/genetika', en: 'nucleobases: adenine, thymine, guanine, cytosine', latin: 'bases nitrogenicae (adeninum, thyminum, guaninum, cytosinum)',
         what: 'A hágcsó „fokai”. Négyféle bázis van: **adenin (A)**, **timin (T)**, **guanin (G)** és **citozin (C)**. Mindig **A párosodik T-vel** és **G a C-vel** (komplementer bázispárok). A bázisok sorrendje a genetikai információ: három egymás utáni bázis (egy **kodon**) egy aminosavat jelöl.',
         madeOf: 'Szén-, nitrogén-, oxigén- és hidrogénatomokból álló gyűrűs molekulák. Az A és a G **purin** (két gyűrű), a T és a C **pirimidin** (egy gyűrű). Minden párban egy nagy és egy kis bázis áll, ezért a „fokok” egyforma hosszúak, és a spirál egyenletes vastagságú.',
         how: 'A sejt egyszerűbb molekulákból (aminosavakból, szén-dioxidból, cukorból) sok lépésben építi fel őket, vagy a lebontott nukleinsavakból újrahasznosítja. Az RNS-ben timin helyett **uracil (U)** van.',
@@ -13689,7 +13710,7 @@ STUDIE.addSubject({
         fact: 'Az emberi genom kb. 3,1 milliárd bázispár. Ha egy könyvbe írnánk ki a betűit, kb. 1 millió oldal lenne.'
       },
       {
-        id: 'hkotes', z: 4, name: 'Hidrogénkötések (A=T, G≡C)', svg: hbond, explode: [8, 0], badge: [HX + 138, HY + 56], en: 'hydrogen bonds (Watson–Crick base pairing)',
+        id: 'hkotes', z: 4, name: 'Hidrogénkötések (A=T, G≡C)', svg: hbond, explode: [8, 0], badge: [HX + 138, HY + 56], en: 'hydrogen bonds (Watson–Crick base pairing)', latin: 'Watson–Crick base pairing (hydrogen bonds)',
         what: 'A két szálat a bázispárok közötti **hidrogénkötések** tartják össze. Az **A és T között 2**, a **G és C között 3** hidrogénkötés van, ezért a G–C pár erősebb. A spirál rajzán a fehér pálcikák jelzik őket a bázispárok közepén.',
         madeOf: 'Nem anyag, hanem gyenge **vonzás**: egy részlegesen pozitív hidrogénatom (amely N-hez kötődik) és egy másik molekula részlegesen negatív N vagy O atomja között. Egy hidrogénkötés kb. 20-szor gyengébb egy kovalens kötésnél.',
         how: 'Magától alakul ki, ha a megfelelő bázisok egymással szemben állnak: a kötések helye és száma miatt csak az A–T és a G–C pár „illik”. Mivel gyengék, enzimek (pl. a **helikáz**) vagy kb. 90 °C-os hő **szét tudja választani** a két szálat, például másoláskor vagy a PCR-ben, lehűtve pedig újra összeállnak.',
@@ -13698,7 +13719,7 @@ STUDIE.addSubject({
         fact: 'A gyenge kötés itt előny: így a DNS „cipzárként” könnyen nyitható és zárható, mégis milliárdnyi kötés együtt nagyon stabil.'
       },
       {
-        id: 'arkok', z: 1, name: 'Nagy és kis árok', svg: grooves, explode: [24, 0], badge: [GX - 2, (yMajA + yMajB) / 2], en: 'major groove and minor groove',
+        id: 'arkok', z: 1, name: 'Nagy és kis árok', svg: grooves, explode: [24, 0], badge: [GX - 2, (yMajA + yMajB) / 2], en: 'major groove and minor groove', latin: 'major groove, minor groove',
         what: 'Mivel a két szál nem pont szemben csavarodik, a spirál felszínén két különböző szélességű **barázda** fut körbe: a **nagy árok** és a **kis árok**. Ezeken keresztül „látnak bele” a fehérjék a bázisokba anélkül, hogy szét kellene nyitniuk a kettős spirált.',
         madeOf: 'Nem önálló alkatrész, hanem a spirál **alakjából** adódik: a cukrok a bázispárnak ugyanarra az oldalára esnek, így az egyik oldalon szűk, a másikon széles rés marad.',
         how: 'A géneket ki- és bekapcsoló fehérjék (**transzkripciós faktorok**) jellemzően a nagy árokba illeszkednek, és a bázisok szélein lévő atomok mintázatából ismerik fel a nekik szóló szakaszt. Egyes gyógyszerek és festékek a kis árokba kötődnek.',
@@ -13706,7 +13727,7 @@ STUDIE.addSubject({
         fact: 'A DAPI nevű kék festék a kis árokba bújik, és UV-fényben megvilágítva kéken fénylik: így teszik láthatóvá a sejtmagokat a mikroszkópban.'
       },
       {
-        id: 'nukleotid', z: 7, name: 'Nukleotid (egy „betű”)', svg: nuc, explode: [8, -6], en: 'nucleotide (deoxyribonucleoside monophosphate)',
+        id: 'nukleotid', z: 7, name: 'Nukleotid (egy „betű”)', svg: nuc, explode: [8, -6], en: 'nucleotide (deoxyribonucleoside monophosphate)', latin: 'nucleotidum',
         what: 'A DNS építőköve, egy „betű”. Három részből áll: egy **foszfátcsoportból**, egy **dezoxiribóz** cukorból és egy **nitrogénbázisból**. Négyféle nukleotid van, csak a bázisukban különböznek. A DNS e nukleotidok hosszú láncolata.',
         madeOf: 'A rajzon az adenin-nukleotid látható (dAMP). Az atomok: szén, hidrogén, oxigén, nitrogén és foszfor. A cukor szénatomjait **1′–5′** számozzák; az 5′ szénhez kötődik a foszfát, az 1′-hez a bázis, a 3′ szénen lévő OH-csoporthoz kapcsolódik a következő nukleotid.',
         how: 'A sejtben **trifoszfát** formában (dATP, dTTP, dGTP, dCTP) készülnek el, mert a két „extra” foszfát lehasadása adja a beépítés energiáját. A laborban automata szintetizátorokkal is előállítanak rövid DNS-szálakat (oligonukleotidokat), ezek kellenek például a PCR-hez.',
@@ -13715,7 +13736,7 @@ STUDIE.addSubject({
         fact: 'Ha az emberi genom minden nukleotidja egy mm-es betű lenne, a sor kb. 3100 km hosszú lenne: nagyjából Budapesttől Lisszabonig érne.'
       },
       {
-        id: 'gen', z: 0, name: 'Gén (egy kiemelt szakasz)', svg: gene, explode: [-40, 0], badge: [CX - AMP - 23, (GY0 + GY1) / 2], lesson: 'biologia/genetika', en: 'gene',
+        id: 'gen', z: 0, name: 'Gén (egy kiemelt szakasz)', svg: gene, explode: [-40, 0], badge: [CX - AMP - 23, (GY0 + GY1) / 2], lesson: 'biologia/genetika', en: 'gene', latin: 'gene',
         what: 'A DNS egy olyan **szakasza**, amely egy fehérje (vagy egy működő RNS) elkészítésének „receptjét” tartalmazza. Az emberi DNS-ben kb. **20 000** fehérjét kódoló gén van, de ezek a teljes DNS-nek csak kb. 1–2%-át teszik ki. A többi rész szabályozó szakasz, ismétlődés, vagy még ismeretlen szerepű.',
         madeOf: 'Ugyanabból áll, mint a DNS többi része: nukleotidok sorozatából. Egy gén néhány száz bázispártól több millió bázispárig terjedhet. Az elején egy **promóter** szakasz jelzi, hol kell elkezdeni a leolvasást.',
         how: 'Amikor a sejtnek szüksége van a fehérjére, a gént **átírja** (transzkripció) egy mRNS-másolatra, ezt pedig a riboszómák **lefordítják** (transzláció) aminosav-sorrenddé. A gének a szülőktől öröklődnek: minden génből egy példányt anyádtól, egyet apádtól kaptál.',
@@ -13723,7 +13744,7 @@ STUDIE.addSubject({
         fact: 'Az egyik leghosszabb emberi gén, a disztrofiné, kb. 2,2 millió bázispár; átírása kb. 16 órát vesz igénybe.'
       },
       {
-        id: 'kromoszoma', z: 7, name: 'Kromoszóma és hisztonok', svg: chromo, explode: [8, 6], link: 'sejt', lesson: 'biologia/sejt', en: 'chromosome, histones, nucleosome, chromatin',
+        id: 'kromoszoma', z: 7, name: 'Kromoszóma és hisztonok', svg: chromo, explode: [8, 6], link: 'sejt', lesson: 'biologia/sejt', en: 'chromosome, histones, nucleosome, chromatin', latin: 'chromosoma, histon, nucleosoma',
         what: 'Egy sejt DNS-e kb. **2 méter** hosszú, mégis befér egy pár mikrométeres sejtmagba. Ehhez szorosan fel van csomagolva: a DNS **hisztonfehérjék** köré tekeredik (ezek a **nukleoszómák**, mint gyöngyök egy fonalon), ezek tovább tekerednek, végül a sejtosztódáskor kialakulnak a mikroszkóppal is látható, X alakú **kromoszómák**.',
         madeOf: 'Kb. fele-fele arányban **DNS** és **fehérje**. Az emberi testi sejtekben **46 kromoszóma** (23 pár) van; mindegyik egyetlen, nagyon hosszú DNS-molekula. Az X alak két egyforma testvérkromatidából áll, amelyeket a **centromer** fog össze.',
         how: 'A csomagolás folyamatosan változik: ahol a géneket olvasni kell, ott a kromatin **lazább**, ahol nem, ott tömörebb. Sejtosztódás előtt a DNS megkettőződik, majd a kromoszómák erősen feltekerednek, hogy a két utódsejt között szét lehessen húzni őket. Kattints a gombra, és nézz bele a **sejtbe**!',
@@ -13731,7 +13752,7 @@ STUDIE.addSubject({
         fact: 'Ha a sejtmag egy teniszlabda méretű lenne, a benne lévő DNS kb. 20 km hosszú, hajszálvékony fonal lenne.'
       },
       {
-        id: 'atomok', z: 7, name: 'Atomok (C, H, O, N, P)', svg: atoms, explode: [-6, 6], link: 'atom', en: 'atoms: carbon, hydrogen, oxygen, nitrogen, phosphorus',
+        id: 'atomok', z: 7, name: 'Atomok (C, H, O, N, P)', svg: atoms, explode: [-6, 6], link: 'atom', en: 'atoms: carbon, hydrogen, oxygen, nitrogen, phosphorus', latin: 'carboneum, hydrogenium, oxygenium, nitrogenium, phosphorus',
         what: 'A DNS mindössze **öt elemből** épül fel: **szénből (C)**, **hidrogénből (H)**, **oxigénből (O)**, **nitrogénből (N)** és **foszforból (P)**. A rajzon golyómodellben egy foszfátcsoport és egy cukor-részlet látható, a szokásos színekkel: szén sötétszürke, hidrogén fehér, oxigén piros, nitrogén kék, foszfor narancs.',
         madeOf: 'Egy bázispár kb. 60–70 atomból áll. Az emberi genom teljes DNS-ében több száz milliárd atom van sejtenként. A nitrogén a bázisokban, a foszfor a gerincben van, a szén, hidrogén és oxigén mindenhol.',
         how: 'Ezek az atomok a táplálékodból származnak: a nitrogén a fehérjék aminosavaiból, a foszfor pl. a tejtermékek foszfátjaiból. A sejt **kovalens kötésekkel** kapcsolja őket molekulákká. Kattints a gombra, és nézz bele egy **atomba**!',
@@ -13740,7 +13761,7 @@ STUDIE.addSubject({
         fact: 'A Meselson–Stahl-kísérletben a nitrogénatomok nehezebb izotópjával (¹⁵N) jelölték meg a DNS-t, így tudták követni a régi és az új szálakat.'
       },
       {
-        id: 'meret', z: 1, name: 'Méretek: menet és átmérő', svg: dims, explode: [24, 0], badge: [DX, (yP0 + yP1) / 2 + 56], en: 'helical pitch and diameter (B-DNA)',
+        id: 'meret', z: 1, name: 'Méretek: menet és átmérő', svg: dims, explode: [24, 0], badge: [DX, (yP0 + yP1) / 2 + 56], en: 'helical pitch and diameter (B-DNA)', latin: 'B-DNA: pitch, diameter',
         what: 'A kettős spirál **2 nm** átmérőjű, és kb. **3,4–3,6 nm**-enként tesz meg egy teljes fordulatot, ez alatt kb. **10,5 bázispár** követi egymást. A spirál **jobbmenetes**, mint egy átlagos csavar.',
         madeOf: 'A méreteket a molekula felépítése határozza meg: a bázispárok kb. 0,34 nm-re vannak egymástól, és mindegyik kb. 34°-kal elfordul az előzőhöz képest. 10,5 × 34° ≈ 360°, vagyis egy teljes kör.',
         how: 'A méreteket **röntgendiffrakcióval** mérték meg: a DNS-szálakról készült felvételek (pl. Rosalind Franklin híres **51-es fotója**) X alakú mintázatából lehetett kiszámolni a spirál átmérőjét és menetemelkedését.',
@@ -14312,7 +14333,7 @@ STUDIE.addSubject({
     intro: 'A szem olyan, mint egy **fényképezőgép**: elöl a **szaruhártya** és a **szemlencse** együtt gyűjtőlencseként működik, a **pupilla** a blende, hátul az **ideghártya** (retina) a képérzékelő. A rajzon egy tárgy (piros nyíl) fénysugarait követheted: a kép a retinán **fordított és kicsinyített**, az agy „fordítja vissza”. A lencsét a **sugártest** izma élesíti közelre és távolra.\n\nA **Szétszedés** gombbal rétegenként széthúzhatod a szemet: elöl az optikai részeket, hátul a három burkot (ideghártya, érhártya, ínhártya).',
     parts: [
       {
-        id: 'szaruhartya', z: 6, name: 'Szaruhártya', svg: cornea, explode: [-62, 0], badge: [150, 212], en: 'cornea',
+        id: 'szaruhartya', z: 6, name: 'Szaruhártya', svg: cornea, explode: [-62, 0], badge: [150, 212], en: 'cornea', latin: 'cornea',
         lesson: 'fizika/hullamok-feny',
         what: 'A szem elülső, átlátszó, domború „ablaka”, az ínhártya folytatása. Ez a szem **legerősebb fénytörő része**: a teljes törőerő kb. **kétharmadát** adja, mert itt lép a fény a levegőből egy sokkal sűrűbb közegbe. Nincsenek benne erek, de rendkívül sok idegvégződés van benne: ezért fáj annyira, ha valami a szemünkbe megy.',
         madeOf: 'Kb. 0,5 mm vastag, öt rétegből áll: kívül néhány sejtsor vastag **hám** (gyorsan megújul), alatta egy vékony hártya, majd a vastag **alapállomány** (stroma), amely **szabályosan rendezett kollagénrostok** kb. 200 rétegéből áll, ezután egy rugalmas hártya, legbelül pedig egyetlen sejtsor, a **belhám** (endotél). Oxigént a levegőből, tápanyagot a csarnokvízből és a könnyből kap.',
@@ -14321,7 +14342,7 @@ STUDIE.addSubject({
         fact: 'A szaruhártya a leggyakrabban átültetett szövet: mivel nincsenek benne erek, a szervezet ritkán löki ki.'
       },
       {
-        id: 'csarnokviz', z: 3, name: 'Csarnokvíz', svg: aqueous, explode: [-42, 0], badge: [180, 330], en: 'aqueous humour (anterior chamber)',
+        id: 'csarnokviz', z: 3, name: 'Csarnokvíz', svg: aqueous, explode: [-42, 0], badge: [180, 330], en: 'aqueous humour (anterior chamber)', latin: 'humor aquosus (camera anterior bulbi)',
         what: 'A szaruhártya és a szivárványhártya, illetve a lencse közötti tér (szemcsarnok) víztiszta folyadéka. **Táplálja** az ereket nem tartalmazó szaruhártyát és lencsét, elszállítja a salakanyagokat, és a nyomásával **feszesen tartja** a szemgolyó alakját, mint a levegő a labdát.',
         madeOf: 'Kb. 99%-ban **víz**, benne sók, glükóz, aminosavak, sok **C-vitamin** (védelem az UV-fény ellen) és nagyon kevés fehérje. Térfogata csak kb. 0,2–0,3 ml.',
         how: 'A **sugártest** nyúlványai folyamatosan termelik (kb. 2–3 µl percenként), a hátsó csarnokból a pupillán át az elülső csarnokba áramlik, majd a szaruhártya és a szivárványhártya találkozásánál (csarnokzug) egy szivacsos szűrőn át a **Schlemm-csatornába**, onnan a vénákba szivárog el. Kb. 1,5–2 óránként teljesen kicserélődik.',
@@ -14329,7 +14350,7 @@ STUDIE.addSubject({
         fact: 'A zöld hályog sokáig semmilyen tünetet nem okoz: ezért fontos 40 év felett rendszeresen mérni a szemnyomást.'
       },
       {
-        id: 'szivarvany', z: 5, name: 'Szivárványhártya és pupilla', svg: iris, explode: [-26, 0], badge: [203, 214], en: 'iris and pupil',
+        id: 'szivarvany', z: 5, name: 'Szivárványhártya és pupilla', svg: iris, explode: [-26, 0], badge: [203, 214], en: 'iris and pupil', latin: 'iris, pupilla',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A szem **színes** része. A közepén lévő kerek nyílás a **pupilla**, amely a fényképezőgép blendéjéhez hasonlóan szabályozza, mennyi fény jut be: erős fényben 2 mm-re szűkül, sötétben 7–8 mm-re tágul. Ez a **pupillareflex** másodperc tört része alatt, akaratunktól függetlenül működik. Közelre nézéskor is szűkül, ami növeli a mélységélességet.',
         madeOf: 'Kötőszövetes alapból, erekből, **festéksejtekből** (melanin) és két **simaizomból**: a pupilla szélén körben futó **szűkítő** izomból (paraszimpatikus idegek irányítják) és a sugarasan futó **tágító** izomból (szimpatikus idegek irányítják). A hátsó felszínét sötét pigmentréteg borítja, hogy csak a pupillán jusson át fény.',
@@ -14338,7 +14359,7 @@ STUDIE.addSubject({
         fact: 'Az írisz mintázata egyénenként annyira különböző (még egypetéjű ikreknél is), hogy biometrikus azonosításra használják.'
       },
       {
-        id: 'lencse', z: 4, name: 'Szemlencse', svg: lens, explode: [-8, 0], badge: [238, 308], en: 'crystalline lens',
+        id: 'lencse', z: 4, name: 'Szemlencse', svg: lens, explode: [-8, 0], badge: [238, 308], en: 'crystalline lens', latin: 'lens',
         what: 'A pupilla mögötti, kétszer domború, átlátszó, **rugalmas** lencse. A szaruhártya után ez a második gyűjtőlencse, és ez **finomhangolja az élességet**: közelre nézéskor domborúbbá válik, távolra nézéskor ellaposodik. Ez az **alkalmazkodás** (akkomodáció). A kor előrehaladtával a lencse merevebb lesz: 40–45 év felett ezért kell sokaknak **olvasószemüveg**.',
         madeOf: 'Hosszú, átlátszó **lencserostokból** (sejtekből), amelyek hagymahéjszerűen, rétegesen helyezkednek el; ezek kb. 1/3 részben **krisztallin** nevű fehérjéből, 2/3 részben vízből állnak. Nincs benne sem ér, sem ideg. Kívül rugalmas **tok** veszi körül, ehhez tapadnak a függesztőrostok. Kb. 9–10 mm átmérőjű és 4 mm vastag.',
         how: 'Az embrióban a 4. héten a fejlődő szemhólyag „megérinti” a bőr külső csíralemezét, amely ettől megvastagszik, bemélyed, és **lefűződik**: ez a lencsehólyag. Hátsó sejtjei hosszú rostokká nyúlnak, és **elveszítik sejtmagjukat**, sőt minden fényt szóró sejtszervecskéjüket. A lencse egész életen át növekszik: új rostok rakódnak a régiekre, a legbelső rostok a születés előttiek. Ha a fehérjék kicsapódnak, a lencse homályossá válik: ez a **szürke hályog**, amit a lencse műlencsére cserélésével gyógyítanak.',
@@ -14346,7 +14367,7 @@ STUDIE.addSubject({
         fact: 'A szürke hályog műtét a világ egyik leggyakrabban végzett műtétje: ma kb. 15–20 perc, és a beteg még aznap hazamehet.'
       },
       {
-        id: 'sugartest', z: 5, name: 'Sugártest és lencsefüggesztő rostok', svg: cili, explode: [8, 0], badge: [218, 168], en: 'ciliary body and zonular fibres (zonules of Zinn)',
+        id: 'sugartest', z: 5, name: 'Sugártest és lencsefüggesztő rostok', svg: cili, explode: [8, 0], badge: [218, 168], en: 'ciliary body and zonular fibres (zonules of Zinn)', latin: 'corpus ciliare, zonula ciliaris (fibrae zonulares)',
         what: 'A szivárványhártya mögötti, gyűrű alakú izmos képlet, amelyről vékony **lencsefüggesztő (Zinn-) rostok** tartják a lencsét, mint egy trambulin rugói a vásznat. A sugártest **izma** szabályozza a lencse domborúságát, a **nyúlványai** pedig termelik a csarnokvizet.',
         madeOf: 'A **sugárizom** (simaizom), erekben gazdag kötőszövet és kb. 70 redőzött **nyúlvány**, amelyeket kétrétegű hám fed; ez a hám választja ki a csarnokvizet. A függesztőrostok vékony, rugalmas **fibrillin** fehérjeszálak.',
         how: 'A szemserleg pereméből és a környező mezenchimából fejlődik, az érhártya elülső folytatásaként. Működés: **távolra** nézéskor az izom elernyed, a gyűrű tágas, a rostok **megfeszülnek**, és laposra húzzák a lencsét. **Közelre** nézéskor az izom összehúzódik, a gyűrű szűkül, a rostok **elernyednek**, és a lencse a saját rugalmasságától domborúbbá válik. Ezért fárad el a szem a sok közeli munkától: közben a sugárizom folyamatosan dolgozik.',
@@ -14354,7 +14375,7 @@ STUDIE.addSubject({
         fact: 'A sugárizom a szervezet egyik legtöbbet dolgozó izma: minden pillantásváltáskor finoman utánaállít.'
       },
       {
-        id: 'uvegtest', z: 1, name: 'Üvegtest', svg: vitreous, explode: [22, 0], badge: [352, 222], en: 'vitreous body (vitreous humour)',
+        id: 'uvegtest', z: 1, name: 'Üvegtest', svg: vitreous, explode: [22, 0], badge: [352, 222], en: 'vitreous body (vitreous humour)', latin: 'corpus vitreum',
         what: 'A lencse mögötti nagy teret kitöltő, átlátszó, **kocsonyás** anyag: a szemgolyó térfogatának kb. **80%-a**. Megtartja a szem gömb alakját, és belülről a helyén tartja az ideghártyát. A fény akadálytalanul halad át rajta.',
         madeOf: 'Kb. **99%-ban víz**, amelyet egy finom **kollagénrost**-háló és a sok vizet megkötő **hialuronsav** tesz géllé. Térfogata kb. 4 ml. Sejt alig van benne.',
         how: 'Az embrióban a lencse és a retina közötti térben kezdetben egy ér (a **hialoid artéria**) halad át, amely a fejlődő lencsét táplálja. Ez a születés előtt visszafejlődik, helyén egy finom csatorna marad. Az üvegtest gélje élete során nem cserélődik ki, ezért idősebb korban folyósabbá válik, és a rostok összecsapzódhatnak: ezeket látjuk **„úszkáló legyecskéknek”**, főleg világos háttér előtt.',
@@ -14362,7 +14383,7 @@ STUDIE.addSubject({
         fact: 'Ha hirtelen sok új „legyecske” vagy villanás jelenik meg a látótérben, azonnal szemorvoshoz kell menni: ez retinaszakadás jele lehet.'
       },
       {
-        id: 'retina', terms: ['anatomia/latas', 'anatomia/neuron'], z: 3, name: 'Ideghártya (retina): csapok és pálcikák', svg: retina, explode: [36, 0], badge: [392, 394], link: 'sejt', en: 'retina: rods and cones, bipolar and ganglion cells, RPE',
+        id: 'retina', terms: ['anatomia/latas', 'anatomia/neuron'], z: 3, name: 'Ideghártya (retina): csapok és pálcikák', svg: retina, explode: [36, 0], badge: [392, 394], link: 'sejt', en: 'retina: rods and cones, bipolar and ganglion cells, RPE', latin: 'retina',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A szem belső, vékony hártyája, a szem **képérzékelője**. Kb. **120 millió pálcikát** és **6 millió csapot** tartalmaz. A **pálcikák** nagyon érzékenyek, gyenge fényben (szürkületben, éjszaka) dolgoznak, de színeket nem látnak. A **csapok** erős fényben működnek, és háromféle (kékre, zöldre, vörösre legérzékenyebb) típusuk adja a **színlátást**. Meglepő módon a fényérzékelő sejtek a retina **legkülső** rétegében vannak: a fénynek előbb a többi sejtrétegen kell áthaladnia (lásd a nagyított rajzot).',
         madeOf: 'Kb. 0,2–0,5 mm vastag, tíz rétegű **idegszövet**: belülről kifelé a látóidegrostok és a **dúcsejtek**, a **bipoláris sejtek** (és összekötő sejtek), majd a **csapok** és a **pálcikák**, végül a sötét **pigmenthám**, amely elnyeli a szórt fényt, és táplálja, „karbantartja” a fotoreceptorokat. A pálcikákban a **rodopszin** (látóbíbor), a csapokban hasonló **opszin** festékek nyelik el a fényt; ezek az **A-vitaminból** készülő retinált tartalmazzák.',
@@ -14371,7 +14392,7 @@ STUDIE.addSubject({
         fact: 'Sötétben a szem kb. 30–40 perc alatt alkalmazkodik teljesen: ennyi idő kell, hogy a pálcikákban újra felhalmozódjon a rodopszin.'
       },
       {
-        id: 'sargafolt', z: 7, name: 'Sárgafolt (látógödör)', svg: macula, explode: [36, 0], badge: [438, 256], en: 'macula lutea and fovea centralis',
+        id: 'sargafolt', z: 7, name: 'Sárgafolt (látógödör)', svg: macula, explode: [36, 0], badge: [438, 256], en: 'macula lutea and fovea centralis', latin: 'macula lutea, fovea centralis',
         what: 'A retina közepén, a látótengelyben lévő kb. 5 mm-es sárgás terület, közepén egy kis bemélyedéssel, a **látógödörrel** (fovea). Itt a **legélesebb a látás**: ide vetül, amire éppen nézünk, például az a betű, amit most olvasol. A látógödörben csak **csapok** vannak, nagyon sűrűn, ezért gyenge fényben itt rosszabbul látunk (a halvány csillagot érdemes kicsit mellé nézve figyelni).',
         madeOf: 'Sűrűn álló, különösen vékony **csapokból**, a látógödör közepén pálcikák nélkül. A felette lévő sejtrétegek és az erek **oldalra tolódnak**, ezért mélyed be: így a fény szinte akadály nélkül éri a csapokat. Sárga színét a növényi eredetű **lutein** és **zeaxantin** festékanyagok adják, amelyek a kék fényt szűrik.',
         how: 'A látógödör a magzati kor második felében kezd kialakulni, de csak **születés után**, kb. 4 éves korig érik be teljesen, ahogy a csapok összetömörödnek és a belső rétegek oldalra húzódnak. Ezért fejlődik a gyerekek látásélessége évekig. A festékanyagokat táplálékkal (zöld leveles zöldségek, tojássárgája) vesszük fel.',
@@ -14379,7 +14400,7 @@ STUDIE.addSubject({
         fact: 'A látótér közepén csak kb. 2 fokos, nagyjából hüvelykujjköröm-nyi területen látunk igazán élesen; a szemünk ezért ugrál másodpercenként többször (szakkádok).'
       },
       {
-        id: 'latoideg', terms: ['anatomia/latas'], z: 6, name: 'Látóideg és vakfolt', svg: nerve, explode: [92, 0], badge: [532, 205], en: 'optic nerve and optic disc (blind spot)',
+        id: 'latoideg', terms: ['anatomia/latas'], z: 6, name: 'Látóideg és vakfolt', svg: nerve, explode: [92, 0], badge: [532, 205], en: 'optic nerve and optic disc (blind spot)', latin: 'nervus opticus, discus nervi optici',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A látóideg viszi a retina jeleit az agyba. Kb. **1,2 millió idegrostból** áll, amelyek a retina dúcsejtjeiből indulnak, és a szem hátsó részén, egy pontban, a **látóidegfőben** lépnek ki. Ezen a helyen nincsenek fényérzékelő sejtek: ez a **vakfolt**. Azért nem vesszük észre, mert a két szem látótere fedi egymást, és az agy a hiányt a környezet alapján „kitölti”.',
         madeOf: '**Velőshüvelyes idegrostokból** (a dúcsejtek nyúlványai), támasztó sejtekből és három agyburokból álló hüvelyből. A közepén fut a retinát ellátó **központi artéria és véna**, amelyek a látóidegfőben ágaznak szét a retinán (a szemtükörrel ezeket látja az orvos).',
@@ -14388,7 +14409,7 @@ STUDIE.addSubject({
         fact: 'Megtalálhatod a vakfoltodat: rajzolj egy papírra egymástól 8 cm-re egy keresztet és egy pöttyöt, csukd be a bal szemed, nézd a jobb szemeddel a keresztet, és lassan közelítsd a papírt: egy ponton a pötty eltűnik.'
       },
       {
-        id: 'erhartya', z: 2, name: 'Érhártya', svg: choroid, explode: [58, 0], badge: [292, 416], en: 'choroid',
+        id: 'erhartya', z: 2, name: 'Érhártya', svg: choroid, explode: [58, 0], badge: [292, 416], en: 'choroid', latin: 'choroidea',
         what: 'Az ideghártya és az ínhártya közötti, **erekben rendkívül gazdag**, sötét réteg, a szem középső burkának hátsó része. **Táplálja** a retina külső rétegeit (főleg a sok energiát fogyasztó fotoreceptorokat), és sötét festékével **elnyeli** a retinán áthaladt fényt, hogy az ne verődjön vissza és ne rontsa a kép élességét.',
         madeOf: 'Sűrű **érhálózatból** (a legbelső rétege egy különösen tágas hajszálér-réteg), kötőszövetből és sok **melanint** tartalmazó festéksejtből. Elöl a sugártestben és a szivárványhártyában folytatódik (ezek együtt az **érhártyás burok**).',
         how: 'Az embrióban a szemserleget körülvevő **mezenchimából** alakul ki, a 6. héttől. Egyes állatoknál (macska, kutya) az érhártyában egy fényvisszaverő réteg (**tapetum lucidum**) is van: ez javítja a sötétben látást, és ezért világít a szemük a reflektor fényében. Az embernek ilyen rétege nincs.',
@@ -14396,7 +14417,7 @@ STUDIE.addSubject({
         fact: 'A „vörös szem” effektus ellen a fényképezőgépek elővillantanak: ettől a pupilla összeszűkül, mielőtt a kép elkészülne.'
       },
       {
-        id: 'inhartya', z: 1, name: 'Ínhártya', svg: sclera, explode: [74, 0], badge: [218, 392], en: 'sclera',
+        id: 'inhartya', z: 1, name: 'Ínhártya', svg: sclera, explode: [74, 0], badge: [218, 392], en: 'sclera', latin: 'sclera',
         what: 'A szemgolyó kemény, fehér **külső burka**, ez a „szemfehérje”. Védi a szem belsejét, megtartja az alakját, és ehhez tapadnak a **szemmozgató izmok**. Elöl az átlátszó szaruhártyában folytatódik, hátul a látóideg hüvelyébe megy át.',
         madeOf: 'Sűrű, **rendezetlenül** szövődő **kollagénrostokból** álló kötőszövet, kevés érrel. Kb. 0,5–1 mm vastag. Ugyanaz az anyag, mint a szaruhártyáé, de mivel a rostok vastagsága és elrendeződése szabálytalan, **fehér** és nem átlátszó. Kívül a vékony, átlátszó kötőhártya borítja.',
         how: 'Az embrióban a szemserleget körülvevő mezenchima külső, tömörödő rétegéből alakul ki. Csecsemőknél még vékonyabb, ezért kékes árnyalatú lehet (átsejlik rajta az érhártya). Ha a szemgolyó gyerekkorban túl hosszúra nő, az ínhártya megnyúlik: ez okozza a leggyakoribb, ún. **tengelyrövidlátást**.',
@@ -14404,7 +14425,7 @@ STUDIE.addSubject({
         fact: 'Az emberi szem fehérje a többi főemlőshöz képest feltűnően nagy és fehér: ez segít látni, hová néz a másik ember.'
       },
       {
-        id: 'szemizmok', z: 2, name: 'Szemmozgató izmok', svg: muscles, explode: [84, 0], badge: [520, 398], en: 'extraocular muscles (medial and lateral rectus shown)',
+        id: 'szemizmok', z: 2, name: 'Szemmozgató izmok', svg: muscles, explode: [84, 0], badge: [520, 398], en: 'extraocular muscles (medial and lateral rectus shown)', latin: 'musculi externi bulbi oculi (musculus rectus medialis et lateralis)',
         what: 'Minden szemet **hat** harántcsíkolt izom mozgat: négy egyenes (felső, alsó, belső, külső) és két ferde izom. A vízszintes metszetben a **belső** és a **külső egyenes izom** látszik: ezek fordítják a szemet az orr, illetve a halánték felé. A két szem izmai tökéletes összhangban dolgoznak, hogy mindkét szem ugyanoda nézzen; ha ez nem sikerül, **kancsalság** alakul ki.',
         madeOf: '**Harántcsíkolt izomrostokból**, amelyek a szemgödör hátsó csúcsán egy közös ín-gyűrűből erednek, és lapos **inakkal** tapadnak az ínhártyához. A szervezet legpontosabb izmai közé tartoznak: egy idegrost csak kevés izomrostot irányít, így nagyon finoman szabályozhatók.',
         how: 'A fej **mezodermájából** fejlődnek, és három agyideg idegzi be őket: a külső egyenes izmot a VI. (n. abducens), a felső ferde izmot a IV. (n. trochlearis), az összes többit a III. (n. oculomotorius). A szem gyors ugrásai (**szakkádok**) alatt az agy egy pillanatra „kikapcsolja” a látást, ezért nem látjuk elmosódottnak a világot.',
@@ -16161,7 +16182,7 @@ STUDIE.addSubject({
     intro: 'Az agy a test **irányítóközpontja**: itt alakulnak ki az érzetek, a gondolatok, az érzelmek és az emlékek, és innen indulnak a mozgások parancsai. A rajzon a **bal agyfélteke** látszik oldalról: a **nagyagy kérge** négy lebenyre osztható (**homlok-, fali, halánték- és nyakszirti lebeny**), alatta hátul a **kisagy**, lent az **agytörzs**, amely a **gerincvelőben** folytatódik.\n\nJobbra fent a félteke **belső oldala** látszik (mintha középen kettévágnánk az agyat): itt van a **köztiagy**, az **agyalapi mirigy**, a két féltekét összekötő **kérgestest** és az emlékezésben, érzelmekben fontos **limbikus rendszer**. Lent az agyat burkoló **agyhártyák** és az agyat felépítő **idegsejtek** nagyítva. A **Szétszedés** gombbal a lebenyeket széthúzhatod.',
     parts: [
       {
-        id: 'homlok', z: 4, name: 'Homloklebeny', svg: homlok, explode: [-28, -14], badge: [112, 214], en: 'frontal lobe (primary motor cortex, prefrontal cortex, Broca’s area)',
+        id: 'homlok', z: 4, name: 'Homloklebeny', svg: homlok, explode: [-28, -14], badge: [112, 214], en: 'frontal lobe (primary motor cortex, prefrontal cortex, Broca’s area)', latin: 'lobus frontalis',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/kozponti-kornyeki'],
         what: 'A nagyagy **legnagyobb** lebenye, a homlok mögött, a **központi barázdáig** tart. Ez a „vezérigazgató”: itt történik a **tervezés, döntés, figyelem, önkontroll**, itt dől el, mit teszünk, és mit nem. A hátsó szélén húzódik a **mozgatókéreg**, amely az akaratlagos mozgások parancsait küldi az izmokhoz, alul pedig (legtöbbünknél a bal féltekében) a **Broca-terület**, amely a beszéd **előállításához** kell.',
         madeOf: 'Mint minden lebeny, kívül **szürkeállományból** (kéreg: az idegsejtek sejttestjei, kb. 2–4 mm vastag, hat rétegben) és alatta **fehérállományból** (a sejtek velőhüvelyes nyúlványai) áll. A felszínt **tekervények** (gyrusok) és **barázdák** (sulcusok) teszik ráncossá: így fér el a kb. 0,2 m²-es kéreg (egy kis asztallapnyi) a koponyában. A mozgatókéregben vannak a test legnagyobb idegsejtjei, a **Betz-féle óriás piramissejtek**.',
@@ -16170,7 +16191,7 @@ STUDIE.addSubject({
         fact: 'A felnőtt agykéreg kb. 16 milliárd idegsejtet tartalmaz; ha kiteríthetnénk, kb. 2000 cm² lenne, nagyjából három 30 cm-es pizza területe.'
       },
       {
-        id: 'fali', z: 4, name: 'Fali lebeny', svg: fali, explode: [6, -26], badge: [392, 132], en: 'parietal lobe (primary somatosensory cortex)',
+        id: 'fali', z: 4, name: 'Fali lebeny', svg: fali, explode: [6, -26], badge: [392, 132], en: 'parietal lobe (primary somatosensory cortex)', latin: 'lobus parietalis',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/kozponti-kornyeki'],
         what: 'A fejtető alatti lebeny, a központi barázda **mögött**. Elülső sávja az **érzőkéreg**: ide érkeznek a bőrből, az izmokból és az ízületekből az **érintés, nyomás, hő, fájdalom** és a testhelyzet jelei. A lebeny hátsó része a **térbeli tájékozódás** központja: tudja, hol vannak a végtagjaink és a tárgyak körülöttünk, segít a kéz mozgását a látott tárgyhoz igazítani, és a számolásban is szerepe van.',
         madeOf: 'Hatrétegű **kéregből** és alatta fehérállományból. Az érzőkéreg sejtjei **oszlopokba** rendeződnek: egy-egy oszlop egy kis bőrterület egyféle ingerére (pl. rezgés vagy tartós nyomás) válaszol. A **szemcsés (granuláris)** IV. réteg itt különösen vastag, mert ide fut be a talamuszból érkező rostok többsége.',
@@ -16179,7 +16200,7 @@ STUDIE.addSubject({
         fact: 'Az érzőkéreg „térképén” a kéz és az ajak sokkal nagyobb területet foglal el, mint az egész hát: ezért érezzük az ujjbegyünkkel a legfinomabb részleteket.'
       },
       {
-        id: 'halantek', z: 4, name: 'Halántéklebeny', svg: halantek, explode: [-8, 24], badge: [200, 300], en: 'temporal lobe (auditory cortex, Wernicke’s area)',
+        id: 'halantek', z: 4, name: 'Halántéklebeny', svg: halantek, explode: [-8, 24], badge: [200, 300], en: 'temporal lobe (auditory cortex, Wernicke’s area)', latin: 'lobus temporalis',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A halánték mögötti, alsó lebeny, amelyet felülről a mély **oldalsó (Sylvius-) barázda** választ el. Felső részén van a **hallókéreg**, mögötte (többnyire a bal féltekében) a **Wernicke-terület**, amely a beszéd **megértéséhez** kell. Alsó része a látott tárgyak és **arcok felismerésében** fontos, a belsejében pedig az emlékezéshez szükséges **hippokampusz** és az érzelmeket értékelő **amigdala** rejtőzik.',
         madeOf: 'Kéregből és fehérállományból; a belső, „régebbi” részén egyszerűbb, háromrétegű kéreg is van (a hippokampusz körül). Az oldalsó barázda mélyén egy további, „elrejtett” kéregterület, az **inzula** (sziget) is található.',
@@ -16188,7 +16209,7 @@ STUDIE.addSubject({
         fact: 'A Wernicke-afáziás beteg folyékonyan, gyorsan beszél, de mondatai értelmetlenek, és ő maga sem érti, amit mondanak neki.'
       },
       {
-        id: 'nyakszirti', z: 4, name: 'Nyakszirti lebeny', svg: nyakszirti, explode: [26, -6], badge: [428, 214], en: 'occipital lobe (primary visual cortex)',
+        id: 'nyakszirti', z: 4, name: 'Nyakszirti lebeny', svg: nyakszirti, explode: [26, -6], badge: [428, 214], en: 'occipital lobe (primary visual cortex)', latin: 'lobus occipitalis',
         link: 'szem', terms: ['anatomia/latas'],
         what: 'Az agy **leghátsó**, a tarkó mögötti lebenye: a **látás** központja. A szemből érkező jelek a talamuszon át az itteni **elsődleges látókéregbe** jutnak, ahol az agy először rakja össze a vonalakat, éleket, színeket és mozgásokat. Innen két úton halad tovább az információ: a halántéklebeny felé („**mi** ez?”) és a fali lebeny felé („**hol** van, hogyan nyúljak érte?”).',
         madeOf: 'Kéregből és fehérállományból. Az elsődleges látókéreg főként a lebeny **belső** felszínén, egy mély barázda (sarkantyúbarázda) két partján fekszik; a metszetén egy szabad szemmel is látható fehér csík fut végig (Gennari-csík), ezért **csíkolt kéregnek** is nevezik.',
@@ -16197,7 +16218,7 @@ STUDIE.addSubject({
         fact: 'Ha a tarkónkat beütjük, „csillagokat látunk”: a látókéreg mechanikus ingerlése is fényérzetet kelt.'
       },
       {
-        id: 'kisagy', z: 2, name: 'Kisagy', svg: kisagy, explode: [22, 24], badge: [468, 340], en: 'cerebellum',
+        id: 'kisagy', z: 2, name: 'Kisagy', svg: kisagy, explode: [22, 24], badge: [468, 340], en: 'cerebellum', latin: 'cerebellum',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/kozponti-kornyeki'],
         what: 'A nagyagy hátsó része alatt, a tarkóban ülő, sűrűn barázdált „kis agy”. A mozgások **finomhangolója**: összeveti a tervezett mozgást a ténylegessel, és menet közben korrigál, így lesz a mozgás **pontos, összerendezett és sima**. Felel az **egyensúlyért**, a testtartásért és a begyakorolt mozgások (biciklizés, gépelés) **automatizálásáért**. Bár csak az agy tömegének kb. 10%-a, itt van az **idegsejtek több mint fele**.',
         madeOf: 'Vékony, párhuzamos **lemezkékbe** (foliumokba) gyűrt kéregből és fehérállományból; metszetben a fehérállomány faágszerű rajzolatot ad (**életfa**). A kéreg három rétegű; a középső rétegben sorakoznak a hatalmas, legyezőszerű dendritfájú **Purkinje-sejtek**, a legalsóban a parányi **szemcsesejtek** milliárdjai.',
@@ -16206,7 +16227,7 @@ STUDIE.addSubject({
         fact: 'A kisagyban kb. 69 milliárd idegsejt van, a nagyagykéregben csak kb. 16 milliárd.'
       },
       {
-        id: 'agytorzs', z: 1, name: 'Agytörzs (középagy, híd, nyúltvelő)', svg: agytorzs, explode: [-8, 22], badge: [314, 380], en: 'brainstem: midbrain, pons, medulla oblongata',
+        id: 'agytorzs', z: 1, name: 'Agytörzs (középagy, híd, nyúltvelő)', svg: agytorzs, explode: [-8, 22], badge: [314, 380], en: 'brainstem: midbrain, pons, medulla oblongata', latin: 'truncus encephali (mesencephalon, pons, medulla oblongata)',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/reflexiv', 'anatomia/kozponti-kornyeki'],
         what: 'Az agy „szára”, amely a gerincvelőt köti össze a nagyaggyal. Fentről lefelé három része a **középagy**, a **híd** és a **nyúltvelő**. Itt futnak át a fel- és lefelé haladó **pályák**, innen ered a 12 pár **agyideg** többsége, és itt vannak az **életfenntartó központok**: a **légzés, a szívműködés és a vérnyomás** szabályozása, a nyelés, köhögés, tüsszentés, hányás reflexei. Az agytörzs hálózatos állománya tart **ébren**.',
         madeOf: 'A gerincvelővel ellentétben itt a szürkeállomány nem egy darabban, hanem **magvakra** (idegsejtcsoportokra) szétszórva ül a fehérállomány pályái között. A híd elülső, kidomborodó részét harántul futó rostok alkotják, amelyek a nagyagyat a kisagyhoz kapcsolják. A nyúltvelő elején két hosszanti duzzanat, a **piramisok** látszik: ezekben futnak le a mozgatókéreg parancsai.',
@@ -16215,7 +16236,7 @@ STUDIE.addSubject({
         fact: 'A nyúltvelő csak kb. 3 cm hosszú, mégis nélküle egyetlen percig sem tudnánk lélegezni.'
       },
       {
-        id: 'koztiagy', z: 6, name: 'Köztiagy: talamusz és hipotalamusz', svg: koztiagy, explode: [0, 0], badge: [690, 150], en: 'diencephalon: thalamus and hypothalamus',
+        id: 'koztiagy', z: 6, name: 'Köztiagy: talamusz és hipotalamusz', svg: koztiagy, explode: [0, 0], badge: [690, 150], en: 'diencephalon: thalamus and hypothalamus', latin: 'diencephalon (thalamus, hypothalamus)',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/homeosztazis'],
         what: 'Az agy közepén, a két félteke között ülő rész. Nagyobbik része a tojás alakú **talamusz** (látótelep): ez a kéreg **„kapuőre”**, a szaglás kivételével minden érzékszervi jel itt kapcsolódik át, mielőtt a kéregbe jutna, és itt dől el, mire figyelünk. Alatta ül a csak kb. 4 g-os **hipotalamusz**, a **belső környezet** szabályozója: a testhőmérséklet, az **éhség, szomjúság**, az alvás–ébrenlét ritmusa és a hormonrendszer irányítása tartozik hozzá.',
         madeOf: 'Mindkettő **szürkeállományú magvak** sokaságából áll; a talamusz kb. 50 magot, a hipotalamusz egy tucatnyit tartalmaz. A hipotalamusz idegsejtjei között **hormontermelő** (neuroszekréciós) sejtek is vannak, és itt van a test „főórája”, a **szuprakiazmatikus mag** is, közvetlenül a látóideg-kereszteződés fölött.',
@@ -16224,7 +16245,7 @@ STUDIE.addSubject({
         fact: 'A lázat a hipotalamusz „termosztátjának” átállítása okozza: ezért fázunk és vacogunk a láz felszálló szakaszában, pedig már melegebb a testünk a szokásosnál.'
       },
       {
-        id: 'hipofizis', z: 7, name: 'Agyalapi mirigy (hipofízis)', svg: hipofizis, explode: [-12, 16], badge: [580, 238], en: 'pituitary gland (hypophysis)',
+        id: 'hipofizis', z: 7, name: 'Agyalapi mirigy (hipofízis)', svg: hipofizis, explode: [-12, 16], badge: [580, 238], en: 'pituitary gland (hypophysis)', latin: 'hypophysis (glandula pituitaria)',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/homeosztazis'],
         what: 'Borsónyi (kb. 0,5 g-os) mirigy, amely egy vékony nyélen lóg a hipotalamusz alatt, a koponyaalap egy csontos mélyedésében (törökülés). A hormonrendszer **„karmestere”**: hormonjaival a **pajzsmirigyet, a mellékvesét, az ivarmirigyeket** irányítja, és ő termeli a **növekedési hormont** is. A hipotalamusz utasításait hajtja végre, így köti össze az **idegrendszert** a **hormonrendszerrel**.',
         madeOf: 'Két, eltérő eredetű részből áll: az **elülső lebeny** (adenohipofízis) valódi **mirigyhám**, többféle hormontermelő sejttel; a **hátsó lebeny** (neurohipofízis) viszont **idegszövet**: a hipotalamusz idegsejtjeinek nyúlványai végződnek benne, és ezek ürítik a vérbe hormonjaikat.',
@@ -16233,7 +16254,7 @@ STUDIE.addSubject({
         fact: 'A növekedési hormon főleg mély alvás közben szabadul fel: a gyerekek valóban „alvás közben nőnek”.'
       },
       {
-        id: 'kergestest', z: 5, name: 'Kérgestest', svg: kergestest, explode: [0, -16], badge: [594, 120], en: 'corpus callosum',
+        id: 'kergestest', z: 5, name: 'Kérgestest', svg: kergestest, explode: [0, -16], badge: [594, 120], en: 'corpus callosum', latin: 'corpus callosum',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A két agyféltekét összekötő, ív alakú, vastag **„hídpillér”** a hosszanti agyrés mélyén. Rajta keresztül cserélnek információt a féltekék, így működik az agy egységesen: pl. a bal kézzel megfogott tárgy nevét (amit a jobb félteke érez) a bal félteke nyelvi területei ki tudják mondani.',
         madeOf: 'Kb. **200 millió** idegsejt-nyúlványból (axonból) álló **fehérállomány**, nagyrészt velőhüvelyes rostokkal: ezért fehér. Elülső, ívben lehajló vége a **térd**, a hátsó, megvastagodott vége a **párna**; az elülső részen a homloklebenyeket, a hátsón a nyakszirti és halántéklebenyeket kötik össze a rostok.',
@@ -16242,7 +16263,7 @@ STUDIE.addSubject({
         fact: 'Bár az agyunk két féltekéje kissé eltérően dolgozik, a „bal agyféltekés” és „jobb agyféltekés” emberek népszerű elmélete tudományosan nem igazolható.'
       },
       {
-        id: 'limbikus', z: 8, name: 'Limbikus rendszer: hippokampusz és amigdala', svg: limbikus, explode: [16, 20], badge: [690, 214], en: 'limbic system: hippocampus and amygdala',
+        id: 'limbikus', z: 8, name: 'Limbikus rendszer: hippokampusz és amigdala', svg: limbikus, explode: [16, 20], badge: [690, 214], en: 'limbic system: hippocampus and amygdala', latin: 'systema limbicum (hippocampus, corpus amygdaloideum)',
         lesson: 'biologia/ideg-hormon-emesztes', terms: ['anatomia/szinapszis'],
         what: 'A halántéklebeny belső, mély részén, a köztiagy körül gyűrűt alkotó struktúrák. A csikóhal alakú **hippokampusz** az új **emlékek** kialakításához kell: a napi élményeket ideiglenesen tárolja, majd (főként **alvás közben**) átadja a kéregnek tartós megőrzésre, és a **térbeli tájékozódásban** is fontos. A mandula alakú **amigdala** az **érzelmek**, különösen a **félelem** gyors értékelője: veszélyt jelző ingerre még azelőtt riaszt, hogy tudatosulna.',
         madeOf: 'A hippokampusz egy feltekeredett, ősibb, **háromrétegű kéreg**, amelynek kimenő rostjai a **fornix** (boltozat) ívén jutnak a köztiagyba. Az amigdala egy tucat **magból** álló szürkeállomány-csomó a hippokampusz elülső vége előtt. (A rajzon a középmetszetre vetítve látszanak, valójában oldalt, a halántéklebeny mélyén ülnek.)',
@@ -16251,7 +16272,7 @@ STUDIE.addSubject({
         fact: 'A londoni taxisofőrök hippokampuszának hátsó része az évekig tartó útvonaltanulás után mérhetően megnagyobbodik.'
       },
       {
-        id: 'agyhartya', z: 3, name: 'Agyhártyák és agy-gerincvelői folyadék', svg: agyhartya, explode: [0, 0], badge: [40, 486], en: 'meninges (dura mater, arachnoid mater, pia mater) and cerebrospinal fluid',
+        id: 'agyhartya', z: 3, name: 'Agyhártyák és agy-gerincvelői folyadék', svg: agyhartya, explode: [0, 0], badge: [40, 486], en: 'meninges (dura mater, arachnoid mater, pia mater) and cerebrospinal fluid', latin: 'meninges (dura mater, arachnoidea mater, pia mater), liquor cerebrospinalis',
         lesson: 'termeszet/emberi-test',
         what: 'Az agyat és a gerincvelőt **három hártya** burkolja: kívül a vastag, szívós **kemény agyhártya**, középen a vékony **pókhálóhártya**, legbelül a tekervényekhez simuló **lágy agyhártya**. A pókhálóhártya alatt kering az **agy-gerincvelői folyadék** (liquor): ebben az agy szinte **úszik**, ami tompítja az ütéseket, és kb. 1,4 kg-os súlyát mintegy 50 g-ra „könnyíti”. A liquor tápanyagot szállít és a salakanyagokat is elviszi.',
         madeOf: 'A kemény agyhártya tömött, **kollagénrostos kötőszövet**, amely a koponyacsont belső felszínéhez nőtt. A pókhálóhártya finom kötőszöveti hártya, amelyből pókhálószerű **gerendák** nyúlnak le. A lágy agyhártya egyetlen vékony réteg, sok **érrel**. A liquor víztiszta folyadék: kevés fehérje, glükóz és sók; mennyisége kb. **150 ml**.',
@@ -16260,7 +16281,7 @@ STUDIE.addSubject({
         fact: 'Az agyban nincsenek fájdalomérző receptorok, a fejfájás nagy részét a hártyák és az erek receptorai okozzák. Ezért lehet egyes agyműtéteket ébren is végezni.'
       },
       {
-        id: 'neuron', z: 3, name: 'Idegsejt-hálózat (neuronok és szinapszisok)', svg: neuron, explode: [0, 0], badge: [534, 438], en: 'neural network: neurons, dendrites, myelinated axon, synapse',
+        id: 'neuron', z: 3, name: 'Idegsejt-hálózat (neuronok és szinapszisok)', svg: neuron, explode: [0, 0], badge: [534, 438], en: 'neural network: neurons, dendrites, myelinated axon, synapse', latin: 'neuron (dendritum, axon), synapsis',
         link: 'sejt', lesson: 'biologia/sejt', terms: ['anatomia/neuron', 'anatomia/szinapszis', 'anatomia/akcios-potencial', 'anatomia/membranpotencial'],
         what: 'Az agy építőkövei az **idegsejtek** (neuronok): elektromos és kémiai jelekkel kommunikálnak. Minden neuron a **dendritjein** fogadja a jeleket, a **sejttestben** „összegzi” őket, és ha elég erős az inger, az **axonján** elektromos impulzust (akciós potenciált) küld tovább. A sejtek a **szinapszisokban** kapcsolódnak: itt az elektromos jel **kémiai jellé** (ingerületátvivő anyaggá) alakul. Egy neuron akár **10 000** másikkal is kapcsolatban állhat.',
         madeOf: 'Az idegsejt ugyanazokból a sejtalkotókból áll, mint a többi sejt (sejtmag, mitokondriumok, riboszómák), csak hosszú **nyúlványai** vannak. Sok axont **velőhüvely** (zsírszerű mielin) szigetel, amelyet a gliasejtek tekernek köréjük; a hüvelyt rendszeresen **befűződések** szakítják meg. A neuronokat legalább annyi **gliasejt** veszi körül, amely táplálja, védi és tisztítja őket.',
@@ -16583,7 +16604,7 @@ STUDIE.addSubject({
     intro: 'A rajz egy lomblevél **keresztmetszete**, mintha egy borotvapengével keresztbe vágtuk volna (jobbra lent látod, hol). Felülről lefelé: a viaszos **kutikula**, a **felső bőrszövet**, a sűrű, zöld **oszlopos alapszövet**, a lazább, légjáratos **szivacsos alapszövet** a **levéllérrel**, végül az **alsó bőrszövet** a **gázcserenyílásokkal**.\n\nA levél a **fotoszintézis** helye: a sejtek **zöld színtestjeiben** (kloroplasztiszaiban) a **klorofill** elnyeli a napfényt, és energiájával **vízből és szén-dioxidból cukrot** készít, melléktermékként **oxigén** szabadul fel. A nagyításokon a színtest belseje, a klorofill-molekula és egy levélsejt látszik. A **Szétszedés** gombbal a rétegeket széthúzhatod.',
     parts: [
       {
-        id: 'kutikula', z: 6, name: 'Kutikula', svg: kutikula, explode: [0, -34], badge: [150, 126], en: 'cuticle (cutin and epicuticular wax)',
+        id: 'kutikula', z: 6, name: 'Kutikula', svg: kutikula, explode: [0, -34], badge: [150, 126], en: 'cuticle (cutin and epicuticular wax)', latin: 'cuticula',
         lesson: 'termeszet/novenyek',
         what: 'A levél felszínét borító vékony, **viaszos, vízhatlan bevonat**, mint egy átlátszó lakkréteg. Megakadályozza, hogy a levél **kiszáradjon**, lepergeti a vizet és a port, védi a levelet a kórokozóktól és részben az UV-sugárzástól. Mivel **átlátszó**, a fény akadálytalanul átjut rajta. A levél alsó oldalán is van, de ott általában vékonyabb.',
         madeOf: 'A **kutin** nevű, zsírsavakból felépülő, hálózatos anyagból, amelybe és amelyre **viaszok** rakódnak. Sok növényen a viasz parányi kristálykákat, pikkelyeket alkot: ettől lesz pl. a káposztalevél vagy a szilva „hamvas”.',
@@ -16592,7 +16613,7 @@ STUDIE.addSubject({
         fact: 'A lótuszvirág levelén a víz gyöngyként gurul le, és magával viszi a sarat: a növény a mocsárban is tiszta marad.'
       },
       {
-        id: 'felso', z: 5, name: 'Felső bőrszövet', svg: felso, explode: [0, -20], badge: [214, 150], en: 'upper epidermis',
+        id: 'felso', z: 5, name: 'Felső bőrszövet', svg: felso, explode: [0, -20], badge: [214, 150], en: 'upper epidermis', latin: 'epidermis superior',
         lesson: 'termeszet/novenyek',
         what: 'A levél felső felszínén egyetlen sejtsorból álló **határoló réteg**. Védi a belső szöveteket a sérüléstől, a kiszáradástól és a kórokozóktól, közben **átengedi a fényt**. A sejtjei általában **nem tartalmaznak** zöld színtestet: olyanok, mint egy átlátszó ablaksor a zöld „gyár” fölött.',
         madeOf: 'Szorosan, hézag nélkül illeszkedő, lapos **élő sejtekből**, amelyek felszíne felé eső fala vastagabb, és a **kutikulát** választja ki. Sok növényen a bőrszövetből **szőrök** nőnek ki, amelyek árnyékolnak, csökkentik a párologtatást, vagy (mint a csalánon) védekeznek.',
@@ -16601,7 +16622,7 @@ STUDIE.addSubject({
         fact: 'A csalán szőrei apró üvegampullák: a hegyük letörik, és a bőrbe hangyasavat és hisztamint tartalmazó nedvet fecskendeznek.'
       },
       {
-        id: 'oszlopos', z: 4, name: 'Oszlopos alapszövet (paliszád)', svg: oszlopos, explode: [0, -6], badge: [258, 204], en: 'palisade mesophyll (palisade parenchyma)',
+        id: 'oszlopos', z: 4, name: 'Oszlopos alapszövet (paliszád)', svg: oszlopos, explode: [0, -6], badge: [258, 204], en: 'palisade mesophyll (palisade parenchyma)', latin: 'mesophyllum palisadicum',
         lesson: 'termeszet/novenyek',
         what: 'A felső bőrszövet alatt, a levél felszínére merőlegesen, sűrűn álló, hosszúkás sejtek sora: a levél **fő fotoszintetizáló rétege**. Itt van a legtöbb **zöld színtest** (sejtenként akár 30–50), és ide érkezik a legtöbb fény. Az oszlopos elrendezés olyan, mint sok egymás mellé állított kémcső: a fény mélyen behatol a sejtekbe, és útja során több színtesten is áthalad.',
         madeOf: 'Vékony falú, élő **alapszöveti** (parenchima) sejtekből. Minden sejt közepét egy nagy **vakuólum** tölti ki, a sejtplazma és benne a **színtestek** vékony rétegben a sejtfal mentén helyezkednek el. A sejtek között keskeny **légjáratok** futnak, amelyeken a szén-dioxid eljut hozzájuk.',
@@ -16610,7 +16631,7 @@ STUDIE.addSubject({
         fact: 'Egy négyzetmilliméternyi levélfelület alatt kb. félmillió zöld színtest dolgozik.'
       },
       {
-        id: 'szivacsos', z: 2, name: 'Szivacsos alapszövet és sejtközötti járatok', svg: szivacsos, explode: [0, 10], badge: [232, 336], en: 'spongy mesophyll, intercellular air spaces, bundle sheath',
+        id: 'szivacsos', z: 2, name: 'Szivacsos alapszövet és sejtközötti járatok', svg: szivacsos, explode: [0, 10], badge: [232, 336], en: 'spongy mesophyll, intercellular air spaces, bundle sheath', latin: 'mesophyllum spongiosum',
         lesson: 'termeszet/novenyek',
         what: 'Az oszlopos réteg alatti, lazán elhelyezkedő, szabálytalan alakú sejtek rétege, köztük nagy **sejtközötti járatokkal** (légjáratokkal). Olyan, mint egy szivacs: a gázcserenyílásokon beáramló **szén-dioxid** a járatokban szétterjed, és minden sejthez eljut; az **oxigén** és a **vízpára** ugyanitt távozik. Sejtjei is fotoszintetizálnak, de kevesebb színtestük van. A levélér körül a sejtek szoros gyűrűt (**nyalábhüvelyt**) alkotnak.',
         madeOf: 'Vékony falú, élő **alapszöveti** sejtekből, kevesebb színtesttel; a levél térfogatának akár harmadát-felét **levegő** tölti ki. A sejtek nedves fala felé nyílnak a járatok: a gázok a falon lévő vízhártyában oldódva jutnak be a sejtekbe.',
@@ -16619,7 +16640,7 @@ STUDIE.addSubject({
         fact: 'A levél belső felülete (a járatok falának összterülete) a külső felület 10–40-szerese is lehet.'
       },
       {
-        id: 'sztoma', z: 8, name: 'Gázcserenyílás (sztóma) és zárósejtek', svg: sztoma, explode: [0, 34], badge: [470, 406], en: 'stoma (pl. stomata) and guard cells',
+        id: 'sztoma', z: 8, name: 'Gázcserenyílás (sztóma) és zárósejtek', svg: sztoma, explode: [0, 34], badge: [470, 406], en: 'stoma (pl. stomata) and guard cells', latin: 'stoma (pl. stomata)',
         lesson: 'termeszet/novenyek',
         what: 'Az alsó bőrszövet apró, **nyitható-zárható résnyílásai**, amelyeket két bab (vese) alakú **zárósejt** fog közre. Ezeken át lép be a fotoszintézishez szükséges **szén-dioxid**, és itt távozik az **oxigén** és a **vízpára**. A zárósejtek a növény **„szelepei”**: fényben és ha van elég víz, kinyitnak; sötétben vagy szárazságban bezárnak, hogy a növény ne veszítsen túl sok vizet.',
         madeOf: 'Két **élő, színtestet tartalmazó** zárósejtből (a többi bőrszöveti sejtben általában nincs színtest), amelyek fala **egyenetlenül vastag**: a rés felé eső fal vastag és merev, a külső vékony és rugalmas. A nyílás fölött egy nagyobb légüreg, a **légudvar** található.',
@@ -16628,7 +16649,7 @@ STUDIE.addSubject({
         fact: 'A napraforgó egyetlen levelén több millió gázcserenyílás van, és egy nyári napon egy nagyobb fa több száz liter vizet párologtat el rajtuk keresztül.'
       },
       {
-        id: 'also', z: 7, name: 'Alsó bőrszövet', svg: also, explode: [0, 24], badge: [330, 384], en: 'lower epidermis',
+        id: 'also', z: 7, name: 'Alsó bőrszövet', svg: also, explode: [0, 24], badge: [330, 384], en: 'lower epidermis', latin: 'epidermis inferior',
         lesson: 'termeszet/novenyek',
         what: 'A levél fonákát borító egysejtrétegű bőrszövet, rajta vékonyabb **kutikulával**. Abban különbözik a felsőtől, hogy itt van a **gázcserenyílások** többsége: az árnyékos, hűvösebb alsó oldalon kevesebb víz párolog el a nyílásokon át. Gyakran szőrös, ami a felszín közelében „álló” párás levegőréteget tart meg.',
         madeOf: 'Hézag nélkül illeszkedő, színtelen, élő **bőrszöveti sejtekből**, köztük elszórtan a **zárósejtpárokkal**. Felülnézetben a sejtek gyakran hullámos falúak, és kirakós játékként kapcsolódnak egymásba.',
@@ -16637,7 +16658,7 @@ STUDIE.addSubject({
         fact: 'Ha egy levelet a fonákjával felfelé ragasztunk vazelinnel befestett üveglapra, jóval lassabban hervad el, mint ha a színét kenjük be: a víz főként az alsó oldalon párolog.'
       },
       {
-        id: 'faresz', z: 3, name: 'Levélér: farész (xilém)', svg: faresz, explode: [0, 4], badge: [330, 264], en: 'xylem of the vascular bundle (leaf vein)',
+        id: 'faresz', z: 3, name: 'Levélér: farész (xilém)', svg: faresz, explode: [0, 4], badge: [330, 264], en: 'xylem of the vascular bundle (leaf vein)', latin: 'xylema',
         lesson: 'termeszet/novenyek', terms: ['kemia-bsc/intermolekularis'],
         what: 'A levélerek (szállítónyalábok) **felső**, a levél színe felé eső része. A **vizet és az oldott ásványi sókat** szállítja a gyökértől a száron át a levélbe. A víz egy részét a fotoszintézis használja fel, a nagyobb része a levélből **elpárolog**, és ez a párolgás **szívja** fel a vizet egészen a gyökerekből.',
         madeOf: '**Elhalt**, üres, csőszerű sejtekből: a **vízszállító csövek** (tracheák) és a **vízszállító sejtek** (tracheidák) faluk vastag és **fásodott** (lignin), sokszor gyűrűs vagy csavarvonalas megvastagodással, ami megakadályozza, hogy a cső összelapuljon. A csöveket élő faparenchima-sejtek kísérik.',
@@ -16646,7 +16667,7 @@ STUDIE.addSubject({
         fact: 'A legmagasabb fák (kb. 115 m-es mamutfenyők) tetejére a víz egyetlen szivattyú nélkül, pusztán a párolgás „szívóerejével” jut fel.'
       },
       {
-        id: 'hancsresz', z: 3, name: 'Levélér: háncsrész (floém)', svg: hancsresz, explode: [0, 20], badge: [330, 324], en: 'phloem of the vascular bundle (sieve tubes, companion cells)',
+        id: 'hancsresz', z: 3, name: 'Levélér: háncsrész (floém)', svg: hancsresz, explode: [0, 20], badge: [330, 324], en: 'phloem of the vascular bundle (sieve tubes, companion cells)', latin: 'phloema',
         lesson: 'termeszet/novenyek', terms: ['szerves-kemia/szenhidrat'],
         what: 'A levélerek **alsó**, a fonák felé eső része. A levélben készült **cukrot** (főként **szacharózt**, azaz répacukrot) oldat formájában szállítja oda, ahol szükség van rá, vagy ahol a növény raktároz: a növekvő hajtáscsúcsba, a gyökerekbe, a termésekbe, a gumókba. A víz a farészben jellemzően egy irányba (felfelé), a cukoroldat a háncsban **bármely irányba** áramolhat.',
         madeOf: '**Élő** sejtekből: a cukoroldatot a **rostacsövek** vezetik, amelyek egymás fölötti sejtjeit szitaszerűen átlyuggatott harántfalak (**rostalemezek**) kötik össze. A rostacsősejtekből hiányzik a sejtmag; az életműködésüket a mellettük lévő kis, sűrű plazmájú **kísérősejtek** tartják fenn.',
@@ -16655,7 +16676,7 @@ STUDIE.addSubject({
         fact: 'A juharszirup a cukorjuhar törzsében tavasszal felfelé áramló cukros nedvből készül: kb. 40 liter nedvből lesz 1 liter szirup.'
       },
       {
-        id: 'kloroplasztisz', z: 5, name: 'Zöld színtest (kloroplasztisz)', svg: kloro, explode: [0, 0], badge: [580, 100], en: 'chloroplast: thylakoid, granum, stroma',
+        id: 'kloroplasztisz', z: 5, name: 'Zöld színtest (kloroplasztisz)', svg: kloro, explode: [0, 0], badge: [580, 100], en: 'chloroplast: thylakoid, granum, stroma', latin: 'chloroplastus (thylakoidum, granum, stroma)',
         lesson: 'biologia/sejt', terms: ['kemia-bsc/redoxi', 'kemia-bsc/elektrodpotencial', 'kemia-bsc/ph'],
         what: 'A fotoszintézis **„üzeme”**: a levélsejtekben lévő, kb. 5–10 µm-es, lencse alakú sejtalkotó. Belsejében lapos, zsákszerű hártyák, a **tilakoidok** vannak, amelyek pénzérmékhez hasonló oszlopokba, **gránumokba** rendeződnek. A tilakoidhártyában ül a **klorofill**: itt zajlik a **fényszakasz** (fényelnyelés, a víz bontása, energiatárolás). A tilakoidokat körülvevő folyadékban, a **sztrómában** épül fel a cukor a **Calvin-ciklusban**.',
         madeOf: '**Kettős hártya** határolja. Belül a tilakoidhártyákban a fényelnyelő festékek (klorofillok, karotinoidok) fehérjékhez kötve, nagy **fotokémiai rendszerekbe** (fotoszisztémákba) rendeződnek, mellettük elektronszállító fehérjék és az **ATP-szintáz** „turbinái”. A sztrómában enzimek (köztük a **RuBisCO**), saját **DNS**, riboszómák és **keményítőszemcsék** vannak.',
@@ -16664,7 +16685,7 @@ STUDIE.addSubject({
         fact: 'A RuBisCO valószínűleg a Föld leggyakoribb fehérjéje, mégis lassú enzim: másodpercenként csak kb. 3 CO₂-molekulát köt meg, ezért kell belőle ennyi.'
       },
       {
-        id: 'klorofill', z: 5, name: 'Klorofill-molekula', svg: klorofill, explode: [0, 0], badge: [572, 372], en: 'chlorophyll a (porphyrin ring with Mg²⁺, phytol tail)',
+        id: 'klorofill', z: 5, name: 'Klorofill-molekula', svg: klorofill, explode: [0, 0], badge: [572, 372], en: 'chlorophyll a (porphyrin ring with Mg²⁺, phytol tail)', latin: 'chlorophyllum a',
         link: 'atom', lesson: 'biologia/sejt', terms: ['fizika-bsc/fotoeffektus', 'kemia-bsc/molekulapalya'],
         what: 'A növények **zöld festékanyaga**, amely **elnyeli a napfényt**, és energiáját a fotoszintézis számára hasznosítja. Főleg a **kék** és a **vörös** fényt nyeli el; a **zöld** fényt alig, azt visszaveri és átengedi: ezért látjuk zöldnek a leveleket. Ősszel, amikor a klorofill lebomlik, előtűnnek a mellette lévő **sárga és narancs** színű karotinoidok.',
         madeOf: 'Egy lapos, négy kis gyűrűből összekapcsolódó **porfirinvázból** („fej”) és egy hosszú, 20 szénatomos **fitol-láncból** („farok”) áll. A fej közepén egy **magnéziumion** ül, amelyet négy **nitrogénatom** fog közre. Képlete (klorofill-a): C₅₅H₇₂O₅N₄Mg. A fej sok **váltakozó egyszeres és kettős kötése** (konjugált rendszere) miatt képes a látható fény elnyelésére.',
@@ -16673,7 +16694,7 @@ STUDIE.addSubject({
         fact: 'A klorofill szerkezete feltűnően hasonlít a vér hemjére: ott a gyűrű közepén magnézium helyett vas ül.'
       },
       {
-        id: 'sejtfal', z: 5, name: 'Sejtfal és vakuólum (egy levélsejt)', svg: sejt, explode: [0, 0], badge: [140, 494], en: 'plant cell wall (cellulose) and central vacuole (tonoplast)',
+        id: 'sejtfal', z: 5, name: 'Sejtfal és vakuólum (egy levélsejt)', svg: sejt, explode: [0, 0], badge: [140, 494], en: 'plant cell wall (cellulose) and central vacuole (tonoplast)', latin: 'paries cellularis, vacuola centralis (tonoplastus)',
         link: 'sejt', lesson: 'biologia/sejt', terms: ['szerves-kemia/szenhidrat', 'szerves-kemia/polimer'],
         what: 'A növényi sejteket – az állati sejtekkel ellentétben – szilárd **sejtfal** veszi körül, a belsejük nagy részét pedig egy hatalmas, folyadékkal teli **vakuólum** (sejtnedvűr) tölti ki. A kettő együtt adja a sejtek **feszességét**: a vakuólum vizet szív magába, és belülről a falnak nyomódik, mint a felfújt belső gumi a köpenynek. Ettől áll ki a levél; ha a növény vizet veszít, a nyomás csökken, és a levél **lekonyul** (hervad).',
         madeOf: 'A sejtfal fő anyaga a **cellulóz**: hosszú szőlőcukor-láncok, amelyek erős rostokba (mikrofibrillumokba) állnak össze, és amelyeket **hemicellulóz** és **pektin** ragaszt össze. A szomszédos sejtek falán apró csatornák (**plazmodezmák**) vezetnek át. A vakuólumot saját hártya határolja; benne víz, sók, cukrok, savak, festékek (pl. a vörös antociánok) és tartalékanyagok vannak.',
@@ -23047,7 +23068,7 @@ STUDIE.addSubject({
     ],
     terms: [
       /* ----- Sejtek és szövetek ----- */
-      { id: 'hamszovet', term: 'Hámszövet', en: 'epithelial tissue, epithelium', topic: 'sejt',
+      { id: 'hamszovet', term: 'Hámszövet', en: 'epithelial tissue, epithelium', latin: 'textus epithelialis (epithelium)', topic: 'sejt',
         short: 'Szorosan illeszkedő sejtekből álló, alaphártyán ülő, ér nélküli szövet, amely a test külső és belső felszíneit borítja, illetve mirigyeket alkot.',
         prereq: ['lecke:biologia/sejt', 'modell:sejt'],
         text: 'Jellemzői: kevés sejtközötti állomány, a sejtek **sejtkapcsoló struktúrákkal** (zárókapcsolat, deszmoszóma, réskapcsolat) kötődnek, egyik oldaluk szabad felszín (apikális), a másik a **bazális membránon** ül. Erei nincsenek: táplálása az alatta fekvő kötőszövetből diffúzióval történik. Gyorsan megújul.\n\nOsztályozás a rétegek száma és a sejtalak szerint:\n\n- **egyrétegű laphám**: érbelhártya (endotél), tüdőléghólyagok – gyors diffúzió;\n- **egyrétegű köbhám / hengerhám**: vesecsatornák, bélhám (mikrobolyhokkal) – felszívás, kiválasztás;\n- **többmagsoros csillós hengerhám**: légutak – nyák szállítása;\n- **többrétegű laphám**: bőr (elszarusodó), szájüreg, nyelőcső (el nem szarusodó) – mechanikai védelem;\n- **átmeneti hám**: húgyhólyag – nyúlékony.\n\nA **mirigyhám** váladékot termel: exokrin (kivezetőcsővel) vagy endokrin (a vérbe).',
@@ -23055,14 +23076,14 @@ STUDIE.addSubject({
         pitfall: 'A „többmagsoros” hám **egyrétegű**: minden sejt eléri az alaphártyát, csak a sejtmagok vannak különböző magasságban, ezért látszik többrétegűnek.',
         related: ['kotoszovet', 'gazcsere', 'emesztes', 'nefron'],
         models: ['sejt'] },
-      { id: 'kotoszovet', term: 'Kötőszövet', en: 'connective tissue', topic: 'sejt',
+      { id: 'kotoszovet', term: 'Kötőszövet', en: 'connective tissue', latin: 'textus connectivus', topic: 'sejt',
         short: 'Sejtekből és bőséges sejtközötti állományból (rostok + alapállomány) álló szövetcsoport, amely összeköt, támaszt, véd és szállít.',
         prereq: ['lecke:biologia/sejt', 'anatomia/hamszovet'],
         text: 'A tulajdonságait elsősorban a **sejtközötti állomány** (extracelluláris mátrix) adja:\n\n- **kollagénrostok** (I-es típus): nagy húzószilárdság;\n- **rugalmas rostok** (elasztin): nyújthatóság, visszarugózás (aorta, tüdő);\n- **retikuláris rostok**: finom váz (nyirokszervek, máj);\n- **alapállomány**: proteoglikánok, hialuronsav, víz.\n\nFő típusai: **laza rostos** (szervek közti kitöltés), **tömött rostos** (inak, szalagok, ízületi tok), **zsírszövet**, **porc** (üvegporc, rugalmas porc, rostos porc), **csont**, valamint a folyékony sejtközötti állományú **vér** és **nyirok**. Kialakítói a fibroblasztok, porcban a kondrociták, csontban az oszteociták.\n\nA porcnak nincs ere, ezért sérülése után nagyon lassan, rosszul gyógyul.',
         example: 'Az Achilles-ín keresztmetszete kb. 60 mm², szakítószilárdsága 50–100 N/mm², így `3000–6000 N`-t bír el. Futáskor a terhelés a testsúly 6–8-szorosa: 70 kg-os embernél `4100–5500 N` – az ín a teherbírása határához közel dolgozik.',
         pitfall: 'A vér is kötőszövet: sejtjei folyékony sejtközötti állományban (plazmában) vannak, és ugyanabból a csíralemezből (mezodermából) származik, mint a többi kötőszövet.',
         related: ['hamszovet', 'csont', 'izulet', 'izomszovet'] },
-      { id: 'izomszovet', term: 'Izomszövet', en: 'muscle tissue', topic: 'sejt',
+      { id: 'izomszovet', term: 'Izomszövet', en: 'muscle tissue', latin: 'textus muscularis', topic: 'sejt',
         short: 'Összehúzódásra specializált szövet; három típusa a vázizom (harántcsíkolt), a szívizom és a simaizom.',
         prereq: ['lecke:termeszet/emberi-test', 'anatomia/kotoszovet'],
         text: 'Mindhárom típus aktin–miozin rendszerrel húzódik össze, de felépítésük és vezérlésük eltér:\n\n- **Vázizom**: sokmagvú, akár több cm hosszú izomrostok; harántcsíkolt; akaratlagos, szomatikus mozgatóideg vezérli; a Ca²⁺ a szarkoplazmatikus retikulumból jön; gyors ingersorozattal tetanizálható.\n- **Szívizom**: egy-két magvú, elágazó sejtek, interkaláris lemezekkel kapcsolva; harántcsíkolt; önműködő (a szinuszcsomó indítja), a vegetatív idegrendszer csak módosítja; a Ca²⁺ részben kívülről, részben az SR-ből jön; nem tetanizálható.\n- **Simaizom**: egymagvú, orsó alakú sejtek; nincs harántcsíkolat; akaratlan (vegetatív ideg, hormonok, helyi tényezők); Ca²⁺ főként kívülről, a kalmodulinon át hat; lassú, tartós (tónusos) összehúzódásra képes.\n\nA **szívizom** sejtjei réskapcsolatokkal funkcionális szincíciumot alkotnak: az ingerület sejtről sejtre terjed, a kamra egy egységként húzódik össze.',
@@ -23070,7 +23091,7 @@ STUDIE.addSubject({
         pitfall: 'A simaizom is tud nagy erőt kifejteni, sőt tartósan és kevés ATP-vel: a „retesz” (latch) állapotban a kereszthidak lassan válnak le. A „gyenge” jelző csak a sebességére igaz.',
         related: ['szarkomer', 'izomosszehuzodas', 'sziv-ciklus', 'idegszovet', 'kotoszovet'],
         models: ['sziv'] },
-      { id: 'idegszovet', term: 'Idegszövet', en: 'nervous tissue', topic: 'sejt',
+      { id: 'idegszovet', term: 'Idegszövet', en: 'nervous tissue', latin: 'textus nervosus', topic: 'sejt',
         short: 'Ingerület keletkezésére, vezetésére és feldolgozására specializált szövet, amely idegsejtekből (neuronok) és gliasejtekből áll.',
         prereq: ['lecke:biologia/ideg-hormon-emesztes', 'anatomia/hamszovet'],
         text: 'Az emberi agyban kb. 86 milliárd **neuron** és nagyjából ugyanennyi **gliasejt** van. A neuronok ingerelhetők és ingerületet vezetnek; a gliák támasztanak, táplálnak, szigetelnek és védenek:\n\n- **asztrociták**: ionösszetétel és neurotranszmitterek eltakarítása, vér–agy gát fenntartása;\n- **oligodendrociták** (központi idegrendszer) és **Schwann-sejtek** (környéki idegrendszer): **mielinhüvely**;\n- **mikroglia**: az idegrendszer immunsejtjei (fagocitózis);\n- **ependimasejtek**: az agykamrák bélése, agy-gerincvelői folyadék termelése.\n\nAz agyban a sejttestek a **szürkeállományban**, a mielinhüvelyes rostok a **fehérállományban** csoportosulnak. A felnőtt neuronok gyakorlatilag nem osztódnak.',
@@ -23097,14 +23118,14 @@ STUDIE.addSubject({
         related: ['membranpotencial', 'neuron', 'szinapszis', 'idegszovet', 'izomosszehuzodas', 'ekg'] },
 
       /* ----- Mozgásrendszer ----- */
-      { id: 'csont', term: 'A csont szerkezete', en: 'bone structure (compact and spongy bone)', topic: 'mozgas',
+      { id: 'csont', term: 'A csont szerkezete', en: 'bone structure (compact and spongy bone)', latin: 'os (substantia compacta, substantia spongiosa)', topic: 'mozgas',
         short: 'A csont élő, folyamatosan átépülő kötőszövet: kollagénváz, amelyet hidroxiapatit-kristályok mineralizálnak; makroszkóposan tömör és szivacsos állományból épül fel.',
         prereq: ['anatomia/kotoszovet', 'lecke:termeszet/emberi-test'],
         text: '**Anyaga**: tömegének kb. 60–70%-a ásványi anyag (főként **hidroxiapatit**, Ca₁₀(PO₄)₆(OH)₂), ez adja a nyomószilárdságot; kb. 30% szerves anyag (főként I-es típusú kollagén), ez a hajlékonyságot és a húzószilárdságot.\n\n**Sejtjei**: **oszteoblaszt** (csontépítő), **oszteocita** (a lakúnákba zárt, mechanikai terhelést érzékelő sejt), **oszteoklaszt** (csontbontó, a monocita–makrofág vonalból).\n\n**Szerkezete**:\n\n- **tömör (kompakt) állomány**: koncentrikus lemezekből álló **oszteonok** (Havers-rendszerek), közepükön érrel és ideggel;\n- **szivacsos állomány**: gerendák (trabekulák) hálózata a terhelés fővonalai mentén, közöttük **vörös csontvelő**.\n\nCsöves csont: **diafízis** (velőüreggel), **epifízisek**, köztük gyermekkorban a **növekedési porclemez**; kívül a **csonthártya** (periosteum), amely a vastagodásért és a törések gyógyulásáért felel.',
         example: 'A csontváz évente kb. 10%-a épül át, így nagyjából 10 év alatt „kicserélődik”. A szervezet kb. 1–1,2 kg kalciumának 99%-a a csontokban van: a csont a vér Ca²⁺-szintjének raktára is (parathormon, kalcitonin, D-vitamin).',
         pitfall: 'A csont nem „halott” vázanyag: terhelés nélkül (űrrepülés, ágyhoz kötöttség) havonta 1–2% ásványi anyagot is veszíthet, rendszeres terhelésre viszont erősödik (Wolff-törvény).',
         related: ['kotoszovet', 'izulet', 'homeosztazis'] },
-      { id: 'izulet', term: 'Ízület', en: 'joint (synovial joint)', topic: 'mozgas',
+      { id: 'izulet', term: 'Ízület', en: 'joint (synovial joint)', latin: 'articulatio (articulatio synovialis)', topic: 'mozgas',
         short: 'Csontok közötti mozgékony összeköttetés; a valódi (szinoviális) ízületben porccal borított ízfelszínek, ízületi tok, ízületi rés és ízületi folyadék található.',
         prereq: ['anatomia/csont', 'mechanika/nyomatek'],
         text: 'A csontok összeköttetése lehet **folytonos** (kötőszövetes varrat, porcos symphysis, csontos) vagy **ízületi** (diarthrosis). A valódi ízület részei:\n\n- **ízfelszínek** üvegporccal borítva (súrlódási együttható kb. 0,001–0,01 – jobb, mint bármely műszaki csapágy);\n- **ízületi tok**: külső rostos réteg és belső **szinoviális hártya**, amely az **ízületi folyadékot** (kenés, porctáplálás) termeli;\n- erősítő **szalagok**, egyes ízületekben **porckorong** (meniszkusz) és ízületi ajak.\n\nAlak és szabadságfok szerint: **gömbízület** (váll, csípő: 3 tengely), **tojásdad** és **nyeregízület** (csukló, hüvelykujj tőízülete: 2 tengely), **csuklóízület** (könyök humeroulnaris része, ujjpercek: 1 tengely), **forgóízület** (proximális radioulnaris, atlas–axis), **síkízület**.',
@@ -23181,7 +23202,7 @@ STUDIE.addSubject({
         related: ['gazcsere', 'percterfogat', 'homeosztazis'] },
 
       /* ----- Idegrendszer és érzékszervek ----- */
-      { id: 'neuron', term: 'Neuron (idegsejt)', en: 'neuron, nerve cell', topic: 'ideg',
+      { id: 'neuron', term: 'Neuron (idegsejt)', en: 'neuron, nerve cell', latin: 'neuron', topic: 'ideg',
         short: 'Az idegrendszer alapegysége: dendritjein és sejttestén információt fogad, axonján akciós potenciál formájában továbbítja, szinapszisain átadja.',
         prereq: ['anatomia/idegszovet', 'modell:sejt'],
         visual: neuSvg, caption: 'Egy motoros neuron vázlata. A bejövő jeleket a dendritek és a sejttest gyűjtik, az akciós potenciál az axondombon indul.',
@@ -23189,14 +23210,14 @@ STUDIE.addSubject({
         example: 'A gyors axonális transzport kb. 200–400 mm/nap. Egy 1 m-es axon végére a sejttestben készült fehérje 400 mm/nappal is `1000/400 = 2,5` nap alatt ér el – ezért ilyen lassú a hosszú idegek regenerációja (kb. 1 mm/nap).',
         pitfall: 'Nem minden neuron ad akciós potenciált: például a retina fotoreceptorai és bipoláris sejtjei fokozatos (graduális) potenciálváltozásokkal dolgoznak.',
         related: ['idegszovet', 'akcios-potencial', 'szinapszis', 'reflexiv', 'membranpotencial'] },
-      { id: 'szinapszis', term: 'Szinapszis', en: 'synapse', topic: 'ideg',
+      { id: 'szinapszis', term: 'Szinapszis', en: 'synapse', latin: 'synapsis', topic: 'ideg',
         short: 'Két idegsejt (vagy ideg- és izomsejt) közötti kapcsolat, ahol az ingerület kémiai ingerületátvivő anyag (neurotranszmitter) vagy közvetlen elektromos kapcsolat révén adódik át.',
         prereq: ['anatomia/neuron', 'anatomia/akcios-potencial'],
         text: '**Kémiai szinapszis** lépései:\n\n1. Az AP eléri a preszinaptikus végződést, feszültségfüggő **Ca²⁺-csatornák** nyílnak.\n2. A Ca²⁺ hatására a neurotranszmittert tartalmazó **vezikulák** a membránnal összeolvadnak (exocitózis).\n3. A transzmitter átdiffundál a kb. 20 nm-es **szinaptikus résen**, és a posztszinaptikus **receptorokhoz** kötődik.\n4. **Ionotróp** receptor: azonnal ioncsatornát nyit; **metabotróp**: G-fehérjén keresztül, lassabban hat.\n5. A transzmitter hatását lebontás (pl. **acetilkolin-észteráz**) vagy visszavétel (reuptake) szünteti meg.\n\nA posztszinaptikus sejtben **serkentő** (EPSP, pl. glutamát) vagy **gátló** (IPSP, pl. GABA, glicin) potenciál jön létre. Egy neuron ezernyi szinapszis bemenetét **térben és időben összegzi**.\n\nAz **elektromos szinapszis** (réskapcsolat) gyorsabb és kétirányú, de nem módosítható úgy, mint a kémiai.',
         example: 'A szinaptikus késés kb. 0,5 ms. Egy öt szinapszisból álló láncban ez kb. 2,5 ms-ot ad a vezetési időhöz. A szerves foszfátészterek (rovarirtók, harci gázok) gátolják az acetilkolin-észterázt: az ACh felhalmozódik, izomrángás, majd bénulás jön létre.',
         pitfall: 'A neurotranszmitter hatását a **receptor** határozza meg, nem maga az anyag: az acetilkolin a vázizmon serkent (nikotinos receptor), a szíven lassít (muszkarinos M2 receptor).',
         related: ['neuron', 'akcios-potencial', 'reflexiv', 'izomosszehuzodas', 'kozponti-kornyeki'] },
-      { id: 'reflexiv', term: 'Reflexív', en: 'reflex arc', topic: 'ideg',
+      { id: 'reflexiv', term: 'Reflexív', en: 'reflex arc', latin: 'arcus reflexus', topic: 'ideg',
         short: 'Egy reflex anatómiai útja: receptor → érző (afferens) neuron → központ → mozgató (efferens) neuron → végrehajtó szerv (effektor).',
         prereq: ['anatomia/szinapszis', 'anatomia/neuron'],
         visual: refSvg, caption: 'Monoszinaptikus nyújtási reflex (pl. térdreflex): az izomorsó érző rostja közvetlenül a gerincvelő mellső szarvának motoneuronján végződik.',
@@ -23204,14 +23225,14 @@ STUDIE.addSubject({
         example: 'Térdreflex: kb. 0,5 m afferens és 0,5 m efferens út 60 m/s-mal `1/60 ≈ 16,7 ms`, ehhez jön kb. 1 ms szinaptikus késés és az izom aktiválódása – a mért reflexidő kb. 20 ms. Akaratlagos reakció (látott jelre gombnyomás) 150–250 ms.',
         pitfall: 'Attól, hogy egy reflex gerincvelői szinten zárul, az agy tud róla: a jel felfelé is továbbmegy (ezért érezzük a fájdalmat), és a magasabb központok a reflexeket gátolhatják vagy fokozhatják.',
         related: ['szinapszis', 'neuron', 'kozponti-kornyeki', 'homeosztazis'] },
-      { id: 'kozponti-kornyeki', term: 'Központi és környéki idegrendszer', en: 'central and peripheral nervous system', topic: 'ideg',
+      { id: 'kozponti-kornyeki', term: 'Központi és környéki idegrendszer', en: 'central and peripheral nervous system', latin: 'systema nervosum centrale et periphericum', topic: 'ideg',
         short: 'A központi idegrendszer (KIR) az agyvelő és a gerincvelő; a környéki (perifériás) idegrendszer az ezeket a testtel összekötő agyi és gerincvelői idegek és dúcok összessége.',
         prereq: ['lecke:biologia/ideg-hormon-emesztes', 'anatomia/idegszovet'],
         text: '**Központi idegrendszer**: **nagyagy** (kéreg: érzékelés, mozgatás, gondolkodás), **köztiagy** (talamusz: érzőátkapcsolás; hipotalamusz: hőszabályozás, éhség, hormonok), **kisagy** (mozgáskoordináció), **agytörzs** (légzés- és keringésszabályozó központok), **gerincvelő**. Csontos tok, agyhártyák és agy-gerincvelői folyadék védi; a **vér–agy gát** szelektíven szűri a bejutó anyagokat.\n\n**Környéki idegrendszer**: 12 pár agyideg és 31 pár gerincvelői ideg, valamint a dúcok. Funkció szerint:\n\n- **szomatikus**: vázizmok, bőr, tudatos érzékelés;\n- **vegetatív (autonóm)**: belső szervek, akarattól független; két fő ága az ellentétesen ható **szimpatikus** („üss vagy fuss”: pulzus ↑, hörgőtágulat, pupillatágulat, bélműködés ↓) és **paraszimpatikus** („pihenj és eméssz”: vagus) rendszer, valamint a **bélidegrendszer**.\n\nA vegetatív efferens pálya **két neuronból** áll, köztük dúcbeli átkapcsolással.',
         example: 'A 31 pár gerincvelői ideg: 8 nyaki, 12 háti, 5 ágyéki, 5 keresztcsonti és 1 farokcsonti (`8 + 12 + 5 + 5 + 1 = 31`). Gerincvelő-sérüléskor a sérülés szintje alatti szelvények érző- és mozgatóműködése esik ki: a C4 feletti sérülés a rekeszizmot beidegző n. phrenicust is érinti, ezért lélegeztetést igényelhet.',
         pitfall: 'A „vegetatív” nem azt jelenti, hogy „alvó” vagy „egyszerű”: folyamatosan, finoman szabályoz. A szimpatikus és paraszimpatikus rendszer sem mindig ellentétes – a nyálelválasztást például mindkettő fokozza.',
         related: ['reflexiv', 'neuron', 'idegszovet', 'latas', 'homeosztazis', 'vernyomas', 'szinapszis'] },
-      { id: 'latas', term: 'Látás', en: 'vision (visual system)', topic: 'ideg',
+      { id: 'latas', term: 'Látás', en: 'vision (visual system)', latin: 'organum visus', topic: 'ideg',
         short: 'A szem optikai rendszere éles képet vetít a retinára, ahol a fotoreceptorok (pálcikák, csapok) a fényt idegi jellé alakítják; a jel a látópályán a nyakszirti lebeny látókérgébe jut.',
         prereq: ['lecke:fizika/hullamok-feny', 'anatomia/neuron'],
         text: '**Optika**: a szem fénytörő ereje kb. 60 dioptria; ennek kb. kétharmadát a **szaruhártya** adja (~43 D), a **szemlencse** kb. 20 D-t, ami **alkalmazkodással** (akkomodáció: a sugárizom összehúzódik, a lencse domborodik) növelhető. A **pupilla** blendeként szabályozza a beeső fényt.\n\n**Retina**: kb. 120 millió **pálcika** (érzékeny, szürkületi, fekete-fehér látás) és 6 millió **csap** (színlátás három típussal: S, M, L; éleslátás). A **sárgafolt** közepén (fovea) csak csapok vannak – itt a legélesebb a látás. A **vakfoltban** (látóidegfő) nincs receptor.\n\n**Fototranszdukció**: a fény a rodopszin retinál részét átalakítja (11-cisz → transz), G-fehérje-kaszkád csökkenti a cGMP-t, a Na⁺-csatornák zárnak: a receptor fény hatására **hiperpolarizálódik**.\n\nA látópályán a két szem orrfelőli (nazális) rostjai a **látóideg-kereszteződésben** átkereszteződnek, így a jobb látótér a bal agyféltekébe jut.',
@@ -23242,7 +23263,7 @@ STUDIE.addSubject({
         example: 'A pH 7,4-nél a H⁺-koncentráció `10^(−7,4) mol/L ≈ 40 nmol/L`. pH 7,0-nál 100 nmol/L: a kis pH-változás a H⁺ `10^0,4 ≈ 2,5`-szeresét jelenti – ezért életveszélyes már 0,4 egységnyi eltérés is.',
         pitfall: 'A homeosztázis nem merev állandóság: az alapérték is változhat (láz, cirkadián ritmus, edzettség). Lázban a „termosztát” feljebb áll, ezért fázunk és didergünk, miközben emelkedik a hőmérsékletünk.',
         related: ['inzulin-glukagon', 'vizeletkepzes', 'vernyomas', 'nefron', 'membranpotencial', 'reflexiv', 'gazcsere'] },
-      { id: 'nefron', term: 'Nefron', en: 'nephron', topic: 'anyagcsere',
+      { id: 'nefron', term: 'Nefron', en: 'nephron', latin: 'nephron', topic: 'anyagcsere',
         short: 'A vese működési egysége (veséként kb. egymillió): a vérplazmát szűrő vesetestecskéből és a szűrletet átalakító csatornarendszerből áll.',
         prereq: ['anatomia/hamszovet', 'anatomia/vernyomas', 'lecke:termeszet/emberi-test'],
         visual: nephSvg, caption: 'A nefron szakaszai és fő feladataik. A Henle-kacs a velőállományba nyúlik le, ahol a koncentrált vizelet kialakul.',
@@ -29976,6 +29997,8 @@ STUDIE.addQuestions('vizualis', {
   ];
 
   S.renderModel = function (root, m, trail) {
+    var uniMode = S.level === 'egyetem';
+    function sci(p) { return p.latin || p.en || ''; }
     var exploded = false, selId = null, tab = 'what', step = 0;
     var vb = m.viewBox || '0 0 600 420';
 
@@ -29997,7 +30020,7 @@ STUDIE.addQuestions('vizualis', {
 
     root.innerHTML =
       '<nav class="crumbs">' + crumbs + '</nav>' +
-      '<h1>' + m.icon + ' ' + esc(m.title) + '</h1><p class="lead">' + esc(m.summary) + '</p>' + (S.toolsHtml ? S.toolsHtml('modell:' + m.id) : '') +
+      '<h1>' + m.icon + ' ' + esc(m.title) + (uniMode ? ' <span class="lvl-badge">🎓 Egyetemi nézet</span>' : '') + '</h1><p class="lead">' + esc(m.summary) + '</p>' + (S.toolsHtml ? S.toolsHtml('modell:' + m.id) : '') +
       '<div class="ex-layout">' +
       '<div class="ex-stage card"><div class="ex-toolbar">' +
       '<button type="button" class="btn primary" id="ex-explode">⇱ Szétszedés</button>' +
@@ -30008,7 +30031,7 @@ STUDIE.addQuestions('vizualis', {
       '<svg class="ex-svg" id="ex-svg" viewBox="' + vb + '" role="group" aria-label="' + esc(m.title) + ' alkatrészei">' +
       (m.backdrop || '') + partsSvg + '<g id="ex-parts-end"></g>' + (m.overlay || '') + '<g id="ex-badges-layer"></g></svg>' +
       '<div class="part-chips" id="ex-chips">' + m.parts.map(function (p, i) {
-        return '<button type="button" data-id="' + p.id + '"><i>' + (i + 1) + '</i>' + esc(p.name) + '</button>';
+        return '<button type="button" data-id="' + p.id + '"><i>' + (i + 1) + '</i>' + (uniMode && sci(p) ? '<span class="chip-sci">' + esc(sci(p)) + '</span><small>' + esc(p.name) + '</small>' : esc(p.name)) + '</button>';
       }).join('') + '</div></div>' +
       '<aside class="ex-info card" id="ex-info" aria-live="polite"></aside></div>' +
       (m.steps && m.steps.length ? '<h2>Hogyan készül? – lépésről lépésre</h2><div class="steps card" id="ex-steps"></div>' : '') +
@@ -30050,23 +30073,29 @@ STUDIE.addQuestions('vizualis', {
 
     function paintInfo() {
       if (!selId) {
-        info.innerHTML = '<h3>Fedezd fel!</h3>' + md(m.intro || '') +
-          '<p class="muted">Kattints egy alkatrészre a rajzon vagy a listában. A <b>Szétszedés</b> gombbal szétnyithatod a darabokat.</p>';
+        if (uniMode && m.uni && m.uni.text) {
+          info.innerHTML = '<h3>🎓 Egyetemi áttekintés</h3>' + md(m.uni.text) +
+            '<p class="muted">Kattints egy alkatrészre: a szakmai (latin/angol) nevét és egyetemi szintű leírását látod. Az iskolai magyarázat a „Mi ez? (alapok)” fülön marad elérhető.</p>';
+        } else {
+          info.innerHTML = '<h3>Fedezd fel!</h3>' + md(m.intro || '') +
+            (uniMode ? '<p class="note" style="font-size:.9rem">🎓 Ehhez a modellhez még nincs külön egyetemi áttekintés; az alkatrészeknél a szakmai leírást látod, ahol van.</p>' : '') +
+            '<p class="muted">Kattints egy alkatrészre a rajzon vagy a listában. A <b>Szétszedés</b> gombbal szétnyithatod a darabokat.</p>';
+        }
         return;
       }
       var e = byId[selId], p = e.p;
-      var uni = S.level === 'egyetem';
-      var tabs = [['what', 'Mi ez?', p.what], ['made', 'Miből van?', p.madeOf], ['how', 'Hogyan készül?', p.how]].concat(uni && p.uni ? [['uni', '🎓 Egyetemi háttér', p.uni]] : [])
+      var uni = uniMode;
+      var tabs = (uni && p.uni ? [['uni', '🎓 Szakmai leírás', p.uni]] : []).concat([['what', uni ? 'Mi ez? (alapok)' : 'Mi ez?', p.what], ['made', 'Miből van?', p.madeOf], ['how', 'Hogyan készül?', p.how]])
         .filter(function (t) { return t[2]; });
       if (!tabs.some(function (t) { return t[0] === tab; })) tab = tabs[0] ? tabs[0][0] : 'what';
       var cur = tabs.filter(function (t) { return t[0] === tab; })[0];
       var link = p.link && S.models[p.link];
-      info.innerHTML = '<h3><span class="n">' + e.n + '</span>' + esc(p.name) + '</h3>' +
+      info.innerHTML = '<h3><span class="n">' + e.n + '</span>' + (uni && sci(p) ? '<span><span class="sci-name">' + esc(sci(p)) + '</span><small class="muted sci-sub">' + esc(p.name) + (p.latin && p.en ? ' · 🇬🇧 ' + esc(p.en) : '') + '</small></span>' : esc(p.name)) + '</h3>' +
         '<div class="tabs" role="tablist">' + tabs.map(function (t) {
           return '<button type="button" role="tab" aria-selected="' + (t[0] === tab) + '" class="' + (t[0] === tab ? 'on' : '') + '" data-tab="' + t[0] + '">' + t[1] + '</button>';
         }).join('') + '</div>' +
         '<div>' + md(cur ? cur[2] : '') + '</div>' +
-        (uni && p.en ? '<p class="muted" style="margin:6px 0 0">🇬🇧 ' + esc(p.en) + '</p>' : '') +
+        (uni && !p.latin && !p.en ? '' : '') +
         (uni && S.termCards ? S.termCards(p.terms, 'Szakszavak ehhez az alkatrészhez') : '') +
         (!uni && (p.uni || (p.terms && p.terms.length)) ? '<p class="muted" style="font-size:.88rem;margin-top:10px">🎓 Ehhez az alkatrészhez egyetemi magyarázat is tartozik. <button type="button" class="linkish" data-level="egyetem">Egyetemi szint</button></p>' : '') +
         (p.fact ? '<div class="fact">' + S.inline(p.fact) + '</div>' : '') +
@@ -30084,7 +30113,7 @@ STUDIE.addQuestions('vizualis', {
 
     function select(id, keepTab) {
       selId = id;
-      if (!keepTab) tab = 'what';
+      if (!keepTab) tab = uniMode && id && byId[id].p.uni ? 'uni' : 'what';
       highlight(id ? [id] : null);
       root.querySelectorAll('#ex-chips button').forEach(function (b) { b.classList.toggle('on', b.dataset.id === id); });
       paintInfo();
@@ -30221,7 +30250,7 @@ STUDIE.addQuestions('vizualis', {
       }
       var p = byId[game.order[game.i]].p;
       game.tries = 0;
-      b.innerHTML = '<span class="muted">' + (game.i + 1) + ' / ' + game.order.length + '</span> <span>Hol van: <b>' + esc(p.name) + '</b>?</span> <span class="muted">Kattints rá a rajzon!</span> <span class="gm-score">✔ ' + game.first + '</span>';
+      b.innerHTML = '<span class="muted">' + (game.i + 1) + ' / ' + game.order.length + '</span> <span>Hol van: <b>' + esc(uniMode && sci(p) ? sci(p) : p.name) + '</b>?</span> <span class="muted">Kattints rá a rajzon!</span> <span class="gm-score">✔ ' + game.first + '</span>';
     }
     function flash(g, cls) { g.classList.add(cls); setTimeout(function () { g.classList.remove(cls); }, 650); }
     function gameClick(g) {
@@ -30490,16 +30519,26 @@ STUDIE.addQuestions('vizualis', {
     }).join('');
     var widgets = (l.widgets || []).map(widgetSlot).join('');
     var models = (l.models || []).filter(function (m) { return S.models[m]; });
+    /* Egyetemi szinten az egyetemi szakszavak kerülnek előre, az iskolai magyarázat lenyitható részbe. */
+    var uniRefs = S.termCards ? (l.terms || []).concat(S.termsBuildingOn ? S.termsBuildingOn(s.id, l.id) : []).filter(function (r, i, a) { return a.indexOf(r) === i && S.resolveTerm(r); }) : [];
+    var uniView = S.level === 'egyetem';
+    var uniTop = '';
+    if (uniView) {
+      uniTop = uniRefs.length
+        ? '<section class="uni-top card pad"><h2>🎓 Egyetemi szint</h2><p class="muted">Ez a téma egyetemi mélységben, pontos szakszavakkal, angol (és ahol van, latin) megfelelővel és képletekkel. Az iskolai magyarázat lent, lenyitható részben van.</p>' + S.termCards(uniRefs) + '</section>'
+        : '<div class="note uni-hint"><b class="t">🎓 Egyetemi nézet</b><p>Ehhez a leckéhez még nincs külön egyetemi kiegészítés, ezért az iskolai anyagot látod. Nézz körül az <a href="#/egyetem">egyetemi kurzusok</a> között!</p></div>';
+      if (uniRefs.length) { body = '<details class="school-fold"><summary>🎒 Iskolai magyarázat (alapok) – kattints a lenyitáshoz</summary>' + body + widgets + '</details>'; widgets = ''; }
+    }
     main.innerHTML =
       '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/tantargy/' + s.id + '">' + esc(s.title) + '</a><span>›</span><span>' + (idx + 1) + '. lecke</span></nav>' +
       '<div class="lesson"><article class="lesson-body">' +
       '<div class="row" style="gap:8px;margin-bottom:6px"><span class="badge ' + lv[1] + '">' + lv[0] + '</span>' + (l.minutes ? '<span class="badge">⏱ kb. ' + l.minutes + ' perc</span>' : '') + '</div>' +
       '<h1>' + esc(l.title) + '</h1><p class="lead">' + esc(l.summary) + '</p>' + (S.toolsHtml ? S.toolsHtml('lecke:' + key) : '') +
-      body + widgets +
+      uniTop + body + widgets +
       (models.length ? '<h2>Nézz bele!</h2><p class="muted">Ehhez a leckéhez kapcsolódó szétszedhető modellek:</p><div class="related">' + models.map(function (m) {
         return '<a class="btn" href="#/felfedezo/' + m + '">' + S.models[m].icon + ' ' + esc(S.models[m].title) + '</a>';
       }).join('') + '</div>' : '') +
-      uniBox(s, l) +
+      (uniView ? '' : uniBox(s, l)) +
       (l.quiz && l.quiz.length ? '<h2 id="kviz">Ellenőrizd magad!</h2><div class="quiz card" id="quiz"></div>' : '') +
       '<div class="row" style="margin-top:22px"><button type="button" class="btn" id="done"></button></div>' +
       '<nav class="pager">' + (prev ? '<a class="btn" href="#/lecke/' + s.id + '/' + prev.id + '">← ' + esc(prev.title) + '</a>' : '<span></span>') +

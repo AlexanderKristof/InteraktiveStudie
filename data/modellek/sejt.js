@@ -211,7 +211,7 @@
     intro: 'A tested kb. **37 ezer milliárd** sejtből áll. Mindegyik egy apró, hártyával határolt **gyár**: van „igazgatósága” (**sejtmag**), „erőműve” (**mitokondrium**), „gyártósora” (**riboszóma** és **endoplazmatikus retikulum**), „csomagolóüzeme” (**Golgi-készülék**), „hulladékfeldolgozója” (**lizoszóma**) és „váza” (**sejtváz**). A rajz egy általános állati sejt metszete: valódi sejtjeink alakja és sejtalkotóinak aránya a feladatuktól függően nagyon eltérő.\n\nLent lépésről lépésre követheted, hogyan **készül egy fehérje** a sejtben. A **Szétszedés** gombbal széthúzhatod a sejtalkotókat.',
     parts: [
       {
-        id: 'hartya', terms: ['anatomia/membranpotencial'], z: 2, name: 'Sejthártya', svg: mem, explode: [0, 0], badge: E(CX, CY, RX - 5, RY - 5, 1.05), en: 'plasma membrane (cell membrane)',
+        id: 'hartya', terms: ['anatomia/membranpotencial'], z: 2, name: 'Sejthártya', svg: mem, explode: [0, 0], badge: E(CX, CY, RX - 5, RY - 5, 1.05), en: 'plasma membrane (cell membrane)', latin: 'membrana cellularis (plasmalemma)',
         what: 'A sejtet körülvevő, kb. **7–10 nm** vékony hártya. Elválasztja a sejt belsejét a környezetétől, és **válogat**: egyes anyagokat átenged, másokat nem (ez a **féligáteresztő** képesség). A benne ülő fehérjék csatornaként, szállítóként, „antennaként” (receptorként) és azonosító „névtáblaként” működnek.',
         madeOf: '**Foszfolipid kettős rétegből**: a molekulák vízkedvelő „feje” (a rajzon rózsaszín pöttyök) kifelé, a víztaszító „farka” (sárga sáv) befelé néz. Ebbe **fehérjék** (lila) ágyazódnak, a külső oldalukhoz gyakran **cukorláncok** kapcsolódnak (zöld ágacskák). A rétegek közé **koleszterin** ékelődik, ez szabályozza a hártya rugalmasságát.',
         how: 'A foszfolipidek vízben **maguktól** rendeződnek kettős réteggé, mert így a víztaszító farkak védve vannak a víztől. A hártya új anyagai a **sima ER-ben** készülnek, és vezikulákkal jutnak a felszínre: amikor egy hólyag beleolvad a hártyába, a saját membránja is a sejthártya része lesz. A hártya **folyékony**: a molekulák oldalirányban folyamatosan mozognak benne (folyékony mozaik modell).',
@@ -219,7 +219,7 @@
         fact: 'Ha egy sejthártyát olyan vastagra nagyítanánk, mint egy papírlap, maga a sejt kb. egy focilabda méretű lenne.'
       },
       {
-        id: 'plazma', z: 0, name: 'Sejtplazma (citoplazma)', svg: cyto, explode: [0, 0], badge: [170, 222], en: 'cytoplasm, cytosol',
+        id: 'plazma', z: 0, name: 'Sejtplazma (citoplazma)', svg: cyto, explode: [0, 0], badge: [170, 222], en: 'cytoplasm, cytosol', latin: 'cytoplasma (cytosolum)',
         what: 'A sejthártyán belüli teljes tér a sejtmag kivételével. Folyékony része a **citoszol**, ebben „úsznak” a sejtalkotók. Itt zajlik a sejt anyagcsere-folyamatainak jó része, például a szőlőcukor lebontásának első lépése (**glikolízis**) és sok fehérje elkészítése.',
         madeOf: 'Kb. **70–80% víz**, benne oldott **ionok** (K⁺, Na⁺, Cl⁻, Ca²⁺), **tápanyagok** (szőlőcukor, aminosavak), több ezer féle **enzim** és más fehérje. Olyan sűrűn van benne fehérje, hogy inkább kocsonyás, mint vizes.',
         how: 'A citoszol folyamatosan megújul: a sejt a sejthártyán keresztül veszi fel a vizet és a tápanyagokat, a saját fehérjéit a szabad riboszómákon gyártja, a régieket pedig lebontja (pl. a **proteaszóma** nevű fehérjebontó „darálóval”). Sejtosztódáskor a citoplazma kettéfűződik, és a két utódsejt osztozik rajta.',
@@ -227,7 +227,7 @@
         fact: 'A citoplazma nem áll: a sejtváz motorfehérjéi folyamatosan „kevergetik”, a sejtalkotók másodpercenként mikrométereket tehetnek meg.'
       },
       {
-        id: 'mag', z: 3, name: 'Sejtmag (maghártyával)', svg: nuc, explode: [-38, 12], badge: [N.x - 52, N.y + 50], en: 'nucleus, nuclear envelope, nuclear pore',
+        id: 'mag', z: 3, name: 'Sejtmag (maghártyával)', svg: nuc, explode: [-38, 12], badge: [N.x - 52, N.y + 50], en: 'nucleus, nuclear envelope, nuclear pore', latin: 'nucleus (involucrum nucleare, porus nuclearis)',
         what: 'A sejt **irányítóközpontja**: itt tárolódik az örökítőanyag, a **DNS**, és itt íródnak át a gének mRNS-re. A sejtmagot **kettős maghártya** veszi körül, amelyen **magpórusok** (a rajzon a hártya „kapui”) vannak: ezeken át lépnek ki az mRNS-ek és a riboszóma-alegységek, és ezeken jutnak be a magba szükséges fehérjék.',
         madeOf: 'Két foszfolipid membránból (a külső a durva ER folytatása), a pórusokat óriási, kb. 30 féle fehérjéből álló **pórus-komplexek** alkotják. Belül a **magplazmában** van a kromatin és a sejtmagvacska; a belső hártyát a **lamina** nevű fehérjeháló erősíti.',
         how: 'A maghártya sejtosztódáskor **szétesik** apró hólyagokra, hogy a kromoszómák szétválhassanak, majd az osztódás végén az utódsejtekben a kromoszómák köré **újra összeáll**. A legtöbb sejtünknek egy magja van, de a vörösvérsejtek érésük során elveszítik, a vázizomrostokban viszont több száz is lehet.',
@@ -235,7 +235,7 @@
         fact: 'Egy átlagos emberi sejt magja kb. 6 µm átmérőjű, mégis belefér közel **2 méternyi** DNS.'
       },
       {
-        id: 'kromatin', z: 4, name: 'Kromatin (DNS)', svg: chrom, explode: [-38, 12], badge: [N.x - 30, N.y + 18], en: 'chromatin (DNA + histones)',
+        id: 'kromatin', z: 4, name: 'Kromatin (DNS)', svg: chrom, explode: [-38, 12], badge: [N.x - 30, N.y + 18], en: 'chromatin (DNA + histones)', latin: 'chromatinum',
         what: 'A sejtmagban lévő **DNS** és a hozzá kötődő fehérjék együttese. A DNS-ben vannak a **gének**: ezek a fehérjék „receptjei”. Az emberi sejtben 46 DNS-molekula (**kromoszóma**) van, kb. **20 000 fehérjét kódoló** génnel. A lazább részek (eukromatin) aktívak, a sűrűbbek (heterokromatin, a hártya mentén sötét foltok) többnyire „kikapcsoltak”.',
         madeOf: 'A **DNS** két, egymás köré tekeredő szálból áll (kettős spirál). Ezek **nukleotidokból** épülnek fel, négyféle bázissal: A, T, G, C; a párok mindig A–T és G–C. A DNS **hiszton** fehérjék köré tekeredik, mint cérna az orsóra: így alakulnak ki a **nukleoszómák** (a „gyöngysor”).',
         how: 'Sejtosztódás előtt a DNS **megkettőződik** (replikáció): a két szál szétválik, és mindegyik mellé egy új, kiegészítő szál épül. Osztódáskor a kromatin erősen feltekeredik, ekkor látszanak mikroszkóppal a jellegzetes X alakú **kromoszómák**. Az osztódások között ismét kitekeredik, hogy a gének leolvashatók legyenek.',
@@ -243,7 +243,7 @@
         fact: 'Ha egy sejtmag összes DNS-ét kinyújtanánk, kb. 2 m hosszú lenne; a tested összes sejtjének DNS-e pedig többször megjárná a Föld–Nap távolságot oda-vissza.'
       },
       {
-        id: 'magvacska', z: 5, name: 'Sejtmagvacska', svg: nucl, explode: [-38, 12], en: 'nucleolus',
+        id: 'magvacska', z: 5, name: 'Sejtmagvacska', svg: nucl, explode: [-38, 12], en: 'nucleolus', latin: 'nucleolus',
         what: 'Sötétebb, sűrű terület a sejtmagban, **nincs saját hártyája**. Ez a **riboszómák „gyára”**: itt készül a riboszómák RNS-e (rRNS), és itt állnak össze a riboszóma-alegységek. Az erősen fehérjetermelő sejtekben (pl. mirigysejtekben) nagy, és akár több is lehet.',
         madeOf: 'A riboszómális RNS génjeit hordozó **DNS-szakaszokból**, frissen átírt **rRNS-ből** és sok **fehérjéből**, köztük a citoplazmából behozott riboszómafehérjékből.',
         how: 'Akkor alakul ki, amikor az rRNS-gének átírása beindul: a sok átíródó RNS és a hozzá kötődő fehérjék egy sűrű „csomót” hoznak létre. Osztódáskor **eltűnik**, majd az utódsejtekben az rRNS-gének körül újra kialakul. A kész alegységek a magpórusokon át jutnak ki a citoplazmába.',
@@ -251,7 +251,7 @@
         fact: 'Egy gyorsan növekvő emlőssejt percenként több ezer riboszóma-alegységet készít.'
       },
       {
-        id: 'der', z: 3, name: 'Durva endoplazmatikus retikulum', svg: rer, explode: [20, -44], en: 'rough endoplasmic reticulum (RER)',
+        id: 'der', z: 3, name: 'Durva endoplazmatikus retikulum', svg: rer, explode: [20, -44], en: 'rough endoplasmic reticulum (RER)', latin: 'reticulum endoplasmaticum granulosum',
         what: 'Lapos, egymásra rétegzett hártyazsákok (**ciszternák**) rendszere a sejtmag körül. Azért „durva”, mert a külső felszínét **riboszómák** borítják (a rajzon sötét pöttyök). Itt készülnek azok a fehérjék, amelyek a **sejthártyába** kerülnek, a sejtből **kiválasztódnak** (pl. emésztőenzimek, hormonok, ellenanyagok), vagy a lizoszómákba jutnak.',
         madeOf: 'Egyetlen foszfolipid membránból, amely egy összefüggő belső teret (**lument**) zár körül. A membrán közvetlenül folytatódik a **külső maghártyába**. A lumenben a fehérjék feltekeredését segítő **dajkafehérjék** (chaperonok) vannak.',
         how: 'Az ER membránja folyamatosan nő: új foszfolipideket a saját membránjába épít be, és ezekből fűződnek le a vezikulák. Ha egy sejtnek több fehérjét kell termelnie (pl. az ellenanyagot gyártó plazmasejteknek), a durva ER többszörösére **megnövekszik**. A riboszómák nem végleg ülnek rajta: csak akkor kötődnek hozzá, ha éppen ER-be szánt fehérjét gyártanak.',
@@ -259,7 +259,7 @@
         fact: 'Egy hasnyálmirigy-sejtben a durva ER felülete többszöröse a sejthártyáénak.'
       },
       {
-        id: 'ser', z: 3, name: 'Sima endoplazmatikus retikulum', svg: ser, explode: [18, 50], en: 'smooth endoplasmic reticulum (SER)',
+        id: 'ser', z: 3, name: 'Sima endoplazmatikus retikulum', svg: ser, explode: [18, 50], en: 'smooth endoplasmic reticulum (SER)', latin: 'reticulum endoplasmaticum nongranulosum',
         what: 'Elágazó **csövek** hálózata, amelynek felszínén **nincsenek riboszómák**. Itt készülnek a **lipidek**: a hártyák foszfolipidjei, a koleszterin és a szteroidhormonok (pl. nemi hormonok). A májsejtekben a sima ER **méregtelenít** (pl. gyógyszereket, alkoholt alakít át), az izomsejtekben pedig **kalciumot** tárol, amelynek felszabadulása az izom összehúzódását indítja.',
         madeOf: 'Ugyanolyan foszfolipid membránból, mint a durva ER, amellyel össze is függ. A membránjában a lipidgyártás és a méregtelenítés **enzimjei** ülnek.',
         how: 'A durva ER folytatásaként, annak membránjából alakul ki. Ha egy anyag (pl. egy gyógyszer) tartósan sok méregtelenítő munkát ad a májnak, a sima ER **megnagyobbodik** a májsejtekben: ezért kell egyes gyógyszerekből idővel nagyobb adag.',
@@ -267,7 +267,7 @@
         fact: 'A sima és a durva ER együtt alkothatja a sejt összes membránjának akár a felét.'
       },
       {
-        id: 'riboszoma', z: 6, name: 'Riboszómák', svg: ribo, explode: [20, -44], badge: [196, 160], en: 'ribosomes (80S: 60S + 40S subunits)',
+        id: 'riboszoma', z: 6, name: 'Riboszómák', svg: ribo, explode: [20, -44], badge: [196, 160], en: 'ribosomes (80S: 60S + 40S subunits)', latin: 'ribosoma',
         what: 'Apró **fehérjegyártó gépek**: a sejtmagból érkező **mRNS** utasításai alapján aminosavakat fűznek össze fehérjévé. A szabadon lebegők (néha gyöngysorszerű csoportokban, **poliszómákban**) a citoszolban maradó fehérjéket készítik, az ER-hez kötöttek a kiválasztásra vagy hártyába szánt fehérjéket.',
         madeOf: 'Két alegységből (egy kisebből és egy nagyobból), amelyek **riboszómális RNS-ből** (rRNS) és kb. 80 féle **fehérjéből** állnak. Nincs hártyájuk. Egy riboszóma kb. 25–30 nm átmérőjű: a rajzon sokszorosan felnagyítva látszanak.',
         how: 'Alegységeik a **sejtmagvacskában** állnak össze, és külön-külön jutnak ki a magpórusokon. A citoplazmában csak akkor kapcsolódnak össze, amikor egy mRNS-hez kötődnek, és a fehérje elkészülte után ismét szétválnak. Egy sejtben **több millió** riboszóma lehet.',
@@ -275,7 +275,7 @@
         fact: 'A riboszóma fehérjeépítő közepe **RNS-ből** van, nem fehérjéből: ez az egyik érv amellett, hogy az élet korai formáiban az RNS volt a „mindenes” molekula (RNS-világ hipotézis).'
       },
       {
-        id: 'golgi', z: 3, name: 'Golgi-készülék', svg: golgi, explode: [54, -8], en: 'Golgi apparatus (cis/trans Golgi network)',
+        id: 'golgi', z: 3, name: 'Golgi-készülék', svg: golgi, explode: [54, -8], en: 'Golgi apparatus (cis/trans Golgi network)', latin: 'complexus golgiensis',
         what: 'Lapos, ívelt hártyazsákok kötege: a sejt **„posta- és csomagolóüzeme”**. Az ER-ből érkező fehérjéket és lipideket **átalakítja** (pl. cukorláncokat kapcsol rájuk), **szétválogatja** és „címkével” látja el, majd vezikulákba csomagolva elküldi őket a rendeltetési helyükre: a sejthártyához, a sejten kívülre vagy a lizoszómákba.',
         madeOf: '4–8 egymásra rétegzett, lapos membránzsákból (**ciszternából**). Van egy **fogadó (cis)** oldala, amely az ER felé néz, és egy **szállító (trans)** oldala, amely a sejthártya felé. A ciszternákban különböző módosító **enzimek** vannak.',
         how: 'A Golgi folyamatosan megújul: a cis oldalon az ER-ből érkező vezikulák összeolvadnak, és új ciszternát hoznak létre, amely fokozatosan „vándorol” a trans oldal felé, miközben az enzimjei változnak (**ciszterna-érés**), a trans oldalon pedig hólyagokra esik szét. Sejtosztódáskor apró darabokra bomlik, és az utódsejtekben újra összeáll.',
@@ -283,7 +283,7 @@
         fact: 'Camillo **Golgi** olasz orvos 1898-ban egy ezüstsós festéssel fedezte fel, de sokáig sokan festési hibának (műterméknek) tartották. Csak az elektronmikroszkóp igazolta, hogy tényleg létezik.'
       },
       {
-        id: 'mito', z: 4, name: 'Mitokondriumok', svg: mitos, explode: [-56, 4], badge: [132, 176], en: 'mitochondria',
+        id: 'mito', z: 4, name: 'Mitokondriumok', svg: mitos, explode: [-56, 4], badge: [132, 176], en: 'mitochondria', latin: 'mitochondrium',
         what: 'A sejt **„erőművei”**: a tápanyagokból (pl. szőlőcukorból, zsírsavakból) oxigén felhasználásával **ATP**-t állítanak elő, ez a sejt „energiapénze”. Ez a **sejtlégzés**, melléktermékként szén-dioxid és víz keletkezik. Az energiaigényes sejtekben (szívizom, idegsejt, májsejt) több ezer mitokondrium is lehet.',
         madeOf: '**Kettős membránból**: a külső sima, a belső pedig **redőzött** (a redők neve **kriszta**), így nagy felületen férnek el rajta a légzési enzimek. A belső teret (**mátrix**) enzimek töltik ki, és van benne **saját DNS** és **saját riboszómák** is.',
         how: 'Mitokondrium nem keletkezhet a semmiből: a meglévők **kettéosztódással** szaporodnak (mint a baktériumok), és össze is olvadhatnak. A sérült darabokat a sejt lebontja. Egy **ősi baktérium** leszármazottai, amelyet sok százmillió éve egy másik sejt bekebelezett, de nem emésztett meg (**endoszimbiózis**). A mitokondriumainkat kizárólag **anyánktól** örököljük, a petesejtből.',
@@ -291,7 +291,7 @@
         fact: 'Egy ember naponta nagyjából a **saját testtömegének megfelelő** mennyiségű ATP-t állít elő és használ el újra.'
       },
       {
-        id: 'lizoszoma', z: 4, name: 'Lizoszómák', svg: lys, explode: [-40, 20], badge: [96, 244], en: 'lysosomes',
+        id: 'lizoszoma', z: 4, name: 'Lizoszómák', svg: lys, explode: [-40, 20], badge: [96, 244], en: 'lysosomes', latin: 'lysosoma',
         what: 'Apró, gömb alakú hólyagok, a sejt **„emésztő- és újrahasznosító üzemei”**. Lebontják a sejtbe bekebelezett anyagokat és kórokozókat, valamint a sejt saját elöregedett, sérült alkotóit (ez az **autofágia**). A lebontásból származó építőköveket (aminosavakat, cukrokat) a sejt újra felhasználja.',
         madeOf: 'Egyetlen membránból, amely kb. **50 féle bontóenzimet** (pl. fehérje-, zsír-, nukleinsav-bontó enzimeket) zár magába. Belül **savas** a kémhatás (pH ≈ 4,5–5), és az enzimek csak ilyen savas közegben működnek jól: ha kiszabadulnak a semleges kémhatású citoszolba, alig ártanak.',
         how: 'Enzimjeik a **durva ER** riboszómáin készülnek, a **Golgi-készülékben** kapnak egy különleges „címkét”, ennek alapján a Golgi külön vezikulákba válogatja őket. Ezek a hólyagok összeolvadnak a bekebelezett anyagot tartalmazó hólyagokkal, és így alakul ki az érett lizoszóma. A savas kémhatást a membránjukban ülő **protonpumpák** hozzák létre.',
@@ -299,7 +299,7 @@
         fact: 'A fehérvérsejtek (falósejtek) lizoszómái semmisítik meg a bekebelezett baktériumokat.'
       },
       {
-        id: 'vezikula', z: 5, name: 'Vezikulák (hólyagok)', svg: vesic, explode: [38, 26], badge: [566, 236], en: 'vesicles (transport, secretory), exocytosis',
+        id: 'vezikula', z: 5, name: 'Vezikulák (hólyagok)', svg: vesic, explode: [38, 26], badge: [566, 236], en: 'vesicles (transport, secretory), exocytosis', latin: 'vesiculae (exocytosis)',
         what: 'Apró, hártyával határolt **„szállítókapszulák”**. Anyagokat visznek a sejtalkotók között: az ER-ből a Golgiba, a Golgiból a sejthártyához. A sejthártyával összeolvadva kiürítik a tartalmukat a sejten kívülre (**exocitózis**, a rajzon jobbra, a hártyánál), a hártyából lefűződve pedig anyagot vesznek fel a sejtbe (**endocitózis**).',
         madeOf: 'Egyetlen foszfolipid membránból, benne a szállított anyaggal: például **hormonnal** (inzulin), **emésztőenzimmel**, **ingerületátvivő anyaggal** (az idegsejtekben), vagy a sejthártyába szánt fehérjékkel.',
         how: 'Egy membrán (pl. az ER vagy a Golgi hártyája) kis része **kidudorodik és lefűződik**, ebben burokfehérjék segítenek, amelyek „kosárként” fogják közre a hólyagot. A vezikula a **sejtváz** mikrotubulusain, motorfehérjék segítségével halad a célja felé. Ott a hártyák speciális fehérjéi „cipzárként” összekapcsolódnak, és a két membrán **összeolvad**.',
@@ -307,7 +307,7 @@
         fact: 'Egyetlen idegvégződés másodpercenként akár több száz vezikulát is kiüríthet, mindegyikben néhány ezer ingerületátvivő molekulával.'
       },
       {
-        id: 'sejtvaz', z: 1, name: 'Sejtváz és centriólumok', svg: skel, explode: [0, 0], badge: [CS[0] + 2, CS[1] + 30], en: 'cytoskeleton (microtubules, actin filaments), centrosome, centrioles',
+        id: 'sejtvaz', z: 1, name: 'Sejtváz és centriólumok', svg: skel, explode: [0, 0], badge: [CS[0] + 2, CS[1] + 30], en: 'cytoskeleton (microtubules, actin filaments), centrosome, centrioles', latin: 'cytoskeleton (microtubulus, microfilamentum), centrosoma, centriolum',
         what: 'Fehérjeszálakból álló belső **„csontváz és sínhálózat”**. Formát ad a sejtnek, rögzíti a sejtalkotókat, ezen „sínen” szállítják a vezikulákat, és ez teszi lehetővé a sejt mozgását és osztódását. A **mikrotubulusok** (kék vonalak) a mag melletti **sejtközpontból** indulnak ki, amelynek közepén két, egymásra merőleges **centriólum** ül. A hártya alatt az **aktinszálak** hálója (szaggatott vonal) erősíti a sejt felszínét.',
         madeOf: 'Háromféle fehérjeszálból: **mikrotubulusok** (tubulin fehérjéből álló üreges csövek, kb. 25 nm), **aktin mikrofilamentumok** (vékony, kb. 7 nm-es szálak) és **intermedier filamentumok** (kötélszerű, szakítószilárd szálak, pl. keratin). A centriólumok 9 × 3 mikrotubulusból álló kis hengerek.',
         how: 'A szálak **folyamatosan épülnek és bomlanak**: a fehérje-alegységek az egyik végükön hozzákapcsolódnak, a másikon leválnak, így a sejtváz percek alatt átrendeződhet. Sejtosztódáskor a centriólumok megkettőződnek, a két sejtközpont a sejt két pólusára vándorol, és a köztük kialakuló **magorsó** mikrotubulusai húzzák szét a kromoszómákat.',
@@ -315,6 +315,10 @@
         fact: 'A csillók és az ondósejt ostora is mikrotubulusokból épül fel, ugyanabban a „9 + 2”-es elrendezésben.'
       }
     ],
+    uni: {
+      text: 'Az eukarióta sejt egyetemi szemmel **kompartmentalizált reakciótér**: a membránok elválasztják egymástól az összeférhetetlen folyamatokat, és ionok, metabolitok koncentrációgradienseit tartják fenn.\n\n**Membrántranszport:** a kis apoláris molekulák (O₂, CO₂) egyszerű diffúzióval jutnak át a lipid kettősrétegen (Fick-törvény), az ionok és poláris molekulák **csatornákon** és **hordozókon** keresztül (facilitált diffúzió). Gradiens ellenében **primer aktív transzport** (pl. Na⁺/K⁺-ATPáz: 3 Na⁺ ki, 2 K⁺ be ATP-nként) vagy a Na⁺-gradiensre épülő **szekunder aktív transzport** (pl. SGLT1 Na⁺–glükóz kotranszporter) dolgozik. Egy ion hajtóerejét az elektrokémiai potenciál adja: `Δμ = RT·ln(c_be/c_ki) + zFΔψ`.\n\n**Endomembránrendszer és a fehérjeszintézis útja:** a sejtmagban átírt és érett mRNS a magpórusokon át a citoszolba jut. A szekréciós és membránfehérjék szignálpeptidjét az SRP ismeri fel, és a riboszómát a **durva ER**-hez irányítja (kotranszlációs transzlokáció, Sec61). Az ER-ben történik a feltekeredés, a diszulfidhidak kialakítása és az N-glikoziláció, majd COPII-vezikulák viszik a fehérjét a **Golgi-készülékbe** (cis → trans érés, glikánmódosítás), végül a transz-Golgi-hálózatból szekréciós vezikulákba, a lizoszómákba (mannóz-6-foszfát jel) vagy a plazmamembránba kerül.\n\n**ATP-szintézis:** a glikolízis a citoszolban, a citrátkör és a **terminális oxidáció** a mitokondriumban zajlik. A légzési lánc a belső membránon át **protonmotoros erőt** hoz létre (`Δp = Δψ − 2,303·(RT/F)·ΔpH`, kb. 150–200 mV), ezt az F₀F₁-ATP-szintáz forgó mechanizmusa (Boyer, Walker) alakítja ATP-vé (**kemiozmotikus elmélet**, Mitchell, 1961). Egy glükózmolekula teljes oxidációja kb. 30–32 ATP-t ad.',
+      terms: ['anatomia/membranpotencial', 'kemia-bsc/gibbs', 'kemia-bsc/redoxi', 'kemia-bsc/elektrodpotencial', 'szerves-kemia/aminosav', 'szerves-kemia/peptidkotes', 'szerves-kemia/lipid', 'szerves-kemia/nukleotid']
+    },
     steps: [
       { icon: '📡', title: 'Jel érkezik: egy gén bekapcsol', text: 'Tegyük fel, hogy a hasnyálmirigy egyik sejtjének **inzulint** kell termelnie. A sejthártya receptorai jelet kapnak (pl. emelkedett vércukorszint), a jel eljut a sejtmagba, és ott a **kromatin** a megfelelő gén körül **fellazul**, hogy a gén leolvasható legyen.', parts: ['hartya', 'kromatin'] },
       { icon: '📝', title: 'Átírás (transzkripció)', when: 'a sejtmagban', text: 'Az **RNS-polimeráz** enzim szétnyitja a DNS kettős spirálját a gén szakaszán, és az egyik szálról **másolatot** készít: egy **mRNS** (hírvivő RNS) molekulát. A DNS a magban marad, csak a „receptről” készült másolat indul útnak. Az mRNS-ről még a magban kivágják a nem kódoló szakaszokat (intronokat).', parts: ['kromatin', 'mag'] },

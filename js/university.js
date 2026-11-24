@@ -38,7 +38,7 @@
     if (!list.length) return '';
     return '<div class="term-refs">' + (title ? '<b class="tr-title">' + title + '</b>' : '') + '<div class="tr-grid">' + list.map(function (r) {
       return '<a class="tr-card" style="--tc:' + topicColor(r.c, r.t.topic) + '" href="' + r.href + '"><b>' + esc(r.t.term) + '</b>' +
-        (r.t.en ? '<small>🇬🇧 ' + esc(r.t.en) + '</small>' : '') + '<span>' + S.inline(r.t.short) + '</span><em>' + esc(r.c.title) + ' →</em></a>';
+        (r.t.latin ? '<small class="sci-name" style="font-size:.85rem">' + esc(r.t.latin) + '</small>' : '') + (r.t.en ? '<small>🇬🇧 ' + esc(r.t.en) + '</small>' : '') + '<span>' + S.inline(r.t.short) + '</span><em>' + esc(r.c.title) + ' →</em></a>';
     }).join('') + '</div></div>';
   };
   /* Hol fordul elő egy szakszó a valóságban? (modellek alkatrészei, leckék) */
@@ -127,7 +127,7 @@
     var fs = (t.formulas || []).map(function (fid) { return c.formulas.findIndex(function (f) { return f.id === fid; }); }).filter(function (i) { return i >= 0; });
     return '<article class="term" style="--tc:' + col + '">' +
       '<div class="row" style="gap:6px"><span class="topic-chip">' + esc(topicTitle(c, t.topic)) + '</span>' + (t.en ? '<span class="badge" title="angolul">🇬🇧 ' + esc(t.en) + '</span>' : '') + '</div>' +
-      '<h' + (compact ? '3' : '1') + ' class="term-title">' + esc(t.term) + '</h' + (compact ? '3' : '1') + '>' +
+      '<h' + (compact ? '3' : '1') + ' class="term-title">' + esc(t.term) + (t.latin ? ' <span class="sci-name" style="display:inline;font-size:.6em;font-weight:500">(' + esc(t.latin) + ')</span>' : '') + '</h' + (compact ? '3' : '1') + '>' +
       '<p class="term-short">' + S.inline(t.short) + '</p>' +
       (t.visual ? '<figure class="term-visual">' + t.visual + (t.caption ? '<figcaption>' + S.inline(t.caption) + '</figcaption>' : '') + '</figure>' : '') +
       (t.text ? md(t.text) : '') +
@@ -388,6 +388,9 @@
     c.formulas = c.formulas || [];
     var sorted = sortTerms(c.terms), i = sorted.indexOf(t), prev = sorted[i - 1], next = sorted[i + 1];
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/egyetem">Egyetem</a><span>›</span><a href="#/egyetem/' + c.id + '">' + esc(c.title) + '</a><span>›</span><span>' + esc(t.term) + '</span></nav>' +
+      (S.level !== 'egyetem' ? '<div class="note" style="margin-bottom:14px"><b class="t">🎒 Iskolai szinten vagy</b><p>Ez egy egyetemi szakszó. ' +
+        (prereqLinks(t).length ? 'Ha még új, ezekkel kezdd: ' + prereqLinks(t).map(function (u) { return '<a href="' + u.href + '">' + u.icon + ' ' + esc(u.label) + '</a>'; }).join(', ') + '. ' : '') +
+        '<button type="button" class="linkish" data-level="egyetem">Váltás egyetemi szintre</button></p></div>' : '') +
       (S.toolsHtml ? S.toolsHtml('szakszo:' + c.id + '/' + t.id) : '') +
       '<div class="lesson-body term-page">' + termHtml(c, t, false) + '</div>' +
       '<nav class="pager">' + (prev ? '<a class="btn" href="#/egyetem/' + c.id + '/fogalom/' + prev.id + '">← ' + esc(prev.term) + '</a>' : '<span></span>') +

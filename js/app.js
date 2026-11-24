@@ -195,16 +195,26 @@
     }).join('');
     var widgets = (l.widgets || []).map(widgetSlot).join('');
     var models = (l.models || []).filter(function (m) { return S.models[m]; });
+    /* Egyetemi szinten az egyetemi szakszavak kerülnek előre, az iskolai magyarázat lenyitható részbe. */
+    var uniRefs = S.termCards ? (l.terms || []).concat(S.termsBuildingOn ? S.termsBuildingOn(s.id, l.id) : []).filter(function (r, i, a) { return a.indexOf(r) === i && S.resolveTerm(r); }) : [];
+    var uniView = S.level === 'egyetem';
+    var uniTop = '';
+    if (uniView) {
+      uniTop = uniRefs.length
+        ? '<section class="uni-top card pad"><h2>🎓 Egyetemi szint</h2><p class="muted">Ez a téma egyetemi mélységben, pontos szakszavakkal, angol (és ahol van, latin) megfelelővel és képletekkel. Az iskolai magyarázat lent, lenyitható részben van.</p>' + S.termCards(uniRefs) + '</section>'
+        : '<div class="note uni-hint"><b class="t">🎓 Egyetemi nézet</b><p>Ehhez a leckéhez még nincs külön egyetemi kiegészítés, ezért az iskolai anyagot látod. Nézz körül az <a href="#/egyetem">egyetemi kurzusok</a> között!</p></div>';
+      if (uniRefs.length) { body = '<details class="school-fold"><summary>🎒 Iskolai magyarázat (alapok) – kattints a lenyitáshoz</summary>' + body + widgets + '</details>'; widgets = ''; }
+    }
     main.innerHTML =
       '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/tantargy/' + s.id + '">' + esc(s.title) + '</a><span>›</span><span>' + (idx + 1) + '. lecke</span></nav>' +
       '<div class="lesson"><article class="lesson-body">' +
       '<div class="row" style="gap:8px;margin-bottom:6px"><span class="badge ' + lv[1] + '">' + lv[0] + '</span>' + (l.minutes ? '<span class="badge">⏱ kb. ' + l.minutes + ' perc</span>' : '') + '</div>' +
       '<h1>' + esc(l.title) + '</h1><p class="lead">' + esc(l.summary) + '</p>' + (S.toolsHtml ? S.toolsHtml('lecke:' + key) : '') +
-      body + widgets +
+      uniTop + body + widgets +
       (models.length ? '<h2>Nézz bele!</h2><p class="muted">Ehhez a leckéhez kapcsolódó szétszedhető modellek:</p><div class="related">' + models.map(function (m) {
         return '<a class="btn" href="#/felfedezo/' + m + '">' + S.models[m].icon + ' ' + esc(S.models[m].title) + '</a>';
       }).join('') + '</div>' : '') +
-      uniBox(s, l) +
+      (uniView ? '' : uniBox(s, l)) +
       (l.quiz && l.quiz.length ? '<h2 id="kviz">Ellenőrizd magad!</h2><div class="quiz card" id="quiz"></div>' : '') +
       '<div class="row" style="margin-top:22px"><button type="button" class="btn" id="done"></button></div>' +
       '<nav class="pager">' + (prev ? '<a class="btn" href="#/lecke/' + s.id + '/' + prev.id + '">← ' + esc(prev.title) + '</a>' : '<span></span>') +

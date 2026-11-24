@@ -265,6 +265,16 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .toc-terms { margin: 6px 0 2px; font-size: .9rem; line-height: 1.7; }
 @media print { .toc-item { border: 0; padding: 0; } #toc-q, #toc-open, #toc-print { display: none; } }
 
+.lvl-badge { font-size: .9rem; vertical-align: middle; background: var(--accent); color: var(--accent-fg); padding: 3px 10px; border-radius: 999px; font-weight: 650; }
+.sci-name { display: block; font-style: italic; font-family: Georgia, "Times New Roman", serif; font-size: 1.15rem; }
+.sci-sub { display: block; font-size: .82rem; font-weight: 500; }
+.part-chips .chip-sci { font-style: italic; font-family: Georgia, serif; }
+.part-chips button small { color: var(--muted); margin-left: 4px; }
+.uni-top { border-left: 5px solid #7c5cd6; margin: 6px 0 18px; }
+.uni-top h2 { margin-top: 0; }
+.school-fold { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 6px 16px; margin: 10px 0; }
+.school-fold > summary { cursor: pointer; font-weight: 650; padding: 8px 0; }
+
 /* Beállítások, akadálymentesség */
 .settings { display: grid; gap: 16px; max-width: 640px; }
 .settings > div { display: grid; gap: 6px; }

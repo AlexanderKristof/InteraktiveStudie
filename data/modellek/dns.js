@@ -243,7 +243,7 @@
     intro: 'A **DNS** (dezoxiribonukleinsav) az élőlények örökítőanyaga. Két hosszú szálból áll, amelyek egymás köré csavarodva **kettős spirált** alkotnak, mint egy megcsavart kötélhágcsó. A hágcsó két „korlátja” a **cukor-foszfát gerinc**, a „fokai” a **bázispárok**.\n\nA négy bázis (**A, T, G, C**) sorrendje hordozza az információt, ahogy a betűk sorrendje egy mondatban. A párosodás szabálya egyszerű: **A mindig T-vel, G mindig C-vel** áll párban. Ezért az egyik szál meghatározza a másikat, és ezért tud a DNS pontosan **lemásolódni**.',
     parts: [
       {
-        id: 'gerinc', z: 3, name: 'Cukor-foszfát gerinc', svg: backbone, explode: [0, 0], badge: [s1(Y0 + 120)[0], Y0 + 120], en: 'sugar–phosphate backbone',
+        id: 'gerinc', z: 3, name: 'Cukor-foszfát gerinc', svg: backbone, explode: [0, 0], badge: [s1(Y0 + 120)[0], Y0 + 120], en: 'sugar–phosphate backbone', latin: 'sugar–phosphate backbone (phosphodiester backbone)',
         what: 'A kettős spirál két „korlátja”. Mindkét szál felváltva **cukorból** és **foszfátcsoportból** álló, hosszú lánc, a bázisok pedig befelé, a spirál tengelye felé lógnak róla. A két szál **ellentétes irányú** (antiparallel): az egyik 5′→3′, a másik 3′→5′ irányban fut (a rajzon a végeken jelölve).',
         madeOf: 'Felváltva **dezoxiribóz** cukorból és **foszfátcsoportból**, amelyeket erős **kovalens kötések** (foszfodiészter-kötések) kapcsolnak össze. A foszfátok negatív töltése miatt a DNS savas, és vízben jól oldódik.',
         how: 'A sejtben az enzimek (DNS-polimerázok) építik fel: mindig a lánc 3′ végéhez kapcsolnak hozzá egy újabb nukleotidot. Így a szál csak **5′→3′ irányban** nőhet. A kapcsolódáshoz szükséges energiát maga a beépülő nukleotid hozza: három foszfátjából kettő lehasad.',
@@ -252,7 +252,7 @@
         fact: 'A két szál olyan, mint két, egymással szemben haladó autópálya-sáv: ugyanazon a „hídon” futnak, de ellentétes irányba.'
       },
       {
-        id: 'dezoxiriboz', z: 5, name: 'Dezoxiribóz (cukor)', svg: sug, explode: [-26, 0], badge: [s2(Y0 + step * 18.5)[0], Y0 + step * 18.5], en: 'deoxyribose (2′-deoxy-D-ribose)',
+        id: 'dezoxiriboz', z: 5, name: 'Dezoxiribóz (cukor)', svg: sug, explode: [-26, 0], badge: [s2(Y0 + step * 18.5)[0], Y0 + step * 18.5], en: 'deoxyribose (2′-deoxy-D-ribose)', latin: 'desoxyribosum (2-desoxy-D-ribosum)',
         what: 'Öt szénatomos cukor (**pentóz**), a rajzon rózsaszín ötszögek. Minden nukleotidban egy van: ehhez kapcsolódik az egyik oldalon a **foszfát**, a másikon a **bázis**. A neve onnan jön, hogy a ribózhoz képest a 2′ szénatomjáról **hiányzik egy oxigén** (de-oxi).',
         madeOf: '5 szén-, 10 hidrogén- és 4 oxigénatom (C₅H₁₀O₄). A szénatomokat 1′-től 5′-ig számozzák (a vessző, „vonás” jelzi, hogy a cukoré, nem a bázisé). A bázis az 1′, a következő foszfát a 3′, az előző az 5′ szénatomhoz kötődik.',
         how: 'A sejt a ribonukleotidokból állítja elő: a **ribonukleotid-reduktáz** enzim eltávolítja a 2′ szénatom OH-csoportját. Ez az egyetlen út, amellyel a sejt DNS-építőkövet tud gyártani, ezért fontos célpontja egyes rákellenes gyógyszereknek.',
@@ -260,7 +260,7 @@
         fact: 'A DNS és az RNS közti egyik fő különbség ez az egyetlen hiányzó oxigénatom.'
       },
       {
-        id: 'foszfat', z: 6, name: 'Foszfátcsoport', svg: pho, explode: [-52, 0], badge: [s1(Y0 + step * 21)[0], Y0 + step * 21], en: 'phosphate group (phosphodiester linkage)',
+        id: 'foszfat', z: 6, name: 'Foszfátcsoport', svg: pho, explode: [-52, 0], badge: [s1(Y0 + step * 21)[0], Y0 + step * 21], en: 'phosphate group (phosphodiester linkage)', latin: 'phosphas (phosphodiester)',
         what: 'A gerinc másik építőeleme, a rajzon narancssárga golyók. Minden foszfát két szomszédos cukrot köt össze: az egyik cukor **3′**, a másik **5′** szénatomjához kapcsolódik. Ettől lesz a szálnak iránya.',
         madeOf: 'Egy **foszforatom** körül négy **oxigénatom** (PO₄). Az egyik oxigén negatív töltésű, ezért a DNS-molekula egésze erősen negatív töltésű.',
         how: 'A nukleotidok **trifoszfát** formában (pl. dATP) érkeznek. Beépüléskor két foszfát lehasad, és az energia felszabadul; a megmaradt foszfát köti össze a cukrokat.',
@@ -269,7 +269,7 @@
         fact: 'Ugyanez a foszfátcsoport van az ATP-ben, a sejt „energiavalutájában” is.'
       },
       {
-        id: 'bazisok', z: 2, name: 'Nitrogénbázisok (A, T, G, C)', svg: bases, explode: [0, 0], badge: [CX + 6, Y0 + step * 9.5], lesson: 'biologia/genetika', en: 'nucleobases: adenine, thymine, guanine, cytosine',
+        id: 'bazisok', z: 2, name: 'Nitrogénbázisok (A, T, G, C)', svg: bases, explode: [0, 0], badge: [CX + 6, Y0 + step * 9.5], lesson: 'biologia/genetika', en: 'nucleobases: adenine, thymine, guanine, cytosine', latin: 'bases nitrogenicae (adeninum, thyminum, guaninum, cytosinum)',
         what: 'A hágcsó „fokai”. Négyféle bázis van: **adenin (A)**, **timin (T)**, **guanin (G)** és **citozin (C)**. Mindig **A párosodik T-vel** és **G a C-vel** (komplementer bázispárok). A bázisok sorrendje a genetikai információ: három egymás utáni bázis (egy **kodon**) egy aminosavat jelöl.',
         madeOf: 'Szén-, nitrogén-, oxigén- és hidrogénatomokból álló gyűrűs molekulák. Az A és a G **purin** (két gyűrű), a T és a C **pirimidin** (egy gyűrű). Minden párban egy nagy és egy kis bázis áll, ezért a „fokok” egyforma hosszúak, és a spirál egyenletes vastagságú.',
         how: 'A sejt egyszerűbb molekulákból (aminosavakból, szén-dioxidból, cukorból) sok lépésben építi fel őket, vagy a lebontott nukleinsavakból újrahasznosítja. Az RNS-ben timin helyett **uracil (U)** van.',
@@ -278,7 +278,7 @@
         fact: 'Az emberi genom kb. 3,1 milliárd bázispár. Ha egy könyvbe írnánk ki a betűit, kb. 1 millió oldal lenne.'
       },
       {
-        id: 'hkotes', z: 4, name: 'Hidrogénkötések (A=T, G≡C)', svg: hbond, explode: [8, 0], badge: [HX + 138, HY + 56], en: 'hydrogen bonds (Watson–Crick base pairing)',
+        id: 'hkotes', z: 4, name: 'Hidrogénkötések (A=T, G≡C)', svg: hbond, explode: [8, 0], badge: [HX + 138, HY + 56], en: 'hydrogen bonds (Watson–Crick base pairing)', latin: 'Watson–Crick base pairing (hydrogen bonds)',
         what: 'A két szálat a bázispárok közötti **hidrogénkötések** tartják össze. Az **A és T között 2**, a **G és C között 3** hidrogénkötés van, ezért a G–C pár erősebb. A spirál rajzán a fehér pálcikák jelzik őket a bázispárok közepén.',
         madeOf: 'Nem anyag, hanem gyenge **vonzás**: egy részlegesen pozitív hidrogénatom (amely N-hez kötődik) és egy másik molekula részlegesen negatív N vagy O atomja között. Egy hidrogénkötés kb. 20-szor gyengébb egy kovalens kötésnél.',
         how: 'Magától alakul ki, ha a megfelelő bázisok egymással szemben állnak: a kötések helye és száma miatt csak az A–T és a G–C pár „illik”. Mivel gyengék, enzimek (pl. a **helikáz**) vagy kb. 90 °C-os hő **szét tudja választani** a két szálat, például másoláskor vagy a PCR-ben, lehűtve pedig újra összeállnak.',
@@ -287,7 +287,7 @@
         fact: 'A gyenge kötés itt előny: így a DNS „cipzárként” könnyen nyitható és zárható, mégis milliárdnyi kötés együtt nagyon stabil.'
       },
       {
-        id: 'arkok', z: 1, name: 'Nagy és kis árok', svg: grooves, explode: [24, 0], badge: [GX - 2, (yMajA + yMajB) / 2], en: 'major groove and minor groove',
+        id: 'arkok', z: 1, name: 'Nagy és kis árok', svg: grooves, explode: [24, 0], badge: [GX - 2, (yMajA + yMajB) / 2], en: 'major groove and minor groove', latin: 'major groove, minor groove',
         what: 'Mivel a két szál nem pont szemben csavarodik, a spirál felszínén két különböző szélességű **barázda** fut körbe: a **nagy árok** és a **kis árok**. Ezeken keresztül „látnak bele” a fehérjék a bázisokba anélkül, hogy szét kellene nyitniuk a kettős spirált.',
         madeOf: 'Nem önálló alkatrész, hanem a spirál **alakjából** adódik: a cukrok a bázispárnak ugyanarra az oldalára esnek, így az egyik oldalon szűk, a másikon széles rés marad.',
         how: 'A géneket ki- és bekapcsoló fehérjék (**transzkripciós faktorok**) jellemzően a nagy árokba illeszkednek, és a bázisok szélein lévő atomok mintázatából ismerik fel a nekik szóló szakaszt. Egyes gyógyszerek és festékek a kis árokba kötődnek.',
@@ -295,7 +295,7 @@
         fact: 'A DAPI nevű kék festék a kis árokba bújik, és UV-fényben megvilágítva kéken fénylik: így teszik láthatóvá a sejtmagokat a mikroszkópban.'
       },
       {
-        id: 'nukleotid', z: 7, name: 'Nukleotid (egy „betű”)', svg: nuc, explode: [8, -6], en: 'nucleotide (deoxyribonucleoside monophosphate)',
+        id: 'nukleotid', z: 7, name: 'Nukleotid (egy „betű”)', svg: nuc, explode: [8, -6], en: 'nucleotide (deoxyribonucleoside monophosphate)', latin: 'nucleotidum',
         what: 'A DNS építőköve, egy „betű”. Három részből áll: egy **foszfátcsoportból**, egy **dezoxiribóz** cukorból és egy **nitrogénbázisból**. Négyféle nukleotid van, csak a bázisukban különböznek. A DNS e nukleotidok hosszú láncolata.',
         madeOf: 'A rajzon az adenin-nukleotid látható (dAMP). Az atomok: szén, hidrogén, oxigén, nitrogén és foszfor. A cukor szénatomjait **1′–5′** számozzák; az 5′ szénhez kötődik a foszfát, az 1′-hez a bázis, a 3′ szénen lévő OH-csoporthoz kapcsolódik a következő nukleotid.',
         how: 'A sejtben **trifoszfát** formában (dATP, dTTP, dGTP, dCTP) készülnek el, mert a két „extra” foszfát lehasadása adja a beépítés energiáját. A laborban automata szintetizátorokkal is előállítanak rövid DNS-szálakat (oligonukleotidokat), ezek kellenek például a PCR-hez.',
@@ -304,7 +304,7 @@
         fact: 'Ha az emberi genom minden nukleotidja egy mm-es betű lenne, a sor kb. 3100 km hosszú lenne: nagyjából Budapesttől Lisszabonig érne.'
       },
       {
-        id: 'gen', z: 0, name: 'Gén (egy kiemelt szakasz)', svg: gene, explode: [-40, 0], badge: [CX - AMP - 23, (GY0 + GY1) / 2], lesson: 'biologia/genetika', en: 'gene',
+        id: 'gen', z: 0, name: 'Gén (egy kiemelt szakasz)', svg: gene, explode: [-40, 0], badge: [CX - AMP - 23, (GY0 + GY1) / 2], lesson: 'biologia/genetika', en: 'gene', latin: 'gene',
         what: 'A DNS egy olyan **szakasza**, amely egy fehérje (vagy egy működő RNS) elkészítésének „receptjét” tartalmazza. Az emberi DNS-ben kb. **20 000** fehérjét kódoló gén van, de ezek a teljes DNS-nek csak kb. 1–2%-át teszik ki. A többi rész szabályozó szakasz, ismétlődés, vagy még ismeretlen szerepű.',
         madeOf: 'Ugyanabból áll, mint a DNS többi része: nukleotidok sorozatából. Egy gén néhány száz bázispártól több millió bázispárig terjedhet. Az elején egy **promóter** szakasz jelzi, hol kell elkezdeni a leolvasást.',
         how: 'Amikor a sejtnek szüksége van a fehérjére, a gént **átírja** (transzkripció) egy mRNS-másolatra, ezt pedig a riboszómák **lefordítják** (transzláció) aminosav-sorrenddé. A gének a szülőktől öröklődnek: minden génből egy példányt anyádtól, egyet apádtól kaptál.',
@@ -312,7 +312,7 @@
         fact: 'Az egyik leghosszabb emberi gén, a disztrofiné, kb. 2,2 millió bázispár; átírása kb. 16 órát vesz igénybe.'
       },
       {
-        id: 'kromoszoma', z: 7, name: 'Kromoszóma és hisztonok', svg: chromo, explode: [8, 6], link: 'sejt', lesson: 'biologia/sejt', en: 'chromosome, histones, nucleosome, chromatin',
+        id: 'kromoszoma', z: 7, name: 'Kromoszóma és hisztonok', svg: chromo, explode: [8, 6], link: 'sejt', lesson: 'biologia/sejt', en: 'chromosome, histones, nucleosome, chromatin', latin: 'chromosoma, histon, nucleosoma',
         what: 'Egy sejt DNS-e kb. **2 méter** hosszú, mégis befér egy pár mikrométeres sejtmagba. Ehhez szorosan fel van csomagolva: a DNS **hisztonfehérjék** köré tekeredik (ezek a **nukleoszómák**, mint gyöngyök egy fonalon), ezek tovább tekerednek, végül a sejtosztódáskor kialakulnak a mikroszkóppal is látható, X alakú **kromoszómák**.',
         madeOf: 'Kb. fele-fele arányban **DNS** és **fehérje**. Az emberi testi sejtekben **46 kromoszóma** (23 pár) van; mindegyik egyetlen, nagyon hosszú DNS-molekula. Az X alak két egyforma testvérkromatidából áll, amelyeket a **centromer** fog össze.',
         how: 'A csomagolás folyamatosan változik: ahol a géneket olvasni kell, ott a kromatin **lazább**, ahol nem, ott tömörebb. Sejtosztódás előtt a DNS megkettőződik, majd a kromoszómák erősen feltekerednek, hogy a két utódsejt között szét lehessen húzni őket. Kattints a gombra, és nézz bele a **sejtbe**!',
@@ -320,7 +320,7 @@
         fact: 'Ha a sejtmag egy teniszlabda méretű lenne, a benne lévő DNS kb. 20 km hosszú, hajszálvékony fonal lenne.'
       },
       {
-        id: 'atomok', z: 7, name: 'Atomok (C, H, O, N, P)', svg: atoms, explode: [-6, 6], link: 'atom', en: 'atoms: carbon, hydrogen, oxygen, nitrogen, phosphorus',
+        id: 'atomok', z: 7, name: 'Atomok (C, H, O, N, P)', svg: atoms, explode: [-6, 6], link: 'atom', en: 'atoms: carbon, hydrogen, oxygen, nitrogen, phosphorus', latin: 'carboneum, hydrogenium, oxygenium, nitrogenium, phosphorus',
         what: 'A DNS mindössze **öt elemből** épül fel: **szénből (C)**, **hidrogénből (H)**, **oxigénből (O)**, **nitrogénből (N)** és **foszforból (P)**. A rajzon golyómodellben egy foszfátcsoport és egy cukor-részlet látható, a szokásos színekkel: szén sötétszürke, hidrogén fehér, oxigén piros, nitrogén kék, foszfor narancs.',
         madeOf: 'Egy bázispár kb. 60–70 atomból áll. Az emberi genom teljes DNS-ében több száz milliárd atom van sejtenként. A nitrogén a bázisokban, a foszfor a gerincben van, a szén, hidrogén és oxigén mindenhol.',
         how: 'Ezek az atomok a táplálékodból származnak: a nitrogén a fehérjék aminosavaiból, a foszfor pl. a tejtermékek foszfátjaiból. A sejt **kovalens kötésekkel** kapcsolja őket molekulákká. Kattints a gombra, és nézz bele egy **atomba**!',
@@ -329,7 +329,7 @@
         fact: 'A Meselson–Stahl-kísérletben a nitrogénatomok nehezebb izotópjával (¹⁵N) jelölték meg a DNS-t, így tudták követni a régi és az új szálakat.'
       },
       {
-        id: 'meret', z: 1, name: 'Méretek: menet és átmérő', svg: dims, explode: [24, 0], badge: [DX, (yP0 + yP1) / 2 + 56], en: 'helical pitch and diameter (B-DNA)',
+        id: 'meret', z: 1, name: 'Méretek: menet és átmérő', svg: dims, explode: [24, 0], badge: [DX, (yP0 + yP1) / 2 + 56], en: 'helical pitch and diameter (B-DNA)', latin: 'B-DNA: pitch, diameter',
         what: 'A kettős spirál **2 nm** átmérőjű, és kb. **3,4–3,6 nm**-enként tesz meg egy teljes fordulatot, ez alatt kb. **10,5 bázispár** követi egymást. A spirál **jobbmenetes**, mint egy átlagos csavar.',
         madeOf: 'A méreteket a molekula felépítése határozza meg: a bázispárok kb. 0,34 nm-re vannak egymástól, és mindegyik kb. 34°-kal elfordul az előzőhöz képest. 10,5 × 34° ≈ 360°, vagyis egy teljes kör.',
         how: 'A méreteket **röntgendiffrakcióval** mérték meg: a DNS-szálakról készült felvételek (pl. Rosalind Franklin híres **51-es fotója**) X alakú mintázatából lehetett kiszámolni a spirál átmérőjét és menetemelkedését.',

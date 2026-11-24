@@ -175,7 +175,7 @@
     intro: 'A szem olyan, mint egy **fényképezőgép**: elöl a **szaruhártya** és a **szemlencse** együtt gyűjtőlencseként működik, a **pupilla** a blende, hátul az **ideghártya** (retina) a képérzékelő. A rajzon egy tárgy (piros nyíl) fénysugarait követheted: a kép a retinán **fordított és kicsinyített**, az agy „fordítja vissza”. A lencsét a **sugártest** izma élesíti közelre és távolra.\n\nA **Szétszedés** gombbal rétegenként széthúzhatod a szemet: elöl az optikai részeket, hátul a három burkot (ideghártya, érhártya, ínhártya).',
     parts: [
       {
-        id: 'szaruhartya', z: 6, name: 'Szaruhártya', svg: cornea, explode: [-62, 0], badge: [150, 212], en: 'cornea',
+        id: 'szaruhartya', z: 6, name: 'Szaruhártya', svg: cornea, explode: [-62, 0], badge: [150, 212], en: 'cornea', latin: 'cornea',
         lesson: 'fizika/hullamok-feny',
         what: 'A szem elülső, átlátszó, domború „ablaka”, az ínhártya folytatása. Ez a szem **legerősebb fénytörő része**: a teljes törőerő kb. **kétharmadát** adja, mert itt lép a fény a levegőből egy sokkal sűrűbb közegbe. Nincsenek benne erek, de rendkívül sok idegvégződés van benne: ezért fáj annyira, ha valami a szemünkbe megy.',
         madeOf: 'Kb. 0,5 mm vastag, öt rétegből áll: kívül néhány sejtsor vastag **hám** (gyorsan megújul), alatta egy vékony hártya, majd a vastag **alapállomány** (stroma), amely **szabályosan rendezett kollagénrostok** kb. 200 rétegéből áll, ezután egy rugalmas hártya, legbelül pedig egyetlen sejtsor, a **belhám** (endotél). Oxigént a levegőből, tápanyagot a csarnokvízből és a könnyből kap.',
@@ -184,7 +184,7 @@
         fact: 'A szaruhártya a leggyakrabban átültetett szövet: mivel nincsenek benne erek, a szervezet ritkán löki ki.'
       },
       {
-        id: 'csarnokviz', z: 3, name: 'Csarnokvíz', svg: aqueous, explode: [-42, 0], badge: [180, 330], en: 'aqueous humour (anterior chamber)',
+        id: 'csarnokviz', z: 3, name: 'Csarnokvíz', svg: aqueous, explode: [-42, 0], badge: [180, 330], en: 'aqueous humour (anterior chamber)', latin: 'humor aquosus (camera anterior bulbi)',
         what: 'A szaruhártya és a szivárványhártya, illetve a lencse közötti tér (szemcsarnok) víztiszta folyadéka. **Táplálja** az ereket nem tartalmazó szaruhártyát és lencsét, elszállítja a salakanyagokat, és a nyomásával **feszesen tartja** a szemgolyó alakját, mint a levegő a labdát.',
         madeOf: 'Kb. 99%-ban **víz**, benne sók, glükóz, aminosavak, sok **C-vitamin** (védelem az UV-fény ellen) és nagyon kevés fehérje. Térfogata csak kb. 0,2–0,3 ml.',
         how: 'A **sugártest** nyúlványai folyamatosan termelik (kb. 2–3 µl percenként), a hátsó csarnokból a pupillán át az elülső csarnokba áramlik, majd a szaruhártya és a szivárványhártya találkozásánál (csarnokzug) egy szivacsos szűrőn át a **Schlemm-csatornába**, onnan a vénákba szivárog el. Kb. 1,5–2 óránként teljesen kicserélődik.',
@@ -192,7 +192,7 @@
         fact: 'A zöld hályog sokáig semmilyen tünetet nem okoz: ezért fontos 40 év felett rendszeresen mérni a szemnyomást.'
       },
       {
-        id: 'szivarvany', z: 5, name: 'Szivárványhártya és pupilla', svg: iris, explode: [-26, 0], badge: [203, 214], en: 'iris and pupil',
+        id: 'szivarvany', z: 5, name: 'Szivárványhártya és pupilla', svg: iris, explode: [-26, 0], badge: [203, 214], en: 'iris and pupil', latin: 'iris, pupilla',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A szem **színes** része. A közepén lévő kerek nyílás a **pupilla**, amely a fényképezőgép blendéjéhez hasonlóan szabályozza, mennyi fény jut be: erős fényben 2 mm-re szűkül, sötétben 7–8 mm-re tágul. Ez a **pupillareflex** másodperc tört része alatt, akaratunktól függetlenül működik. Közelre nézéskor is szűkül, ami növeli a mélységélességet.',
         madeOf: 'Kötőszövetes alapból, erekből, **festéksejtekből** (melanin) és két **simaizomból**: a pupilla szélén körben futó **szűkítő** izomból (paraszimpatikus idegek irányítják) és a sugarasan futó **tágító** izomból (szimpatikus idegek irányítják). A hátsó felszínét sötét pigmentréteg borítja, hogy csak a pupillán jusson át fény.',
@@ -201,7 +201,7 @@
         fact: 'Az írisz mintázata egyénenként annyira különböző (még egypetéjű ikreknél is), hogy biometrikus azonosításra használják.'
       },
       {
-        id: 'lencse', z: 4, name: 'Szemlencse', svg: lens, explode: [-8, 0], badge: [238, 308], en: 'crystalline lens',
+        id: 'lencse', z: 4, name: 'Szemlencse', svg: lens, explode: [-8, 0], badge: [238, 308], en: 'crystalline lens', latin: 'lens',
         what: 'A pupilla mögötti, kétszer domború, átlátszó, **rugalmas** lencse. A szaruhártya után ez a második gyűjtőlencse, és ez **finomhangolja az élességet**: közelre nézéskor domborúbbá válik, távolra nézéskor ellaposodik. Ez az **alkalmazkodás** (akkomodáció). A kor előrehaladtával a lencse merevebb lesz: 40–45 év felett ezért kell sokaknak **olvasószemüveg**.',
         madeOf: 'Hosszú, átlátszó **lencserostokból** (sejtekből), amelyek hagymahéjszerűen, rétegesen helyezkednek el; ezek kb. 1/3 részben **krisztallin** nevű fehérjéből, 2/3 részben vízből állnak. Nincs benne sem ér, sem ideg. Kívül rugalmas **tok** veszi körül, ehhez tapadnak a függesztőrostok. Kb. 9–10 mm átmérőjű és 4 mm vastag.',
         how: 'Az embrióban a 4. héten a fejlődő szemhólyag „megérinti” a bőr külső csíralemezét, amely ettől megvastagszik, bemélyed, és **lefűződik**: ez a lencsehólyag. Hátsó sejtjei hosszú rostokká nyúlnak, és **elveszítik sejtmagjukat**, sőt minden fényt szóró sejtszervecskéjüket. A lencse egész életen át növekszik: új rostok rakódnak a régiekre, a legbelső rostok a születés előttiek. Ha a fehérjék kicsapódnak, a lencse homályossá válik: ez a **szürke hályog**, amit a lencse műlencsére cserélésével gyógyítanak.',
@@ -209,7 +209,7 @@
         fact: 'A szürke hályog műtét a világ egyik leggyakrabban végzett műtétje: ma kb. 15–20 perc, és a beteg még aznap hazamehet.'
       },
       {
-        id: 'sugartest', z: 5, name: 'Sugártest és lencsefüggesztő rostok', svg: cili, explode: [8, 0], badge: [218, 168], en: 'ciliary body and zonular fibres (zonules of Zinn)',
+        id: 'sugartest', z: 5, name: 'Sugártest és lencsefüggesztő rostok', svg: cili, explode: [8, 0], badge: [218, 168], en: 'ciliary body and zonular fibres (zonules of Zinn)', latin: 'corpus ciliare, zonula ciliaris (fibrae zonulares)',
         what: 'A szivárványhártya mögötti, gyűrű alakú izmos képlet, amelyről vékony **lencsefüggesztő (Zinn-) rostok** tartják a lencsét, mint egy trambulin rugói a vásznat. A sugártest **izma** szabályozza a lencse domborúságát, a **nyúlványai** pedig termelik a csarnokvizet.',
         madeOf: 'A **sugárizom** (simaizom), erekben gazdag kötőszövet és kb. 70 redőzött **nyúlvány**, amelyeket kétrétegű hám fed; ez a hám választja ki a csarnokvizet. A függesztőrostok vékony, rugalmas **fibrillin** fehérjeszálak.',
         how: 'A szemserleg pereméből és a környező mezenchimából fejlődik, az érhártya elülső folytatásaként. Működés: **távolra** nézéskor az izom elernyed, a gyűrű tágas, a rostok **megfeszülnek**, és laposra húzzák a lencsét. **Közelre** nézéskor az izom összehúzódik, a gyűrű szűkül, a rostok **elernyednek**, és a lencse a saját rugalmasságától domborúbbá válik. Ezért fárad el a szem a sok közeli munkától: közben a sugárizom folyamatosan dolgozik.',
@@ -217,7 +217,7 @@
         fact: 'A sugárizom a szervezet egyik legtöbbet dolgozó izma: minden pillantásváltáskor finoman utánaállít.'
       },
       {
-        id: 'uvegtest', z: 1, name: 'Üvegtest', svg: vitreous, explode: [22, 0], badge: [352, 222], en: 'vitreous body (vitreous humour)',
+        id: 'uvegtest', z: 1, name: 'Üvegtest', svg: vitreous, explode: [22, 0], badge: [352, 222], en: 'vitreous body (vitreous humour)', latin: 'corpus vitreum',
         what: 'A lencse mögötti nagy teret kitöltő, átlátszó, **kocsonyás** anyag: a szemgolyó térfogatának kb. **80%-a**. Megtartja a szem gömb alakját, és belülről a helyén tartja az ideghártyát. A fény akadálytalanul halad át rajta.',
         madeOf: 'Kb. **99%-ban víz**, amelyet egy finom **kollagénrost**-háló és a sok vizet megkötő **hialuronsav** tesz géllé. Térfogata kb. 4 ml. Sejt alig van benne.',
         how: 'Az embrióban a lencse és a retina közötti térben kezdetben egy ér (a **hialoid artéria**) halad át, amely a fejlődő lencsét táplálja. Ez a születés előtt visszafejlődik, helyén egy finom csatorna marad. Az üvegtest gélje élete során nem cserélődik ki, ezért idősebb korban folyósabbá válik, és a rostok összecsapzódhatnak: ezeket látjuk **„úszkáló legyecskéknek”**, főleg világos háttér előtt.',
@@ -225,7 +225,7 @@
         fact: 'Ha hirtelen sok új „legyecske” vagy villanás jelenik meg a látótérben, azonnal szemorvoshoz kell menni: ez retinaszakadás jele lehet.'
       },
       {
-        id: 'retina', terms: ['anatomia/latas', 'anatomia/neuron'], z: 3, name: 'Ideghártya (retina): csapok és pálcikák', svg: retina, explode: [36, 0], badge: [392, 394], link: 'sejt', en: 'retina: rods and cones, bipolar and ganglion cells, RPE',
+        id: 'retina', terms: ['anatomia/latas', 'anatomia/neuron'], z: 3, name: 'Ideghártya (retina): csapok és pálcikák', svg: retina, explode: [36, 0], badge: [392, 394], link: 'sejt', en: 'retina: rods and cones, bipolar and ganglion cells, RPE', latin: 'retina',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A szem belső, vékony hártyája, a szem **képérzékelője**. Kb. **120 millió pálcikát** és **6 millió csapot** tartalmaz. A **pálcikák** nagyon érzékenyek, gyenge fényben (szürkületben, éjszaka) dolgoznak, de színeket nem látnak. A **csapok** erős fényben működnek, és háromféle (kékre, zöldre, vörösre legérzékenyebb) típusuk adja a **színlátást**. Meglepő módon a fényérzékelő sejtek a retina **legkülső** rétegében vannak: a fénynek előbb a többi sejtrétegen kell áthaladnia (lásd a nagyított rajzot).',
         madeOf: 'Kb. 0,2–0,5 mm vastag, tíz rétegű **idegszövet**: belülről kifelé a látóidegrostok és a **dúcsejtek**, a **bipoláris sejtek** (és összekötő sejtek), majd a **csapok** és a **pálcikák**, végül a sötét **pigmenthám**, amely elnyeli a szórt fényt, és táplálja, „karbantartja” a fotoreceptorokat. A pálcikákban a **rodopszin** (látóbíbor), a csapokban hasonló **opszin** festékek nyelik el a fényt; ezek az **A-vitaminból** készülő retinált tartalmazzák.',
@@ -234,7 +234,7 @@
         fact: 'Sötétben a szem kb. 30–40 perc alatt alkalmazkodik teljesen: ennyi idő kell, hogy a pálcikákban újra felhalmozódjon a rodopszin.'
       },
       {
-        id: 'sargafolt', z: 7, name: 'Sárgafolt (látógödör)', svg: macula, explode: [36, 0], badge: [438, 256], en: 'macula lutea and fovea centralis',
+        id: 'sargafolt', z: 7, name: 'Sárgafolt (látógödör)', svg: macula, explode: [36, 0], badge: [438, 256], en: 'macula lutea and fovea centralis', latin: 'macula lutea, fovea centralis',
         what: 'A retina közepén, a látótengelyben lévő kb. 5 mm-es sárgás terület, közepén egy kis bemélyedéssel, a **látógödörrel** (fovea). Itt a **legélesebb a látás**: ide vetül, amire éppen nézünk, például az a betű, amit most olvasol. A látógödörben csak **csapok** vannak, nagyon sűrűn, ezért gyenge fényben itt rosszabbul látunk (a halvány csillagot érdemes kicsit mellé nézve figyelni).',
         madeOf: 'Sűrűn álló, különösen vékony **csapokból**, a látógödör közepén pálcikák nélkül. A felette lévő sejtrétegek és az erek **oldalra tolódnak**, ezért mélyed be: így a fény szinte akadály nélkül éri a csapokat. Sárga színét a növényi eredetű **lutein** és **zeaxantin** festékanyagok adják, amelyek a kék fényt szűrik.',
         how: 'A látógödör a magzati kor második felében kezd kialakulni, de csak **születés után**, kb. 4 éves korig érik be teljesen, ahogy a csapok összetömörödnek és a belső rétegek oldalra húzódnak. Ezért fejlődik a gyerekek látásélessége évekig. A festékanyagokat táplálékkal (zöld leveles zöldségek, tojássárgája) vesszük fel.',
@@ -242,7 +242,7 @@
         fact: 'A látótér közepén csak kb. 2 fokos, nagyjából hüvelykujjköröm-nyi területen látunk igazán élesen; a szemünk ezért ugrál másodpercenként többször (szakkádok).'
       },
       {
-        id: 'latoideg', terms: ['anatomia/latas'], z: 6, name: 'Látóideg és vakfolt', svg: nerve, explode: [92, 0], badge: [532, 205], en: 'optic nerve and optic disc (blind spot)',
+        id: 'latoideg', terms: ['anatomia/latas'], z: 6, name: 'Látóideg és vakfolt', svg: nerve, explode: [92, 0], badge: [532, 205], en: 'optic nerve and optic disc (blind spot)', latin: 'nervus opticus, discus nervi optici',
         lesson: 'biologia/ideg-hormon-emesztes',
         what: 'A látóideg viszi a retina jeleit az agyba. Kb. **1,2 millió idegrostból** áll, amelyek a retina dúcsejtjeiből indulnak, és a szem hátsó részén, egy pontban, a **látóidegfőben** lépnek ki. Ezen a helyen nincsenek fényérzékelő sejtek: ez a **vakfolt**. Azért nem vesszük észre, mert a két szem látótere fedi egymást, és az agy a hiányt a környezet alapján „kitölti”.',
         madeOf: '**Velőshüvelyes idegrostokból** (a dúcsejtek nyúlványai), támasztó sejtekből és három agyburokból álló hüvelyből. A közepén fut a retinát ellátó **központi artéria és véna**, amelyek a látóidegfőben ágaznak szét a retinán (a szemtükörrel ezeket látja az orvos).',
@@ -251,7 +251,7 @@
         fact: 'Megtalálhatod a vakfoltodat: rajzolj egy papírra egymástól 8 cm-re egy keresztet és egy pöttyöt, csukd be a bal szemed, nézd a jobb szemeddel a keresztet, és lassan közelítsd a papírt: egy ponton a pötty eltűnik.'
       },
       {
-        id: 'erhartya', z: 2, name: 'Érhártya', svg: choroid, explode: [58, 0], badge: [292, 416], en: 'choroid',
+        id: 'erhartya', z: 2, name: 'Érhártya', svg: choroid, explode: [58, 0], badge: [292, 416], en: 'choroid', latin: 'choroidea',
         what: 'Az ideghártya és az ínhártya közötti, **erekben rendkívül gazdag**, sötét réteg, a szem középső burkának hátsó része. **Táplálja** a retina külső rétegeit (főleg a sok energiát fogyasztó fotoreceptorokat), és sötét festékével **elnyeli** a retinán áthaladt fényt, hogy az ne verődjön vissza és ne rontsa a kép élességét.',
         madeOf: 'Sűrű **érhálózatból** (a legbelső rétege egy különösen tágas hajszálér-réteg), kötőszövetből és sok **melanint** tartalmazó festéksejtből. Elöl a sugártestben és a szivárványhártyában folytatódik (ezek együtt az **érhártyás burok**).',
         how: 'Az embrióban a szemserleget körülvevő **mezenchimából** alakul ki, a 6. héttől. Egyes állatoknál (macska, kutya) az érhártyában egy fényvisszaverő réteg (**tapetum lucidum**) is van: ez javítja a sötétben látást, és ezért világít a szemük a reflektor fényében. Az embernek ilyen rétege nincs.',
@@ -259,7 +259,7 @@
         fact: 'A „vörös szem” effektus ellen a fényképezőgépek elővillantanak: ettől a pupilla összeszűkül, mielőtt a kép elkészülne.'
       },
       {
-        id: 'inhartya', z: 1, name: 'Ínhártya', svg: sclera, explode: [74, 0], badge: [218, 392], en: 'sclera',
+        id: 'inhartya', z: 1, name: 'Ínhártya', svg: sclera, explode: [74, 0], badge: [218, 392], en: 'sclera', latin: 'sclera',
         what: 'A szemgolyó kemény, fehér **külső burka**, ez a „szemfehérje”. Védi a szem belsejét, megtartja az alakját, és ehhez tapadnak a **szemmozgató izmok**. Elöl az átlátszó szaruhártyában folytatódik, hátul a látóideg hüvelyébe megy át.',
         madeOf: 'Sűrű, **rendezetlenül** szövődő **kollagénrostokból** álló kötőszövet, kevés érrel. Kb. 0,5–1 mm vastag. Ugyanaz az anyag, mint a szaruhártyáé, de mivel a rostok vastagsága és elrendeződése szabálytalan, **fehér** és nem átlátszó. Kívül a vékony, átlátszó kötőhártya borítja.',
         how: 'Az embrióban a szemserleget körülvevő mezenchima külső, tömörödő rétegéből alakul ki. Csecsemőknél még vékonyabb, ezért kékes árnyalatú lehet (átsejlik rajta az érhártya). Ha a szemgolyó gyerekkorban túl hosszúra nő, az ínhártya megnyúlik: ez okozza a leggyakoribb, ún. **tengelyrövidlátást**.',
@@ -267,7 +267,7 @@
         fact: 'Az emberi szem fehérje a többi főemlőshöz képest feltűnően nagy és fehér: ez segít látni, hová néz a másik ember.'
       },
       {
-        id: 'szemizmok', z: 2, name: 'Szemmozgató izmok', svg: muscles, explode: [84, 0], badge: [520, 398], en: 'extraocular muscles (medial and lateral rectus shown)',
+        id: 'szemizmok', z: 2, name: 'Szemmozgató izmok', svg: muscles, explode: [84, 0], badge: [520, 398], en: 'extraocular muscles (medial and lateral rectus shown)', latin: 'musculi externi bulbi oculi (musculus rectus medialis et lateralis)',
         what: 'Minden szemet **hat** harántcsíkolt izom mozgat: négy egyenes (felső, alsó, belső, külső) és két ferde izom. A vízszintes metszetben a **belső** és a **külső egyenes izom** látszik: ezek fordítják a szemet az orr, illetve a halánték felé. A két szem izmai tökéletes összhangban dolgoznak, hogy mindkét szem ugyanoda nézzen; ha ez nem sikerül, **kancsalság** alakul ki.',
         madeOf: '**Harántcsíkolt izomrostokból**, amelyek a szemgödör hátsó csúcsán egy közös ín-gyűrűből erednek, és lapos **inakkal** tapadnak az ínhártyához. A szervezet legpontosabb izmai közé tartoznak: egy idegrost csak kevés izomrostot irányít, így nagyon finoman szabályozhatók.',
         how: 'A fej **mezodermájából** fejlődnek, és három agyideg idegzi be őket: a külső egyenes izmot a VI. (n. abducens), a felső ferde izmot a IV. (n. trochlearis), az összes többit a III. (n. oculomotorius). A szem gyors ugrásai (**szakkádok**) alatt az agy egy pillanatra „kikapcsolja” a látást, ezért nem látjuk elmosódottnak a világot.',

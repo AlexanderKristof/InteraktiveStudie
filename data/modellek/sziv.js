@@ -135,7 +135,7 @@
     intro: 'A szív valójában **két pumpa egymás mellett**. A **jobb szívfél** (a rajz bal oldalán, kék) a testből visszaérkező, oxigénszegény vért a **tüdőbe** pumpálja (kis vérkör). A **bal szívfél** (piros) a tüdőből érkező, oxigéndús vért az egész **testbe** hajtja (nagy vérkör). Mindkét oldalon egy **pitvar** fogadja a vért, és egy erősebb **kamra** pumpálja tovább. A **billentyűk** szelepként biztosítják, hogy a vér csak egy irányba áramoljon.\n\nLent egy **szívverés** lépéseit követheted, az EKG-görbével együtt. A **Szétszedés** gombbal széthúzhatod az üregeket és az ereket.',
     parts: [
       {
-        id: 'jp', z: 3, name: 'Jobb pitvar', svg: ra, explode: [-46, -14], badge: [184, 262], en: 'right atrium',
+        id: 'jp', z: 3, name: 'Jobb pitvar', svg: ra, explode: [-46, -14], badge: [184, 262], en: 'right atrium', latin: 'atrium dextrum',
         what: 'A szív jobb felső ürege. Ide érkezik a testből visszatérő, **oxigénszegény** vér a felső és az alsó üres visszéren, valamint a szív saját vénás vére a koszorús öblön át. A falában van a **szinuszcsomó**, a szív természetes „karmestere”. A pitvar kifelé egy kis zsákszerű nyúlványban, a **fülcsében** folytatódik.',
         madeOf: 'Vékony, kb. 2 mm-es **szívizomfalból**, amelyet belülről sima hártya (**endocardium**), kívülről a szívburok belső lemeze (**epicardium**) borít. A fülcsében az izom bordázott (fésűs izmok).',
         how: 'Az embrióban a szív kezdetben egyetlen **egyenes cső**, amely a 3. héten már ver. A 4. héttől ez a cső S alakban **meghajlik**, és a pitvari rész a kamrai rész fölé és mögé kerül. Később válaszfalak osztják jobb és bal pitvarra, de a falukban egy nyílás (**ovális ablak**) születésig nyitva marad, mert a magzat még nem a tüdejével lélegzik. Működés: a kamrák elernyedésekor a vér **passzívan** átfolyik rajta a jobb kamrába, a végén pedig a pitvar összehúzódása még kb. 20%-ot „ráprésel”.',
@@ -143,7 +143,7 @@
         fact: 'Az ovális ablak születés után általában bezáródik, de kb. minden negyedik embernél egy apró rés megmarad (nyitott foramen ovale). Ez legtöbbször nem okoz panaszt.'
       },
       {
-        id: 'jk', z: 3, name: 'Jobb kamra', svg: rv, explode: [-40, 22], badge: [214, 384], en: 'right ventricle',
+        id: 'jk', z: 3, name: 'Jobb kamra', svg: rv, explode: [-40, 22], badge: [214, 384], en: 'right ventricle', latin: 'ventriculus dexter',
         what: 'A jobb pitvar alatti, előre néző kamra. A **tüdőartérián** át a **tüdőbe** pumpálja az oxigénszegény vért, ahol az leadja a szén-dioxidot és oxigént vesz fel. Mivel a tüdő közel van, és az erei tágak, ehhez **kis nyomás** is elég: a jobb kamra fala ezért vékonyabb, mint a balé.',
         madeOf: 'Kb. 3–5 mm vastag **szívizomfalból**. Belső felszínét izomgerendák (trabeculák) teszik egyenetlenné, és innen erednek a **szemölcsizmok** is, amelyekhez inak (ínhúrok) kötik a vitorlás billentyű lemezeit.',
         how: 'Az embrionális szívcső kamrai részéből és a kiáramlási pályából alakul ki; a két kamrát az 5–8. héten növő **kamrai sövény** választja szét. Magzatkorban a jobb kamra legalább annyi munkát végez, mint a bal (a tüdő helyett a vér nagy része a nyitott Botallo-vezetéken át az aortába jut). Születés után a tüdőerek ellenállása hirtelen leesik, és a jobb kamra fala relatíve elvékonyodik.',
@@ -151,7 +151,7 @@
         fact: 'Bár a két kamra eltérő erővel dolgozik, **pontosan ugyanannyi** vért pumpálnak percenként, különben a vér az egyik körben felhalmozódna.'
       },
       {
-        id: 'bp', z: 3, name: 'Bal pitvar', svg: la, explode: [46, -18], badge: [402, 262], en: 'left atrium',
+        id: 'bp', z: 3, name: 'Bal pitvar', svg: la, explode: [46, -18], badge: [402, 262], en: 'left atrium', latin: 'atrium sinistrum',
         what: 'A szív bal felső ürege, valójában a szív **leghátsó** része (a rajz egyszerűsít). Ide érkezik a **tüdővénákon** át a tüdőből az **oxigéndús** vér, és innen jut a mitralis billentyűn át a bal kamrába.',
         madeOf: 'Vékony, kb. 2–3 mm-es **szívizomfalból**, belül sima felszínnel; csak a fülcséje bordázott. Közvetlenül a nyelőcső előtt fekszik.',
         how: 'Fejlődéskor a tüdővénák törzse **beépül** a bal pitvar falába: ezért ér be ma négy külön véna. A pitvarokat két, egymásra boruló válaszfal (septum primum és secundum) választja szét, a köztük maradt ovális ablak születéskor a bal pitvari nyomás növekedése miatt „becsukódik”, mint egy lengőajtó. Működése ugyanolyan, mint a jobb pitvaré: tároló, átvezető és rásegítő pumpa.',
@@ -159,7 +159,7 @@
         fact: 'Mivel a bal pitvar közvetlenül a nyelőcső előtt van, a nyelőcsövön át is meg lehet ultrahanggal vizsgálni (TEE).'
       },
       {
-        id: 'bk', terms: ['anatomia/percterfogat', 'anatomia/vernyomas'], z: 3, name: 'Bal kamra', svg: lv, explode: [36, 16], badge: [398, 410], en: 'left ventricle',
+        id: 'bk', terms: ['anatomia/percterfogat', 'anatomia/vernyomas'], z: 3, name: 'Bal kamra', svg: lv, explode: [36, 16], badge: [398, 410], en: 'left ventricle', latin: 'ventriculus sinister',
         what: 'A szív **legerősebb** ürege, ez alkotja a **szívcsúcsot**. Az aortán át az **egész testbe** pumpálja az oxigéndús vért, ezért nagy nyomást kell létrehoznia (nyugalomban kb. 120 Hgmm-t). Egy összehúzódással kb. **70 ml** vért lök ki (verőtérfogat), percenként kb. 5 litert.',
         madeOf: '10–12 mm vastag **szívizomfalból**, kb. háromszor vastagabbal, mint a jobb kamráé. Az izomrostok spirálisan, több rétegben futnak, ezért összehúzódáskor a kamra egyszerre **rövidül, szűkül és csavarodik**, mint egy kicsavart törölköző.',
         how: 'A szívcső kamrai részének bal oldalából fejlődik. Születés után, amikor a teljes nagy vérkört egyedül kell ellátnia, a fala gyorsan megvastagszik. Felnőttkorban a szívizomsejtek már alig osztódnak: a szív edzésre vagy magas vérnyomásra a sejtek **megnagyobbodásával** (hipertrófia) válaszol. Az elhalt izomsejteket (pl. szívinfarktus után) **heg** pótolja.',
@@ -167,7 +167,7 @@
         fact: 'Nyugalomban a bal kamra teljesítménye kb. **1,3 watt**: egy élet alatt annyi munkát végez, amennyi kb. 40 tonna (egy megrakott kamion) feljuttatásához kellene a Mount Everest tetejére.'
       },
       {
-        id: 'sovey', z: 4, name: 'Kamrai sövény', svg: sept, explode: [0, 22], badge: [313, 360], en: 'interventricular septum',
+        id: 'sovey', z: 4, name: 'Kamrai sövény', svg: sept, explode: [0, 22], badge: [313, 360], en: 'interventricular septum', latin: 'septum interventriculare',
         what: 'A két kamrát elválasztó izmos fal. Megakadályozza, hogy az oxigénszegény és az oxigéndús vér keveredjen, és **mindkét kamra** összehúzódásában részt vesz. Benne fut az ingerületvezető rendszer **His-kötege** és két szára.',
         madeOf: 'Nagyobb részben vastag **szívizomból** (izmos rész), a tetején egy kis területen vékony, **kötőszövetes hártyából** (hártyás rész), a billentyűk közelében.',
         how: 'Az embrióban a 4–8. hét között alakul ki: alulról az izmos sövény nő felfelé, felülről pedig a kiáramlási pályát kettéosztó, spirálisan csavarodó **aortopulmonális sövény** nő le hozzá; a kettő a hártyás résznél forr össze. Ha ez nem sikerül tökéletesen, **kamrai sövényhiány** (VSD) marad: ez a leggyakoribb veleszületett szívhiba.',
@@ -175,7 +175,7 @@
         fact: 'A kamrai sövényhiány kb. 1000 újszülöttből 2–3-nál fordul elő; a kis nyílások gyakran maguktól bezáródnak.'
       },
       {
-        id: 'vitorlas', terms: ['anatomia/sziv-ciklus'], z: 5, name: 'Vitorlás billentyűk', svg: av, explode: [0, 4], badge: [372, 392], en: 'atrioventricular valves: tricuspid & mitral (bicuspid) valve',
+        id: 'vitorlas', terms: ['anatomia/sziv-ciklus'], z: 5, name: 'Vitorlás billentyűk', svg: av, explode: [0, 4], badge: [372, 392], en: 'atrioventricular valves: tricuspid & mitral (bicuspid) valve', latin: 'valva atrioventricularis (tricuspidalis / mitralis)',
         what: 'A pitvarok és a kamrák közti **egyirányú szelepek**. A jobb oldali **háromhegyű (tricuspidalis)**, a bal oldali **kéthegyű (mitralis)** billentyű. Amikor a kamra elernyed, a lemezek lefelé nyílnak, és a vér beáramlik; amikor a kamra összehúzódik, a vér nyomása **becsapja** őket, így a vér nem folyhat vissza a pitvarba. A becsapódásuk adja az **első szívhangot**.',
         madeOf: 'Vékony, erős **kötőszöveti lemezekből** (vitorlákból), amelyeket endocardium borít. A lemezek szélét **ínhúrok** kötik a kamrafalból kiálló **szemölcsizmokhoz**, mint az ejtőernyő zsinórjai: ezek akadályozzák meg, hogy a vitorlák a pitvar felé „kifordulhassanak”.',
         how: 'A pitvar–kamrai nyílás körüli **endocardiális párnákból** fejlődnek, az 5–8. héten: a párnák szövete elvékonyodik, a kamrafal izomgerendái pedig ínhúrokká és szemölcsizmokká alakulnak. Működésük teljesen **passzív**: csak a két oldaluk közti nyomáskülönbség nyitja és zárja őket, idegek vagy izmok nem mozgatják.',
@@ -183,7 +183,7 @@
         fact: 'A „mitralis” név onnan ered, hogy a két vitorla egy püspöksüvegre (mitra) emlékeztette a régi anatómusokat.'
       },
       {
-        id: 'zsebes', terms: ['anatomia/sziv-ciklus'], z: 5, name: 'Zsebes billentyűk', svg: semi, explode: [0, -4], badge: [318, 300], en: 'semilunar valves: pulmonary & aortic valve',
+        id: 'zsebes', terms: ['anatomia/sziv-ciklus'], z: 5, name: 'Zsebes billentyűk', svg: semi, explode: [0, -4], badge: [318, 300], en: 'semilunar valves: pulmonary & aortic valve', latin: 'valvae semilunares (valva trunci pulmonalis, valva aortae)',
         what: 'A kamrák kiáramlási nyílásainál ülő szelepek: a **tüdőartéria** kezdeténél a **pulmonalis**, az **aorta** kezdeténél az **aortabillentyű**. Mindkettő **három** félhold alakú „zsebből” áll. Kamrai összehúzódáskor a vér a falhoz nyomja őket, és kiáramlik; utána a visszafelé induló vér **megtölti a zsebeket**, azok összezárnak. Ez adja a **második szívhangot**.',
         madeOf: 'Vékony, rugalmas **kötőszöveti** lemezekből, endocardiummal borítva. Nincsenek ínhúrjaik: a zsebek alakja önmagában biztosítja a zárást.',
         how: 'A kiáramlási pálya (truncus arteriosus) falának párnáiból alakulnak ki, ugyanakkor, amikor a közös kiáramlási csövet a spirális sövény **aortára és tüdőartériára** osztja. Működésük passzív, a nyomáskülönbség nyitja és zárja őket.',
@@ -191,7 +191,7 @@
         fact: 'A zsebes billentyűk egy élet alatt több mint **2,5 milliárdszor** nyílnak és zárnak.'
       },
       {
-        id: 'aorta', z: 1, name: 'Aorta (főverőér)', svg: aorta, explode: [14, -14], badge: [376, 90], en: 'aorta (ascending aorta, aortic arch, descending aorta)',
+        id: 'aorta', z: 1, name: 'Aorta (főverőér)', svg: aorta, explode: [14, -14], badge: [376, 90], en: 'aorta (ascending aorta, aortic arch, descending aorta)', latin: 'aorta (pars ascendens, arcus aortae, pars descendens)',
         what: 'A test **legnagyobb artériája** (kb. 2,5–3 cm átmérőjű). A bal kamrából indul felfelé, **ívben** hátra és balra kanyarodik (aortaív), majd a gerinc előtt lefelé halad. Az ívből erednek a fejet és a karokat ellátó nagy erek, a kezdetéből pedig a szívet ellátó **koszorúerek**.',
         madeOf: 'Háromrétegű falból: belül sima **endothel**, középen vastag, **rugalmas rostokban** gazdag réteg simaizommal, kívül kötőszövet. A rugalmas rostok miatt a fala rugalmas, mint egy gumicső.',
         how: 'Az embrióban a kiáramlási pálya kettéválásából, valamint a kezdetben szimmetrikusan elhelyezkedő **garatívartériák** átalakulásából jön létre; ezek közül a bal 4. ív lesz az aortaív. Működés: systoléban a fala **kitágul** és energiát tárol, diastoléban visszahúzódva továbbnyomja a vért (**szélkazán-hatás**), így a véráramlás a szívverések között sem áll le.',
@@ -199,7 +199,7 @@
         fact: 'Egy átlagos ember aortáján naponta kb. **7000 liter** vér halad át.'
       },
       {
-        id: 'truncus', z: 2, name: 'Tüdőartéria (truncus pulmonalis)', svg: trunk, explode: [-10, -16], badge: [312, 232], en: 'pulmonary trunk, pulmonary arteries',
+        id: 'truncus', z: 2, name: 'Tüdőartéria (truncus pulmonalis)', svg: trunk, explode: [-10, -16], badge: [312, 232], en: 'pulmonary trunk, pulmonary arteries', latin: 'truncus pulmonalis, arteriae pulmonales',
         what: 'A jobb kamrából induló nagy ér, amely az aorta előtt felfelé haladva **két ágra** (jobb és bal tüdőartériára) oszlik, és a tüdőbe viszi az **oxigénszegény** vért. Ez az egyetlen artéria (az ágaival együtt), amelyben oxigénszegény vér folyik: az artéria szó ugyanis azt jelenti, hogy az ér **a szívtől elvezet**, nem azt, hogy oxigéndús vér van benne.',
         madeOf: 'Az aortához hasonló, rugalmas falú artéria, de vékonyabb fallal, mert benne a nyomás kb. ötöde az aortáénak.',
         how: 'Az embrionális kiáramlási pálya kettéosztódásából jön létre, a két ág a 6. garatívartériából fejlődik. Magzatkorban a tüdőartéria és az aorta között egy összekötő ér, a **Botallo-vezeték** (ductus arteriosus) működik, amely a vért a még nem lélegző tüdő mellett elvezeti. Ez születés után néhány napon belül bezáródik.',
@@ -207,7 +207,7 @@
         fact: 'A vér egy teljes kis vérköri útja (jobb kamrától bal pitvarig) csak kb. **4–5 másodpercig** tart.'
       },
       {
-        id: 'urestvisszer', z: 1, name: 'Felső és alsó üres visszér', svg: cavae, explode: [-46, 0], badge: [212, 150], en: 'superior & inferior vena cava',
+        id: 'urestvisszer', z: 1, name: 'Felső és alsó üres visszér', svg: cavae, explode: [-46, 0], badge: [212, 150], en: 'superior & inferior vena cava', latin: 'vena cava superior et inferior',
         what: 'A két legnagyobb véna, amelyek a jobb pitvarba torkollnak. A **felső üres visszér** a fejből, a nyakból és a karokból, az **alsó üres visszér** a törzsből és a lábakból hozza vissza az **oxigénszegény** vért. Nincs a torkolatuknál valódi billentyű.',
         madeOf: 'Vékony, kevés izmot tartalmazó falból: a vénákban a nyomás alacsony (néhány Hgmm), ezért falukat nem kell erősnek lenniük, viszont **tágulékonyak**, és sok vért tudnak tárolni.',
         how: 'Az embrióban kezdetben szimmetrikusan, mindkét oldalon futó vénás törzsek (kardinális vénák) közül a **jobb oldaliak** maradnak meg és nagyobbodnak meg, a bal oldaliak nagyrészt visszafejlődnek. A vért a vénákban a belégzéskor kialakuló **szívóhatás**, a lábizmok összehúzódása („izompumpa”) és a vénabillentyűk segítik vissza a szív felé.',
@@ -215,7 +215,7 @@
         fact: 'Az alsó üres visszér a test legnagyobb átmérőjű vénája: kb. 2,5–3 cm.'
       },
       {
-        id: 'tudoveak', z: 1, name: 'Tüdővénák', svg: pvein, explode: [56, -18], badge: [520, 268], en: 'pulmonary veins',
+        id: 'tudoveak', z: 1, name: 'Tüdővénák', svg: pvein, explode: [56, -18], badge: [520, 268], en: 'pulmonary veins', latin: 'venae pulmonales',
         what: 'Általában **négy** ér (két-két mindkét tüdőből), amelyek a tüdőből a **bal pitvarba** hozzák vissza a vért. Ezek az egyetlen vénák, amelyekben **oxigéndús** vér folyik. (A rajzon egyszerűsítve mind a négy jobbról érkezik; a valóságban a jobb tüdővénák a szív mögött, a test jobb oldala felől futnak be.)',
         madeOf: 'Vékony falú vénák, a bal pitvari torkolatuknál a falukba **szívizom-hüvely** nyúlik be. Billentyűjük nincs.',
         how: 'Az embrióban a bal pitvar hátsó falából egyetlen közös tüdővéna nő a fejlődő tüdő felé. Ez elágazik, majd a törzse fokozatosan **beolvad** a bal pitvar falába, így végül négy külön nyílás marad. Ha ez rosszul sikerül, a tüdővénák rossz helyre (pl. a jobb pitvarba) torkollhatnak.',
@@ -223,7 +223,7 @@
         fact: 'Az artéria és a véna megkülönböztetése az áramlás irányán múlik: artéria = a szívből el, véna = a szívbe vissza. Ezért van oxigéndús vér a tüdővénákban.'
       },
       {
-        id: 'koszorus', terms: ['anatomia/gazcsere'], z: 6, name: 'Koszorúerek', svg: coron, explode: [0, 0], badge: [176, 348], en: 'coronary arteries (RCA, LAD, LCx)',
+        id: 'koszorus', terms: ['anatomia/gazcsere'], z: 6, name: 'Koszorúerek', svg: coron, explode: [0, 0], badge: [176, 348], en: 'coronary arteries (RCA, LAD, LCx)', latin: 'arteriae coronariae (dextra et sinistra)',
         what: 'A szívizom **saját vérellátását** biztosító artériák, amelyek koszorúként veszik körül a szívet. Az aorta kezdetéből ered a **jobb** és a **bal koszorúér**. A bal hamar két ágra oszlik: az **elülső leszálló ág** a két kamra közti barázdában fut a szívcsúcs felé, a **körbefutó ág** pedig a bal pitvar és a bal kamra határán kerüli meg a szívet.',
         madeOf: 'Izmos falú artériák, kb. 3–4 mm-es átmérővel. A falukban kórosan **zsíros–meszes lerakódás** (érelmeszesedés, plakk) alakulhat ki, amely szűkíti őket.',
         how: 'Az embrióban a szív felszínén kialakuló érhálózatból fejlődnek, amely csak utólag kapcsolódik be az aortába. Különlegességük, hogy főleg **diastoléban** telnek meg: a szív összehúzódásakor az izom összenyomja a falában futó ereket. Ha egy koszorúér elzáródik (pl. vérrög a plakkon), az általa ellátott izomrész oxigén nélkül marad és elhal: ez a **szívinfarktus**.',
@@ -231,7 +231,7 @@
         fact: 'A szív a test tömegének kb. 0,5%-a, de nyugalomban a perctérfogat kb. **5%-át** kapja a koszorúereken át.'
       },
       {
-        id: 'inger', terms: ['anatomia/ekg', 'anatomia/akcios-potencial'], z: 7, name: 'Ingerképző és -vezető rendszer', svg: condSys, explode: [0, 0], badge: [238, 262], en: 'cardiac conduction system: SA node, AV node, bundle of His, bundle branches, Purkinje fibres',
+        id: 'inger', terms: ['anatomia/ekg', 'anatomia/akcios-potencial'], z: 7, name: 'Ingerképző és -vezető rendszer', svg: condSys, explode: [0, 0], badge: [238, 262], en: 'cardiac conduction system: SA node, AV node, bundle of His, bundle branches, Purkinje fibres', latin: 'complexus stimulans cordis (nodus sinuatrialis, nodus atrioventricularis, fasciculus atrioventricularis)',
         what: 'Különleges szívizomsejtek hálózata, amely **elindítja és összehangolja** a szívverést. A **szinuszcsomó** (SA) a jobb pitvar falában percenként kb. 60–80 ingerületet „gyárt”, ezek a pitvarokon át a **pitvar–kamrai (AV) csomóba** jutnak. Az AV-csomó kicsit **késleltet**, hogy a pitvarok előbb kiürülhessenek, majd a **His-köteg**, annak **két szára** és a **Purkinje-rostok** villámgyorsan szétviszik az ingerületet a kamrákban.',
         madeOf: 'Átalakult **szívizomsejtekből**, amelyek kevés összehúzódó fehérjét tartalmaznak, viszont képesek **maguktól** ingerületet keltani (automácia), illetve különösen gyorsan vezetik azt. Nem idegek! Az idegrendszer csak gyorsítja (szimpatikus) vagy lassítja (bolygóideg) a működésüket.',
         how: 'A szívcső már a 3–4. héten ritmusosan húzódik össze; a vezetőrendszer a 4–8. héten specializálódik ki a szívizomsejtekből, a kamrák és a sövény kialakulásával párhuzamosan. Működés: a szinuszcsomó sejtjeinek nyugalmi potenciálja **lassan magától emelkedik**, és ha eléri a küszöböt, akciós potenciál indul; az ingerület a sejtek közti réskapcsolatokon (gap junction) terjed sejtről sejtre. Ha a szinuszcsomó leáll, az AV-csomó (40–60/perc) vagy a kamrai rostok (20–40/perc) veszik át a ritmust, illetve **pacemaker** pótolhatja.',
@@ -239,6 +239,10 @@
         fact: 'A szív a testből kivéve, megfelelő oldatban még órákig tovább ver: az ütemet saját maga adja, nem az agy.'
       }
     ],
+    uni: {
+      text: 'A szív egyetemi szemmel **két sorba kapcsolt, ritmikusan működő nyomáspumpa**, amelynek teljesítményét a telődés, a kontraktilitás és az utóterhelés együtt szabja meg.\n\n**Szívciklus:** a kamrai systole az **izovolumetriás kontrakcióval** kezdődik (mind a négy billentyű zárt, a nyomás meredeken nő), majd a zsebes billentyűk nyitásával az **ejekció** következik. A diastole **izovolumetriás relaxációval** indul, a vitorlás billentyűk nyitása után gyors, majd lassú telődés és végül a pitvari systole jön. A folyamatot a kamrai **nyomás–térfogat hurok** szemlélteti, amelynek területe a szív verésenkénti külső munkája.\n\n**Frank–Starling-mechanizmus:** a nagyobb végdiastolés térfogat jobban megnyújtja a szarkomereket, ami az aktin–miozin átfedés optimalizálásával és a troponin C Ca²⁺-érzékenységének növekedésével nagyobb verőtérfogatot eredményez. Így a két kamra kimenete ütésről ütésre kiegyenlítődik.\n\n**Ingerületvezetés:** a szinuszcsomó pacemaker-sejtjei (I_f áram, T- és L-típusú Ca²⁺-csatornák) spontán depolarizálódnak; az ingerület a pitvarokon át az AV-csomóba jut, ahol kb. 0,1 s-ot késik (a pitvarok így a kamrák előtt húzódnak össze), majd a His-köteg, a Tawara-szárak és a Purkinje-rostok gyorsan szétterítik a kamrákban. Ezt követi az EKG P-hulláma, QRS-komplexuma és T-hulláma.\n\n**Perctérfogat:** `CO = HR · SV`, nyugalomban kb. 70/min · 70 ml ≈ 5 l/min; a verőtérfogatot az előterhelés, a kontraktilitás (szimpatikus β₁-hatás) és az utóterhelés határozza meg, az ejekciós frakció `EF = SV / EDV` normálisan 55–70%.',
+      terms: ['anatomia/sziv-ciklus', 'anatomia/percterfogat', 'anatomia/vernyomas', 'anatomia/ekg', 'anatomia/akcios-potencial', 'anatomia/szarkomer', 'anatomia/izomosszehuzodas', 'anatomia/gazcsere']
+    },
     steps: [
       { icon: '😌', title: 'Elernyedés és telődés (diastole)', when: 'kb. 0,5 s nyugalomban', text: 'A kamrák elernyedtek. A **vitorlás billentyűk nyitva** vannak, a zsebesek zárva. A testből a vér az **üres visszereken** át a jobb pitvarba, a tüdőből a **tüdővénákon** át a bal pitvarba folyik, és onnan **passzívan** tovább a kamrákba: a kamrák kb. 80%-ig megtelnek, mielőtt a pitvarok egyáltalán összehúzódnának. Ilyenkor kapják vérüket a **koszorúerek** is.', parts: ['urestvisszer', 'tudoveak', 'jp', 'bp', 'vitorlas', 'koszorus'] },
       { icon: '⚡', title: 'A szinuszcsomó „tüzel” – P hullám', text: 'A **szinuszcsomó** sejtjeinek feszültsége magától eléri a küszöböt: ingerület indul, és kb. 0,1 s alatt szétterjed **mindkét pitvaron**. Az EKG-n ez a kis **P hullám**.', parts: ['inger', 'jp', 'bp'] },
