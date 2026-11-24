@@ -307,7 +307,34 @@
     });
     index.forEach(function (it) { it.nt = norm(it.title); it.nx = norm(it.text); it.ng = norm(it.tags || ''); });
   }
-  function search(q) {
+  /* Elgépelés-tűrő összehasonlítás: Levenshtein-távolság korlátos számolással. */
+  function lev(a, b, max) {
+    if (Math.abs(a.length - b.length) > max) return max + 1;
+    var prev = [], cur, i, j;
+    for (j = 0; j <= b.length; j++) prev[j] = j;
+    for (i = 1; i <= a.length; i++) {
+      cur = [i]; var rowMin = i;
+      for (j = 1; j <= b.length; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+        if (cur[j] < rowMin) rowMin = cur[j];
+      }
+      if (rowMin > max) return max + 1;
+      prev = cur;
+    }
+    return prev[b.length];
+  }
+  function fuzzyWord(words, t) {
+    if (t.length < 4) return false;
+    var max = t.length >= 8 ? 2 : 1;
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i];
+      if (w.length < 3) continue;
+      // a szó eleje is egyezhet elgépeléssel (pl. „procesz” → „processzor”)
+      if (lev(w, t, max) <= max || (w.length > t.length && lev(w.slice(0, t.length), t, max) <= max)) return true;
+    }
+    return false;
+  }
+  function search(q, noFuzzy) {
     if (!index) buildIndex();
     var terms = norm(q).split(/\s+/).filter(function (t) { return t.length > 0; });
     if (!terms.length) return [];
@@ -321,6 +348,11 @@
         if (it.nt.indexOf(t) >= 0) s += 15;
         if (it.ng.indexOf(t) >= 0) s += 8;
         if (it.nx.indexOf(t) >= 0) s += 3;
+        if (!s && !noFuzzy) {
+          if (!it.nw) { it.nw = it.nt.split(/[^a-z0-9]+/); it.ngw = it.ng.split(/[^a-z0-9]+/); }
+          if (fuzzyWord(it.nw, t)) s += 14;
+          else if (fuzzyWord(it.ngw, t)) s += 4;
+        }
         if (!s) return; // minden szónak szerepelnie kell
         sc += s;
       }
