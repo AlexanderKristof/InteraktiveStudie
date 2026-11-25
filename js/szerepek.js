@@ -31,7 +31,7 @@
       tile('#/egyetem', '🎒', 'Szintváltás 🎒/🎓', 'A fejléc gombjával ugyanaz a tartalom egyszerű vagy szakmai szinten jelenik meg – differenciáláshoz.') +
       '</div>' +
       (subj('tanari') ? lessonTiles(subj('tanari')) : '<p class="note">A tanári módszertan tantárgy hamarosan érkezik.</p>') +
-      '<section class="card pad" style="margin-top:18px"><h2 style="margin-top:0">🔒 Adatvédelem az osztályban</h2><p>Az alkalmazás nem küld adatot sehova: a haladás, a jegyzetek és az eredmények csak az adott eszköz böngészőjében tárolódnak. Közös gépen a „Haladásom” oldalon lehet menteni vagy törölni. Az osztálydolgozat-link eredményeit a diák mutatja meg (vagy fényképezi le) – nincs központi szerver.</p></section>';
+      '<section class="card pad" style="margin-top:18px"><h2 style="margin-top:0">🔒 Adatvédelem az osztályban</h2><p>Az alkalmazás nem küld adatot sehova: a haladás, a jegyzetek és az eredmények csak az adott eszköz böngészőjében tárolódnak. Közös gépen a „Haladásom” oldalon fájlba menthető a haladás; törölni a böngésző webhelyadatainak törlésével lehet. Az osztálydolgozat-link eredményeit a diák mutatja meg (vagy fényképezi le) – nincs központi szerver.</p></section>';
     return true;
   };
 

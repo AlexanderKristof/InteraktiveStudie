@@ -102,6 +102,10 @@ Molekuláris biológia és farmakológia. Fájlnév: `data/egyetem/msc-*.js` (`d
 
 **🧩 Kérdés-összeállító:** kulcsszavas keresés az összes kérdés között, kosár, gyakorló teszt, időre menő vizsga, nyomtatható dolgozat megoldókulccsal.
 
+**🏁 Motorsport, 👩‍🏫 tanárok, 🏋️ edzők.** Új szakmák: Motorsport-szerelő és versenymérnök (interaktív **setup-szimulátorral**: 25 állítható paraméter,
+előnyök/hátrányok, köridő, egyensúly, gumihő, pilóta-visszajelzés), Tanári módszertan, Edzői ismeretek (**edzésterhelés-kalkulátor**: sRPE, ACWR).
+Gyűjtőoldalak: `#/tanaroknak`, `#/edzoknek`, `#/setup`.
+
 **📈 Haladásom.** Tanulási sorozat, aktivitásnaptár, kitűzők, és a haladás **mentése/betöltése fájlba** (géphez nem kötött).
 
 Ezen kívül: **kereső** az összes tartalomban (ékezet nélkül is működik), haladásmentés, világos és sötét mód,
@@ -168,6 +172,8 @@ js/sport.js           sport és tudomány oldal
 js/nyelvek.js         játékos nyelvtanulás
 js/tanulas.js         tanulássegéd (felidézés, gondolattérkép, villámjáték, Pomodoro)
 js/osszeallito.js     kérdés-összeállító (keresés, kosár, vizsga, nyomtatás)
+js/setup-szim.js      versenyautó setup-szimulátor
+js/szerepek.js        Tanároknak / Edzőknek oldalak
 data/                 a tananyag
 sw.js, manifest       offline mód és telepíthetőség
 tools/build-single.js egyfájlos változat készítése
