@@ -762,3 +762,28 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .simple-box .sb-head { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; }
 .simple-box .sb-ico { font-size: 2rem; }
 .simple-box h1 { margin: 2px 0 0; }
+
+/* 📚 Tanulássegéd */
+.learn-hero { padding: 20px; border-radius: 18px; background: linear-gradient(120deg, #0f766e, #2563eb); color: #fff; margin-bottom: 16px; }
+.learn-hero h1 { color: #fff; margin: 0 0 6px; } .learn-hero .lead { color: #e0f2fe; margin: 0; }
+.learn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.learn-tile { display: grid; gap: 6px; padding: 16px; text-decoration: none; color: var(--fg); }
+.learn-tile .ico { font-size: 2rem; } .learn-tile small { color: var(--muted); }
+.learn-actions { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip.fl-ok, .fl-ok { background: #dcfce7; color: #14532d; border-color: #86efac; }
+.chip.fl-miss, .fl-miss { background: #fee2e2; color: #7f1d1d; border-color: #fca5a5; }
+.fl-sec { margin: 10px 0; } .fl-sec .chips { margin-top: 6px; }
+.fl-score { display: flex; align-items: baseline; gap: 12px; margin: 14px 0 6px; } .fl-score b { font-size: 2.2rem; }
+.mm-card { overflow-x: auto; } svg.mm { width: 100%; min-width: 640px; height: auto; }
+.mm-center { fill: var(--bg); font-weight: 700; } .mm-branch { fill: #fff; font-weight: 650; } .mm-leaf { fill: var(--fg); }
+.ih-card { margin-top: 14px; } .ih-top { display: flex; gap: 14px; justify-content: space-between; margin-bottom: 8px; }
+.ih-q { font-size: 1.15rem; margin: 8px 0; } .ih-a { font-size: 1.25rem; font-weight: 700; color: var(--accent); }
+.ih-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; } .ih-btns .btn { justify-content: center; padding: 14px; font-size: 1.1rem; }
+.ih-yes { border-color: #22c55e; } .ih-no { border-color: #ef4444; }
+#ih-box.ih-ok .ih-card { animation: ihok .35s; } #ih-box.ih-bad .ih-card { animation: lr-shake .35s; }
+@keyframes ihok { 50% { box-shadow: 0 0 0 4px #22c55e; } }
+.fg-clue { font-size: 1.15rem; margin: 12px 0; } .fg-res { padding: 8px 12px; border-radius: 10px; }
+.pomo { max-width: 520px; margin: 0 auto; text-align: center; } .pomo-time { font-size: 4.5rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.pomo-mode { font-weight: 700; } .pomo-mode.focus { color: #dc2626; } .pomo-mode.rest { color: #16a34a; }
+.pomo-bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; margin: 8px 0 14px; } .pomo-bar i { display: block; height: 100%; background: var(--accent); }
+@media print { .mm-card { border: 0; box-shadow: none; } }

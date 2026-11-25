@@ -1,6 +1,6 @@
-/* Német nyelvtanfolyam (A1–A2) – a js/nyelvek.js motor adatai. */
+/* Német nyelvtanfolyam (A1–B1) – a js/nyelvek.js motor adatai. */
 STUDIE.addLangCourse({
-  id: 'nemet', title: 'Német', flag: '🇩🇪', tts: 'de-DE', badge: 'A1–A2',
+  id: 'nemet', title: 'Német', flag: '🇩🇪', tts: 'de-DE', badge: 'A1–B1',
   noSpaces: false, script: false,
   intro: 'A német az Európai Unió legtöbb ember által beszélt anyanyelve – és a magyarban is rengeteg német eredetű szó van: sógor (Schwager), kifli (Kipferl), cetli (Zettel), spájz (Speis).',
   units: [
@@ -376,6 +376,206 @@ STUDIE.addLangCourse({
         ['Anna hat ein Buch gekauft.', 'Anna vett egy könyvet.', [], ['Anna könyvet vett.']],
         ['Nächste Woche fahren wir nach Wien.', 'Jövő héten Bécsbe utazunk.', ['Wir fahren nächste Woche nach Wien.'], ['Jövő héten Bécsbe megyünk.']],
         ['In den Ferien möchte ich reisen.', 'A szünidőben utazni szeretnék.', ['Ich möchte in den Ferien reisen.'], ['A szünidőben szeretnék utazni.']]
+      ]
+    },
+    {
+      id: 'dativ', title: 'Hol van? Hová teszed? (Dativ)', icon: '📍',
+      tip: '**Dativ és a kétirányú elöljárók**\n\nA magyar ragokkal jelzi, hogy valami **hol** van (asztal**on**), vagy **hová** kerül (asztal**ra**). A német ugyanezt egy elöljáróval és a névelő esetével oldja meg.\n\nKilenc elöljáró **kétirányú**: `in, an, auf, unter, über, neben, vor, hinter, zwischen`.\n\n- **Wo?** (hol?) → **Dativ**: Das Buch liegt auf **dem** Tisch. (az asztal**on**)\n- **Wohin?** (hová?) → **Akkusativ**: Ich lege das Buch auf **den** Tisch. (az asztal**ra**)\n\nA Dativ névelői: **dem** (hímnem és semlegesnem), **der** (nőnem), többes számban **den**, és a főnév is `-n` végződést kap. Gyakori összevonások: in dem = **im**, an dem = **am**, zu dem = **zum**, zu der = **zur**.\n\nAz igék is párban járnak: `liegen` és `legen`, `stehen` és `stellen`. Az előbbiek állapotot jelentenek (Dativ), az utóbbiak mozgást, áthelyezést (Akkusativ). A `hängen` mindkettő lehet.\n\nVannak elöljárók, amelyek **mindig** Dativot kérnek: `mit, bei, von, zu, aus, nach, seit`. Például: mit **dem** Bus (busszal), bei **seinen** Großeltern (a nagyszüleinél). A magyar „-val, -vel” ragnak így a **mit** + Dativ felel meg.',
+      words: [
+        ['in', '-ban, -ben (benne)'], ['auf', '-on, -en, -ön (rajta)'], ['unter', 'alatt'], ['neben', 'mellett'],
+        ['vor', 'előtt'], ['hinter', 'mögött'], ['zwischen', 'között'], ['an', '-nál, -nél (érintkezve)'],
+        ['liegen', 'feküdni (valahol)'], ['stehen', 'állni'], ['hängen', 'lógni'], ['legen', 'letenni (fektetve)'],
+        ['stellen', 'odaállítani'], ['das Regal', 'a polc'], ['der Teppich', 'a szőnyeg'], ['die Wand', 'a fal'],
+        ['der Spiegel', 'a tükör'], ['das Bild', 'a kép']
+      ],
+      sentences: [
+        ['Das Buch liegt auf dem Tisch.', 'A könyv az asztalon fekszik.', [], ['A könyv az asztalon van.', 'Az asztalon van a könyv.', 'Az asztalon fekszik a könyv.']],
+        ['Ich lege das Buch auf den Tisch.', 'Leteszem a könyvet az asztalra.', [], ['A könyvet az asztalra teszem.', 'Az asztalra teszem a könyvet.', 'Az asztalra fektetem a könyvet.']],
+        ['Das Bild hängt an der Wand.', 'A kép a falon lóg.', [], ['A kép a falon függ.', 'A falon lóg a kép.', 'A falon van a kép.']],
+        ['Die Katze schläft unter dem Bett.', 'A macska az ágy alatt alszik.', [], ['Az ágy alatt alszik a macska.']],
+        ['Stell die Lampe neben das Sofa!', 'Tedd a lámpát a kanapé mellé!', ['Stelle die Lampe neben das Sofa!'], ['Állítsd a lámpát a kanapé mellé!', 'A kanapé mellé tedd a lámpát!']],
+        ['Der Spiegel hängt im Bad.', 'A tükör a fürdőszobában lóg.', [], ['A tükör a fürdőszobában van.', 'A fürdőszobában lóg a tükör.', 'A fürdőszobában van a tükör.']],
+        ['Der Hund liegt auf dem Teppich.', 'A kutya a szőnyegen fekszik.', [], ['A szőnyegen fekszik a kutya.']],
+        ['Das Regal steht zwischen dem Fenster und der Tür.', 'A polc az ablak és az ajtó között áll.', [], ['A polc az ablak és az ajtó között van.', 'Az ablak és az ajtó között áll a polc.', 'Az ablak és az ajtó között van a polc.']],
+        ['Wir treffen uns vor dem Kino.', 'A mozi előtt találkozunk.', [], ['Találkozunk a mozi előtt.']],
+        ['Hinter dem Haus ist ein Garten.', 'A ház mögött van egy kert.', ['Hinter dem Haus gibt es einen Garten.'], ['A ház mögött kert van.', 'A ház mögött van kert.']],
+        ['Ich fahre mit dem Bus zur Schule.', 'Busszal megyek iskolába.', [], ['Busszal megyek az iskolába.', 'Busszal járok iskolába.', 'Busszal járok az iskolába.']],
+        ['Er wohnt bei seinen Großeltern.', 'A nagyszüleinél lakik.', [], ['Ő a nagyszüleinél lakik.', 'A nagyszüleinél él.']]
+      ]
+    },
+    {
+      id: 'prateritum', title: 'Gyerekkorom: Präteritum', icon: '📜',
+      tip: '**Präteritum: az egyszavas múlt**\n\nA Perfektet már ismered (ich habe gespielt). A **Präteritum** egyszavas múlt idő – a mesék, regények, újságcikkek ideje. Élőszóban főleg néhány nagyon gyakori igénél használják, ezeket viszont szinte mindenki így mondja:\n\n- **sein** → ich **war**, du warst, er war, wir waren\n- **haben** → ich **hatte**, du hattest, er hatte, wir hatten\n- **módbeli igék**: können → **konnte**, müssen → **musste**, wollen → **wollte**, dürfen → **durfte**\n\nFigyeld meg: a módbeli igék múltjában **eltűnik az umlaut** (können → konnte, müssen → musste).\n\nSzabályos igéknél a tőhöz `-te` járul: wohnen → ich **wohnte**, erzählen → er **erzählte**. Egyes szám 1. és 3. személyben az alak megegyezik: ich war, er war.\n\nA magyar „amikor” két németre fordítható: múltbeli egyszeri eseménynél **als** (Als ich klein war…), ismétlődőnél és jövőben **wenn**. Az **als** ráadásul „-ként” is lehet: **Als Kind** wohnte ich in einem Dorf. (Gyerekként…)\n\nTipp: „Volt egy lovam” → Ich **hatte** ein Pferd. A magyar „van neki” szerkezetet a német mindig a `haben` igével fejezi ki – múltban is.',
+      words: [
+        ['war', 'volt'], ['hatte', 'volt neki (birtokolt)'], ['konnte', 'tudott (képes volt)'], ['musste', 'kellett (neki)'],
+        ['wollte', 'akart'], ['durfte', 'szabad volt (neki)'], ['die Kindheit', 'a gyerekkor'], ['damals', 'akkoriban'],
+        ['früher', 'régen'], ['als', 'amikor (a múltban)'], ['das Dorf', 'a falu'], ['der Bauernhof', 'a tanya'],
+        ['das Pferd', 'a ló'], ['das Spielzeug', 'a játékszer'], ['streng', 'szigorú'], ['die Erinnerung', 'az emlék'],
+        ['der Nachbar', 'a szomszéd'], ['erzählen', 'mesélni']
+      ],
+      sentences: [
+        ['Als Kind wohnte ich in einem Dorf.', 'Gyerekként egy faluban laktam.', [], ['Gyerekkoromban egy faluban laktam.', 'Gyerekként faluban laktam.', 'Gyerekként egy faluban éltem.', 'Gyerekkoromban faluban éltem.']],
+        ['Mein Großvater hatte einen Bauernhof.', 'A nagyapámnak volt egy tanyája.', [], ['A nagypapámnak volt egy tanyája.', 'Nagyapámnak tanyája volt.', 'A nagyapámnak tanyája volt.']],
+        ['Wir hatten zwei Pferde und einen Hund.', 'Volt két lovunk és egy kutyánk.', [], ['Két lovunk és egy kutyánk volt.']],
+        ['Früher war alles anders.', 'Régen minden más volt.', ['Alles war früher anders.'], ['Régen minden másmilyen volt.']],
+        ['Meine Lehrerin war sehr streng.', 'A tanárnőm nagyon szigorú volt.', [], ['Nagyon szigorú volt a tanárnőm.']],
+        ['Ich konnte nicht schwimmen.', 'Nem tudtam úszni.'],
+        ['Wir mussten früh aufstehen.', 'Korán kellett felkelnünk.', [], ['Korán fel kellett kelnünk.']],
+        ['Ich wollte Tierarzt werden.', 'Állatorvos akartam lenni.', [], ['Állatorvos szerettem volna lenni.']],
+        ['Durftest du abends fernsehen?', 'Nézhettél esténként tévét?', [], ['Szabad volt esténként tévét nézned?', 'Szabad volt este tévét nézned?', 'Este nézhettél tévét?', 'Nézhettél este tévét?']],
+        ['Damals hatten wir keinen Computer.', 'Akkoriban nem volt számítógépünk.', ['Wir hatten damals keinen Computer.'], ['Akkor még nem volt számítógépünk.']],
+        ['Mein Opa erzählte mir oft Geschichten.', 'A nagypapám gyakran mesélt nekem történeteket.', [], ['Nagypapám gyakran mesélt nekem történeteket.', 'A nagyapám gyakran mesélt nekem történeteket.']],
+        ['Unser Nachbar hatte viel Spielzeug.', 'A szomszédunknak sok játéka volt.', [], ['A szomszédunknak sok játékszere volt.']]
+      ]
+    },
+    {
+      id: 'mellekmondat', title: 'Média: weil, dass, wenn', icon: '📰',
+      tip: '**Mellékmondatok: az ige a végére kerül!**\n\nA magyarban a „mert”, „hogy”, „ha” után ugyanúgy folytatjuk a mondatot, mint egy főmondatban. A németben viszont ezek a kötőszavak a ragozott igét **a mellékmondat legvégére** küldik:\n\n- Ich bleibe zu Hause, **weil** ich krank **bin**. (mert)\n- Ich glaube, **dass** das Video lustig **ist**. (hogy)\n- **Wenn** ich Zeit **habe**, … (ha, amikor)\n- **obwohl** (bár) és **ob** (vajon, -e): Ich weiß nicht, **ob** er recht **hat**.\n\nHa a mellékmondat áll elöl, a főmondat **igével kezdődik**: Wenn ich Zeit habe, **lese** ich die Zeitung. A két ige vesszővel elválasztva egymás mellé kerül.\n\nA magyar „-e” kérdőszócskát a németben az **ob** fejezi ki: „Tudod, hogy jön-e?” = Weißt du, **ob** er kommt?\n\nA vessző a németben is kötelező a mellékmondat előtt, akárcsak a magyarban.\n\nVigyázz: a **denn** (mert) és a **deshalb** (ezért) **nem** küldi a végére az igét: Ich bleibe zu Hause, denn ich **bin** krank. A **weil** a hétköznapi beszédben sokkal gyakoribb, ezért ezt gyakorold!',
+      words: [
+        ['weil', 'mert'], ['dass', 'hogy (kötőszó)'], ['wenn', 'ha, amikor'], ['obwohl', 'bár'],
+        ['ob', 'vajon (-e)'], ['glauben', 'hinni, gondolni'], ['wissen', 'tudni (ismerni a tényt)'], ['hoffen', 'remélni'],
+        ['die Zeitung', 'az újság'], ['die Nachrichten', 'a hírek'], ['die Sendung', 'a műsor'], ['das Handy', 'a mobiltelefon'],
+        ['der Fernseher', 'a tévékészülék'], ['die Meinung', 'a vélemény'], ['wichtig', 'fontos'], ['die Werbung', 'a reklám'],
+        ['das Video', 'a videó'], ['nutzen', 'használni']
+      ],
+      sentences: [
+        ['Ich bleibe zu Hause, weil ich krank bin.', 'Otthon maradok, mert beteg vagyok.', [], ['Itthon maradok, mert beteg vagyok.']],
+        ['Ich glaube, dass das Video lustig ist.', 'Azt hiszem, hogy a videó vicces.', [], ['Azt hiszem, a videó vicces.', 'Szerintem a videó vicces.', 'Úgy gondolom, hogy a videó vicces.', 'Azt hiszem, vicces a videó.']],
+        ['Wenn ich Zeit habe, lese ich die Zeitung.', 'Ha van időm, elolvasom az újságot.', ['Ich lese die Zeitung, wenn ich Zeit habe.'], ['Ha van időm, újságot olvasok.', 'Ha van időm, olvasom az újságot.']],
+        ['Weißt du, ob die Sendung heute kommt?', 'Tudod, hogy ma lesz-e a műsor?', [], ['Tudod, hogy a műsor ma lesz-e?', 'Tudod, hogy ma megy-e a műsor?', 'Tudja, hogy ma lesz-e a műsor?']],
+        ['Ich hoffe, dass du bald kommst.', 'Remélem, hogy hamarosan jössz.', [], ['Remélem, hamarosan jössz.', 'Remélem, hogy hamar jössz.', 'Remélem, hogy hamarosan eljössz.']],
+        ['Obwohl es regnet, gehen wir spazieren.', 'Bár esik, sétálni megyünk.', ['Wir gehen spazieren, obwohl es regnet.'], ['Bár esik az eső, sétálni megyünk.', 'Annak ellenére, hogy esik, sétálni megyünk.']],
+        ['Ich sehe die Nachrichten, weil sie wichtig sind.', 'Megnézem a híreket, mert fontosak.', [], ['Nézem a híreket, mert fontosak.', 'A híreket nézem, mert fontosak.']],
+        ['Er nutzt sein Handy, wenn er Bus fährt.', 'Használja a mobilját, amikor buszozik.', [], ['A mobilját használja, amikor buszon utazik.', 'Amikor buszozik, a mobilját használja.', 'Használja a telefonját, amikor buszozik.', 'Használja a mobilját, amikor buszon ül.']],
+        ['Meiner Meinung nach ist die Werbung zu laut.', 'Véleményem szerint a reklám túl hangos.', [], ['Szerintem a reklám túl hangos.', 'Szerintem túl hangos a reklám.', 'Véleményem szerint túl hangos a reklám.']],
+        ['Ich weiß nicht, ob er recht hat.', 'Nem tudom, hogy igaza van-e.', [], ['Nem tudom, igaza van-e.']],
+        ['Wir sehen nicht fern, weil der Fernseher kaputt ist.', 'Nem tévézünk, mert elromlott a tévé.', [], ['Nem nézünk tévét, mert elromlott a tévé.', 'Nem tévézünk, mert a tévé elromlott.', 'Nem tévézünk, mert rossz a tévé.', 'Nem nézünk tévét, mert rossz a tévé.']],
+        ['Es ist wichtig, dass wir Deutsch lernen.', 'Fontos, hogy németül tanuljunk.', [], ['Fontos, hogy németet tanuljunk.', 'Fontos, hogy megtanuljunk németül.']]
+      ]
+    },
+    {
+      id: 'reflexiv', title: 'Érzések: visszaható igék', icon: '🪞',
+      tip: '**Visszaható igék: sich**\n\nSok németül visszaható ige a magyarban is az: sich waschen – mosakodik, sich anziehen – felöltözik. A magyar ezt **toldalékkal** jelzi (-kodik, -kedik, -ozik), a német külön szóval, a **visszaható névmással**:\n\n- ich **mich**, du **dich**, er/sie/es **sich**\n- wir **uns**, ihr **euch**, sie/Sie **sich**\n\nPéldául: Ich fühle **mich** gut. Wie fühlst du **dich**? Wir treffen **uns** um acht.\n\nSok igénél azonban a magyarban **nincs** visszaható alak, ezeket külön kell megjegyezni:\n\n- sich freuen – örülni, sich erinnern **an** – emlékezni valamire\n- sich interessieren **für** – érdeklődni valami iránt\n- sich ärgern **über** – bosszankodni valami miatt\n\nAz elöljáró is az igéhez tartozik, együtt tanuld meg: sich freuen **auf** (előre örül, vár valamit) – sich freuen **über** (örül valaminek, ami már megvan).\n\nFelszólításban is megmarad a névmás: **Beeil dich!** (Siess!), **Entschuldige dich!** (Kérj bocsánatot!)\n\nMellékmondatban a sich az alany után áll, az ige pedig a végére megy: …, weil ich **mich** nicht gut **fühle**.',
+      words: [
+        ['sich freuen', 'örülni'], ['sich ärgern', 'bosszankodni'], ['sich fühlen', 'érezni magát'], ['sich interessieren', 'érdeklődni'],
+        ['sich erinnern', 'emlékezni'], ['sich beeilen', 'sietni'], ['sich waschen', 'mosakodni'], ['sich anziehen', 'felöltözni'],
+        ['sich ausruhen', 'kipihenni magát'], ['sich entschuldigen', 'bocsánatot kérni'], ['sich treffen', 'találkozni'], ['sich langweilen', 'unatkozni'],
+        ['sich verlieben', 'beleszeretni'], ['glücklich', 'boldog'], ['traurig', 'szomorú'], ['wütend', 'dühös'],
+        ['nervös', 'ideges'], ['das Gefühl', 'az érzés']
+      ],
+      sentences: [
+        ['Ich freue mich auf die Ferien.', 'Várom a szünidőt.', [], ['Előre örülök a szünidőnek.', 'Már várom a szünidőt.', 'Nagyon várom a szünidőt.']],
+        ['Wie fühlst du dich heute?', 'Hogy érzed magad ma?', [], ['Ma hogy érzed magad?', 'Hogy érzi magát ma?', 'Hogy érzitek magatokat ma?']],
+        ['Ich fühle mich nicht gut.', 'Nem érzem jól magam.', [], ['Nem érzem jól magamat.', 'Rosszul érzem magam.']],
+        ['Er ärgert sich über das Wetter.', 'Bosszankodik az időjárás miatt.', [], ['Ő bosszankodik az időjárás miatt.', 'Bosszantja az időjárás.', 'Mérges az időjárás miatt.']],
+        ['Interessierst du dich für Musik?', 'Érdekel a zene?', [], ['Érdeklődsz a zene iránt?', 'Érdekel téged a zene?', 'Érdekli a zene?']],
+        ['Ich erinnere mich an meinen ersten Schultag.', 'Emlékszem az első iskolai napomra.', [], ['Emlékszem az első napomra az iskolában.', 'Emlékszem az első iskolanapomra.']],
+        ['Beeil dich, der Bus kommt!', 'Siess, jön a busz!', ['Beeile dich, der Bus kommt!'], ['Siess, jön már a busz!', 'Siess, itt a busz!']],
+        ['Ich wasche mich und ziehe mich an.', 'Megmosakszom és felöltözöm.', [], ['Megmosakszom, és felöltözöm.', 'Megmosakszom és felöltözök.']],
+        ['Wir treffen uns um acht Uhr.', 'Nyolc órakor találkozunk.', ['Um acht Uhr treffen wir uns.'], ['Nyolckor találkozunk.']],
+        ['Entschuldige dich bei deiner Schwester!', 'Kérj bocsánatot a testvéredtől!', [], ['Kérj bocsánatot a nővéredtől!', 'Kérj bocsánatot a húgodtól!', 'Kérj bocsánatot a lánytestvéredtől!']],
+        ['Am Sonntag langweile ich mich oft.', 'Vasárnap gyakran unatkozom.', ['Ich langweile mich am Sonntag oft.', 'Sonntags langweile ich mich oft.'], ['Vasárnaponként gyakran unatkozom.', 'Vasárnap sokszor unatkozom.']],
+        ['Warum bist du so traurig?', 'Miért vagy olyan szomorú?', [], ['Miért vagy ilyen szomorú?']]
+      ]
+    },
+    {
+      id: 'komparativ', title: 'Utazás: Komparativ, Superlativ', icon: '🏆',
+      tip: '**Összehasonlítás: -er és am -sten**\n\nA német fokozás nagyon hasonlít a magyarra, csak a toldalék más:\n\n- **középfok**: alapszó + `-er`: schnell → **schneller** (gyorsabb)\n- **felsőfok**: **am** + alapszó + `-sten`: am **schnellsten** (a leggyorsabban), vagy névelővel, melléknévként: der **schnellste** Zug\n\nA magyar „-nál, -nél” és a „mint” németül egyaránt **als**: schneller **als** der Bus (gyorsabb a busznál). Egyenlőség: **so … wie** – so schön wie im Film (olyan szép, mint a filmben).\n\nA rövid, egyszótagú melléknevek többsége **umlautot** kap: alt → **älter**, jung → **jünger**, lang → **länger**, groß → **größer**, kalt → **kälter**.\n\nRendhagyók, ezeket fejből kell tudni:\n\n- gut → **besser** → am **besten**\n- viel → **mehr** → am **meisten**\n- gern → **lieber** → am **liebsten**\n- hoch → **höher** → am **höchsten**\n\nA **gern – lieber – am liebsten** a magyar „szívesen – inkább – legszívesebben” megfelelője: Ich trinke **lieber** Tee. Am **liebsten** spiele ich Fußball.\n\nFigyelj: a **mehr** (több) sosem kap végződést: **mehr** Zeit, **mehr** Geld.',
+      words: [
+        ['schnell', 'gyors'], ['langsam', 'lassú'], ['hoch', 'magas (hegy, épület)'], ['lang', 'hosszú'],
+        ['kurz', 'rövid'], ['alt', 'öreg, régi'], ['jung', 'fiatal'], ['leicht', 'könnyű'],
+        ['schwer', 'nehéz'], ['besser', 'jobb'], ['am besten', 'a legjobban'], ['mehr', 'több'],
+        ['lieber', 'inkább'], ['der Fluss', 'a folyó'], ['der See', 'a tó'], ['die Insel', 'a sziget'],
+        ['die Welt', 'a világ'], ['das Land', 'az ország']
+      ],
+      sentences: [
+        ['Der Zug ist schneller als der Bus.', 'A vonat gyorsabb, mint a busz.', [], ['A vonat gyorsabb a busznál.']],
+        ['Die Donau ist länger als der Rhein.', 'A Duna hosszabb, mint a Rajna.', [], ['A Duna hosszabb a Rajnánál.']],
+        ['Der Balaton ist der größte See in Mitteleuropa.', 'A Balaton Közép-Európa legnagyobb tava.', [], ['A Balaton a legnagyobb tó Közép-Európában.']],
+        ['Mein Bruder ist zwei Jahre älter als ich.', 'A bátyám két évvel idősebb nálam.', [], ['A bátyám két évvel idősebb, mint én.', 'A testvérem két évvel idősebb nálam.', 'A fiútestvérem két évvel idősebb nálam.']],
+        ['Deutsch ist schwerer als Englisch.', 'A német nehezebb, mint az angol.', [], ['A német nehezebb az angolnál.', 'A német nyelv nehezebb, mint az angol.']],
+        ['Ich trinke lieber Tee als Kaffee.', 'Inkább teát iszom, mint kávét.', [], ['Szívesebben iszom teát, mint kávét.', 'Jobban szeretem a teát, mint a kávét.']],
+        ['Am liebsten spiele ich Fußball.', 'Legszívesebben focizom.', ['Ich spiele am liebsten Fußball.'], ['Legszívesebben focit játszom.', 'Legjobban focizni szeretek.']],
+        ['Welches ist das schönste Land der Welt?', 'Melyik a világ legszebb országa?', [], ['Melyik a legszebb ország a világon?', 'Melyik ország a legszebb a világon?']],
+        ['Die Zugspitze ist höher als der Kékes.', 'A Zugspitze magasabb, mint a Kékes.', [], ['A Zugspitze magasabb a Kékesnél.']],
+        ['Ich möchte mehr reisen.', 'Többet szeretnék utazni.', [], ['Szeretnék többet utazni.']],
+        ['Wer kann am besten singen?', 'Ki tud a legjobban énekelni?', [], ['Ki énekel a legjobban?']],
+        ['Die Insel ist so schön wie im Film.', 'A sziget olyan szép, mint a filmben.']
+      ]
+    },
+    {
+      id: 'futur', title: 'Munka és jövő: werden', icon: '🔭',
+      tip: '**Jövő idő és a werden**\n\nA magyarhoz hasonlóan a német is gyakran **jelen idővel** beszél a jövőről, ha egy időhatározó mutatja az időt: Morgen **fahre** ich nach Wien. (Holnap Bécsbe utazom.)\n\nA valódi jövő idő, a **Futur I**, a `werden` ragozott alakjából és a főnévi igenévből áll, amely a mondat **végére** kerül – mint a magyar „fog” + -ni:\n\n- Wir **werden** dir **helfen**. (Segíteni fogunk.)\n- Morgen **wird** es **regnen**. (Holnap esni fog.)\n\nA `werden` ragozása rendhagyó: ich **werde**, du **wirst**, er/sie/es **wird**, wir **werden**, ihr **werdet**, sie **werden**.\n\nA Futurt főleg **jóslásra, ígéretre, feltételezésre** használják, gyakran ilyen szavakkal: **vielleicht** (talán), **wahrscheinlich** (valószínűleg), **sicher** (biztosan).\n\nA `werden` önállóan is állhat, ekkor jelentése: **válik valamivé, lesz valami**: Vielleicht werde ich Ingenieur. (Talán mérnök leszek.) Foglalkozás előtt a magyarhoz hasonlóan **nincs névelő**: Ich bin Koch.\n\nVigyázz, a `wird` és a `will` nem ugyanaz: a **will** a wollen (akar) igéből jön! Er **will** Koch werden. = Szakács akar lenni.',
+      words: [
+        ['werden', 'válni valamivé'], ['der Beruf', 'a szakma'], ['die Arbeit', 'a munka'], ['arbeiten', 'dolgozni'],
+        ['verdienen', 'keresni (pénzt)'], ['die Firma', 'a cég'], ['der Chef', 'a főnök'], ['der Arzt', 'az orvos'],
+        ['der Ingenieur', 'a mérnök'], ['der Koch', 'a szakács'], ['der Polizist', 'a rendőr'], ['die Zukunft', 'a jövő'],
+        ['die Universität', 'az egyetem'], ['studieren', 'egyetemen tanulni'], ['die Ausbildung', 'a szakképzés'], ['vielleicht', 'talán'],
+        ['sicher', 'biztosan'], ['wahrscheinlich', 'valószínűleg']
+      ],
+      sentences: [
+        ['Ich werde in Berlin studieren.', 'Berlinben fogok egyetemre járni.', [], ['Berlinben fogok egyetemen tanulni.', 'Berlinben fogok továbbtanulni.', 'Berlinben fogok tanulni.']],
+        ['Was willst du später werden?', 'Mi akarsz lenni, ha felnősz?', [], ['Mi szeretnél lenni, ha felnősz?', 'Mi szeretnél lenni, ha nagy leszel?', 'Mi akarsz lenni, ha nagy leszel?', 'Mi akarsz lenni később?']],
+        ['Ich möchte Koch werden.', 'Szakács szeretnék lenni.', [], ['Szakácsnak szeretnék menni.']],
+        ['Morgen wird es regnen.', 'Holnap esni fog.', ['Es wird morgen regnen.'], ['Holnap esni fog az eső.', 'Holnap esik.', 'Holnap eső lesz.']],
+        ['Wir werden dir helfen.', 'Segíteni fogunk neked.', [], ['Segítünk neked.', 'Segíteni fogunk.', 'Segítünk.']],
+        ['Er wird wahrscheinlich viel Geld verdienen.', 'Valószínűleg sok pénzt fog keresni.', [], ['Valószínűleg sok pénzt keres majd.', 'Ő valószínűleg sok pénzt fog keresni.']],
+        ['In der Zukunft werden Roboter arbeiten.', 'A jövőben robotok fognak dolgozni.', [], ['A jövőben robotok dolgoznak majd.', 'A jövőben a robotok fognak dolgozni.']],
+        ['Meine Schwester macht eine Ausbildung.', 'A nővérem szakképzésre jár.', [], ['A húgom szakképzésre jár.', 'A testvérem szakképzésre jár.', 'A nővérem szakmát tanul.', 'A húgom szakmát tanul.']],
+        ['Der Chef ist heute nicht in der Firma.', 'A főnök ma nincs a cégnél.', [], ['A főnök ma nincs bent a cégnél.', 'Ma nincs a főnök a cégnél.']],
+        ['Vielleicht werde ich Ingenieur.', 'Talán mérnök leszek.', [], ['Lehet, hogy mérnök leszek.']],
+        ['Ich arbeite gern mit Menschen.', 'Szeretek emberekkel dolgozni.', [], ['Szívesen dolgozom emberekkel.', 'Emberekkel szeretek dolgozni.']],
+        ['Du wirst sicher einen guten Beruf finden.', 'Biztosan jó szakmát fogsz találni.', ['Sicher wirst du einen guten Beruf finden.'], ['Biztosan találsz egy jó szakmát.', 'Biztosan jó szakmát találsz.', 'Biztosan találni fogsz egy jó szakmát.', 'Biztosan találsz majd egy jó szakmát.']]
+      ]
+    },
+    {
+      id: 'konjunktiv', title: 'Udvariasan: Konjunktiv II', icon: '🙏',
+      tip: '**Konjunktiv II: udvariasan és vágyakozva**\n\nA magyar feltételes mód (-na, -ne, -nék) a németben a **Konjunktiv II**. Két nagy feladata van: az **udvarias kérés** és az **elképzelt, nem valós helyzet**.\n\nA leggyakoribb alakok:\n\n- sein → **wäre** (lenne): Das **wäre** super!\n- haben → **hätte** (lenne neki): Ich **hätte** gern ein Einzelzimmer. (Szeretnék…)\n- können → **könnte** (tudna): **Könnten** Sie mir helfen?\n- sollen → **sollte** (kellene): Du **solltest** mehr schlafen.\n\nA többi igénél a **würde** + főnévi igenév a szokásos: Was **würden** Sie **empfehlen**? (Mit ajánlana?) Az igenév itt is a mondat **végére** kerül.\n\nFigyeld meg az umlautot: war → **wäre**, hatte → **hätte**, konnte → **könnte**. Ez a két pont teszi „feltételessé” az igét!\n\nÉttermi, szállodai helyzetekben az **Ich hätte gern…** és a **Könnten Sie…?** sokkal udvariasabb, mint a puszta „Ich will…” (akarom).\n\nFeltételes mondat: Wenn ich reich **wäre**, **würde** ich eine Weltreise machen. – Ha gazdag lennék, beutaznám a világot. Mindkét tagmondatban feltételes mód áll, akárcsak a magyarban.',
+      words: [
+        ['würde', 'feltételes segédige (-na, -ne)'], ['hätte', 'lenne neki'], ['wäre', 'lenne'], ['könnte', 'tudna (képes lenne)'],
+        ['sollte', 'kellene'], ['die Reservierung', 'a foglalás'], ['die Rechnung', 'a számla'], ['die Speisekarte', 'az étlap'],
+        ['der Kellner', 'a pincér'], ['der Wunsch', 'a kívánság'], ['reich', 'gazdag'], ['empfehlen', 'ajánlani'],
+        ['buchen', 'lefoglalni'], ['das Einzelzimmer', 'az egyágyas szoba'], ['das Frühstück', 'a reggeli'], ['die Aussicht', 'a kilátás'],
+        ['die Weltreise', 'a világ körüli utazás'], ['helfen', 'segíteni']
+      ],
+      sentences: [
+        ['Könnten Sie mir bitte helfen?', 'Tudna nekem segíteni?', ['Könnten Sie mir helfen?'], ['Segítene nekem?', 'Tudna segíteni?', 'Kérem, tudna nekem segíteni?', 'Tudna nekem segíteni, kérem?']],
+        ['Ich hätte gern ein Einzelzimmer.', 'Egy egyágyas szobát szeretnék.', ['Ich hätte gerne ein Einzelzimmer.'], ['Szeretnék egy egyágyas szobát.', 'Egyágyas szobát szeretnék.', 'Egy egyágyas szobát kérnék.']],
+        ['Würden Sie mir die Speisekarte bringen?', 'Hozná nekem az étlapot?', ['Würden Sie mir bitte die Speisekarte bringen?'], ['Elhozná nekem az étlapot?', 'Hozná az étlapot?', 'Ideadná az étlapot?']],
+        ['Die Rechnung, bitte!', 'A számlát, kérem!', [], ['Kérem a számlát!']],
+        ['Was würden Sie empfehlen?', 'Mit ajánlana?', ['Was würdest du empfehlen?'], ['Ön mit ajánlana?', 'Mit ajánlanál?']],
+        ['Wenn ich reich wäre, würde ich eine Weltreise machen.', 'Ha gazdag lennék, beutaznám a világot.', ['Wäre ich reich, würde ich eine Weltreise machen.'], ['Ha gazdag lennék, körbeutaznám a világot.', 'Ha gazdag lennék, világ körüli útra mennék.', 'Ha gazdag lennék, beutaznám az egész világot.']],
+        ['Ich hätte gern mehr Zeit.', 'Szeretném, ha több időm lenne.', ['Ich hätte gerne mehr Zeit.'], ['Bárcsak több időm lenne!', 'Jó lenne, ha több időm lenne.', 'Szeretnék több időt.']],
+        ['Du solltest mehr schlafen.', 'Többet kellene aludnod.', [], ['Többet kéne aludnod.', 'Aludnod kellene többet.']],
+        ['Wir möchten ein Zimmer mit Aussicht buchen.', 'Egy kilátásos szobát szeretnénk foglalni.', [], ['Szeretnénk lefoglalni egy kilátásos szobát.', 'Kilátásos szobát szeretnénk foglalni.', 'Szeretnénk foglalni egy kilátásos szobát.']],
+        ['Das wäre super!', 'Az szuper lenne!', [], ['Ez szuper lenne!', 'Az nagyszerű lenne!', 'Ez nagyszerű lenne!']],
+        ['Ist das Frühstück inklusive?', 'Benne van az árban a reggeli?', [], ['A reggeli benne van az árban?', 'Az ár tartalmazza a reggelit?']],
+        ['Der Kellner bringt die Rechnung.', 'A pincér hozza a számlát.', [], ['A pincér meghozza a számlát.']]
+      ]
+    },
+    {
+      id: 'melleknev', title: 'Környezet: melléknévragozás', icon: '🌳',
+      tip: '**Melléknévragozás: miért változik a vége?**\n\nA magyarban a jelző **sosem** ragozódik: „szép ház”, „szép házban”, „szép házak”. A németben a főnév **előtt** álló melléknév végződést kap, és ez a névelőtől függ. Ha a melléknév az ige után áll, nincs végződés: Die Luft ist **sauber**.\n\n**1. Határozott névelő után** (der, die, das) Nominativban egyszerűen **-e**:\n\n- **der** alt**e** Baum, **die** neu**e** Flasche, **das** schmutzig**e** Wasser\n- többes számban és Dativban: **-en** (die alt**en** Bäume, im groß**en** Wald)\n\n**2. Határozatlan névelő után** (ein, eine) a melléknév mutatja meg a nemet, mert az `ein` nem árulja el:\n\n- **ein** groß**er** Wald (hímnem)\n- **eine** neu**e** Flasche (nőnem)\n- **ein** umweltfreundlich**es** Auto (semlegesnem)\n\n**3. Névelő nélkül** a melléknév veszi fel a névelő végződését: saubere Luft (die Luft), kalt**es** Wasser (das Wasser).\n\nTipp: Akkusativban csak a hímnem változik: Ich sehe **einen** groß**en** Wald. Ha bizonytalan vagy, az **-en** a leggyakoribb végződés.',
+      words: [
+        ['die Umwelt', 'a környezet'], ['der Müll', 'a szemét'], ['die Luft', 'a levegő'], ['der Wald', 'az erdő'],
+        ['der Baum', 'a fa (növény)'], ['die Natur', 'a természet'], ['das Klima', 'az éghajlat'], ['die Energie', 'az energia'],
+        ['der Strom', 'az áram'], ['die Flasche', 'a palack'], ['das Plastik', 'a műanyag'], ['sauber', 'tiszta'],
+        ['schmutzig', 'piszkos'], ['sparen', 'spórolni'], ['schützen', 'védeni'], ['trennen', 'szétválogatni'],
+        ['umweltfreundlich', 'környezetbarát'], ['das Tier', 'az állat']
+      ],
+      sentences: [
+        ['Wir brauchen saubere Luft.', 'Tiszta levegőre van szükségünk.', [], ['Szükségünk van tiszta levegőre.']],
+        ['Der alte Baum steht im Park.', 'Az öreg fa a parkban áll.', [], ['A parkban áll az öreg fa.', 'Az öreg fa a parkban van.']],
+        ['Das ist ein großer Wald.', 'Ez egy nagy erdő.', [], ['Ez nagy erdő.']],
+        ['Ich habe eine neue Flasche.', 'Van egy új palackom.', [], ['Új palackom van.', 'Van egy új kulacsom.', 'Van egy új üvegem.']],
+        ['Wir trennen den Müll.', 'Szétválogatjuk a szemetet.', [], ['Szelektíven gyűjtjük a szemetet.', 'Szelektáljuk a szemetet.']],
+        ['Das schmutzige Wasser ist gefährlich für Tiere.', 'A piszkos víz veszélyes az állatokra.', [], ['A szennyezett víz veszélyes az állatokra.', 'A piszkos víz veszélyes az állatoknak.', 'A piszkos víz az állatokra veszélyes.']],
+        ['Wir müssen die Natur schützen.', 'Védenünk kell a természetet.', [], ['Meg kell védenünk a természetet.', 'A természetet védenünk kell.']],
+        ['Ein umweltfreundliches Auto ist teuer.', 'Egy környezetbarát autó drága.', [], ['A környezetbarát autó drága.', 'Drága egy környezetbarát autó.', 'Drága a környezetbarát autó.']],
+        ['Wir sparen Strom.', 'Spórolunk az árammal.', [], ['Takarékoskodunk az árammal.', 'Áramot spórolunk.']],
+        ['Plastik ist schlecht für die Umwelt.', 'A műanyag rossz a környezetnek.', [], ['A műanyag árt a környezetnek.', 'A műanyag káros a környezetre.']],
+        ['Ich trinke gern kaltes Wasser.', 'Szívesen iszom hideg vizet.', [], ['Szeretek hideg vizet inni.', 'Szeretem a hideg vizet.']],
+        ['Das Klima wird immer wärmer.', 'Az éghajlat egyre melegebb lesz.', [], ['Egyre melegebb lesz az éghajlat.', 'Az éghajlat egyre melegszik.', 'Az éghajlat egyre melegebb.']]
       ]
     }
   ]

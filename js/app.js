@@ -234,6 +234,7 @@
         return '<a class="btn" href="#/felfedezo/' + m + '">' + S.models[m].icon + ' ' + esc(S.models[m].title) + '</a>';
       }).join('') + '</div>' : '') +
       (uniView ? '' : uniBox(s, l)) +
+      (S.pageTanulas ? '<div class="learn-actions card pad"><b>📚 Tanuld meg igazán:</b> <a class="btn sm" href="#/tanulas/felidezes?l=' + key + '">🧠 Írd le fejből</a> <a class="btn sm" href="#/tanulas/terkep?l=' + key + '">🗺️ Gondolattérkép</a> <a class="btn sm" href="#/tanulas/igazhamis?t=' + s.id + '">⚡ Igaz vagy hamis?</a> <a class="btn sm" href="#/kartyak/' + s.id + '?lecke=' + l.id + '">🃏 Kártyák</a></div>' : '') +
       (S.factBox ? S.factBox(lessonFacts(s.id, key), '💡 Tudtad?', true) : '') +
       (l.quiz && l.quiz.length ? '<h2 id="kviz">Ellenőrizd magad!</h2><div class="quiz card" id="quiz"></div>' : '') +
       '<div class="row" style="margin-top:22px"><button type="button" class="btn" id="done"></button></div>' +
@@ -518,6 +519,7 @@
     else if (seg[0] === 'tartalom') { setNav(''); title('Tartalomjegyzék'); S.pageTartalom(main); }
     else if (seg[0] === 'beallitasok') { setNav(''); title('Beállítások'); S.pageBeallitasok(); }
     else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
+    else if (seg[0] === 'tanulas') { setNav('tanulas'); title('Tanulássegéd'); if (!S.pageTanulas(main, seg[1], params)) notFound(); }
     else if (seg[0] === 'nyelvek') { setNav('nyelvek'); title('Nyelvek'); S.pageNyelvek(main); }
     else if (seg[0] === 'nyelv') { setNav('nyelvek'); var lc = S.langById(seg[1]); title(lc ? lc.title : ''); if (!S.pageNyelv(main, seg[1])) notFound(); }
     else if (seg[0] === 'sport') { setNav('sport'); title('Sport és tudomány'); S.pageSport(main, params); }

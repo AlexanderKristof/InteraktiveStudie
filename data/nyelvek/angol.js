@@ -1,6 +1,6 @@
-/* Nyelvtanulás – Angol (A1–A2). Kiegészíti a data/tantargyak/angol.js tantárgyat: itt rövid, játékos gyakorlókörök vannak. */
+/* Nyelvtanulás – Angol (A1–B1). Kiegészíti a data/tantargyak/angol.js tantárgyat: itt rövid, játékos gyakorlókörök vannak. */
 STUDIE.addLangCourse({
-  id: 'angol', title: 'Angol', flag: '🇬🇧', tts: 'en-GB', badge: 'A1–A2',
+  id: 'angol', title: 'Angol', flag: '🇬🇧', tts: 'en-GB', badge: 'A1–B1',
   noSpaces: false, script: false,
   intro: 'Az angol a világ legtöbbet tanult nyelve: kb. 1,5 milliárd ember beszéli, de közülük csak minden negyedik anyanyelvi – vagyis ha angolul tanulsz, a világ nagy részével szóba állhatsz.',
   units: [
@@ -257,6 +257,174 @@ STUDIE.addLangCourse({
         ['My suitcase is very heavy.', 'A bőröndöm nagyon nehéz.', [], ['Nagyon nehéz a bőröndöm.']],
         ['They are not going to stay at home.', 'Nem fognak otthon maradni.', ['They aren\'t going to stay at home.', 'They\'re not going to stay at home.'], ['Ők nem fognak otthon maradni.', 'Nem maradnak otthon.']],
         ['It is going to rain.', 'Esni fog az eső.', ['It\'s going to rain.'], ['Esni fog.', 'Eső lesz.']]
+      ]
+    },
+    {
+      id: 'perfect', title: 'Már megtörtént? Present perfect', icon: '✅',
+      tip: '**Present perfect vagy past simple?**\n\nA magyarban egyetlen múlt idő van („láttam”), az angolban kettő, és nem mindegy, melyiket választod.\n\n- **Past simple** (`I saw`, `I visited`): a múlt egy **lezárt, megnevezett időpontjában** történt: `yesterday`, `last year`, `in 2019`, `two days ago`.\n- **Present perfect** (`have / has` + az ige 3. alakja): a múltbeli eseménynek **a jelenhez van köze**, és az időpont nem fontos: `I have lost my key.` (Elvesztettem, most sincs meg.)\n\nA 3. alak szabályos igéknél `-ed` végű (`finish → finished`), sok gyakori ige rendhagyó: `see → seen`, `be → been`, `lose → lost`, `find → found`.\n\nJellemző szavai: `ever` (valaha), `never` (soha), `already` (már), `yet` (tagadásban: még nem; kérdésben: már), `just` (épp most).\n\nNagy különbség a magyarhoz képest: „2015 óta itt lakunk” – a magyar jelen időt használ, az angol present perfectet: `We have lived here since 2015.` A `since` időpont előtt áll (`since Monday`), a `for` időtartam előtt (`for five years`).\n\nTipp: ha a mondatban ott a `yesterday`, a `last week` vagy az `ago`, akkor sosem jöhet present perfect!',
+      words: [['already', 'már'], ['yet', 'még (tagadásban)'], ['just', 'épp most'], ['ever', 'valaha'], ['since', 'óta'], ['recently', 'mostanában'],
+        ['once', 'egyszer'], ['twice', 'kétszer'], ['experience', 'tapasztalat'], ['country', 'ország'], ['world', 'világ'], ['famous', 'híres'],
+        ['key', 'kulcs'], ['lose', 'elveszít'], ['find', 'megtalál'], ['finish', 'befejez'], ['forget', 'elfelejt'], ['climb', 'mászik']],
+      sentences: [
+        ['Have you ever been to London?', 'Voltál már valaha Londonban?', [], ['Voltál valaha Londonban?', 'Jártál már Londonban?', 'Jártál valaha Londonban?', 'Voltál már Londonban?', 'Volt már Londonban?', 'Voltatok már Londonban?']],
+        ['I have never climbed a mountain.', 'Még soha nem másztam meg hegyet.', ['I\'ve never climbed a mountain.'], ['Soha nem másztam még hegyet.', 'Még sosem másztam meg hegyet.', 'Soha nem másztam meg hegyet.', 'Még soha nem másztam hegyet.']],
+        ['I have lost my key.', 'Elvesztettem a kulcsomat.', ['I\'ve lost my key.'], ['Elvesztettem a kulcsom.', 'Elhagytam a kulcsomat.']],
+        ['She has just finished her homework.', 'Épp most fejezte be a házi feladatát.', ['She\'s just finished her homework.'], ['Most fejezte be a házi feladatát.', 'Éppen most fejezte be a házi feladatát.', 'Épp most fejezte be a leckéjét.']],
+        ['Have you finished yet?', 'Befejezted már?', [], ['Kész vagy már?', 'Befejezte már?', 'Befejeztétek már?']],
+        ['I haven\'t found it yet.', 'Még nem találtam meg.', ['I have not found it yet.']],
+        ['We have lived here since 2015.', 'Itt lakunk 2015 óta.', ['We\'ve lived here since 2015.'], ['2015 óta itt lakunk.', '2015 óta lakunk itt.', 'Itt élünk 2015 óta.', '2015 óta élünk itt.']],
+        ['I have known her for five years.', 'Öt éve ismerem őt.', ['I\'ve known her for five years.'], ['Öt éve ismerem.', 'Őt öt éve ismerem.']],
+        ['I visited Paris last year.', 'Tavaly meglátogattam Párizst.', ['Last year I visited Paris.'], ['Tavaly Párizsban voltam.', 'Tavaly jártam Párizsban.', 'Párizsban voltam tavaly.', 'Meglátogattam Párizst tavaly.']],
+        ['Have you seen this famous film?', 'Láttad már ezt a híres filmet?', [], ['Láttad ezt a híres filmet?', 'Látta már ezt a híres filmet?', 'Láttátok már ezt a híres filmet?']],
+        ['He has been to many countries.', 'Sok országban járt már.', ['He\'s been to many countries.'], ['Már sok országban járt.', 'Sok országban volt már.', 'Ő már sok országban járt.', 'Már sok országban volt.']],
+        ['I have read this book twice.', 'Kétszer olvastam ezt a könyvet.', ['I\'ve read this book twice.'], ['Ezt a könyvet kétszer olvastam.', 'Kétszer olvastam már ezt a könyvet.', 'Ezt a könyvet már kétszer olvastam.']]
+      ]
+    },
+    {
+      id: 'jovo', title: 'Jövő idő: will, going to', icon: '🔮',
+      tip: '**Háromféle jövő: will, going to, present continuous**\n\nA magyarban a jövőt sokszor egyszerű jelen idővel mondjuk („Pénteken fogorvoshoz megyek”), a „fog” segédige ritkább. Az angol viszont pontosan megkülönbözteti, **mennyire biztos és mikor dőlt el** a dolog.\n\n- **will** + ige: jóslás, vélemény (`I think it will rain.`), hirtelen döntés (`I will help you.`), ígéret (`I promise I will call you.`). Rövid alakja `I\'ll`, tagadva `won\'t`.\n- **going to** + ige: előre eltervezett szándék (`I am going to learn Spanish.`), vagy látható jelekből következő jóslás (`Look at the clouds. It is going to rain.`).\n- **present continuous** (`am / is / are` + `-ing`): naptárba beírt, másokkal megbeszélt program: `We are having a party on Saturday.`, `I am seeing the dentist on Friday.`\n\nTipp: ha a magyar mondatba beleillik, hogy „már meg van beszélve”, akkor jó a present continuous. Ha a „szerintem”, a „talán” vagy a „valószínűleg” illik bele, akkor a `will` a nyerő.\n\nVigyázz: időhatározói mellékmondatban (`when`, `if` után) az angol is jelen időt használ: `I will call you when I arrive.`',
+      words: [['probably', 'valószínűleg'], ['maybe', 'talán'], ['definitely', 'biztosan'], ['weather', 'időjárás'], ['forecast', 'időjárás-előrejelzés'], ['sunny', 'napos'],
+        ['cloudy', 'felhős'], ['snow', 'hó'], ['rain', 'eső'], ['wind', 'szél'], ['future', 'jövő'], ['robot', 'robot'], ['dentist', 'fogorvos'],
+        ['appointment', 'megbeszélt időpont'], ['promise', 'megígér'], ['hope', 'remél'], ['the day after tomorrow', 'holnapután'], ['party', 'buli']],
+      sentences: [
+        ['I think it will rain tomorrow.', 'Szerintem holnap esni fog.', ['I think it\'ll rain tomorrow.'], ['Szerintem holnap esik.', 'Azt hiszem, holnap esni fog.', 'Szerintem holnap esni fog az eső.', 'Szerintem holnap eső lesz.']],
+        ['In the future robots will drive cars.', 'A jövőben robotok fognak autót vezetni.', ['Robots will drive cars in the future.'], ['A jövőben a robotok vezetnek majd autót.', 'A jövőben robotok vezetik majd az autókat.', 'A jövőben a robotok fognak autót vezetni.']],
+        ['I will help you with your bag.', 'Segítek neked a táskáddal.', ['I\'ll help you with your bag.'], ['Segítek a táskáddal.', 'Segítek önnek a táskájával.', 'Segíteni fogok a táskáddal.']],
+        ['I promise I will call you.', 'Megígérem, hogy felhívlak.', ['I promise I\'ll call you.', 'I promise to call you.'], ['Ígérem, hogy felhívlak.', 'Megígérem, hogy fel foglak hívni.', 'Ígérem, felhívlak.']],
+        ['I am seeing the dentist on Friday.', 'Pénteken megyek fogorvoshoz.', ['I\'m seeing the dentist on Friday.', 'On Friday I am seeing the dentist.'], ['Pénteken fogorvoshoz megyek.', 'Pénteken megyek a fogorvoshoz.', 'Pénteken a fogorvoshoz megyek.']],
+        ['We are having a party on Saturday.', 'Szombaton bulit tartunk.', ['We\'re having a party on Saturday.'], ['Szombaton buli lesz nálunk.', 'Szombaton bulizunk.', 'Szombaton bulit rendezünk.']],
+        ['Maybe it will snow the day after tomorrow.', 'Talán holnapután havazni fog.', ['Maybe it\'ll snow the day after tomorrow.'], ['Holnapután talán havazni fog.', 'Talán holnapután havazik.', 'Holnapután talán havazik.', 'Talán holnapután esik a hó.']],
+        ['The forecast says it will be sunny.', 'Az előrejelzés szerint napos idő lesz.', ['The forecast says it\'ll be sunny.'], ['Az előrejelzés szerint napos lesz az idő.', 'Az időjárás-előrejelzés szerint napos idő lesz.', 'Az előrejelzés szerint napos lesz.']],
+        ['I hope the weather will be nice.', 'Remélem, szép idő lesz.', [], ['Remélem, jó idő lesz.', 'Remélem, szép lesz az idő.', 'Remélem, jó lesz az idő.']],
+        ['Will you be at home tonight?', 'Otthon leszel ma este?', [], ['Ma este otthon leszel?', 'Itthon leszel ma este?', 'Otthon lesztek ma este?', 'Ma este itthon leszel?', 'Otthon lesz ma este?']],
+        ['I will definitely come to your party.', 'Biztosan eljövök a bulidra.', ['I\'ll definitely come to your party.'], ['Biztosan elmegyek a bulidra.', 'Biztosan ott leszek a bulidon.', 'Biztosan eljövök a bulijára.']],
+        ['The wind will be very strong.', 'Nagyon erős lesz a szél.', [], ['A szél nagyon erős lesz.', 'Nagyon erős szél lesz.']]
+      ]
+    },
+    {
+      id: 'osszehasonlitas', title: 'Összehasonlítás', icon: '📏',
+      tip: '**Összehasonlítás: -er, more, the most**\n\nA magyarban minden melléknév ugyanúgy fokozódik: gyors → gyors**abb** → **leg**gyors**abb**. Az angolban a szó hossza dönt.\n\n- **Rövid (egyszótagú) szavak**: `-er` és `the -est`: `fast → faster → the fastest`, `old → older → the oldest`. Rövid magánhangzó + mássalhangzó végén a betű megduplázódik: `big → bigger`.\n- **-y végű kétszótagúak**: `easy → easier → the easiest`.\n- **Hosszabb szavak**: `more` és `the most`: `interesting → more interesting → the most interesting`.\n- **Rendhagyók**: `good → better → the best`, `bad → worse → the worst`.\n\nA magyar „-nál, -nél” és a „mint” angolul egyaránt **than**: `taller than me` (magasabb nálam, magasabb, mint én).\n\nEgyenlőség: `as … as`, tagadva `not as … as`: `My bike is not as fast as yours.` (nem olyan gyors, mint a tiéd).\n\nVigyázz: a felsőfok elé szinte mindig kell a `the`, és sosem mondjuk `more better` – ahogy a magyarban sem mondjuk, hogy „jobbabb”. A `more` és az `-er` soha nem áll együtt!',
+      words: [['fast', 'gyors'], ['slow', 'lassú'], ['strong', 'erős'], ['weak', 'gyenge'], ['easy', 'könnyű (egyszerű)'], ['difficult', 'nehéz (bonyolult)'],
+        ['dangerous', 'veszélyes'], ['safe', 'biztonságos'], ['comfortable', 'kényelmes'], ['popular', 'népszerű'], ['interesting', 'érdekes'], ['boring', 'unalmas'],
+        ['better', 'jobb'], ['worse', 'rosszabb'], ['the best', 'a legjobb'], ['the worst', 'a legrosszabb'], ['than', 'mint (összehasonlításban)'], ['clever', 'okos']],
+      sentences: [
+        ['My sister is older than me.', 'A nővérem idősebb nálam.', ['My sister is older than I am.'], ['A nővérem idősebb, mint én.', 'A testvérem idősebb nálam.', 'A nővérem öregebb nálam.']],
+        ['A plane is faster than a train.', 'A repülő gyorsabb, mint a vonat.', [], ['A repülő gyorsabb a vonatnál.', 'A repülőgép gyorsabb, mint a vonat.', 'A repülőgép gyorsabb a vonatnál.']],
+        ['English is easier than German.', 'Az angol könnyebb, mint a német.', [], ['Az angol könnyebb a németnél.', 'Az angol nyelv könnyebb, mint a német.']],
+        ['This is the best film of the year.', 'Ez az év legjobb filmje.', [], ['Ez az idei év legjobb filmje.']],
+        ['Who is the cleverest student in your class?', 'Ki a legokosabb diák az osztályodban?', [], ['Ki a legokosabb tanuló az osztályodban?', 'Ki a legokosabb az osztályodban?', 'Ki a legokosabb diák az osztályotokban?']],
+        ['Football is more popular than tennis.', 'A foci népszerűbb, mint a tenisz.', [], ['A foci népszerűbb a tenisznél.', 'A futball népszerűbb, mint a tenisz.']],
+        ['Today was the worst day of my life.', 'Ma volt életem legrosszabb napja.', [], ['A mai nap volt életem legrosszabb napja.']],
+        ['Is your sofa more comfortable than this chair?', 'Kényelmesebb a kanapéd, mint ez a szék?', [], ['A kanapéd kényelmesebb, mint ez a szék?', 'Kényelmesebb a kanapéd ennél a széknél?']],
+        ['The city is more dangerous at night.', 'A város éjjel veszélyesebb.', [], ['Éjjel veszélyesebb a város.', 'A város éjszaka veszélyesebb.', 'Éjszaka veszélyesebb a város.']],
+        ['My bike is not as fast as yours.', 'Az én biciklim nem olyan gyors, mint a tiéd.', ['My bike isn\'t as fast as yours.'], ['A biciklim nem olyan gyors, mint a tiéd.', 'A biciklim nem olyan gyors, mint az öné.', 'Az én biciklim nem olyan gyors, mint a tiétek.']],
+        ['This book is more interesting than the film.', 'Ez a könyv érdekesebb, mint a film.', [], ['Ez a könyv érdekesebb a filmnél.']],
+        ['Maths is the most difficult subject for me.', 'Számomra a matek a legnehezebb tantárgy.', ['Maths is the hardest subject for me.', 'For me maths is the most difficult subject.'], ['Nekem a matek a legnehezebb tantárgy.', 'A matek a legnehezebb tantárgy számomra.', 'A matek nekem a legnehezebb tantárgy.', 'Számomra a matematika a legnehezebb tantárgy.']]
+      ]
+    },
+    {
+      id: 'tanacs', title: 'Egészség: should, must, have to', icon: '🩺',
+      tip: '**Tanács és kötelesség: should, must, have to**\n\nA magyar „kell” és „kellene” mögött az angolban több ige áll.\n\n- **should** – tanács, javaslat (magyarul: „kellene”): `You should go to the doctor.` Tagadva: `You shouldn\'t eat so much cake.`\n- **must** – erős kötelesség, gyakran a beszélő véleménye vagy egy szigorú szabály: `You must take this medicine.`\n- **have to** – külső kötelesség, szabály, körülmény: `We have to wear a uniform.` Harmadik személyben `she has to`, kérdésben `Do I have to…?`\n\nA legnagyobb csapda a tagadás:\n\n- `You mustn\'t eat here.` = **Tilos** itt enni (nem szabad).\n- `You don\'t have to come.` = **Nem kell** eljönnöd (de jöhetsz, ha akarsz).\n\nA magyarban is két külön dolog a „nem kell” és a „nem szabad” – pont így kell az angolban is szétválasztani őket.\n\nA `should` és a `must` után **sosem** jön `to`, és harmadik személyben sem kapnak `-s` végződést: `she should go` (nem `she shoulds to go`). A `have to` viszont rendes igeként viselkedik: `he has to`, `did you have to`.\n\nBetegségek: `I have a headache` (fáj a fejem), `I have a cold` (megfáztam) – az angol azt mondja, hogy „van” fejfájásom.',
+      words: [['headache', 'fejfájás'], ['stomach ache', 'hasfájás'], ['cough', 'köhögés'], ['a cold', 'megfázás'], ['fever', 'láz'], ['medicine', 'gyógyszer'],
+        ['doctor', 'orvos'], ['nurse', 'ápoló'], ['rest', 'pihen'], ['healthy', 'egészséges'], ['ill', 'beteg'], ['tired', 'fáradt'],
+        ['exercise', 'testmozgás'], ['vegetables', 'zöldség'], ['rule', 'szabály'], ['helmet', 'bukósisak'], ['uniform', 'egyenruha'], ['advice', 'tanács']],
+      sentences: [
+        ['You should go to the doctor.', 'Orvoshoz kellene menned.', [], ['El kellene menned orvoshoz.', 'Orvoshoz kéne menned.', 'El kéne menned orvoshoz.', 'Orvoshoz kellene mennie.', 'Orvoshoz kellene mennetek.']],
+        ['I have a terrible headache.', 'Borzasztóan fáj a fejem.', ['I\'ve got a terrible headache.'], ['Szörnyen fáj a fejem.', 'Nagyon fáj a fejem.', 'Szörnyű fejfájásom van.', 'Borzasztó fejfájásom van.']],
+        ['You shouldn\'t eat so much cake.', 'Nem kellene ennyi tortát enned.', ['You should not eat so much cake.'], ['Nem kéne ennyi tortát enned.', 'Nem kellene annyi tortát enned.', 'Nem kellene ennyi süteményt enned.']],
+        ['You must take this medicine twice a day.', 'Ezt a gyógyszert naponta kétszer kell bevenned.', [], ['Naponta kétszer kell bevenned ezt a gyógyszert.', 'Naponta kétszer be kell venned ezt a gyógyszert.', 'Ezt a gyógyszert naponta kétszer kell bevennie.']],
+        ['We have to wear a uniform at school.', 'Az iskolában egyenruhát kell viselnünk.', [], ['Egyenruhát kell viselnünk az iskolában.', 'Az iskolában egyenruhát kell hordanunk.', 'Az iskolában egyenruhában kell járnunk.']],
+        ['You must wear a helmet on a bike.', 'Biciklin bukósisakot kell viselned.', [], ['Biciklin bukósisakot kell viselni.', 'Biciklin bukósisakot kell hordanod.', 'Biciklin sisakot kell viselned.', 'Biciklizéskor bukósisakot kell viselni.']],
+        ['Do I have to stay in bed?', 'Ágyban kell maradnom?', [], ['Az ágyban kell maradnom?', 'Ágyban kell feküdnöm?']],
+        ['You don\'t have to come tomorrow.', 'Holnap nem kell jönnöd.', ['You do not have to come tomorrow.'], ['Nem kell holnap jönnöd.', 'Holnap nem kell eljönnöd.', 'Holnap nem kell jönnie.', 'Holnap nem kell jönnötök.']],
+        ['You mustn\'t eat in the library.', 'A könyvtárban tilos enni.', ['You must not eat in the library.'], ['A könyvtárban nem szabad enni.', 'Nem szabad enni a könyvtárban.', 'Tilos enni a könyvtárban.', 'A könyvtárban nem ehetsz.']],
+        ['You should eat more vegetables.', 'Több zöldséget kellene enned.', [], ['Több zöldséget kéne enned.', 'Több zöldséget kellene ennie.', 'Több zöldséget kellene ennetek.']],
+        ['I am tired, I should rest.', 'Fáradt vagyok, pihennem kellene.', ['I\'m tired, I should rest.'], ['Fáradt vagyok, pihennem kéne.', 'Fáradt vagyok, kellene pihennem.']],
+        ['She has a cough and a fever.', 'Köhög és lázas.', ['She\'s got a cough and a fever.'], ['Köhög, és lázas.', 'Ő köhög és lázas.', 'Köhög és láza van.']]
+      ]
+    },
+    {
+      id: 'feltetel', title: 'Környezet: ha… (conditionals)', icon: '🌍',
+      tip: '**Feltételes mondatok: first és second conditional**\n\nA magyarban a „ha” után jöhet jelen idő, jövő idő vagy feltételes mód is. Az angol szigorúbb: **az `if` utáni részben nem áll `will` vagy `would`.**\n\n- **First conditional** – valós, könnyen megvalósuló helyzet: `if` + jelen idő, a másik részben `will` + ige. `If it rains, we will stay at home.` (Ha esik, itthon maradunk.) Hiba lenne: `If it will rain…`\n- **Second conditional** – elképzelt, valószínűtlen helyzet: `if` + past simple, a másik részben `would` + ige. `If I were rich, I would buy a forest.` (Ha gazdag lennék, vennék egy erdőt.)\n\nA second conditional a magyar **feltételes mód** (-na, -ne, -nék) megfelelője: „vennék, segítenék, csinálnál”. Az angol ezt kétfelé osztja: az `if` mellett múlt idő áll (`had`, `were`), a másik oldalon `would` (röviden `\'d`).\n\nA `be` igénél minden személyben használhatod a `were` alakot: `If I were you…` (A helyedben…) – ez választékosabb, mint az `If I was`.\n\nA két tagmondat sorrendje felcserélhető. Ha az `if` áll elöl, vesszőt teszünk közéjük, ha hátul, akkor általában nem.',
+      words: [['environment', 'környezet'], ['pollution', 'szennyezés'], ['plastic', 'műanyag'], ['rubbish', 'szemét'], ['recycle', 'újrahasznosít'], ['save', 'megtakarít'],
+        ['energy', 'energia'], ['planet', 'bolygó'], ['nature', 'természet'], ['forest', 'erdő'], ['river', 'folyó'], ['tree', 'fa (növény)'],
+        ['air', 'levegő'], ['climate', 'éghajlat'], ['rich', 'gazdag'], ['if', 'ha'], ['bottle', 'palack'], ['turn off', 'lekapcsol']],
+      sentences: [
+        ['If we recycle plastic, we will save energy.', 'Ha újrahasznosítjuk a műanyagot, energiát takarítunk meg.', ['If we recycle plastic, we\'ll save energy.', 'We will save energy if we recycle plastic.'], ['Ha újrahasznosítjuk a műanyagot, energiát spórolunk.', 'Ha újrahasznosítjuk a műanyagot, energiát fogunk megtakarítani.']],
+        ['If it rains, we will stay at home.', 'Ha esik, itthon maradunk.', ['If it rains, we\'ll stay at home.', 'We will stay at home if it rains.'], ['Ha esik az eső, otthon maradunk.', 'Ha esik, otthon maradunk.', 'Ha esik az eső, itthon maradunk.', 'Ha esni fog, otthon maradunk.']],
+        ['Please turn off the light.', 'Kérlek, kapcsold le a villanyt.', ['Turn off the light, please.', 'Please turn the light off.'], ['Kérlek, kapcsold le a lámpát.', 'Kapcsold le a villanyt, kérlek.', 'Kérem, kapcsolja le a villanyt.', 'Kapcsold le a lámpát, kérlek.']],
+        ['If I were rich, I would buy a forest.', 'Ha gazdag lennék, vennék egy erdőt.', ['If I was rich, I would buy a forest.', 'If I were rich, I\'d buy a forest.'], ['Ha gazdag lennék, egy erdőt vennék.', 'Ha gazdag volnék, vennék egy erdőt.']],
+        ['What would you do if you were rich?', 'Mit csinálnál, ha gazdag lennél?', [], ['Mit tennél, ha gazdag lennél?', 'Ha gazdag lennél, mit csinálnál?', 'Mit csinálnál, ha gazdag volnál?', 'Mit tenne, ha gazdag lenne?']],
+        ['The air in big cities is dirty.', 'A nagyvárosokban piszkos a levegő.', [], ['A nagyvárosok levegője piszkos.', 'A levegő a nagyvárosokban piszkos.', 'A nagyvárosokban szennyezett a levegő.']],
+        ['If we cut down the trees, animals will die.', 'Ha kivágjuk a fákat, az állatok elpusztulnak.', ['If we cut the trees down, animals will die.', 'Animals will die if we cut down the trees.'], ['Ha kivágjuk a fákat, elpusztulnak az állatok.', 'Ha kivágjuk a fákat, meghalnak az állatok.', 'Ha kivágjuk a fákat, az állatok el fognak pusztulni.']],
+        ['Don\'t throw your rubbish in the river.', 'Ne dobd a szemetet a folyóba.', ['Do not throw your rubbish in the river.', 'Don\'t throw your rubbish into the river.'], ['Ne dobd a szemeted a folyóba.', 'Ne dobd a folyóba a szemetet.', 'Ne dobja a szemetét a folyóba.', 'Ne dobjátok a szemetet a folyóba.']],
+        ['If I had more time, I would help.', 'Ha több időm lenne, segítenék.', ['If I had more time, I\'d help.'], ['Ha több időm volna, segítenék.', 'Segítenék, ha több időm lenne.']],
+        ['Pollution is bad for our planet.', 'A szennyezés árt a bolygónknak.', [], ['A szennyezés rossz a bolygónknak.', 'A környezetszennyezés árt a bolygónknak.', 'A szennyezés káros a bolygónkra.', 'A környezetszennyezés rossz a bolygónknak.']],
+        ['We should protect nature.', 'Védenünk kellene a természetet.', [], ['Óvnunk kellene a természetet.', 'A természetet védenünk kellene.', 'Meg kellene védenünk a természetet.']],
+        ['I use the same bottle every day.', 'Minden nap ugyanazt a palackot használom.', ['I use the same bottle every single day.'], ['Ugyanazt a palackot használom minden nap.', 'Mindennap ugyanazt a palackot használom.', 'Minden nap ugyanazt az üveget használom.']]
+      ]
+    },
+    {
+      id: 'szenvedo', title: 'Technika: szenvedő szerkezet', icon: '💻',
+      tip: '**Szenvedő szerkezet (passive): be + 3. alak**\n\nAkkor használjuk, ha nem az a fontos, **ki** csinálta, hanem az, **mi történt** valamivel. A magyar ilyenkor többnyire általános alanyú, többes szám 3. személyű igét mond: „Ellopták a biciklimet.”, „Kínában gyártják.” Az angolban ilyenkor kell a passzív:\n\n- `My bike was stolen.` – Ellopták a biciklimet.\n- `These phones are made in China.` – Ezeket a telefonokat Kínában gyártják.\n\nKépzése: a **`be` megfelelő alakja + az ige 3. alakja** (past participle). Az idő a `be` igén látszik:\n\n- jelen: `is / are made`\n- múlt: `was / were built`\n- present perfect: `has / have been translated`\n\nHa mégis meg akarjuk mondani, ki végezte a cselekvést, a `by` szót használjuk: `The website is visited by millions of people.`\n\nGyakori rendhagyó 3. alakok: `make → made`, `build → built`, `steal → stolen`, `speak → spoken`, `send → sent`.\n\nA magyar „-va, -ve van” szerkezet (például „be van zárva”) inkább állapotot jelent, és ritkán ad természetes fordítást – a passzív mondatot általában az általános alannyal („bezárták”) érdemes visszaadni.',
+      words: [['invent', 'feltalál'], ['build', 'épít'], ['produce', 'gyárt'], ['discover', 'felfedez'], ['steal', 'ellop'], ['translate', 'lefordít'],
+        ['invention', 'találmány'], ['factory', 'gyár'], ['computer', 'számítógép'], ['smartphone', 'okostelefon'], ['screen', 'képernyő'], ['app', 'alkalmazás (app)'],
+        ['website', 'weboldal'], ['password', 'jelszó'], ['message', 'üzenet'], ['battery', 'akkumulátor'], ['century', 'évszázad'], ['language', 'nyelv']],
+      sentences: [
+        ['The telephone was invented in 1876.', 'A telefont 1876-ban találták fel.', [], ['1876-ban találták fel a telefont.']],
+        ['This bridge was built a hundred years ago.', 'Ezt a hidat száz éve építették.', [], ['Ezt a hidat száz évvel ezelőtt építették.', 'Ez a híd száz éve épült.', 'Ez a híd száz évvel ezelőtt épült.']],
+        ['These phones are made in China.', 'Ezeket a telefonokat Kínában gyártják.', ['These phones are produced in China.'], ['Ezek a telefonok Kínában készülnek.', 'Ezeket a telefonokat Kínában készítik.']],
+        ['My bike was stolen yesterday.', 'Tegnap ellopták a biciklimet.', ['Yesterday my bike was stolen.'], ['A biciklimet tegnap ellopták.', 'Tegnap ellopták a biciklim.', 'Ellopták tegnap a biciklimet.']],
+        ['Harry Potter has been translated into many languages.', 'A Harry Pottert sok nyelvre lefordították.', [], ['Harry Pottert sok nyelvre lefordították.', 'A Harry Pottert már sok nyelvre lefordították.', 'Sok nyelvre lefordították a Harry Pottert.']],
+        ['English is spoken all over the world.', 'Az angolt az egész világon beszélik.', [], ['Angolul az egész világon beszélnek.', 'Az egész világon beszélik az angolt.', 'Az angolt világszerte beszélik.']],
+        ['The message was sent at ten o\'clock.', 'Az üzenetet tíz órakor küldték el.', ['The message was sent at ten.'], ['Az üzenetet tízkor küldték el.', 'Az üzenetet tíz órakor küldték.', 'Az üzenet tíz órakor ment el.']],
+        ['The website is visited by millions of people.', 'A weboldalt emberek milliói látogatják.', [], ['Emberek milliói látogatják a weboldalt.', 'A weboldalt milliók látogatják.', 'A weboldalt több millió ember látogatja.']],
+        ['Is this app used by teenagers?', 'Használják ezt az alkalmazást a tinédzserek?', [], ['A tinédzserek használják ezt az alkalmazást?', 'Használják a tinik ezt az appot?', 'A tinik használják ezt az appot?', 'Használják a tinik ezt az alkalmazást?']],
+        ['The factory was closed last year.', 'A gyárat tavaly bezárták.', ['Last year the factory was closed.'], ['Tavaly bezárták a gyárat.', 'A gyár tavaly bezárt.']],
+        ['Who was penicillin discovered by?', 'Ki fedezte fel a penicillint?', ['Who discovered penicillin?', 'By whom was penicillin discovered?']],
+        ['My phone screen is broken.', 'Betört a telefonom képernyője.', ['My phone\'s screen is broken.'], ['A telefonom képernyője betört.', 'Eltört a telefonom képernyője.', 'Összetört a telefonom képernyője.', 'A telefonom képernyője összetört.', 'A telefonom kijelzője betört.']]
+      ]
+    },
+    {
+      id: 'vonatkozo', title: 'Munka: who, which, that', icon: '💼',
+      tip: '**Vonatkozó mellékmondat: who, which, that, where**\n\nA magyarban a vonatkozó névmás ragot kap: aki, akit, akinek, amit, amelyben, ahol… Az angol névmás **nem ragozódik**, csak azt kell eldönteni, emberről vagy dologról van-e szó.\n\n- **who** – emberekre: `the man who lives next door` (a férfi, aki a szomszédban lakik)\n- **which** – dolgokra, állatokra: `a job which I really like` (egy állás, amit nagyon szeretek)\n- **that** – mindkettőre, a hétköznapi beszédben nagyon gyakori: `the colleague that helped you`\n- **where** – helyre: `the office where my mother works` (az iroda, ahol anyukám dolgozik)\n\nHa a névmás a mellékmondat **tárgya** (nem ő végzi a cselekvést), el is hagyható: `a job I really like`. A magyarban ezt nem lehet elhagyni!\n\nFigyelj a vesszőkre: a magyarban a mellékmondat előtt mindig van vessző, az angolban az ilyen meghatározó mellékmondatok előtt **nincs**.\n\nAz elöljáró gyakran a mondat végére kerül: `the company I work for` – szó szerint „a cég, amelynek dolgozom”.\n\nFoglalkozás előtt az angolban kell az `a / an`: `She is a scientist.` (Tudós.) – a magyar ilyenkor nem tesz névelőt.',
+      words: [['job', 'állás'], ['work', 'dolgozik'], ['salary', 'fizetés'], ['boss', 'főnök'], ['office', 'iroda'], ['company', 'cég'],
+        ['colleague', 'kolléga'], ['interview', 'állásinterjú'], ['engineer', 'mérnök'], ['lawyer', 'ügyvéd'], ['firefighter', 'tűzoltó'], ['police officer', 'rendőr'],
+        ['mechanic', 'autószerelő'], ['journalist', 'újságíró'], ['chef', 'séf'], ['farmer', 'gazda (földműves)'], ['scientist', 'tudós'], ['pilot', 'pilóta']],
+      sentences: [
+        ['A pilot is a person who flies planes.', 'A pilóta olyan ember, aki repülőgépet vezet.', ['A pilot is a person that flies planes.', 'A pilot is someone who flies planes.'], ['A pilóta olyan ember, aki repülőt vezet.', 'A pilóta az az ember, aki repülőt vezet.', 'A pilóta az, aki repülőgépet vezet.']],
+        ['This is the office where my mother works.', 'Ez az az iroda, ahol anyukám dolgozik.', [], ['Ez az az iroda, ahol az anyám dolgozik.', 'Ez az iroda, ahol anyukám dolgozik.', 'Ez az iroda, ahol az anyám dolgozik.']],
+        ['The man who lives next door is a firefighter.', 'A férfi, aki a szomszédban lakik, tűzoltó.', ['The man that lives next door is a firefighter.'], ['Az a férfi, aki a szomszédban lakik, tűzoltó.', 'A szomszédban lakó férfi tűzoltó.']],
+        ['I have a job which I really like.', 'Van egy állásom, amit nagyon szeretek.', ['I have a job that I really like.', 'I have a job I really like.'], ['Van egy állásom, amelyet nagyon szeretek.', 'Olyan állásom van, amit nagyon szeretek.', 'Van egy munkám, amit nagyon szeretek.']],
+        ['The company I work for is big.', 'A cég, ahol dolgozom, nagy.', ['The company that I work for is big.', 'The company which I work for is big.'], ['Nagy a cég, ahol dolgozom.', 'A cég, amelynél dolgozom, nagy.', 'A cég, aminél dolgozom, nagy.']],
+        ['My boss is a woman who speaks four languages.', 'A főnököm egy nő, aki négy nyelven beszél.', ['My boss is a woman that speaks four languages.'], ['A főnököm egy nő, aki négy nyelvet beszél.', 'A főnököm egy négy nyelven beszélő nő.']],
+        ['Is that the colleague who helped you?', 'Ő az a kolléga, aki segített neked?', ['Is that the colleague that helped you?'], ['Az az a kolléga, aki segített neked?', 'Ő az a kolléga, aki segített?', 'Ő az a kolléga, aki segített önnek?']],
+        ['She wants to be a scientist.', 'Tudós szeretne lenni.', [], ['Ő tudós szeretne lenni.', 'Tudós akar lenni.', 'Ő tudós akar lenni.']],
+        ['I have a job interview tomorrow.', 'Holnap állásinterjúm van.', ['Tomorrow I have a job interview.', 'I\'ve got a job interview tomorrow.'], ['Holnap állásinterjúra megyek.', 'Holnap lesz az állásinterjúm.', 'Holnap állásinterjún leszek.']],
+        ['The salary is good, but the work is hard.', 'A fizetés jó, de a munka nehéz.', [], ['Jó a fizetés, de nehéz a munka.', 'A fizetés jó, de nehéz a munka.', 'Jó a fizetés, de a munka nehéz.', 'A fizetés jó, de a munka kemény.']],
+        ['The mechanic who repaired our car was very nice.', 'Az autószerelő, aki megjavította az autónkat, nagyon kedves volt.', ['The mechanic that repaired our car was very nice.'], ['Nagyon kedves volt az autószerelő, aki megjavította az autónkat.', 'Az autószerelő, aki megjavította a kocsinkat, nagyon kedves volt.']],
+        ['A chef is someone who cooks in a restaurant.', 'A séf az, aki étteremben főz.', ['A chef is someone that cooks in a restaurant.', 'A chef is a person who cooks in a restaurant.'], ['A séf olyan ember, aki étteremben főz.', 'A séf valaki, aki étteremben főz.', 'A séf az, aki egy étteremben főz.', 'A séf olyan valaki, aki étteremben főz.']]
+      ]
+    },
+    {
+      id: 'phrasal', title: 'Úton: phrasal verbs és vélemény', icon: '🧳',
+      tip: '**Phrasal verbs: ige + kis szó**\n\nAz angol rengeteg igét egy kis szóval (`on`, `off`, `up`, `out`, `after`…) együtt használ, és a kettő együtt **új jelentést** kap. Pont úgy működik, mint a magyar igekötő: „ad” – „felad”, „vesz” – „felvesz”.\n\n- `get on / get off` – felszáll / leszáll (járműre, járműről)\n- `look for` – keres, `look after` – vigyáz valakire\n- `give up` – felad, abbahagy: `Don\'t give up!`\n- `break down` – lerobban (autó, busz)\n- `run out of` – kifogy valamiből\n\nAz igekötőhöz hasonlóan a kis szó **el is válhat** az igétől: `Put on your jacket.` = `Put your jacket on.` Ha a tárgy névmás (`it`, `me`, `him`), akkor kötelező középre tenni: `Pick me up!` (nem `Pick up me`).\n\nA jelentést gyakran nem lehet kitalálni a részekből – ahogy egy külföldi sem találja ki, miért jelent mást a „kiad” és a „felad”. Ezért **egyben** tanuld meg őket, egy-egy példamondattal!\n\nVéleménynyilvánítás: `In my opinion…` (Véleményem szerint…), `I agree with you.` (Egyetértek veled.) Vigyázz: az `agree` ige, ezért nem mondjuk `I am agree` – a tagadás `I don\'t agree` vagy `I disagree`.',
+      words: [['get on', 'felszáll (járműre)'], ['get off', 'leszáll (járműről)'], ['check in', 'bejelentkezik (szállodában, reptéren)'], ['look for', 'keres'], ['look after', 'vigyáz (valakire)'], ['give up', 'felad (abbahagy)'],
+        ['find out', 'kiderít'], ['set off', 'útnak indul'], ['break down', 'lerobban'], ['pick up', 'érte megy'], ['put on', 'felvesz (ruhát)'], ['run out of', 'kifogy (valamiből)'],
+        ['delay', 'késés'], ['cancelled', 'törölt (járat)'], ['luggage', 'poggyász'], ['opinion', 'vélemény'], ['agree', 'egyetért'], ['disagree', 'nem ért egyet']],
+      sentences: [
+        ['Our flight was cancelled.', 'Törölték a járatunkat.', [], ['A járatunkat törölték.', 'Törölték a gépünket.']],
+        ['The bus broke down on the motorway.', 'A busz lerobbant az autópályán.', [], ['Lerobbant a busz az autópályán.', 'Az autópályán lerobbant a busz.']],
+        ['I am looking for my luggage.', 'A poggyászomat keresem.', ['I\'m looking for my luggage.'], ['Keresem a poggyászomat.', 'A csomagomat keresem.', 'Keresem a csomagomat.', 'A csomagjaimat keresem.']],
+        ['Can you pick me up at the station?', 'Értem tudsz jönni az állomásra?', ['Could you pick me up at the station?'], ['Tudsz értem jönni az állomásra?', 'El tudsz jönni értem az állomásra?', 'Eljössz értem az állomásra?', 'Értem tud jönni az állomásra?']],
+        ['We get off at the next stop.', 'A következő megállóban leszállunk.', [], ['Leszállunk a következő megállóban.', 'A következő megállónál leszállunk.']],
+        ['Put on your jacket, it is cold.', 'Vedd fel a dzsekidet, hideg van.', ['Put on your jacket, it\'s cold.', 'Put your jacket on, it is cold.', 'Put your jacket on, it\'s cold.'], ['Vedd fel a dzsekid, hideg van.', 'Hideg van, vedd fel a dzsekidet.', 'Vegye fel a dzsekijét, hideg van.']],
+        ['We have run out of milk.', 'Kifogytunk a tejből.', ['We\'ve run out of milk.'], ['Elfogyott a tej.', 'Kifogyott a tej.', 'Nincs több tejünk.']],
+        ['Could you look after my dog?', 'Vigyáznál a kutyámra?', [], ['Tudnál vigyázni a kutyámra?', 'Vigyázna a kutyámra?', 'Tudna vigyázni a kutyámra?', 'Vigyáznátok a kutyámra?']],
+        ['Don\'t give up!', 'Ne add fel!', ['Do not give up!'], ['Ne adja fel!', 'Ne adjátok fel!']],
+        ['In my opinion, the train is better.', 'Véleményem szerint a vonat jobb.', ['I think the train is better.'], ['Szerintem a vonat jobb.', 'Szerintem jobb a vonat.', 'Véleményem szerint jobb a vonat.']],
+        ['I don\'t agree with you.', 'Nem értek egyet veled.', ['I do not agree with you.', 'I disagree with you.'], ['Nem értek veled egyet.', 'Nem értek egyet önnel.', 'Nem értek egyet veletek.']],
+        ['We set off at six in the morning.', 'Reggel hatkor indultunk útnak.', [], ['Reggel hatkor indultunk el.', 'Reggel hat órakor indultunk útnak.', 'Reggel hatkor útnak indultunk.', 'Hajnali hatkor indultunk útnak.']]
       ]
     }
   ]
