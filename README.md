@@ -76,7 +76,7 @@ Adat: `data/tudtad/*.js` – `STUDIE.addFacts([{ id, cat, q, why, links: ['model
 kereshető kedvenc sportolók (100+), 9 lecke (a foci fizikája, F1-technika, edzéselmélet, táplálkozás, sportpszichológia, olimpiák) kérdésbankkal,
 és egy szétszedhető **Forma–1-es autó** modell.
 
-**🗣️ Nyelvtanulás játékosan.** Angol, német, spanyol, francia, olasz, portugál, orosz, japán, kínai és koreai: egységekre bontott ösvény, 3–5 perces körök
+**🗣️ Nyelvtanulás játékosan.** Angol és német (A1–B1), spanyol, francia, olasz, portugál, holland, svéd, lengyel, török, finn, orosz, görög, japán, kínai és koreai: egységekre bontott ösvény, 3–5 perces körök
 (új szó, választás, párosítás, mondatépítés szócsempékből, hallás utáni értés a böngésző felolvasójával, gépelés), XP, napi cél, sorozat, szintek (👑), „Gyengéim gyakorlása” (a rontott szavak ismétlése) és vegyes ismétlés.
 Adat: `data/nyelvek/*.js` – `STUDIE.addLangCourse({ id, title, flag, tts, units: [{ id, title, tip, words, sentences }] })`.
 
@@ -89,6 +89,11 @@ Hivatalos ügyek és a munka világa (okmányok, Ügyfélkapu+/DÁP, egészség�
 Az összegek a 2026-os szabályok szerintiek; minden lecke a hivatalos forrásra (NAV, magyarorszag.hu) is mutat.
 
 **🎓 Gazdasági kurzusok:** Számvitel, Könyvvizsgálat, Vállalati pénzügyek, Adózás és adójog.
+
+**📚 Tanulássegéd.** Kutatással igazolt módszerek eszközként: „Írd le, amire emlékszel” (aktív felidézés kulcsfogalom-ellenőrzéssel),
+gondolattérkép minden leckéhez, „Igaz vagy hamis?” villámjáték, Fogalomkitaláló, Pomodoro fókuszidőzítő.
+
+**🎒 Egyetem iskolai nézetben:** minden szakszónál egyszerű, szakszavak nélküli magyarázat hasonlattal (`data/egyszeru/*.js` – `STUDIE.addSimple`); a szakmai rész lenyitható.
 
 **📈 Haladásom.** Tanulási sorozat, aktivitásnaptár, kitűzők, és a haladás **mentése/betöltése fájlba** (géphez nem kötött).
 
@@ -154,6 +159,7 @@ js/kartyak.js         tantárgyi tanulókártyák
 js/tudtad.js          „Tudtad?” érdekességek
 js/sport.js           sport és tudomány oldal
 js/nyelvek.js         játékos nyelvtanulás
+js/tanulas.js         tanulássegéd (felidézés, gondolattérkép, villámjáték, Pomodoro)
 data/                 a tananyag
 sw.js, manifest       offline mód és telepíthetőség
 tools/build-single.js egyfájlos változat készítése

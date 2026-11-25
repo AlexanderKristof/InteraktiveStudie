@@ -2,7 +2,7 @@
  * Webszerverről megnyitva az első látogatás után minden fájl a gépen marad,
  * így a tananyag internet nélkül is betölt. Stratégia: a gyorsítótárból
  * azonnal kiszolgál, a háttérben pedig frissít (stale-while-revalidate). */
-var CACHE = 'tudasmuhely-v16';
+var CACHE = 'tudasmuhely-v17';
 var CORE = ['./', './index.html', './css/style.css', './js/core.js', './js/university.js', './js/teszt.js', './js/hibakereses.js', './js/kapcsolas.js', './js/haladas.js', './js/utvonalak.js', './js/felkeszito.js', './js/eszkozok.js', './js/tartalom.js', './js/kartyak.js', './js/tudtad.js', './js/sport.js', './js/nyelvek.js', './js/tanulas.js', './js/widgets.js', './js/penz-widgets.js', './js/explorer.js', './js/app.js', './manifest.webmanifest', './icons/icon.svg'];
 
 self.addEventListener('install', function (e) {
