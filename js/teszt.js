@@ -148,6 +148,7 @@
 
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>Tesztközpont</span></nav>' +
       '<h1>Tesztközpont</h1><p class="lead">Válassz témákat, állítsd be a kérdések számát és a módot. A kérdésbankban jelenleg <b>' + total + '</b> kérdés van, mindegyik 4 válaszlehetőséggel.</p>' +
+      '<a class="card osz-promo" href="#/osszeallito"><span class="ico">🧩</span><span><b>Kérdés-összeállító</b><small>Keress kulcsszóra az összes kérdés között, válogasd ki, ami kell, és készíts belőle vizsgát vagy nyomtatható dolgozatot.</small></span><span class="btn primary">Megnyitás →</span></a>' +
       (weak.length ? '<div class="note warn"><b class="t">Gyenge pontjaid: ezeket érdemes gyakorolni</b><div class="chips" style="margin-top:6px">' + weak.slice(0, 6).map(function (w) {
         return '<button type="button" class="chip" data-weak="' + w.g.id + '/' + w.t.id + '">' + w.g.icon + ' ' + esc(w.t.title) + ' · ' + w.p + '%</button>';
       }).join('') + '</div></div>' : '') +
@@ -254,7 +255,7 @@
 
   /* ---------- nyomtatható feladatlap megoldókulccsal ---------- */
   function plain(t) { return String(t || '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/`(.+?)`/g, '$1').replace(/\[\[[^|\]]+\|(.+?)\]\]/g, '$1'); }
-  function printSheet(items) {
+  function printSheet(items, title) {
     var qs = items.map(function (it) {
       var opts = S.shuffle(it.q.options.map(function (t, k) { return { t: t, ok: k === it.q.answer }; }));
       return { q: it.q, t: it.t, g: it.g, opts: opts };
@@ -269,7 +270,7 @@
       '.key{break-before:page}.key ol{columns:3;font-size:12px}.key li{break-inside:avoid;margin-bottom:4px}' +
       '@media print{.noprint{display:none}}</style></head><body>' +
       '<p class="noprint"><button onclick="window.print()">🖨 Nyomtatás</button></p>' +
-      '<h1>Feladatlap</h1><div class="meta">' + topics.map(esc).join(' · ') + '<br>' + qs.length + ' kérdés · Tudásműhely</div>' +
+      '<h1>' + esc(title || 'Feladatlap') + '</h1><div class="meta">' + (topics.length > 6 ? topics.slice(0, 6).map(esc).join(' · ') + ' · …' : topics.map(esc).join(' · ')) + '<br>' + qs.length + ' kérdés · Tudásműhely</div>' +
       '<div class="name"><span>Név:</span><span>Osztály:</span><span>Dátum:</span><span>Pont: &nbsp;&nbsp;&nbsp;/ ' + qs.length + '</span></div>' +
       '<ol class="q">' + qs.map(function (x) {
         return '<li><b>' + esc(plain(x.q.q)) + '</b><div class="o">' + x.opts.map(function (o, k) { return '<div>' + LETTERS[k] + ') ' + esc(plain(o.t)) + '</div>'; }).join('') + '</div></li>';
@@ -300,6 +301,7 @@
   /* ---------- a teszt futtatása ---------- */
   /* Más modulok (pl. a vizsgafelkészítő) számára. */
   S.testGroups = buildGroups;
+  S.printSheet = printSheet;
   S.testItems = function (groupId, topicIds) {
     var out = [];
     buildGroups().forEach(function (g) {

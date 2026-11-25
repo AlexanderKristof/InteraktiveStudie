@@ -791,3 +791,19 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .deg-title { margin: 28px 0 4px; font-size: 1.5rem; } .deg-title small { font-size: .9rem; font-weight: 400; }
 .badge.msc { background: #7c3aed; color: #fff; font-size: .7rem; vertical-align: middle; }
 .builds { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+/* 🧩 Kérdés-összeállító */
+.osz-layout { display: grid; grid-template-columns: 1fr 320px; gap: 14px; align-items: start; }
+.osz-cart { position: sticky; top: 120px; }
+@media (max-width: 900px) { .osz-layout { grid-template-columns: 1fr; } .osz-cart { position: static; } }
+.osz-search input[type=search], .osz-search select, .osz-cart input { padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; }
+.osz-bar { justify-content: space-between; align-items: center; margin: 14px 0 6px; gap: 8px; flex-wrap: wrap; }
+.osz-topic { border: 1px solid var(--line); border-radius: 12px; margin: 8px 0; }
+.osz-topic > summary { cursor: pointer; display: flex; gap: 8px; align-items: center; padding: 10px 12px; flex-wrap: wrap; }
+.osz-topic > summary > span { flex: 1; } .osz-topic > summary small { color: var(--muted); }
+.osz-topic ol { margin: 0 12px 10px 30px; padding: 0; } .osz-topic li { margin: 6px 0; } .osz-topic label { cursor: pointer; }
+.osz-ans { color: #16a34a; font-size: .9rem; margin-left: 22px; }
+.osz-sum { margin: 4px 0 10px; padding-left: 18px; font-size: .9rem; color: var(--fg-2); }
+.osz-cart .pw-f { margin: 8px 0; } .osz-actions { display: grid; gap: 8px; margin-top: 10px; }
+.osz-promo { display: flex; gap: 12px; align-items: center; padding: 14px 16px; margin: 10px 0 16px; text-decoration: none; color: var(--fg); }
+.osz-promo .ico { font-size: 1.8rem; } .osz-promo > span:nth-child(2) { flex: 1; display: grid; gap: 2px; } .osz-promo small { color: var(--muted); }

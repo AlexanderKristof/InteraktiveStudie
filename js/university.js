@@ -338,6 +338,7 @@
     setTimeout(function () { var k = main.querySelector('.tabs.big'); if (k) k.insertAdjacentHTML('beforeend', '<a href="#/teszt?targy=' + c.id + '">📝 Teszt</a>'); }, 0);
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/egyetem">Egyetem</a><span>›</span><span>' + esc(c.title) + '</span></nav>' +
       '<div class="subject-head" style="--tile:' + c.color + '"><span class="ico">' + c.icon + '</span><div><h1>' + esc(c.title) + '</h1><p class="lead" style="margin:0">' + esc(c.description) + '</p></div></div>' +
+      '<p style="margin:6px 0 10px"><a class="btn sm" href="#/osszeallito?g=' + c.id + '">🧩 Vizsgakérdések összeállítása ebből a kurzusból</a> <a class="btn sm" href="#/tanulas/fogalom?k=' + c.id + '">🔤 Fogalomkitaláló</a></p>' +
       (c.builds && c.builds.length ? '<p class="builds">🧱 <b>Erre épül (érdemes előbb ezeket nézni):</b> ' + c.builds.map(function (id) { var x = S.courseById(id); return x ? '<a class="chip" href="#/egyetem/' + x.id + '">' + x.icon + ' ' + esc(x.title) + '</a>' : ''; }).join(' ') + '</p>' : '') +
       (S.level !== 'egyetem' && S.simpleOf(c.id, '_course') ? '<section class="simple-box card pad"><div class="sb-head"><span class="sb-ico">🎒</span><b>Miről szól ez a kurzus? – egyszerűen</b></div>' + md(S.simpleOf(c.id, '_course')) +
         '<p class="muted" style="font-size:.9rem">Iskolai nézetben vagy: a szakszavaknál elöl egyszerű magyarázatot látsz. A fejlécben válthatsz egyetemi szintre.</p></section>'
