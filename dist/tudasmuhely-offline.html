@@ -818,6 +818,11 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .osz-promo { display: flex; gap: 12px; align-items: center; padding: 14px 16px; margin: 10px 0 16px; text-decoration: none; color: var(--fg); }
 .osz-promo .ico { font-size: 1.8rem; } .osz-promo > span:nth-child(2) { flex: 1; display: grid; gap: 2px; } .osz-promo small { color: var(--muted); }
 
+.ts-find { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin: 12px 0; padding: 12px 14px; }
+.ts-find input { flex: 1; min-width: 240px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; }
+.ts-topic[hidden], .ts-group[hidden], .ts-section[hidden] { display: none !important; }
+.sel-find { display: block; width: 100%; margin: 4px 0 6px; padding: 8px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; }
+
 </style>
 </head>
 <body>
@@ -877,6 +882,36 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   S.addModel = function (m) { S.models[m.id] = m; };
   S.addWidget = function (name, fn) { S.widgets[name] = fn; };
 
+  /* Kereshető legördülő lista: a <select> fölé egy szűrőmezőt tesz; gépeléskor csak az illő opciók maradnak.
+   * Ha pontosan egy opció marad, azt ki is választja (change eseménnyel), Enterre az elsőt. */
+  S.searchableSelect = function (sel, placeholder) {
+    if (!sel || sel.dataset.searchable) return; sel.dataset.searchable = '1';
+    var orig = sel.innerHTML, inp = document.createElement('input');
+    inp.type = 'search'; inp.className = 'sel-find'; inp.placeholder = placeholder || '🔎 Keresés a listában…'; inp.autocomplete = 'off';
+    sel.parentNode.insertBefore(inp, sel);
+    function filter(pickOne) {
+      var q = S.norm(inp.value.trim()), words = q.split(/\s+/).filter(Boolean), cur = sel.value;
+      var tmp = document.createElement('select'); tmp.innerHTML = orig;
+      if (words.length) {
+        Array.prototype.slice.call(tmp.querySelectorAll('optgroup')).forEach(function (g) {
+          var gl = S.norm(g.label || '');
+          Array.prototype.slice.call(g.querySelectorAll('option')).forEach(function (o) {
+            if (!words.every(function (w) { return (S.norm(o.textContent) + ' ' + gl).indexOf(w) >= 0; })) o.remove();
+          });
+          if (!g.querySelector('option')) g.remove();
+        });
+        Array.prototype.slice.call(tmp.children).forEach(function (o) {
+          if (o.tagName === 'OPTION' && o.value && !words.every(function (w) { return S.norm(o.textContent).indexOf(w) >= 0; })) o.remove();
+        });
+      }
+      sel.innerHTML = tmp.innerHTML;
+      var opts = Array.prototype.slice.call(sel.querySelectorAll('option')).filter(function (o) { return o.value; });
+      if (opts.some(function (o) { return o.value === cur; })) sel.value = cur;
+      if (words.length && (opts.length === 1 || pickOne) && opts[0] && cur !== opts[0].value) { sel.value = opts[0].value; sel.dispatchEvent(new Event('change', { bubbles: true })); }
+    }
+    inp.addEventListener('input', function () { filter(false); });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); filter(true); } });
+  };
   S.esc = function (s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -2644,7 +2679,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   }
   function bindPicker(main, base) {
     var sel = main.querySelector('#tl-pick');
-    if (sel) sel.addEventListener('change', function () { if (sel.value) location.hash = base + '?l=' + sel.value; });
+    if (sel) { sel.addEventListener('change', function () { if (sel.value) location.hash = base + '?l=' + sel.value; }); S.searchableSelect(sel, '🔎 Keresd a leckét: tantárgy vagy téma (pl. sejt, Ohm, honfoglalás)…'); }
   }
   function crumbs(title) {
     return '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/tanulas">Tanulássegéd</a><span>›</span><span>' + esc(title) + '</span></nav>';
@@ -2782,6 +2817,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
       S.subjects.map(function (s) { return '<option value="' + s.id + '"' + (s.id === sid ? ' selected' : '') + '>' + esc(s.icon + ' ' + s.title) + '</option>'; }).join('') + '</select></label>' +
       '<button type="button" class="btn primary" id="ih-go">▶ Indítás</button><span class="muted">Rekordod: <b>' + (rec[sid || 'vegyes'] || 0) + '</b></span></div><div id="ih-box"></div>';
     main.querySelector('#ih-t').addEventListener('change', function (e) { location.hash = '#/tanulas/igazhamis' + (e.target.value ? '?t=' + e.target.value : ''); });
+    S.searchableSelect(main.querySelector('#ih-t'), '🔎 Keresd a tantárgyat…');
     main.querySelector('#ih-go').addEventListener('click', start);
     var timer = null, keyH = null;
     function start() {
@@ -2835,6 +2871,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     main.innerHTML = crumbs('Fogalomkitaláló') + '<h1>🔤 Fogalomkitaláló</h1><p class="lead">Elolvasod a meghatározást, és beírod, melyik fogalomról van szó. Ha elakadsz, kérj segítséget (az első betű, aztán a betűk száma).</p>' +
       '<label class="pw-f" style="max-width:520px"><span>Kurzus</span><select id="fg-k">' + S.courses.map(function (x) { return '<option value="' + x.id + '"' + (x.id === cid ? ' selected' : '') + '>' + esc(x.icon + ' ' + x.title) + '</option>'; }).join('') + '</select></label><div id="fg-box"></div>';
     main.querySelector('#fg-k').addEventListener('change', function (e) { location.hash = '#/tanulas/fogalom?k=' + e.target.value; });
+    S.searchableSelect(main.querySelector('#fg-k'), '🔎 Keresd a kurzust (pl. IFRS, gépi tanulás, anatómia)…');
     if (!c) return true;
     var deck = S.shuffle(c.terms.slice()), i = 0, score = 0, tries = 0;
     var box = main.querySelector('#fg-box');
@@ -3053,6 +3090,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     main.querySelector('#oz-q').addEventListener('input', function (e) { q = e.target.value; clearTimeout(tmr); tmr = setTimeout(function () { paintRes(); history.replaceState(null, '', '#/osszeallito?q=' + encodeURIComponent(q) + (grp ? '&g=' + grp : '')); }, 250); });
     main.querySelector('#oz-k').addEventListener('change', function (e) { kind = e.target.value; grp = ''; go(); });
     main.querySelector('#oz-g').addEventListener('change', function (e) { grp = e.target.value; go(); });
+    S.searchableSelect(main.querySelector('#oz-g'), '🔎 Keresd a tantárgyat vagy kurzust…');
     main.querySelector('#oz-ans').addEventListener('change', function (e) { showAns = e.target.checked; paintRes(); });
     paintRes(); paintCart();
     return true;
@@ -3256,6 +3294,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
       refresh();
     });
     ks.addEventListener('change', refresh);
+    S.searchableSelect(gs, '🔎 Keresd a tantárgyat vagy kurzust (pl. matek, IFRS, villany)…');
     main.querySelector('#ex-form').addEventListener('submit', function (e) {
       e.preventDefault();
       var topics = Array.prototype.slice.call(tb.querySelectorAll('input:checked')).map(function (i) { return i.value; });
@@ -54584,6 +54623,8 @@ STUDIE.addFacts([
       (weak.length ? '<div class="note warn"><b class="t">Gyenge pontjaid: ezeket érdemes gyakorolni</b><div class="chips" style="margin-top:6px">' + weak.slice(0, 6).map(function (w) {
         return '<button type="button" class="chip" data-weak="' + w.g.id + '/' + w.t.id + '">' + w.g.icon + ' ' + esc(w.t.title) + ' · ' + w.p + '%</button>';
       }).join('') + '</div></div>' : '') +
+      '<div class="ts-find card pad"><input type="search" id="ts-find" placeholder="🔎 Keresés tantárgyra, kurzusra vagy témára… (pl. fizika, Ohm, IFRS, sejt, 1848)" autocomplete="off">' +
+      '<span class="muted" id="ts-find-n"></span><a class="btn sm" id="ts-find-q" href="#/osszeallito">🧩 Keresés a kérdések szövegében is</a></div>' +
       '<div class="ts-layout"><div class="ts-topics">' + SECTIONS.map(function (sec) {
         var gs = groups.filter(function (g) { return secOf(g) === sec[0]; });
         if (!gs.length) return '';
@@ -54622,6 +54663,39 @@ STUDIE.addFacts([
         var k = g.topics.filter(function (t) { return sel[g.id + '/' + t.id]; }).length;
         i.checked = k === g.topics.length; i.indeterminate = k > 0 && k < g.topics.length;
       });
+      (function () {
+        var fi = main.querySelector('#ts-find'), cnt = main.querySelector('#ts-find-n'), qa = main.querySelector('#ts-find-q');
+        if (!fi) return;
+        function ws(x) { return ' ' + x.replace(/[^a-z0-9]+/g, ' ') + ' '; }
+        function hit(x, w) { return x.indexOf(' ' + w) >= 0; }
+        var qText = {};
+        groups.forEach(function (g) { g.topics.forEach(function (t) { qText[g.id + '/' + t.id] = t.questions.map(function (q) { return ws(S.norm(q.q + ' ' + q.options.join(' '))); }); }); });
+        fi.addEventListener('input', function () {
+          var qHits = 0;
+          var q = S.norm(fi.value.trim()), words = q.split(/\s+/).filter(Boolean), hitT = 0;
+          qa.href = '#/osszeallito' + (fi.value.trim() ? '?q=' + encodeURIComponent(fi.value.trim()) : '');
+          main.querySelectorAll('.ts-section').forEach(function (sec) {
+            var secTitle = S.norm(sec.querySelector('.ts-sec-title').textContent), secHit = false;
+            sec.querySelectorAll('.ts-group').forEach(function (gr) {
+              var gTitle = S.norm(gr.querySelector('.ts-gt b').textContent), gHit = false;
+              var gAll = words.length && words.every(function (w) { return hit(ws(gTitle + ' ' + secTitle), w); });
+              gr.querySelectorAll('.ts-topic').forEach(function (tp) {
+                var tTitle = S.norm(tp.querySelector('span').textContent), key = tp.querySelector('input').dataset.key;
+                var ok = !words.length || gAll || words.every(function (w) { return hit(ws(tTitle + ' ' + gTitle + ' ' + secTitle), w); });
+                var nq = words.length ? (qText[key] || []).filter(function (x) { return words.every(function (w) { return hit(x, w); }); }).length : 0;
+                var badge = tp.querySelector('.ts-qhit'); if (badge) badge.remove();
+                if (!ok && nq) { ok = true; qHits += nq; tp.insertAdjacentHTML('beforeend', '<span class="badge ts-qhit">🔎 ' + nq + ' kérdés</span>'); }
+                tp.hidden = !ok; if (ok) { gHit = true; if (words.length) hitT++; }
+              });
+              gr.hidden = !gHit; if (gHit) secHit = true;
+              if (words.length) gr.open = gHit;
+            });
+            sec.hidden = !secHit;
+            if (words.length) sec.open = secHit;
+          });
+          cnt.textContent = words.length ? (hitT ? hitT + ' téma illik a keresésre' + (qHits ? ' (ebből ' + qHits + ' kérdés szövegében is szerepel)' : '') + ' – pipáld ki, amelyik kell.' : 'Nincs találat.') : '';
+        });
+      })();
       main.querySelectorAll('[data-section]').forEach(function (i) {
         var tot = 0, k = 0;
         groups.forEach(function (g) { if (secOf(g) !== i.dataset.section) return; g.topics.forEach(function (t) { tot++; if (sel[g.id + '/' + t.id]) k++; }); });
