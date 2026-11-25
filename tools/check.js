@@ -178,6 +178,16 @@ const langIds = new Set();
   });
 });
 
+/* Egyszerű magyarázatok (iskolai nézet) */
+Object.keys(S.simple || {}).forEach(cid => {
+  const c = S.courseById && S.courseById(cid);
+  if (!c) { err('egyszerű ' + cid, 'ismeretlen kurzus'); return; }
+  Object.keys(S.simple[cid]).forEach(tid => {
+    if (tid !== '_course' && !c.terms.some(t => t.id === tid)) err('egyszerű ' + cid + '/' + tid, 'ismeretlen fogalom');
+    markup('egyszerű ' + cid + '/' + tid, S.simple[cid][tid]);
+  });
+});
+
 /* Tudtad? tények */
 const factIds = new Set(), CATS = new Set((S.FACT_CATS || []).map(c => c[0]));
 (S.facts || []).forEach((f, i) => {

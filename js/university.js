@@ -5,6 +5,13 @@
   var S = window.STUDIE, esc = S.esc, md = S.md;
   S.courses = [];
   S.addCourse = function (c) { S.courses.push(c); };
+  /* Egyszerű, szakszó nélküli magyarázatok iskolai nézethez: STUDIE.addSimple('kurzus', { _course: '…', fogalomId: '…' }) */
+  S.simple = {};
+  S.addSimple = function (cid, map) { var o = S.simple[cid] = S.simple[cid] || {}; Object.keys(map).forEach(function (k) { o[k] = map[k]; }); };
+  S.simpleOf = function (cid, tid) { return (S.simple[cid] || {})[tid] || ''; };
+  function firstSentence(t) { var m = String(t).replace(/\n[\s\S]*/, '').match(/^.+?[.!?](\s|$)/); return m ? m[0].trim() : String(t).split('\n')[0]; }
+  /* iskolai nézetben a rövid leírás helyett az egyszerű magyarázat első mondata */
+  S.termShort = function (c, t) { var sm = S.level !== 'egyetem' && S.simpleOf(c.id, t.id); return sm ? firstSentence(sm) : t.short; };
   S.courseById = function (id) { return S.courses.filter(function (c) { return c.id === id; })[0]; };
 
   var PALETTE = ['#2f7bf6', '#e5484d', '#2f9e6a', '#f08c2e', '#7c5cd6', '#0e9aa7', '#c2417a', '#8a6d1f'];
@@ -38,7 +45,7 @@
     if (!list.length) return '';
     return '<div class="term-refs">' + (title ? '<b class="tr-title">' + title + '</b>' : '') + '<div class="tr-grid">' + list.map(function (r) {
       return '<a class="tr-card" style="--tc:' + topicColor(r.c, r.t.topic) + '" href="' + r.href + '"><b>' + esc(r.t.term) + '</b>' +
-        (r.t.latin ? '<small class="sci-name" style="font-size:.85rem">' + esc(r.t.latin) + '</small>' : '') + (r.t.en ? '<small>🇬🇧 ' + esc(r.t.en) + '</small>' : '') + '<span>' + S.inline(r.t.short) + '</span><em>' + esc(r.c.title) + ' →</em></a>';
+        (r.t.latin ? '<small class="sci-name" style="font-size:.85rem">' + esc(r.t.latin) + '</small>' : '') + (r.t.en ? '<small>🇬🇧 ' + esc(r.t.en) + '</small>' : '') + '<span>' + S.inline(S.termShort(r.c, r.t)) + '</span><em>' + esc(r.c.title) + ' →</em></a>';
     }).join('') + '</div></div>';
   };
   /* Hol fordul elő egy szakszó a valóságban? (modellek alkatrészei, leckék) */
@@ -317,7 +324,9 @@
     setTimeout(function () { var k = main.querySelector('.tabs.big'); if (k) k.insertAdjacentHTML('beforeend', '<a href="#/teszt?targy=' + c.id + '">📝 Teszt</a>'); }, 0);
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/egyetem">Egyetem</a><span>›</span><span>' + esc(c.title) + '</span></nav>' +
       '<div class="subject-head" style="--tile:' + c.color + '"><span class="ico">' + c.icon + '</span><div><h1>' + esc(c.title) + '</h1><p class="lead" style="margin:0">' + esc(c.description) + '</p></div></div>' +
-      (c.intro ? '<div class="lesson-body">' + md(c.intro) + '</div>' : '') +
+      (S.level !== 'egyetem' && S.simpleOf(c.id, '_course') ? '<section class="simple-box card pad"><div class="sb-head"><span class="sb-ico">🎒</span><b>Miről szól ez a kurzus? – egyszerűen</b></div>' + md(S.simpleOf(c.id, '_course')) +
+        '<p class="muted" style="font-size:.9rem">Iskolai nézetben vagy: a szakszavaknál elöl egyszerű magyarázatot látsz. A fejlécben válthatsz egyetemi szintre.</p></section>'
+        : (c.intro ? '<div class="lesson-body">' + md(c.intro) + '</div>' : '')) +
       '<div class="tabs big" role="tablist">' + TABS.map(function (t) {
         return '<a role="tab" aria-selected="' + (t[0] === tab) + '" class="' + (t[0] === tab ? 'on' : '') + '" href="#/egyetem/' + c.id + '/' + t[0] + '">' + t[1] + '</a>';
       }).join('') + '</div><div id="uni-body"></div>';
@@ -339,7 +348,7 @@
         body.querySelector('#gl-list').innerHTML = list.length ? order.map(function (L) {
           return '<h3 class="letter">' + esc(L) + '</h3><div class="gl-grid">' + groups[L].map(function (t) {
             return '<a class="card gl-item" style="--tc:' + topicColor(c, t.topic) + '" href="#/egyetem/' + c.id + '/fogalom/' + t.id + '"><b>' + esc(t.term) + '</b>' +
-              (t.en ? '<small>🇬🇧 ' + esc(t.en) + '</small>' : '') + '<span>' + S.inline(t.short) + '</span></a>';
+              (t.en ? '<small>🇬🇧 ' + esc(t.en) + '</small>' : '') + '<span>' + S.inline(S.termShort(c, t)) + '</span></a>';
           }).join('') + '</div>';
         }).join('') : '<div class="empty card">Nincs ilyen szakszó.</div>';
       };
@@ -387,12 +396,17 @@
     if (!t) return false;
     c.formulas = c.formulas || [];
     var sorted = sortTerms(c.terms), i = sorted.indexOf(t), prev = sorted[i - 1], next = sorted[i + 1];
+    var school = S.level !== 'egyetem', simple = school && S.simpleOf(c.id, t.id), pre = prereqLinks(t);
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/egyetem">Egyetem</a><span>›</span><a href="#/egyetem/' + c.id + '">' + esc(c.title) + '</a><span>›</span><span>' + esc(t.term) + '</span></nav>' +
-      (S.level !== 'egyetem' ? '<div class="note" style="margin-bottom:14px"><b class="t">🎒 Iskolai szinten vagy</b><p>Ez egy egyetemi szakszó. ' +
-        (prereqLinks(t).length ? 'Ha még új, ezekkel kezdd: ' + prereqLinks(t).map(function (u) { return '<a href="' + u.href + '">' + u.icon + ' ' + esc(u.label) + '</a>'; }).join(', ') + '. ' : '') +
+      (school && !simple ? '<div class="note" style="margin-bottom:14px"><b class="t">🎒 Iskolai szinten vagy</b><p>Ez egy egyetemi szakszó. ' +
+        (pre.length ? 'Ha még új, ezekkel kezdd: ' + pre.map(function (u) { return '<a href="' + u.href + '">' + u.icon + ' ' + esc(u.label) + '</a>'; }).join(', ') + '. ' : '') +
         '<button type="button" class="linkish" data-level="egyetem">Váltás egyetemi szintre</button></p></div>' : '') +
       (S.toolsHtml ? S.toolsHtml('szakszo:' + c.id + '/' + t.id) : '') +
-      '<div class="lesson-body term-page">' + termHtml(c, t, false) + '</div>' +
+      (school && simple ? '<div class="lesson-body term-page"><section class="simple-box card pad"><div class="sb-head"><span class="sb-ico">🎒</span><div><small class="muted">' + esc(c.title) + ' · egyszerűen elmagyarázva</small><h1>' + esc(t.term) + '</h1></div></div>' +
+        S.md(simple) +
+        (pre.length ? '<p class="muted" style="font-size:.92rem">📘 Ha még új, előbb ezeket nézd meg: ' + pre.map(function (u) { return '<a href="' + u.href + '">' + u.icon + ' ' + esc(u.label) + '</a>'; }).join(', ') + '</p>' : '') +
+        '</section><details class="school-fold"><summary>🎓 Szakmai magyarázat (egyetemi szint, szakszavakkal) – kattints a lenyitáshoz</summary>' + termHtml(c, t, false) + '</details></div>'
+        : '<div class="lesson-body term-page">' + termHtml(c, t, false) + '</div>') +
       '<nav class="pager">' + (prev ? '<a class="btn" href="#/egyetem/' + c.id + '/fogalom/' + prev.id + '">← ' + esc(prev.term) + '</a>' : '<span></span>') +
       (next ? '<a class="btn" href="#/egyetem/' + c.id + '/fogalom/' + next.id + '">' + esc(next.term) + ' →</a>' : '<a class="btn" href="#/egyetem/' + c.id + '">Vissza a szótárhoz</a>') + '</nav>';
     bindFormulas(main, c.formulas);

@@ -757,3 +757,8 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .review-btn span:last-child { display: grid; gap: 2px; }
 .review-btn small { color: var(--muted); }
 .lang-group { margin: 22px 0 10px; font-size: 1.2rem; }
+
+.simple-box { border-left: 5px solid #22c55e; margin-bottom: 14px; font-size: 1.05rem; }
+.simple-box .sb-head { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; }
+.simple-box .sb-ico { font-size: 2rem; }
+.simple-box h1 { margin: 2px 0 0; }
