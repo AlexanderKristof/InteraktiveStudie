@@ -69,6 +69,9 @@
       ['🃏', 'Szótárbúvár', '20 egyetemi szakszó az 5. dobozban.', x.cards5 >= 20],
       ['🎯', 'Sasszem', 'Egy modell „Keresd meg!” játékát hibátlanul megoldottad.', Object.keys(S.store.get('exGame', {})).some(function (k) { var m = S.models[k]; return m && S.store.get('exGame', {})[k] >= m.parts.length; })],
       ['📅', 'Felkészültem', 'Egy vizsgánál elérted a 80%-os felkészültséget.', !!(S.examsReady && S.examsReady())],
+      ['🗣️', 'Nyelvtanuló', 'Teljesítettél egy nyelvi kört.', !!(S.langStarted && S.langStarted() >= 1)],
+      ['🌍', 'Poliglott', 'Három különböző nyelvet is gyakoroltál.', !!(S.langStarted && S.langStarted() >= 3)],
+      ['🔥', 'Hétnapos nyelvi sorozat', '7 egymást követő napon gyakoroltál nyelvet.', !!(S.langStreak && S.langStreak() >= 7)],
       ['💡', 'Kíváncsi elme', 'Elolvastál 25 „Tudtad?” érdekességet.', Object.keys(S.store.get('tudtad.seen', {})).length >= 25],
       ['🧭', 'Célba értem', 'Teljesítettél egy tanulási útvonalat.', (S.paths || []).some(function (p) { return p.steps.every(function (st) { var r = S.pathStep(st); return !r || r.done; }); })]
     ];

@@ -30,6 +30,9 @@
     return n;
   }
 
+  S.langStreak = streak;
+  S.langStarted = function () { return S.langCourses.filter(function (c) { return (prog(c).xp || 0) > 0; }).length; };
+
   /* ---------- összehasonlítás ---------- */
   function strip(s) { return String(s).toLowerCase().replace(/[.,!?¿¡;:"„”“«»()。、！？]/g, ' ').replace(/[’`´]/g, '\'').replace(/\s+/g, ' ').trim(); }
   function noAcc(s) { return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').replace(/œ/g, 'oe').replace(/æ/g, 'ae') : s; }
