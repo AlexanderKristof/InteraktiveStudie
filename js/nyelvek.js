@@ -31,15 +31,20 @@
   }
 
   S.langStreak = streak;
+  S.langJudge = function (a, b) { return judge(a, b); }; /* teszteléshez */
   S.langStarted = function () { return S.langCourses.filter(function (c) { return (prog(c).xp || 0) > 0; }).length; };
 
   /* ---------- összehasonlítás ---------- */
-  function strip(s) { return String(s).toLowerCase().replace(/[.,!?¿¡;:"„”“«»()。、！？]/g, ' ').replace(/[’`´]/g, '\'').replace(/\s+/g, ' ').trim(); }
+  function strip(s) { return String(s).toLowerCase().replace(/[.,!?¿¡;:"„”“«»()。、！？，；：「」]/g, ' ').replace(/[’`´]/g, '\'').replace(/\s+/g, ' ').trim(); }
   function noAcc(s) { return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').replace(/œ/g, 'oe').replace(/æ/g, 'ae') : s; }
   function judge(input, answers) {
     var a = strip(input);
     for (var i = 0; i < answers.length; i++) if (a === strip(answers[i])) return 'ok';
     for (var j = 0; j < answers.length; j++) if (noAcc(a) === noAcc(strip(answers[j]))) return 'accent';
+    /* szóközök nélkül is (pl. kínai/japán szócsempék, „nihao” = „nǐ hǎo”) */
+    var a2 = a.replace(/\s/g, '');
+    for (var k = 0; k < answers.length; k++) if (a2 === strip(answers[k]).replace(/\s/g, '')) return 'ok';
+    for (var m = 0; m < answers.length; m++) if (noAcc(a2) === noAcc(strip(answers[m]).replace(/\s/g, ''))) return 'accent';
     return 'bad';
   }
 
@@ -66,7 +71,7 @@
   }
   if ('speechSynthesis' in window) { try { speechSynthesis.onvoiceschanged = function () { voiceCache = {}; }; speechSynthesis.getVoices(); } catch (e) { /* */ } }
 
-  function tokens(c, s) { return c.noSpaces ? String(s).replace(/[。、！？.!?]/g, '').split(/\s+/).filter(Boolean) : String(s).replace(/[.,!?¿¡;:]/g, '').split(/\s+/).filter(Boolean); }
+  function tokens(c, s) { return c.noSpaces ? String(s).replace(/[。、！？，；：「」.!?,]/g, '').split(/\s+/).filter(Boolean) : String(s).replace(/[.,!?¿¡;:]/g, '').split(/\s+/).filter(Boolean); }
   function joinT(c, arr) { return arr.join(c.noSpaces ? '' : ' '); }
   function adv(c) {
     if (c.adv) return c.adv;

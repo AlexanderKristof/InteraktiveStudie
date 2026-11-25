@@ -76,8 +76,8 @@ Adat: `data/tudtad/*.js` – `STUDIE.addFacts([{ id, cat, q, why, links: ['model
 kereshető kedvenc sportolók (100+), 9 lecke (a foci fizikája, F1-technika, edzéselmélet, táplálkozás, sportpszichológia, olimpiák) kérdésbankkal,
 és egy szétszedhető **Forma–1-es autó** modell.
 
-**🗣️ Nyelvtanulás játékosan.** Angol, német, spanyol, francia, olasz (és további nyelvek): egységekre bontott ösvény, 3–5 perces körök
-(új szó, választás, párosítás, mondatépítés szócsempékből, hallás utáni értés a böngésző felolvasójával, gépelés), XP, napi cél, sorozat, szintek (👑).
+**🗣️ Nyelvtanulás játékosan.** Angol, német, spanyol, francia, olasz, portugál, orosz, japán, kínai és koreai: egységekre bontott ösvény, 3–5 perces körök
+(új szó, választás, párosítás, mondatépítés szócsempékből, hallás utáni értés a böngésző felolvasójával, gépelés), XP, napi cél, sorozat, szintek (👑), „Gyengéim gyakorlása” (a rontott szavak ismétlése) és vegyes ismétlés.
 Adat: `data/nyelvek/*.js` – `STUDIE.addLangCourse({ id, title, flag, tts, units: [{ id, title, tip, words, sentences }] })`.
 
 **🎓 Szakmai réteg minden leckéhez.** Egyetemi nézetben minden lecke tetején mélyebb, szaknyelvi magyarázat és szakszótár (magyar – latin – angol).

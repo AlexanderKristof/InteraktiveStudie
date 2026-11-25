@@ -761,6 +761,12 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .pw-bar i { display: block; height: 100%; }
 .pw-chart { width: 100%; max-height: 180px; margin-top: 6px; }
 
+.review-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 4px 0 10px; }
+.review-btn { display: flex; align-items: center; gap: 12px; padding: 12px 14px; text-align: left; cursor: pointer; font: inherit; color: var(--fg); border: 1px solid var(--line); }
+.review-btn .ico { font-size: 1.7rem; }
+.review-btn span:last-child { display: grid; gap: 2px; }
+.review-btn small { color: var(--muted); }
+
 </style>
 </head>
 <body>
@@ -1682,6 +1688,9 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
       ['🃏', 'Szótárbúvár', '20 egyetemi szakszó az 5. dobozban.', x.cards5 >= 20],
       ['🎯', 'Sasszem', 'Egy modell „Keresd meg!” játékát hibátlanul megoldottad.', Object.keys(S.store.get('exGame', {})).some(function (k) { var m = S.models[k]; return m && S.store.get('exGame', {})[k] >= m.parts.length; })],
       ['📅', 'Felkészültem', 'Egy vizsgánál elérted a 80%-os felkészültséget.', !!(S.examsReady && S.examsReady())],
+      ['🗣️', 'Nyelvtanuló', 'Teljesítettél egy nyelvi kört.', !!(S.langStarted && S.langStarted() >= 1)],
+      ['🌍', 'Poliglott', 'Három különböző nyelvet is gyakoroltál.', !!(S.langStarted && S.langStarted() >= 3)],
+      ['🔥', 'Hétnapos nyelvi sorozat', '7 egymást követő napon gyakoroltál nyelvet.', !!(S.langStreak && S.langStreak() >= 7)],
       ['💡', 'Kíváncsi elme', 'Elolvastál 25 „Tudtad?” érdekességet.', Object.keys(S.store.get('tudtad.seen', {})).length >= 25],
       ['🧭', 'Célba értem', 'Teljesítettél egy tanulási útvonalat.', (S.paths || []).some(function (p) { return p.steps.every(function (st) { var r = S.pathStep(st); return !r || r.done; }); })]
     ];
@@ -2096,13 +2105,21 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     return n;
   }
 
+  S.langStreak = streak;
+  S.langJudge = function (a, b) { return judge(a, b); }; /* teszteléshez */
+  S.langStarted = function () { return S.langCourses.filter(function (c) { return (prog(c).xp || 0) > 0; }).length; };
+
   /* ---------- összehasonlítás ---------- */
-  function strip(s) { return String(s).toLowerCase().replace(/[.,!?¿¡;:"„”“«»()。、！？]/g, ' ').replace(/[’`´]/g, '\'').replace(/\s+/g, ' ').trim(); }
+  function strip(s) { return String(s).toLowerCase().replace(/[.,!?¿¡;:"„”“«»()。、！？，；：「」]/g, ' ').replace(/[’`´]/g, '\'').replace(/\s+/g, ' ').trim(); }
   function noAcc(s) { return s.normalize ? s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').replace(/œ/g, 'oe').replace(/æ/g, 'ae') : s; }
   function judge(input, answers) {
     var a = strip(input);
     for (var i = 0; i < answers.length; i++) if (a === strip(answers[i])) return 'ok';
     for (var j = 0; j < answers.length; j++) if (noAcc(a) === noAcc(strip(answers[j]))) return 'accent';
+    /* szóközök nélkül is (pl. kínai/japán szócsempék, „nihao” = „nǐ hǎo”) */
+    var a2 = a.replace(/\s/g, '');
+    for (var k = 0; k < answers.length; k++) if (a2 === strip(answers[k]).replace(/\s/g, '')) return 'ok';
+    for (var m = 0; m < answers.length; m++) if (noAcc(a2) === noAcc(strip(answers[m]).replace(/\s/g, ''))) return 'accent';
     return 'bad';
   }
 
@@ -2129,7 +2146,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   }
   if ('speechSynthesis' in window) { try { speechSynthesis.onvoiceschanged = function () { voiceCache = {}; }; speechSynthesis.getVoices(); } catch (e) { /* */ } }
 
-  function tokens(c, s) { return c.noSpaces ? String(s).replace(/[。、！？.!?]/g, '').split(/\s+/).filter(Boolean) : String(s).replace(/[.,!?¿¡;:]/g, '').split(/\s+/).filter(Boolean); }
+  function tokens(c, s) { return c.noSpaces ? String(s).replace(/[。、！？，；：「」.!?,]/g, '').split(/\s+/).filter(Boolean) : String(s).replace(/[.,!?¿¡;:]/g, '').split(/\s+/).filter(Boolean); }
   function joinT(c, arr) { return arr.join(c.noSpaces ? '' : ' '); }
   function adv(c) {
     if (c.adv) return c.adv;
@@ -2188,6 +2205,48 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     return ex.slice(0, ROUND);
   }
 
+  /* ---------- gyenge pontok: a rontott szavak/mondatok, ismétléshez ---------- */
+  function weak(c) { return S.store.get('nyelv.gyenge.' + c.id, {}); }
+  function itemKey(x) { return x.w ? 'w:' + x.w[0] : x.s ? 's:' + x.s[0] : null; }
+  function markWeak(c, x, ok) {
+    var k = itemKey(x); if (!k) return;
+    var wk = weak(c);
+    if (ok) { if (wk[k]) { wk[k]--; if (wk[k] <= 0) delete wk[k]; } }
+    else wk[k] = Math.min(5, (wk[k] || 0) + 2);
+    S.store.set('nyelv.gyenge.' + c.id, wk);
+  }
+  function allWords(c) { var a = []; c.units.forEach(function (u) { a = a.concat(u.words || []); }); return a; }
+  function allSent(c) { var a = []; c.units.forEach(function (u) { a = a.concat(u.sentences || []); }); return a; }
+  function reviewRound(c, mode) {
+    var W = allWords(c), Sn = allSent(c), ws = [], ss = [];
+    if (mode === 'gyenge') {
+      var wk = weak(c);
+      var keys = Object.keys(wk).sort(function (a, b) { return wk[b] - wk[a]; });
+      keys.forEach(function (k) {
+        if (k.indexOf('w:') === 0) { var w = W.filter(function (x) { return x[0] === k.slice(2); })[0]; if (w) ws.push(w); }
+        else { var sn = Sn.filter(function (x) { return x[0] === k.slice(2); })[0]; if (sn) ss.push(sn); }
+      });
+      ws = ws.slice(0, 8); ss = ss.slice(0, 4);
+    } else {
+      var p = prog(c), doneU = c.units.filter(function (u) { return (p.units[u.id] || 0) > 0; });
+      doneU.forEach(function (u) { ws = ws.concat(u.words || []); ss = ss.concat(u.sentences || []); });
+      ws = S.shuffle(ws).slice(0, 7); ss = S.shuffle(ss).slice(0, 5);
+    }
+    var ex = [], speak = canSpeak(c);
+    ws.forEach(function (w, i) {
+      var k = ['choose-rev', 'type', speak ? 'listen' : 'choose'][i % 3];
+      if (k === 'type') ex.push({ k: 'type', w: w });
+      else ex.push({ k: k, w: w, opts: S.shuffle([w].concat(pickOthers(W, w, 3, k === 'choose' ? 1 : 0))) });
+    });
+    ss.forEach(function (sn, i) {
+      var toks = tokens(c, sn[0]), others = [];
+      Sn.forEach(function (o) { if (o !== sn) others = others.concat(tokens(c, o[0])); });
+      others = S.shuffle(others.filter(function (t) { return toks.indexOf(t) < 0; })).filter(function (t, j, a) { return a.indexOf(t) === j; }).slice(0, 3);
+      ex.push({ k: i % 2 && speak ? 'listen-build' : 'build', s: sn, bank: S.shuffle(toks.concat(others)), answer: toks });
+    });
+    return S.shuffle(ex);
+  }
+
   /* ---------- oldalak ---------- */
   S.pageNyelvek = function (main) {
     var st = streak(), d = daily()[today()] || 0;
@@ -2221,7 +2280,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/nyelvek">Nyelvek</a><span>›</span><span>' + esc(c.title) + '</span></nav>' +
       '<section class="lang-hero"><h1>' + c.flag + ' ' + esc(c.title) + '</h1>' + (c.intro ? '<p class="lead">' + S.inline(c.intro) + '</p>' : '') +
       statsBar(streak(), daily()[today()] || 0) + '<p style="margin:8px 0 0">⭐ ' + (p.xp || 0) + ' XP ebben a nyelvben</p></section>' +
-      '<div id="lang-voice"></div>' +
+      '<div id="lang-voice"></div>' + reviewBar(c, p) +
       '<ol class="lang-path">' + c.units.map(function (u, i) {
         var lv = p.units[u.id] || 0, cur = i === next;
         return '<li class="lp-node' + (lv >= MAXLV ? ' done' : lv ? ' started' : '') + (cur ? ' current' : '') + '" style="--off:' + [0, 40, 60, 40, 0, -40, -60, -40][i % 8] + 'px">' +
@@ -2233,6 +2292,13 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     main.querySelectorAll('[data-unit]').forEach(function (b) {
       b.addEventListener('click', function () { unitPop(main, c, +b.dataset.unit); });
     });
+    main.querySelectorAll('[data-review]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var items = reviewRound(c, b.dataset.review);
+        if (items.length < 3) { alert('Ehhez még túl kevés anyag van. Csinálj meg előbb néhány kört!'); return; }
+        runRound(main, c, -1, 0, { items: items, title: b.dataset.review === 'gyenge' ? 'Gyengéim gyakorlása' : 'Vegyes ismétlés' });
+      });
+    });
     /* a hangok betöltése aszinkron, ezért kicsit később nézzük meg, van-e felolvasóhang */
     setTimeout(function () {
       var v = main.querySelector('#lang-voice');
@@ -2240,6 +2306,14 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     }, 1200);
     return true;
   };
+
+  function reviewBar(c, p) {
+    var nWeak = Object.keys(weak(c)).length, nDone = c.units.filter(function (u) { return (p.units[u.id] || 0) > 0; }).length;
+    if (!nWeak && !nDone) return '';
+    return '<div class="review-bar">' +
+      (nWeak ? '<button type="button" class="card review-btn" data-review="gyenge"><span class="ico">🧠</span><span><b>Gyengéim gyakorlása</b><small>' + nWeak + ' szó/mondat, amit eddig elrontottál</small></span></button>' : '') +
+      (nDone ? '<button type="button" class="card review-btn" data-review="vegyes"><span class="ico">🔀</span><span><b>Vegyes ismétlés</b><small>Kevert kör a már elkezdett ' + nDone + ' egységből</small></span></button>' : '') + '</div>';
+  }
 
   function unitPop(main, c, i) {
     var u = c.units[i], lv = prog(c).units[u.id] || 0;
@@ -2261,8 +2335,8 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   }
 
   /* ---------- egy kör ---------- */
-  function runRound(main, c, ui, level) {
-    var u = c.units[ui], items = makeRound(c, ui, level), idx = 0, mistakes = [], good = 0, combo = 0, bestCombo = 0, retry = false;
+  function runRound(main, c, ui, level, preset) {
+    var u = preset ? { id: null, title: preset.title } : c.units[ui], items = preset ? preset.items : makeRound(c, ui, level), idx = 0, mistakes = [], good = 0, combo = 0, bestCombo = 0, retry = false;
     function shell(inner, foot) {
       main.innerHTML = '<div class="lesson-run"><div class="lr-top"><button type="button" class="btn sm" id="lr-quit" aria-label="Kilépés">✕</button>' +
         '<span class="bar lr-bar"><i style="width:' + Math.round(idx / (items.length + mistakes.length || 1) * 100) + '%"></i></span>' +
@@ -2279,6 +2353,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     function feedback(ok, correctHtml, extra) {
       var foot = main.querySelector('#lr-foot');
       if (ok) { good++; combo++; bestCombo = Math.max(bestCombo, combo); } else { combo = 0; if (!retry) mistakes.push(items[idx]); }
+      markWeak(c, items[idx], ok);
       foot.className = 'lr-foot ' + (ok ? 'ok' : 'bad');
       foot.innerHTML = '<div><b>' + (ok ? ['Szuper!', 'Ügyes!', 'Pontosan!', 'Így van!'][Math.floor(Math.random() * 4)] : 'Nem egészen.') + '</b>' +
         (correctHtml ? '<div>' + (ok ? '' : 'Helyesen: ') + correctHtml + '</div>' : '') + (extra ? '<div class="muted">' + extra + '</div>' : '') + '</div>' +
@@ -2389,8 +2464,8 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
       var total = idx, acc = total ? Math.round(good / total * 100) : 0;
       var xp = 10 + (acc >= 90 ? 5 : 0) + (bestCombo >= 8 ? 3 : 0);
       var p = prog(c); p.xp = (p.xp || 0) + xp;
-      var before = p.units[u.id] || 0;
-      if (level >= before && before < MAXLV) p.units[u.id] = before + 1;
+      var before = u.id ? p.units[u.id] || 0 : 0;
+      if (u.id && level >= before && before < MAXLV) p.units[u.id] = before + 1;
       saveProg(c, p);
       var dd = daily(); dd[today()] = (dd[today()] || 0) + xp; S.store.set('nyelv.napi', dd);
       if (S.logActivity) S.logActivity('lang', c.id);
@@ -2398,11 +2473,14 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
       main.innerHTML = '<div class="lesson-run lr-done"><div class="lr-body" style="text-align:center">' +
         '<div class="big-emoji">' + (acc >= 90 ? '🏆' : acc >= 70 ? '🎉' : '💪') + '</div><h1>Kör teljesítve!</h1>' +
         '<div class="lr-score"><div><b>+' + xp + '</b><small>XP</small></div><div><b>' + acc + '%</b><small>pontosság</small></div><div><b>🔥 ' + st + '</b><small>nap sorozat</small></div></div>' +
-        (p.units[u.id] > before ? '<p>👑 Új szint: <b>' + esc(u.title) + '</b> ' + p.units[u.id] + ' / ' + MAXLV + '</p>' : '') +
+        (u.id && p.units[u.id] > before ? '<p>👑 Új szint: <b>' + esc(u.title) + '</b> ' + p.units[u.id] + ' / ' + MAXLV + '</p>' : '') +
         '<p class="muted">' + (dx >= g ? '🎯 Megvan a mai cél (' + dx + ' / ' + g + ' XP)! Holnap is gyere!' : 'Mai cél: ' + dx + ' / ' + g + ' XP – még ' + (g - dx) + ' XP.') + '</p>' +
         '<div class="row" style="justify-content:center;gap:8px;flex-wrap:wrap"><a class="btn primary" href="#/nyelv/' + c.id + '">Tovább az ösvényen →</a>' +
         '<button type="button" class="btn" id="again">🔁 Még egy kör</button></div></div></div>';
-      main.querySelector('#again').addEventListener('click', function () { runRound(main, c, ui, Math.min(p.units[u.id] || 0, MAXLV - 1)); });
+      main.querySelector('#again').addEventListener('click', function () {
+        if (preset) { var it = reviewRound(c, preset.title === 'Gyengéim gyakorlása' ? 'gyenge' : 'vegyes'); if (it.length < 3) { location.hash = '#/nyelv/' + c.id; return; } runRound(main, c, -1, 0, { items: it, title: preset.title }); }
+        else runRound(main, c, ui, Math.min(p.units[u.id] || 0, MAXLV - 1));
+      });
     }
     next();
   }
@@ -33624,6 +33702,964 @@ STUDIE.addLangCourse({
         ['Я плаваю каждый день.', 'Minden nap úszom.', [], ['Mindennap úszom.', 'Minden nap úszok.', 'Mindennap úszok.']],
         ['Завтра мы будем танцевать.', 'Holnap táncolni fogunk.', [], ['Holnap táncolunk.']],
         ['Какое у тебя хобби?', 'Mi a hobbid?', [], ['Neked mi a hobbid?']]
+      ]
+    }
+  ]
+});
+
+</script>
+  <script>/* data/nyelvek/portugal.js */
+/* Portugál nyelvtanfolyam (A1–A2, európai/portugáliai portugál; a brazil eltéréseket egy tipp mutatja be) */
+STUDIE.addLangCourse({
+  id: 'portugal', title: 'Portugál', flag: '🇵🇹', tts: 'pt-PT', badge: 'A1–A2',
+  noSpaces: false, script: false,
+  intro: 'A portugált kb. 260 millió ember beszéli négy kontinensen – Portugáliától Brazílián át Angoláig és Mozambikig –, és ebből a nyelvből való a híres, szinte lefordíthatatlan „saudade” szó is: édes-bús vágyakozás valami vagy valaki után.',
+  units: [
+    {
+      id: 'koszones', title: 'Köszönés és bemutatkozás', icon: '👋',
+      tip: 'A portugál írás ismerősnek tűnik, de a kiejtés (főleg Portugáliában) tartogat meglepetéseket:\n\n' +
+        '- **ão, õe, ã** = orrhangok, mintha az „au”, „oj”, „a” hangot az orrodon át mondanád: `não` (nem), `limões` (citromok), `amanhã` (holnap)\n' +
+        '- **ç** = **sz**: `açúcar` (cukor), `maçã` (alma); a **c** e és i előtt szintén sz: `cinco`\n' +
+        '- **lh** = kb. **lj**: `filho`, `olhar`; **nh** = **ny**: `vinho`, `senhora`\n' +
+        '- **x** többnyire **s**: `peixe` (pejs), `xadrez` (sakk); néha **ksz** vagy **z**: `táxi`, `exame`\n' +
+        '- **s** a szó végén és mássalhangzó előtt = **s**: `dois` (dojs), `escola` (iskóla)\n' +
+        '- **Elnyelt magánhangzók:** Portugáliában a hangsúlytalan **e** szinte eltűnik, a hangsúlytalan **o** pedig **u**-nak hangzik: `obrigado` ≈ obrigádu, `telefone` ≈ tlfón\n\n' +
+        'A magyarral ellentétben a hangsúly nem az első szótagon van, hanem általában az utolsó előttin; az ékezet (`á, é, ô`) jelzi, ha máshol. A szó eleji **r** és az **rr** erős, torokban képzett hang.',
+      words: [
+        ['olá', 'szia'], ['bom dia', 'jó reggelt'], ['boa tarde', 'jó napot (délután)'], ['boa noite', 'jó estét'],
+        ['adeus', 'viszontlátásra'], ['até logo', 'majd találkozunk'], ['até amanhã', 'holnap találkozunk'],
+        ['obrigado', 'köszönöm (férfi mondja)'], ['obrigada', 'köszönöm (nő mondja)'], ['por favor', 'kérem'],
+        ['de nada', 'szívesen'], ['sim', 'igen'], ['não', 'nem'], ['desculpe', 'bocsánat'],
+        ['chamo-me', 'a nevem'], ['o senhor', 'az úr'], ['a senhora', 'a hölgy'], ['muito prazer', 'örvendek'], ['bem', 'jól']
+      ],
+      sentences: [
+        ['Olá, chamo-me Ana.', 'Szia, Anának hívnak.', ['Olá, eu chamo-me Ana.', 'Olá, sou a Ana.'], ['Szia, a nevem Ana.', 'Szia, Ana vagyok.']],
+        ['Como te chamas?', 'Hogy hívnak?', [], ['Mi a neved?']],
+        ['Bom dia, como está?', 'Jó reggelt, hogy van?', [], ['Jó napot, hogy van?']],
+        ['Estou bem, obrigado.', 'Jól vagyok, köszönöm.', ['Estou bem, obrigada.', 'Bem, obrigado.', 'Bem, obrigada.'], ['Köszönöm, jól vagyok.']],
+        ['Muito prazer, chamo-me Pedro.', 'Örvendek, Pedrónak hívnak.', ['Muito prazer, sou o Pedro.'], ['Örvendek, a nevem Pedro.', 'Örvendek, Pedro vagyok.']],
+        ['E tu, como estás?', 'És te hogy vagy?', [], ['És te, hogy vagy?']],
+        ['Adeus, até amanhã.', 'Viszontlátásra, holnap találkozunk.', [], ['Viszlát, holnap találkozunk.']],
+        ['Boa noite, senhora Silva.', 'Jó estét, Silva asszony.', [], ['Jó éjszakát, Silva asszony.']],
+        ['Muito obrigada, senhor.', 'Nagyon köszönöm, uram.', ['Muito obrigado, senhor.'], []],
+        ['Desculpe, não sou a Ana.', 'Bocsánat, nem Ana vagyok.', [], ['Elnézést, nem Ana vagyok.', 'Bocsánat, én nem Ana vagyok.']],
+        ['Obrigado! De nada.', 'Köszönöm! Szívesen.', ['Obrigada! De nada.'], []],
+        ['Sim, sou o Pedro.', 'Igen, Pedro vagyok.', ['Sim, eu sou o Pedro.'], ['Igen, én Pedro vagyok.']]
+      ]
+    },
+    {
+      id: 'szamok', title: 'Számok és életkor', icon: '🔢',
+      tip: 'A számok:\n\n' +
+        '- 1–10: `um, dois, três, quatro, cinco, seis, sete, oito, nove, dez`\n' +
+        '- 11–19: `onze, doze, treze, catorze, quinze, dezasseis, dezassete, dezoito, dezanove`\n' +
+        '- tízesek: `vinte, trinta, quarenta, cinquenta, sessenta, setenta, oitenta, noventa, cem`\n\n' +
+        'Az 1-nek és a 2-nek **nőnemű alakja** is van: `um livro` (egy könyv), de `uma caneta` (egy toll); `dois irmãos`, de `duas irmãs`.\n\n' +
+        'A tízesek és az egyesek közé **e** (és) kerül: `vinte e um` (21), `trinta e cinco` (35). A 100 önmagában `cem`, de összetételben `cento`: `cento e dois` (102).\n\n' +
+        'Az életkort a **ter** (birtokolni) igével mondjuk, szó szerint „12 évem van”: `Tenho doze anos.` Kérdés: `Quantos anos tens?` (Hány éves vagy?)\n\n' +
+        'Brazíliában a 16, 17, 19 írása kicsit más: `dezesseis, dezessete, dezenove`.',
+      words: [
+        ['um', 'egy'], ['dois', 'kettő'], ['três', 'három'], ['quatro', 'négy'], ['cinco', 'öt'], ['seis', 'hat'],
+        ['sete', 'hét (szám)'], ['oito', 'nyolc'], ['nove', 'kilenc'], ['dez', 'tíz'], ['onze', 'tizenegy'], ['doze', 'tizenkettő'],
+        ['quinze', 'tizenöt'], ['vinte', 'húsz'], ['cem', 'száz'], ['o ano', 'az év'], ['o número', 'a szám'], ['quantos?', 'hány?']
+      ],
+      sentences: [
+        ['Tenho doze anos.', 'Tizenkét éves vagyok.', ['Eu tenho doze anos.'], ['Tizenkétéves vagyok.', 'Én tizenkét éves vagyok.']],
+        ['Quantos anos tens?', 'Hány éves vagy?', ['Tens quantos anos?'], ['Te hány éves vagy?']],
+        ['A Ana tem quinze anos.', 'Ana tizenöt éves.', [], ['Ana tizenötéves.']],
+        ['O Pedro tem vinte anos.', 'Pedro húszéves.', [], ['Pedro húsz éves.']],
+        ['Dois e três são cinco.', 'Kettő meg három az öt.', ['Dois mais três são cinco.'], ['Kettő meg három öt.', 'Kettő és három az öt.', 'Kettő plusz három az öt.']],
+        ['Quatro mais quatro são oito.', 'Négy meg négy az nyolc.', ['Quatro e quatro são oito.'], ['Négy plusz négy az nyolc.', 'Négy meg négy nyolc.']],
+        ['Dez menos um são nove.', 'Tíz mínusz egy az kilenc.', [], ['Tíz mínusz egy kilenc.', 'Tízből egy az kilenc.']],
+        ['Um ano tem doze meses.', 'Egy évben tizenkét hónap van.', [], ['Egy év tizenkét hónapból áll.']],
+        ['Tens onze anos?', 'Tizenegy éves vagy?', ['Tu tens onze anos?'], ['Tizenegyéves vagy?']],
+        ['Não, tenho dez anos.', 'Nem, tíz éves vagyok.', ['Não, eu tenho dez anos.'], ['Nem, tízéves vagyok.']],
+        ['Cinco mais cinco são dez.', 'Öt meg öt az tíz.', ['Cinco e cinco são dez.'], ['Öt plusz öt az tíz.', 'Öt meg öt tíz.']]
+      ]
+    },
+    {
+      id: 'csalad', title: 'Család', icon: '👨‍👩‍👧',
+      tip: 'A magyarban nincs nyelvtani nem, a portugálban viszont minden főnév **hímnemű** vagy **nőnemű**, és ehhez igazodik a névelő:\n\n' +
+        '- hímnem: `o` (a, az), `um` (egy), többes szám `os`: `o pai`, `os pais`\n' +
+        '- nőnem: `a`, `uma`, többes szám `as`: `a mãe`, `as mães`\n\n' +
+        'Ökölszabály: az **-o** végű szavak többnyire hímneműek (`o livro`), az **-a** végűek nőneműek (`a casa`), a **-ção** végűek is nőneműek (`a estação`). De vannak kivételek: `o dia` (a nap), `o mapa` (a térkép), `a mão` (a kéz) – ezért mindig a névelővel együtt tanuld a szavakat!\n\n' +
+        'Családtagoknál a nem gyakran csak a végződésben látszik: `o irmão` / `a irmã` (fiú- / lánytestvér), `o avô` / `a avó` (nagyapa / nagymama – figyelj az ékezetre!).\n\n' +
+        'Portugáliában a birtokos névmás elé **névelő** is kell: `o meu pai` (az apám), `a minha mãe` (az anyám), `os meus avós` (a nagyszüleim).',
+      words: [
+        ['o pai', 'az apa'], ['a mãe', 'az anya'], ['os pais', 'a szülők'], ['o irmão', 'a fiútestvér'], ['a irmã', 'a lánytestvér'],
+        ['o filho', 'a fiúgyermek'], ['a filha', 'a lánygyermek'], ['o avô', 'a nagyapa'], ['a avó', 'a nagymama'],
+        ['o tio', 'a nagybácsi'], ['a tia', 'a nagynéni'], ['o primo', 'az unokatestvér (fiú)'], ['a prima', 'az unokatestvér (lány)'],
+        ['o marido', 'a férj'], ['a mulher', 'a feleség'], ['o bebé', 'a kisbaba'], ['a família', 'a család'], ['o cão', 'a kutya'], ['o gato', 'a macska']
+      ],
+      sentences: [
+        ['Esta é a minha mãe.', 'Ő az anyukám.', [], ['Ez az anyukám.', 'Ő az anyám.', 'Ez az anyám.']],
+        ['O meu pai chama-se Paulo.', 'Az apámat Paulónak hívják.', ['O meu pai é o Paulo.'], ['Apámat Paulónak hívják.', 'Az apám neve Paulo.', 'Apukámat Paulónak hívják.']],
+        ['Tenho um irmão e uma irmã.', 'Van egy fiútestvérem és egy lánytestvérem.', ['Eu tenho um irmão e uma irmã.'], ['Van egy fiú- és egy lánytestvérem.']],
+        ['A minha avó tem setenta anos.', 'A nagymamám hetvenéves.', [], ['A nagymamám hetven éves.', 'Nagymamám hetvenéves.']],
+        ['Os meus pais são simpáticos.', 'A szüleim kedvesek.', [], ['Szüleim kedvesek.']],
+        ['Tens irmãos?', 'Vannak testvéreid?', ['Tu tens irmãos?'], ['Van testvéred?']],
+        ['Não, sou filho único.', 'Nem, egyke vagyok.', ['Não, sou filha única.'], ['Nem, egyedüli gyerek vagyok.']],
+        ['O meu tio tem um cão.', 'A nagybácsimnak van egy kutyája.', [], ['Nagybácsimnak van egy kutyája.']],
+        ['A minha prima tem dois gatos.', 'Az unokatestvéremnek két macskája van.', [], ['Unokatestvéremnek két macskája van.', 'Az unokatestvéremnek van két macskája.']],
+        ['A minha família é grande.', 'A családom nagy.', [], ['Nagy a családom.']],
+        ['O bebé chama-se Tiago.', 'A kisbabát Tiagónak hívják.', [], ['A kisbaba neve Tiago.', 'A baba neve Tiago.']],
+        ['Este é o meu irmão.', 'Ő a fiútestvérem.', [], ['Ez a fiútestvérem.', 'Ő a bátyám.', 'Ő az öcsém.', 'Ez a bátyám.', 'Ez az öcsém.']]
+      ]
+    },
+    {
+      id: 'iskola', title: 'Iskola és tárgyak', icon: '🎒',
+      tip: '**Hogyan szólítsunk meg valakit? tu, você, o senhor**\n\n' +
+        '- `tu` = **te**: barátoknak, családtagoknak, gyerekeknek, osztálytársaknak. Az ige 2. személyű: `Tu tens uma caneta?` (Van tollad?)\n' +
+        '- `o senhor` / `a senhora` = **Ön** (szó szerint „az úr / a hölgy”): tanárnak, idegen felnőttnek. Az ige **3. személyű**, pont mint a magyar „Ön”-nél: `O senhor tem um lápis?` (Önnek van ceruzája?)\n' +
+        '- `você` Portugáliában kényes szó: kissé távolságtartó, szemtől szembe akár udvariatlannak is hathat. Ezért inkább elhagyják, és csak az igét mondják: `Tem um lápis?` (Van ceruzája?)\n\n' +
+        'Többes számban mindenkinek `vocês` (ti / Önök), szintén 3. személyű igével: `Vocês têm livros?`\n\n' +
+        'A tanárt egyszerűen így szólítják: `professor` / `professora` (tanár úr / tanárnő). Brazíliában más a helyzet: ott a `você` a hétköznapi, baráti „te” – erről a közlekedéses egységben olvashatsz.',
+      words: [
+        ['a escola', 'az iskola'], ['a sala de aula', 'az osztályterem'], ['o professor', 'a tanár'], ['a professora', 'a tanárnő'],
+        ['o aluno', 'a diák (fiú)'], ['a aluna', 'a diáklány'], ['o colega', 'az osztálytárs'], ['a aula', 'a tanóra'],
+        ['o livro', 'a könyv'], ['o caderno', 'a füzet'], ['a caneta', 'a toll'], ['o lápis', 'a ceruza'], ['a borracha', 'a radír'],
+        ['a mochila', 'az iskolatáska'], ['a mesa', 'az asztal'], ['a cadeira', 'a szék'], ['o quadro', 'a tábla'], ['o computador', 'a számítógép']
+      ],
+      sentences: [
+        ['Tenho um livro e um caderno.', 'Van egy könyvem és egy füzetem.', ['Eu tenho um livro e um caderno.'], []],
+        ['A professora é simpática.', 'A tanárnő kedves.', [], []],
+        ['Onde está a minha caneta?', 'Hol van a tollam?', [], []],
+        ['A mochila está na cadeira.', 'Az iskolatáska a széken van.', [], ['A táska a széken van.', 'A széken van az iskolatáska.']],
+        ['O senhor é o professor?', 'Ön a tanár?', [], ['Ön a tanár úr?', 'Maga a tanár?']],
+        ['Tens uma borracha?', 'Van radírod?', ['Tu tens uma borracha?'], ['Van egy radírod?']],
+        ['A senhora tem um lápis?', 'Önnek van ceruzája?', [], ['Van Önnek ceruzája?', 'Van ceruzája?']],
+        ['A escola é muito grande.', 'Az iskola nagyon nagy.', [], ['Nagyon nagy az iskola.']],
+        ['O computador está na mesa.', 'A számítógép az asztalon van.', [], ['Az asztalon van a számítógép.']],
+        ['A aula começa às oito.', 'Az óra nyolckor kezdődik.', [], ['A tanóra nyolckor kezdődik.']],
+        ['O Rui é o meu colega.', 'Rui az osztálytársam.', [], []],
+        ['Os alunos estão na sala de aula.', 'A diákok az osztályteremben vannak.', [], ['A diákok a teremben vannak.']]
+      ]
+    },
+    {
+      id: 'etel', title: 'Étel és ital', icon: '🍞',
+      tip: '**gostar de = szeretni valamit**\n\n' +
+        'A magyarban azt mondjuk: „szeretem a kenyeret”. A portugálban a `gostar` ige után **mindig** `de` elöljárószó áll: `Gosto de pão.` (Szeretem a kenyeret.)\n\n' +
+        'Ha a főnév előtt névelő van, a `de` összeolvad vele: `de + o = do`, `de + a = da`: `Gosto do Porto.` (Szeretem Portót.), `Gosto da praia.` (Szeretem a tengerpartot.)\n\n' +
+        'Ige is állhat utána: `Gosto de nadar.` (Szeretek úszni.)\n\n' +
+        'A ragozás (szabályos -ar ige):\n\n' +
+        '- `eu gosto` (szeretem), `tu gostas`, `ele / ela gosta`\n' +
+        '- `nós gostamos`, `eles / elas gostam`\n\n' +
+        'Tagadás: a `não` az ige elé kerül: `Não gosto de leite.` Ha udvariasan kérsz valamit, mondd így: `Queria um café, por favor.` (Egy kávét kérnék.) Portugáliában a presszókávé neve `uma bica` (Lisszabonban) vagy `um cimbalino` (Portóban).',
+      words: [
+        ['o pão', 'a kenyér'], ['a água', 'a víz'], ['o leite', 'a tej'], ['o café', 'a kávé'], ['o chá', 'a tea'],
+        ['o sumo', 'a gyümölcslé'], ['a fruta', 'a gyümölcs'], ['a maçã', 'az alma'], ['a laranja', 'a narancs'],
+        ['o queijo', 'a sajt'], ['o peixe', 'a hal'], ['a carne', 'a hús'], ['o arroz', 'a rizs'], ['a sopa', 'a leves'],
+        ['o bolo', 'a torta'], ['a batata', 'a krumpli'], ['o pequeno-almoço', 'a reggeli'], ['o almoço', 'az ebéd'], ['o jantar', 'a vacsora']
+      ],
+      sentences: [
+        ['Eu gosto de pão.', 'Szeretem a kenyeret.', ['Gosto de pão.'], ['Én szeretem a kenyeret.']],
+        ['Gostas de peixe?', 'Szereted a halat?', ['Tu gostas de peixe?'], ['Te szereted a halat?']],
+        ['Não gosto de leite.', 'Nem szeretem a tejet.', ['Eu não gosto de leite.'], ['Én nem szeretem a tejet.']],
+        ['Eu bebo água.', 'Vizet iszom.', ['Bebo água.'], ['Én vizet iszom.', 'Iszom vizet.']],
+        ['Ela gosta muito de bolo.', 'Ő nagyon szereti a tortát.', [], ['Nagyon szereti a tortát.']],
+        ['Um café, por favor.', 'Egy kávét kérek.', ['Uma bica, por favor.'], ['Egy kávét, kérem.', 'Egy kávét kérnék.']],
+        ['Comemos arroz com peixe.', 'Rizst eszünk hallal.', ['Nós comemos arroz com peixe.'], ['Mi rizst eszünk hallal.']],
+        ['O jantar é às oito.', 'A vacsora nyolckor van.', [], ['Nyolckor van a vacsora.']],
+        ['Ao pequeno-almoço como pão com queijo.', 'Reggelire kenyeret eszem sajttal.', ['Como pão com queijo ao pequeno-almoço.'], ['Reggelire sajtos kenyeret eszem.']],
+        ['A sopa está muito boa.', 'A leves nagyon finom.', [], ['Nagyon finom a leves.']],
+        ['Queres uma maçã ou uma laranja?', 'Kérsz egy almát vagy egy narancsot?', ['Tu queres uma maçã ou uma laranja?'], []],
+        ['Gostamos de fruta.', 'Szeretjük a gyümölcsöt.', ['Nós gostamos de fruta.'], ['Mi szeretjük a gyümölcsöt.']]
+      ]
+    },
+    {
+      id: 'szinek', title: 'Színek és ruhák', icon: '👕',
+      tip: '**Két „lenni” ige: ser és estar**\n\n' +
+        'A magyar „van” helyett a portugálban két ige közül kell választani:\n\n' +
+        '- `ser` = **tartós** tulajdonság, ami valakinek vagy valaminek a lényege: név, származás, foglalkozás, jellem, alapszín. `Sou húngaro.` (Magyar vagyok.) `A camisa é branca.` (Az ing fehér.)\n' +
+        '- `estar` = **átmeneti** állapot és **hely**: `Estou cansado.` (Fáradt vagyok.) `As calças estão sujas.` (A nadrág koszos – most.) `Onde está o livro?` (Hol van a könyv?)\n\n' +
+        'Ragozás: `sou, és, é, somos, são` (ser) és `estou, estás, está, estamos, estão` (estar). A magyarban harmadik személyben nincs ige („Az ing fehér”), a portugálban mindig kell!\n\n' +
+        'A színek melléknevek, így igazodnak a főnév neméhez és számához: `um casaco preto`, `uma saia preta`, `sapatos pretos`. Az **-e** végűek csak számban változnak: `verde` → `verdes`. A melléknév általában a főnév **után** áll.',
+      words: [
+        ['vermelho', 'piros'], ['azul', 'kék'], ['verde', 'zöld'], ['amarelo', 'sárga'], ['branco', 'fehér'], ['preto', 'fekete'],
+        ['cor-de-rosa', 'rózsaszín'], ['castanho', 'barna'], ['cinzento', 'szürke'], ['a cor', 'a szín'],
+        ['a camisola', 'a pulóver'], ['a camisa', 'az ing'], ['a t-shirt', 'a póló'], ['as calças', 'a nadrág'], ['a saia', 'a szoknya'],
+        ['o vestido', 'a ruha (női)'], ['os sapatos', 'a cipő'], ['o casaco', 'a kabát'], ['o chapéu', 'a kalap']
+      ],
+      sentences: [
+        ['A minha camisola é azul.', 'A pulóverem kék.', [], ['Kék a pulóverem.']],
+        ['O vestido é muito bonito.', 'A ruha nagyon szép.', [], ['Nagyon szép a ruha.']],
+        ['Gosto de sapatos pretos.', 'Szeretem a fekete cipőket.', ['Eu gosto de sapatos pretos.'], ['Én szeretem a fekete cipőket.']],
+        ['As calças estão sujas.', 'A nadrág koszos.', [], ['Koszos a nadrág.']],
+        ['Qual é a tua cor preferida?', 'Mi a kedvenc színed?', [], ['Melyik a kedvenc színed?']],
+        ['A minha cor preferida é verde.', 'A kedvenc színem a zöld.', ['A minha cor preferida é o verde.'], ['Kedvenc színem a zöld.']],
+        ['Ela tem uma saia vermelha.', 'Neki van egy piros szoknyája.', [], ['Van egy piros szoknyája.']],
+        ['O casaco castanho é do meu pai.', 'A barna kabát az apámé.', [], ['A barna kabát apámé.', 'A barna kabát az apukámé.']],
+        ['O céu está cinzento.', 'Az ég szürke.', [], ['Szürke az ég.']],
+        ['A camisa branca é nova.', 'A fehér ing új.', [], []],
+        ['Hoje estou muito contente.', 'Ma nagyon boldog vagyok.', [], ['Ma nagyon vidám vagyok.']],
+        ['O chapéu amarelo é bonito.', 'A sárga kalap szép.', [], []]
+      ]
+    },
+    {
+      id: 'ido', title: 'Napok, hónapok, idő', icon: '📅',
+      tip: '**Az igék három csoportja: -ar, -er, -ir**\n\n' +
+        'A portugál igék főnévi igenéve **-ar**, **-er** vagy **-ir** végű. Jelen időben a tő után ezek a végződések jönnek:\n\n' +
+        '- `falar` (beszélni): `falo, falas, fala, falamos, falam`\n' +
+        '- `comer` (enni): `como, comes, come, comemos, comem`\n' +
+        '- `partir` (indulni): `parto, partes, parte, partimos, partem`\n\n' +
+        'A sorrend: én, te, ő/Ön, mi, ők/Önök. Ahogy a magyarban, a személyes névmás (`eu, tu, ele…`) elhagyható, mert a végződés elárulja a személyt: `Falo português.` (Beszélek portugálul.)\n\n' +
+        'A hét napjai érdekesek: hétfőtől péntekig sorszámok + `feira` (vásár): `segunda-feira` = „második nap”, `terça-feira` = „harmadik nap”… A hétvége: `sábado, domingo`. A napokat és a hónapokat **kisbetűvel** írjuk. „Hétfőn” = `na segunda-feira`, „hétfőnként” = `à segunda-feira`; „júliusban” = `em julho`.',
+      words: [
+        ['a segunda-feira', 'a hétfő'], ['a terça-feira', 'a kedd'], ['a quarta-feira', 'a szerda'], ['a quinta-feira', 'a csütörtök'],
+        ['a sexta-feira', 'a péntek'], ['o sábado', 'a szombat'], ['o domingo', 'a vasárnap'], ['hoje', 'ma'], ['amanhã', 'holnap'],
+        ['ontem', 'tegnap'], ['a semana', 'a hét'], ['o mês', 'a hónap'], ['janeiro', 'január'], ['julho', 'július'], ['dezembro', 'december'],
+        ['a hora', 'az óra (időpont)'], ['a manhã', 'a reggel'], ['a noite', 'az este']
+      ],
+      sentences: [
+        ['Hoje é segunda-feira.', 'Ma hétfő van.', [], []],
+        ['Amanhã é sábado.', 'Holnap szombat lesz.', [], ['Holnap szombat van.']],
+        ['À terça-feira estudo português.', 'Keddenként portugált tanulok.', ['Estudo português à terça-feira.', 'Eu estudo português à terça-feira.'], ['Kedden portugált tanulok.', 'Keddenként portugálul tanulok.', 'Kedden portugálul tanulok.']],
+        ['Ao domingo não trabalho.', 'Vasárnap nem dolgozom.', ['Não trabalho ao domingo.'], ['Vasárnaponként nem dolgozom.']],
+        ['Que horas são?', 'Hány óra van?', [], ['Mennyi az idő?']],
+        ['Ele bebe café de manhã.', 'Reggel kávét iszik.', [], ['Ő reggel kávét iszik.', 'Reggelente kávét iszik.']],
+        ['Vivo em Lisboa.', 'Lisszabonban lakom.', ['Eu vivo em Lisboa.', 'Moro em Lisboa.'], ['Lisszabonban élek.', 'Én Lisszabonban lakom.']],
+        ['Partimos na quinta-feira.', 'Csütörtökön indulunk.', ['Nós partimos na quinta-feira.'], ['Csütörtökön elutazunk.']],
+        ['A semana tem sete dias.', 'Egy hétben hét nap van.', [], ['A hét hét napból áll.']],
+        ['O meu aniversário é em julho.', 'A születésnapom júliusban van.', [], ['Júliusban van a születésnapom.']],
+        ['Ontem foi sexta-feira.', 'Tegnap péntek volt.', [], []],
+        ['Em dezembro faz frio.', 'Decemberben hideg van.', ['Em dezembro está frio.'], []]
+      ]
+    },
+    {
+      id: 'otthon', title: 'Otthon és a város', icon: '🏠',
+      tip: '**Összevonások: no, na, do, da, ao**\n\n' +
+        'Ahol a magyar ragot használ (-ban, -ból, -ba), ott a portugál elöljárószót, ami **összeolvad** a névelővel:\n\n' +
+        '- `em` (-ban/-ben, -on/-en) + `o / a` = `no / na`: `no jardim` (a kertben), `na cozinha` (a konyhában)\n' +
+        '- `de` (-ból/-ből, -tól/-től, -é) + `o / a` = `do / da`: `da praia` (a tengerpartról), `do meu pai` (az apámé)\n' +
+        '- `a` (-ba/-be, -hoz) + `o / a` = `ao / à`: `ao parque` (a parkba), `à escola` (az iskolába)\n\n' +
+        'Többes számban: `nos, nas, dos, das, aos, às`. A határozatlan névelővel is összeolvad: `em + uma = numa` (`numa casa` = egy házban), és a mutató névmással is: `em + esta = nesta` (ebben).\n\n' +
+        'Az összevonás **kötelező** – `em o jardim` hibás! Épületek, helyek helyére gyakran a `ficar` igét használják: `O museu fica na praça.` (A múzeum a téren található.)',
+      words: [
+        ['a casa', 'a ház'], ['o apartamento', 'a lakás'], ['o quarto', 'a hálószoba'], ['a cozinha', 'a konyha'],
+        ['a casa de banho', 'a fürdőszoba'], ['a sala', 'a nappali'], ['a porta', 'az ajtó'], ['a janela', 'az ablak'], ['a cama', 'az ágy'],
+        ['o jardim', 'a kert'], ['a rua', 'az utca'], ['a cidade', 'a város'], ['a praça', 'a tér'], ['o parque', 'a park'],
+        ['a igreja', 'a templom'], ['o supermercado', 'a szupermarket'], ['o museu', 'a múzeum'], ['a praia', 'a tengerpart']
+      ],
+      sentences: [
+        ['Moro numa casa grande.', 'Egy nagy házban lakom.', ['Vivo numa casa grande.', 'Eu moro numa casa grande.'], ['Nagy házban lakom.']],
+        ['O gato está no jardim.', 'A macska a kertben van.', [], ['A kertben van a macska.']],
+        ['A minha mãe está na cozinha.', 'Az anyám a konyhában van.', [], ['Anyukám a konyhában van.', 'Az anyukám a konyhában van.']],
+        ['O livro está em cima da cama.', 'A könyv az ágyon van.', [], ['Az ágyon van a könyv.']],
+        ['Vou ao parque.', 'Megyek a parkba.', ['Eu vou ao parque.'], ['A parkba megyek.']],
+        ['Venho da praia.', 'A tengerpartról jövök.', ['Eu venho da praia.'], ['Jövök a tengerpartról.', 'A strandról jövök.']],
+        ['O museu fica na praça.', 'A múzeum a téren van.', ['O museu está na praça.'], ['A téren van a múzeum.']],
+        ['Onde fica a casa de banho?', 'Hol van a fürdőszoba?', ['Onde é a casa de banho?'], ['Hol a fürdőszoba?', 'Hol van a mosdó?']],
+        ['A janela do quarto é grande.', 'A hálószoba ablaka nagy.', [], ['Nagy a hálószoba ablaka.']],
+        ['Lisboa é uma cidade bonita.', 'Lisszabon szép város.', [], ['Lisszabon egy szép város.']],
+        ['O supermercado fica nesta rua.', 'A szupermarket ebben az utcában van.', [], ['Ebben az utcában van a szupermarket.']],
+        ['A igreja fica perto do parque.', 'A templom a park közelében van.', [], ['A templom közel van a parkhoz.']]
+      ]
+    },
+    {
+      id: 'kozlekedes', title: 'Közlekedés és utazás', icon: '🚋',
+      tip: '**Portugáliai és brazil portugál**\n\n' +
+        'A portugálul beszélők többsége (több mint 200 millió ember) Brazíliában él. A két változat jól érti egymást, de vannak különbségek:\n\n' +
+        '- **Megszólítás:** Brazíliában a `você` a hétköznapi „te” (a `tu` csak egyes vidékeken él), és a „mi” helyett gyakran `a gente`.\n' +
+        '- **Kiejtés:** a brazilok nem nyelik el a magánhangzókat, ezért nekünk könnyebb érteni őket. A `de, te, di, ti` ott dzsi, csi: `dia` ≈ dzsia, `noite` ≈ nojcsi.\n' +
+        '- **Szavak:** busz = `autocarro` (PT) / `ônibus` (BR), vonat = `comboio` / `trem`, mobil = `telemóvel` / `celular`, villamos = `elétrico` / `bonde`, reggeli = `pequeno-almoço` / `café da manhã`, fürdőszoba = `casa de banho` / `banheiro`.\n' +
+        '- **Nyelvtan:** „beszélek éppen” = `estou a falar` (PT) / `estou falando` (BR); „a nevem” = `chamo-me` (PT) / `me chamo` (BR).\n\n' +
+        'Útbaigazításnál: `à esquerda` (balra), `à direita` (jobbra), `em frente` (egyenesen).',
+      words: [
+        ['o autocarro', 'a busz'], ['o comboio', 'a vonat'], ['o metro', 'a metró'], ['o elétrico', 'a villamos'], ['o carro', 'az autó'],
+        ['a bicicleta', 'a bicikli'], ['o avião', 'a repülőgép'], ['o barco', 'a hajó'], ['a estação', 'az állomás'], ['o aeroporto', 'a repülőtér'],
+        ['o bilhete', 'a jegy'], ['o telemóvel', 'a mobiltelefon'], ['a mala', 'a bőrönd'], ['o mapa', 'a térkép'], ['o hotel', 'a szálloda'],
+        ['à esquerda', 'balra'], ['à direita', 'jobbra'], ['em frente', 'egyenesen előre']
+      ],
+      sentences: [
+        ['Vou de autocarro para a escola.', 'Busszal megyek az iskolába.', ['Eu vou de autocarro para a escola.', 'Vou para a escola de autocarro.'], ['Az iskolába busszal megyek.']],
+        ['O comboio parte às dez.', 'A vonat tízkor indul.', [], ['Tízkor indul a vonat.']],
+        ['Onde fica a estação?', 'Hol van az állomás?', ['Onde é a estação?'], ['Hol az állomás?', 'Hol van a pályaudvar?']],
+        ['Um bilhete para o Porto, por favor.', 'Egy jegyet kérek Portóba.', [], ['Kérek egy jegyet Portóba.', 'Egy jegyet Portóba, legyen szíves.']],
+        ['Vire à esquerda.', 'Forduljon balra.', [], ['Forduljon el balra.']],
+        ['O hotel fica à direita.', 'A szálloda jobbra van.', [], ['Jobbra van a szálloda.', 'A szálloda a jobb oldalon van.']],
+        ['Siga em frente.', 'Menjen egyenesen előre.', [], ['Menjen egyenesen.']],
+        ['Tenho o mapa no telemóvel.', 'A térkép a mobilomon van.', [], ['A mobilomon van a térkép.', 'A telefonomon van a térkép.']],
+        ['Em Lisboa há elétricos amarelos.', 'Lisszabonban sárga villamosok vannak.', [], ['Lisszabonban vannak sárga villamosok.']],
+        ['O avião chega ao aeroporto.', 'A repülőgép megérkezik a repülőtérre.', [], ['A repülő megérkezik a repülőtérre.', 'A repülőgép a repülőtérre érkezik.']],
+        ['A minha mala é muito grande.', 'A bőröndöm nagyon nagy.', [], ['Nagyon nagy a bőröndöm.']],
+        ['Vamos de metro ou de carro?', 'Metróval vagy autóval megyünk?', [], ['Metróval megyünk vagy autóval?']]
+      ]
+    },
+    {
+      id: 'hobbi', title: 'Hobbi, tervek és múlt', icon: '⚽',
+      tip: '**Jövő: ir + főnévi igenév**\n\n' +
+        'A közeli jövőt úgy mondjuk, mint a magyar „fogok + ige”: az `ir` (menni) ige jelen idejű alakja + főnévi igenév: `vou, vais, vai, vamos, vão`. `Vou estudar.` (Tanulni fogok.) `Vamos jogar futebol.` (Focizni fogunk.)\n\n' +
+        '**Múlt: pretérito perfeito**\n\n' +
+        'A befejezett, egyszeri múltbeli eseményre:\n\n' +
+        '- `falar`: `falei, falaste, falou, falámos, falaram`\n' +
+        '- `comer`: `comi, comeste, comeu, comemos, comeram`\n' +
+        '- `partir`: `parti, partiste, partiu, partimos, partiram`\n\n' +
+        'Az -ar igéknél a „mi” alakban Portugáliában ékezet van (`falámos` = beszéltünk), így különbözik a jelen időtől (`falamos` = beszélünk). Helyesírási apróság: `jogar` → `joguei` (hogy a g kemény maradjon).\n\n' +
+        'Az `ir` (menni) és a `ser` (lenni) múlt ideje ugyanaz: `fui, foste, foi, fomos, foram` – a `Fomos a Portugal.` jelentése „Portugáliába mentünk”, de érthető úgy is: „Portugáliában voltunk”.',
+      words: [
+        ['o futebol', 'a foci'], ['a música', 'a zene'], ['o desporto', 'a sport'], ['o jogo', 'a játék (meccs)'], ['o filme', 'a film'],
+        ['o cinema', 'a mozi'], ['a guitarra', 'a gitár'], ['nadar', 'úszni'], ['jogar', 'játszani (sportot, játékot)'], ['tocar', 'zenélni (hangszeren)'],
+        ['ler', 'olvasni'], ['dançar', 'táncolni'], ['cantar', 'énekelni'], ['viajar', 'utazni'], ['o fim de semana', 'a hétvége'],
+        ['as férias', 'a szünidő'], ['o ano passado', 'tavaly'], ['na próxima semana', 'jövő héten']
+      ],
+      sentences: [
+        ['Gosto de jogar futebol.', 'Szeretek focizni.', ['Eu gosto de jogar futebol.'], ['Szeretek focit játszani.']],
+        ['Vou ver um filme amanhã.', 'Holnap megnézek egy filmet.', ['Amanhã vou ver um filme.', 'Eu vou ver um filme amanhã.'], ['Holnap filmet fogok nézni.', 'Holnap meg fogok nézni egy filmet.', 'Holnap egy filmet fogok nézni.']],
+        ['No fim de semana vamos ao cinema.', 'Hétvégén moziba megyünk.', ['Vamos ao cinema no fim de semana.'], ['Hétvégén elmegyünk moziba.', 'Hétvégén megyünk moziba.']],
+        ['Vou viajar nas férias.', 'A szünidőben utazni fogok.', ['Nas férias vou viajar.'], ['Utazni fogok a szünidőben.', 'A szünidőben el fogok utazni.', 'A szünetben utazni fogok.']],
+        ['Ontem joguei futebol.', 'Tegnap fociztam.', ['Joguei futebol ontem.'], ['Tegnap focit játszottam.']],
+        ['Ela tocou guitarra.', 'Ő gitározott.', [], ['Gitározott.', 'Ő gitáron játszott.']],
+        ['Ontem comi um bolo.', 'Tegnap ettem egy tortát.', ['Comi um bolo ontem.'], ['Tegnap egy tortát ettem.']],
+        ['O ano passado fomos a Portugal.', 'Tavaly Portugáliába mentünk.', ['No ano passado fomos a Portugal.'], ['Tavaly Portugáliában voltunk.']],
+        ['Gostas de ler?', 'Szeretsz olvasni?', ['Tu gostas de ler?'], ['Te szeretsz olvasni?']],
+        ['Na próxima semana vou nadar.', 'Jövő héten úszni fogok.', ['Vou nadar na próxima semana.'], ['Jövő héten úszni megyek.', 'Jövő héten megyek úszni.']],
+        ['Ontem dançámos e cantámos.', 'Tegnap táncoltunk és énekeltünk.', ['Ontem dançamos e cantamos.'], []],
+        ['O jogo foi muito bom.', 'A meccs nagyon jó volt.', [], ['A játék nagyon jó volt.']]
+      ]
+    }
+  ]
+});
+
+</script>
+  <script>/* data/nyelvek/koreai.js */
+/* Koreai nyelvtanfolyam (A1–A2) – 10 egység. A szavak hangul betűsek, a 3. elem a hivatalos átírás (Revised Romanization). */
+STUDIE.addLangCourse({
+  id: 'koreai', title: 'Koreai', flag: '🇰🇷', tts: 'ko-KR', badge: 'A1–A2',
+  noSpaces: false, script: true,
+  intro: 'A koreai ábécét, a hangult egy király találta ki 1443-ban, és olyan logikus, hogy egy délután alatt meg lehet tanulni – a mondatok pedig a magyarhoz hasonlóan „ragokkal” épülnek, és az ige a végére kerül!',
+  units: [
+    {
+      id: 'koszones', title: 'Hangul és köszönés', icon: '👋',
+      tip: 'A **hangult** Szedzsong király (Sejong) és tudósai alkották meg 1443-ban, hogy az egyszerű emberek is megtanulhassanak írni. Az alapábécé **14 mássalhangzóból és 10 magánhangzóból** áll.\n\n' +
+        '- A mássalhangzók a **szájformát** rajzolják le: ㄱ (g/k) a nyelv hátulját, ㄴ (n) a nyelv hegyét, ㅁ (m) a csukott szájat, ㅅ (s/sz) a fogat, ㅇ a torkot.\n' +
+        '- A magánhangzók három elemből épülnek: pont/rövid vonás (ég), ㅡ (föld), ㅣ (ember): ㅏ a, ㅓ eo (nyílt o), ㅗ o, ㅜ u, ㅡ eu (ajakkerekítés nélküli u), ㅣ i.\n\n' +
+        'A betűket **szótagblokkokba** rendezik: 한 = ㅎ + ㅏ + ㄴ (han), 국 = ㄱ + ㅜ + ㄱ (guk) → 한국 = Korea. Ha a szótag magánhangzóval kezdődik, néma ㅇ áll elöl: 안 = an, 아 = a.\n\n' +
+        'Az átírásban **j** = dzs, **ch** = erős cs, **s** ≈ sz, **eo** ≈ nyílt o, **eu** ≈ ü és u között. Válaszként az átírást is beírhatod (pl. annyeonghaseyo).\n\n' +
+        'A `안녕하세요` mindenkinek jó, a `안녕` csak barátnak. Búcsúzáskor a távozónak `안녕히 가세요` (menj békével), a maradónak `안녕히 계세요` (maradj békével) jár.',
+      words: [
+        ['안녕하세요', 'jó napot / szia (udvarias)', 'annyeonghaseyo'], ['안녕', 'szia (barátnak)', 'annyeong'], ['안녕히 가세요', 'viszontlátásra (a távozónak)', 'annyeonghi gaseyo'],
+        ['안녕히 계세요', 'viszontlátásra (a maradónak)', 'annyeonghi gyeseyo'], ['감사합니다', 'köszönöm', 'gamsahamnida'], ['고마워요', 'köszi', 'gomawoyo'],
+        ['네', 'igen', 'ne'], ['아니요', 'nem', 'aniyo'], ['죄송합니다', 'elnézést kérek', 'joesonghamnida'], ['미안해요', 'bocsánat, sajnálom', 'mianhaeyo'],
+        ['괜찮아요', 'semmi baj, rendben van', 'gwaenchanayo'], ['반갑습니다', 'örülök a találkozásnak', 'bangapseumnida'], ['잘 자요', 'jó éjszakát', 'jal jayo'],
+        ['또 만나요', 'majd találkozunk', 'tto mannayo'], ['천만에요', 'szívesen (köszönetre)', 'cheonmaneyo'], ['여보세요', 'halló (telefonon)', 'yeoboseyo'], ['좋아요', 'jó; tetszik', 'joayo']
+      ],
+      sentences: [
+        ['안녕하세요!', 'Jó napot!', [], ['Szia!', 'Jó napot kívánok!', 'Üdvözlöm!']],
+        ['안녕하세요, 선생님!', 'Jó napot, tanár úr!', [], ['Jó napot, tanárnő!', 'Jó napot kívánok, tanár úr!', 'Jó napot kívánok, tanárnő!']],
+        ['감사합니다.', 'Köszönöm.', ['고맙습니다.'], ['Köszönöm szépen.']],
+        ['네, 감사합니다.', 'Igen, köszönöm.', ['네, 고맙습니다.'], ['Igen, köszönöm szépen.']],
+        ['아니요, 괜찮아요.', 'Nem, köszönöm.', [], ['Nem, semmi baj.', 'Nem, rendben van.', 'Nem kell, köszönöm.']],
+        ['죄송합니다.', 'Elnézést kérek.', ['죄송해요.'], ['Bocsánat.', 'Elnézést.', 'Bocsánatot kérek.']],
+        ['괜찮아요.', 'Semmi baj.', [], ['Rendben van.', 'Nem baj.', 'Minden rendben.']],
+        ['반갑습니다!', 'Örülök a találkozásnak!', ['반가워요!'], ['Örvendek!', 'Örülök, hogy találkoztunk!', 'Örülök, hogy megismerhetem!']],
+        ['안녕히 가세요!', 'Viszontlátásra!', ['안녕히 계세요!'], ['Viszlát!']],
+        ['안녕히 계세요!', 'Viszontlátásra!', ['안녕히 가세요!'], ['Viszlát!']],
+        ['잘 자요!', 'Jó éjszakát!', [], ['Jó éjt!', 'Aludj jól!']],
+        ['또 만나요!', 'Majd találkozunk!', [], ['Viszlát!', 'Még találkozunk!']],
+        ['천만에요.', 'Szívesen.', [], ['Nincs mit.']],
+        ['여보세요?', 'Halló?', [], []]
+      ]
+    },
+    {
+      id: 'bemutatkozas', title: 'Bemutatkozás', icon: '🙋',
+      tip: '**Udvariassági szintek:** a koreai igevégződés mutatja, mennyire vagy udvarias. Kezdőként a **-요 végű** alakot tanuld (`해요`, `있어요`): ez kedves és udvarias, szinte mindenkivel jó. A `-습니다` (`감사합니다`) még hivatalosabb, a -요 nélküli alak (`안녕`) bizalmas.\n\n' +
+        '**„Vagyok, van” = -이에요 / -예요.** Mássalhangzóra végződő szó után `이에요`, magánhangzó után `예요`: `학생이에요` (diák vagyok), `가수예요` (énekes). Tagadva: `가수가 아니에요` (nem énekes).\n\n' +
+        '**Témajelölő 은/는:** azt jelöli, akiről/amiről szól a mondat – kb. „ami engem illet”. Mássalhangzó után `은`, magánhangzó után `는`: `선생님은`, `저는`.\n\n' +
+        '**Batchim** a szótag alján álló mássalhangzó (학 alján ㄱ). Ha utána magánhangzó jön, átköltözik: `학생이에요` ≈ hak-szeng-i-e-jo, `이름이` ≈ i-reu-mi.\n\n' +
+        'Az alanyt gyakran elhagyják, mint nálunk. **저** = én (udvarias), **나** = én (bizalmas), **제** = az én …-m.',
+      words: [
+        ['저', 'én (udvarias)', 'jeo'], ['나', 'én (bizalmas)', 'na'], ['제', 'az én …-m (udvarias)', 'je'], ['이름', 'név', 'ireum'], ['학생', 'diák', 'haksaeng'],
+        ['선생님', 'tanár', 'seonsaengnim'], ['친구', 'barát', 'chingu'], ['사람', 'ember', 'saram'], ['한국', 'Korea', 'Hanguk'], ['헝가리', 'Magyarország', 'Heonggari'],
+        ['한국 사람', 'koreai (ember)', 'Hanguk saram'], ['헝가리 사람', 'magyar (ember)', 'Heonggari saram'], ['누구', 'ki?', 'nugu'], ['뭐', 'mi?', 'mwo'],
+        ['이거', 'ez (a dolog)', 'igeo'], ['가수', 'énekes', 'gasu'], ['배우', 'színész', 'baeu'], ['의사', 'orvos', 'uisa']
+      ],
+      sentences: [
+        ['저는 안나예요.', 'Anna vagyok.', ['제 이름은 안나예요.'], ['Én Anna vagyok.', 'Annának hívnak.', 'A nevem Anna.']],
+        ['이름이 뭐예요?', 'Mi a neved?', [], ['Hogy hívnak?', 'Mi a neve?', 'Hogy hívják?']],
+        ['저는 학생이에요.', 'Diák vagyok.', ['학생이에요.'], ['Én diák vagyok.']],
+        ['저는 헝가리 사람이에요.', 'Magyar vagyok.', ['헝가리 사람이에요.'], ['Én magyar vagyok.']],
+        ['민수는 한국 사람이에요.', 'Minszu koreai.', [], ['Minszu koreai ember.']],
+        ['누구예요?', 'Ki az?', [], ['Ki ez?', 'Kicsoda?']],
+        ['제 친구예요.', 'Ő a barátom.', [], ['A barátom.', 'Ez a barátom.']],
+        ['선생님은 한국 사람이에요?', 'A tanár koreai?', [], ['A tanár úr koreai?', 'A tanárnő koreai?']],
+        ['네, 한국 사람이에요.', 'Igen, koreai.', [], ['Igen, ő koreai.']],
+        ['이거 뭐예요?', 'Mi ez?', ['이게 뭐예요?'], ['Ez mi?']],
+        ['지민은 가수예요.', 'Dzsimin énekes.', [], []],
+        ['저는 배우가 아니에요.', 'Nem vagyok színész.', ['배우가 아니에요.'], ['Én nem vagyok színész.']],
+        ['만나서 반갑습니다.', 'Örülök, hogy megismerhetem.', ['만나서 반가워요.'], ['Örvendek.', 'Örülök, hogy megismerhetlek.', 'Örülök a találkozásnak.']]
+      ]
+    },
+    {
+      id: 'szamok', title: 'Számok', icon: '🔢',
+      tip: 'A koreaiban **két számsor** van!\n\n' +
+        '- **Koreai (natív) számok:** 하나, 둘, 셋, 넷, 다섯, 여섯, 일곱, 여덟, 아홉, 열 – ezekkel **darabot, embert, életkort és órát** mondunk. 11 = 열하나, 15 = 열다섯.\n' +
+        '- **Kínai eredetű (sino-koreai) számok:** 일, 이, 삼, 사, 오, 육, 칠, 팔, 구, 십, 백 (100), 천 (1000) – ezekkel **pénzt, dátumot, percet, telefonszámot** mondunk. 30 = 삼십 (három-tíz), 3000 = 삼천.\n\n' +
+        '**Számlálószók:** a szám után egy kis szó áll, ami megmondja, mit számolunk: `개` (darab), `명` (fő), `살` (év – életkor), `원` (von, a koreai pénz), `잔` (pohár, csésze).\n\n' +
+        'Számlálószó előtt az 1–4 és a 20 rövidül: 하나 → `한`, 둘 → `두`, 셋 → `세`, 넷 → `네`: `한 개`, `두 잔`, `열네 살` (14 éves).\n\n' +
+        'Érdekes: a szám a főnév **után** jön: `사과 두 개` = szó szerint „alma két darab”. Kérés: `… 주세요` = … kérek (adja, kérem).',
+      words: [
+        ['하나', 'egy', 'hana'], ['둘', 'kettő', 'dul'], ['셋', 'három', 'set'], ['넷', 'négy', 'net'], ['다섯', 'öt', 'daseot'], ['여섯', 'hat', 'yeoseot'], ['일곱', 'hét (szám)', 'ilgop'],
+        ['여덟', 'nyolc', 'yeodeol'], ['아홉', 'kilenc', 'ahop'], ['열', 'tíz', 'yeol'], ['일', 'egy (kínai eredetű)', 'il'], ['삼', 'három (kínai eredetű)', 'sam'], ['십', 'tíz (kínai eredetű)', 'sip'],
+        ['백', 'száz', 'baek'], ['천', 'ezer', 'cheon'], ['살', 'év (életkor)', 'sal'], ['원', 'von (koreai pénz)', 'won'], ['몇', 'hány?', 'myeot'], ['얼마', 'mennyi? (ár)', 'eolma'], ['주세요', 'kérek (adja, kérem)', 'juseyo']
+      ],
+      sentences: [
+        ['하나, 둘, 셋!', 'Egy, kettő, három!', [], ['Egy, két, három!']],
+        ['몇 살이에요?', 'Hány éves vagy?', [], ['Hány éves?', 'Te hány éves vagy?']],
+        ['저는 열다섯 살이에요.', 'Tizenöt éves vagyok.', ['열다섯 살이에요.'], ['Én tizenöt éves vagyok.']],
+        ['저는 열네 살이에요.', 'Tizennégy éves vagyok.', ['열네 살이에요.'], ['Én tizennégy éves vagyok.']],
+        ['민수는 열세 살이에요.', 'Minszu tizenhárom éves.', [], []],
+        ['지민은 몇 살이에요?', 'Hány éves Dzsimin?', [], ['Dzsimin hány éves?']],
+        ['사과 하나 주세요.', 'Egy almát kérek.', ['사과 한 개 주세요.'], ['Kérek egy almát.']],
+        ['사과 두 개 주세요.', 'Két almát kérek.', [], ['Kérek két almát.']],
+        ['커피 두 잔 주세요.', 'Két kávét kérek.', [], ['Kérek két kávét.']],
+        ['이거 얼마예요?', 'Mennyibe kerül ez?', ['이게 얼마예요?'], ['Ez mennyibe kerül?', 'Mennyi ez?']],
+        ['삼천 원이에요.', 'Háromezer von.', [], ['Háromezer vonba kerül.', 'Ez háromezer von.']],
+        ['일, 이, 삼, 사, 오.', 'Egy, kettő, három, négy, öt.', [], []]
+      ]
+    },
+    {
+      id: 'csalad', title: 'Család', icon: '👨‍👩‍👧',
+      tip: '**Alanyjelölő 이/가:** az alanyt jelöli, főleg új információnál és a `있어요` (van) / `없어요` (nincs) előtt. Mássalhangzó után `이`, magánhangzó után `가`: `동생이 있어요` (van kistestvérem), `언니가 없어요` (nincs nővérem). Figyeld meg: a koreai nem mondja, hogy „-m”, a birtokost érteni kell!\n\n' +
+        '**은/는 vagy 이/가?** A 은/는 a témát (és szembeállítást) jelöli: `고양이는 없어요` = macskám (az) nincs – de másom talán van.\n\n' +
+        '**Testvérek:** a koreaiban a szó attól is függ, ki beszél!\n\n' +
+        '- fiú mondja: báty = `형`, nővér = `누나`\n' +
+        '- lány mondja: báty = `오빠`, nővér = `언니`\n' +
+        '- öcs vagy húg egyaránt: `동생`\n\n' +
+        'A K-drámákban a lányok az idősebb fiúbarátjukat is `오빠`-nak hívják!\n\n' +
+        '**우리** = mi, de a saját családra is ezt mondják: `우리 엄마` = szó szerint „a mi anyukánk” – az anyukám.\n\n' +
+        'Embereket a `명` számlálószóval számolunk: `두 명` = két fő.',
+      words: [
+        ['가족', 'család', 'gajok'], ['엄마', 'anya (anyu)', 'eomma'], ['아빠', 'apa (apu)', 'appa'], ['어머니', 'édesanya (udvariasabb)', 'eomeoni'], ['아버지', 'édesapa (udvariasabb)', 'abeoji'],
+        ['형', 'báty (fiú mondja)', 'hyeong'], ['오빠', 'báty (lány mondja)', 'oppa'], ['누나', 'nővér (fiú mondja)', 'nuna'], ['언니', 'nővér (lány mondja)', 'eonni'], ['동생', 'öcs vagy húg (kistestvér)', 'dongsaeng'],
+        ['할머니', 'nagymama', 'halmeoni'], ['할아버지', 'nagypapa', 'harabeoji'], ['강아지', 'kutyus (kiskutya)', 'gangaji'], ['고양이', 'macska', 'goyangi'],
+        ['있어요', 'van (valakinek, valahol)', 'isseoyo'], ['없어요', 'nincs', 'eopseoyo'], ['명', 'fő (embereket számlál)', 'myeong'], ['우리', 'mi; a mi …-nk', 'uri']
+      ],
+      sentences: [
+        ['우리 가족이에요.', 'Ez a családom.', [], ['Ez a mi családunk.', 'Ez a családunk.']],
+        ['언니가 있어요.', 'Van egy nővérem.', [], ['Van nővérem.']],
+        ['동생이 없어요.', 'Nincs kistestvérem.', [], ['Nincs testvérem.', 'Nincs öcsém vagy húgom.']],
+        ['우리 엄마는 의사예요.', 'Az anyukám orvos.', ['엄마는 의사예요.'], ['Anyukám orvos.', 'Anyám orvos.', 'Az anyám orvos.', 'Anya orvos.']],
+        ['강아지가 있어요?', 'Van kutyád?', [], ['Van kiskutyád?', 'Van kutyája?', 'Van kutyátok?']],
+        ['네, 강아지가 있어요.', 'Igen, van kutyám.', [], ['Igen, van kiskutyám.', 'Igen, van kutyánk.']],
+        ['고양이는 없어요.', 'Macskám nincs.', [], ['Macskánk nincs.', 'Nincs macskám.']],
+        ['형이 두 명 있어요.', 'Két bátyám van.', [], ['Van két bátyám.']],
+        ['우리 할아버지는 선생님이에요.', 'A nagypapám tanár.', ['할아버지는 선생님이에요.'], ['Nagypapám tanár.', 'A nagyapám tanár.']],
+        ['오빠는 가수예요.', 'A bátyám énekes.', [], ['Bátyám énekes.']],
+        ['가족이 몇 명이에요?', 'Hányan vagytok a családban?', [], ['Hány tagú a családod?', 'Hányan vannak a családjában?']],
+        ['네 명이에요.', 'Négyen vagyunk.', [], ['Négy főből áll.', 'Négyen.']]
+      ]
+    },
+    {
+      id: 'iskola', title: 'Iskola és tárgyak', icon: '🏫',
+      tip: '**Szórend: alany – tárgy – ige (SOV)**, akárcsak a magyarban gyakran! Az ige mindig a mondat végén áll: `저는 한국어를 공부해요.` = Én koreait tanulok.\n\n' +
+        '**A partikulák olyanok, mint a magyar ragok** – a szó után állnak, és megmondják a szerepét:\n\n' +
+        '- `은/는` – téma (… pedig, ami … illeti)\n' +
+        '- `이/가` – alany\n' +
+        '- `을/를` – tárgy, mint a **-t**: `한국어를` (koreait), `책을` (könyvet). Mássalhangzó után `을`, magánhangzó után `를`.\n' +
+        '- `에` – hely, mint a **-ban/-ben, -n**: `가방에` (a táskában), `교실에` (a teremben)\n\n' +
+        '**Hol van?** = `어디 있어요?` (vagy `어디예요?`). Válasz: `여기 있어요.` = Itt van (tessék).\n\n' +
+        'A `-해요` végű igék a „csinál” igéből jönnek: `공부` (tanulás) + `해요` = tanulok. Beszélt nyelvben a partikulát néha elhagyják: `이거 뭐예요?`',
+      words: [
+        ['학교', 'iskola', 'hakgyo'], ['교실', 'osztályterem', 'gyosil'], ['책', 'könyv', 'chaek'], ['공책', 'füzet', 'gongchaek'], ['연필', 'ceruza', 'yeonpil'], ['가방', 'táska', 'gabang'],
+        ['책상', 'íróasztal (pad)', 'chaeksang'], ['의자', 'szék', 'uija'], ['컴퓨터', 'számítógép', 'keompyuteo'], ['핸드폰', 'mobiltelefon', 'haendeupon'], ['숙제', 'házi feladat', 'sukje'],
+        ['시험', 'dolgozat (vizsga)', 'siheom'], ['한국어', 'koreai nyelv', 'hangugeo'], ['영어', 'angol nyelv', 'yeongeo'], ['수학', 'matematika', 'suhak'], ['공부해요', 'tanul (tanulok)', 'gongbuhaeyo'],
+        ['어려워요', 'nehéz', 'eoryeowoyo'], ['쉬워요', 'könnyű', 'swiwoyo'], ['어디', 'hol?', 'eodi'], ['여기', 'itt', 'yeogi']
+      ],
+      sentences: [
+        ['책이 어디 있어요?', 'Hol van a könyv?', ['책은 어디 있어요?', '책이 어디에 있어요?'], ['Hol a könyv?', 'Hol van a könyvem?']],
+        ['여기 있어요.', 'Itt van.', [], ['Tessék.', 'Itt.']],
+        ['가방에 공책이 있어요.', 'A táskában van egy füzet.', [], ['A táskában van füzet.', 'Van egy füzet a táskában.']],
+        ['저는 한국어를 공부해요.', 'Koreaiul tanulok.', ['한국어를 공부해요.'], ['Koreait tanulok.', 'Én koreaiul tanulok.', 'Én koreait tanulok.', 'Koreai nyelvet tanulok.']],
+        ['수학은 어려워요.', 'A matek nehéz.', [], ['A matematika nehéz.']],
+        ['영어는 쉬워요.', 'Az angol könnyű.', [], ['Az angol nyelv könnyű.']],
+        ['숙제가 있어요?', 'Van házi feladat?', [], ['Van házid?', 'Van leckéd?', 'Van házi feladatod?']],
+        ['시험이 어려워요.', 'A dolgozat nehéz.', [], ['Nehéz a dolgozat.', 'A vizsga nehéz.']],
+        ['연필이 없어요.', 'Nincs ceruzám.', [], ['Nincs ceruza.']],
+        ['이거 제 핸드폰이에요.', 'Ez az én telefonom.', ['이건 제 핸드폰이에요.'], ['Ez a telefonom.', 'Ez az én mobilom.', 'Ez a mobilom.']],
+        ['교실에 컴퓨터가 있어요.', 'Az osztályteremben van számítógép.', [], ['Van számítógép az osztályteremben.', 'A teremben van számítógép.', 'Az osztályteremben van egy számítógép.']],
+        ['학교가 어디 있어요?', 'Hol van az iskola?', ['학교가 어디예요?', '학교는 어디 있어요?'], ['Hol az iskola?']]
+      ]
+    },
+    {
+      id: 'etel', title: 'Étel és ital', icon: '🍜',
+      tip: '**Igék -아요/-어요 alakja.** A szótári alak `-다` végű: 먹다 (enni), 가다 (menni). A -다 helyére tesszük a végződést:\n\n' +
+        '- ha a tő utolsó magánhangzója **ㅏ vagy ㅗ** → `-아요`: 좋다 → `좋아요`, 가다 → `가요` (가 + 아요 összeolvad)\n' +
+        '- minden más esetben → `-어요`: 먹다 → `먹어요`, 마시다 → `마셔요` (시 + 어 = 셔)\n' +
+        '- a `하다` (csinál) mindig → `해요`: 좋아하다 → `좋아해요`\n\n' +
+        'Ugyanaz az alak jelent „eszem, eszel, eszik, eszünk…” – a személyt a helyzetből (vagy az alanyból) értjük. Kérdéshez csak emeld a hangod: `먹어요?` = Eszel?\n\n' +
+        '**좋아요 vagy 좋아해요?** `좋아요` = jó/tetszik, `좋아해요` = szeretek valamit: `김치를 좋아해요.` = Szeretem a kimcsit.\n\n' +
+        'Evés előtt a koreaiak ezt mondják: `잘 먹겠습니다!` (jó étvágyat magamnak, kb. „köszönöm az ételt”), a vendéglátó pedig: `맛있게 드세요!` = Jó étvágyat!',
+      words: [
+        ['밥', 'főtt rizs; étel', 'bap'], ['물', 'víz', 'mul'], ['우유', 'tej', 'uyu'], ['커피', 'kávé', 'keopi'], ['차', 'tea', 'cha'], ['주스', 'gyümölcslé', 'juseu'], ['빵', 'kenyér', 'ppang'],
+        ['사과', 'alma', 'sagwa'], ['김치', 'kimcsi (savanyított, csípős káposzta)', 'gimchi'], ['라면', 'ramen (instant tészta)', 'ramyeon'], ['떡볶이', 'tteokbokki (csípős rizsrudacska)', 'tteokbokki'],
+        ['고기', 'hús', 'gogi'], ['먹어요', 'eszik (eszem)', 'meogeoyo'], ['마셔요', 'iszik (iszom)', 'masyeoyo'], ['좋아해요', 'szeret (kedvel)', 'joahaeyo'], ['맛있어요', 'finom', 'masisseoyo'],
+        ['매워요', 'csípős', 'maewoyo'], ['배고파요', 'éhes vagyok', 'baegopayo']
+      ],
+      sentences: [
+        ['저는 김치를 좋아해요.', 'Szeretem a kimcsit.', ['김치를 좋아해요.'], ['Én szeretem a kimcsit.']],
+        ['물을 마셔요.', 'Vizet iszom.', ['저는 물을 마셔요.'], ['Vizet iszik.', 'Vizet iszol.', 'Én vizet iszom.']],
+        ['빵을 먹어요.', 'Kenyeret eszem.', ['저는 빵을 먹어요.'], ['Kenyeret eszik.', 'Kenyeret eszel.', 'Én kenyeret eszem.']],
+        ['라면이 맛있어요.', 'A ramen finom.', ['라면은 맛있어요.'], ['Finom a ramen.']],
+        ['떡볶이는 매워요.', 'A tteokbokki csípős.', ['떡볶이가 매워요.'], ['Csípős a tteokbokki.']],
+        ['배고파요.', 'Éhes vagyok.', [], []],
+        ['우유를 마셔요?', 'Tejet iszol?', [], ['Iszol tejet?', 'Tejet iszik?']],
+        ['네, 우유를 좋아해요.', 'Igen, szeretem a tejet.', [], []],
+        ['사과 주스 주세요.', 'Almalét kérek.', [], ['Almalevet kérek.', 'Kérek almalét.', 'Kérek almalevet.']],
+        ['고기를 먹어요?', 'Eszel húst?', [], ['Húst eszel?', 'Eszik húst?']],
+        ['정말 맛있어요!', 'Nagyon finom!', [], ['Tényleg finom!', 'Igazán finom!']],
+        ['맛있게 드세요!', 'Jó étvágyat!', [], []]
+      ]
+    },
+    {
+      id: 'ido', title: 'Idő és napok', icon: '📅',
+      tip: '**A hét napjai** mind `-요일` végűek, és a régi kínai „öt elemből” plusz a Napból és a Holdból jönnek:\n\n' +
+        '- 월 (Hold) – hétfő, 화 (tűz) – kedd, 수 (víz) – szerda, 목 (fa) – csütörtök, 금 (arany) – péntek, 토 (föld) – szombat, 일 (Nap) – vasárnap\n\n' +
+        '**Időpont + 에** – mint a magyar **-kor, -n**: `월요일에` (hétfőn), `아침에` (reggel), `주말에` (hétvégén). Az `오늘, 내일, 어제, 지금` mellé nem kell 에.\n\n' +
+        '**Hány óra?** `몇 시예요?` Az órát **koreai** számmal, a percet **kínai eredetű** számmal mondjuk:\n\n' +
+        '- `세 시` = 3 óra, `일곱 시 삼십 분` = 7 óra 30 perc\n' +
+        '- `반` = fél, de vigyázz: `일곱 시 반` = „hét és fél” = **fél nyolc**!\n\n' +
+        'Az `아침, 점심, 저녁` napszakot és étkezést is jelent: `점심` = dél és ebéd is.',
+      words: [
+        ['오늘', 'ma', 'oneul'], ['내일', 'holnap', 'naeil'], ['어제', 'tegnap', 'eoje'], ['지금', 'most', 'jigeum'], ['아침', 'reggel; reggeli', 'achim'], ['점심', 'dél; ebéd', 'jeomsim'],
+        ['저녁', 'este; vacsora', 'jeonyeok'], ['주말', 'hétvége', 'jumal'], ['월요일', 'hétfő', 'woryoil'], ['화요일', 'kedd', 'hwayoil'], ['수요일', 'szerda', 'suyoil'], ['목요일', 'csütörtök', 'mogyoil'],
+        ['금요일', 'péntek', 'geumyoil'], ['토요일', 'szombat', 'toyoil'], ['일요일', 'vasárnap', 'iryoil'], ['시', 'óra (időpont)', 'si'], ['분', 'perc', 'bun'], ['반', 'fél (fél óra)', 'ban'], ['시간', 'idő', 'sigan']
+      ],
+      sentences: [
+        ['오늘은 월요일이에요.', 'Ma hétfő van.', [], ['Ma hétfő.']],
+        ['내일은 금요일이에요.', 'Holnap péntek lesz.', [], ['Holnap péntek van.', 'Holnap péntek.']],
+        ['지금 몇 시예요?', 'Hány óra van most?', ['몇 시예요?'], ['Most hány óra van?', 'Mennyi az idő?', 'Hány óra van?']],
+        ['세 시예요.', 'Három óra van.', [], ['Három óra.']],
+        ['일곱 시 삼십 분이에요.', 'Hét óra harminc perc van.', ['일곱 시 반이에요.'], ['Fél nyolc van.', 'Hét óra harminc van.', 'Hét harminc van.']],
+        ['주말에 시간 있어요?', 'Ráérsz hétvégén?', ['주말에 시간이 있어요?'], ['Van időd hétvégén?', 'Ráér hétvégén?', 'Van ideje hétvégén?']],
+        ['토요일에 친구를 만나요.', 'Szombaton találkozom a barátommal.', [], ['Szombaton találkozom egy barátommal.', 'Szombaton a barátommal találkozom.']],
+        ['아침에 우유를 마셔요.', 'Reggel tejet iszom.', [], ['Reggelente tejet iszom.']],
+        ['저녁에 숙제를 해요.', 'Este megcsinálom a házit.', [], ['Este írom a házit.', 'Este megcsinálom a házi feladatot.', 'Este leckét írok.', 'Este írom a leckét.']],
+        ['일요일에 뭐 해요?', 'Mit csinálsz vasárnap?', [], ['Vasárnap mit csinálsz?', 'Mit csinál vasárnap?']],
+        ['수요일에 시험이 있어요.', 'Szerdán dolgozat lesz.', [], ['Szerdán dolgozatot írunk.', 'Szerdán lesz dolgozat.', 'Szerdán vizsgám van.']],
+        ['오늘 점심은 라면이에요.', 'Ma ramen az ebéd.', [], ['Ma ramen lesz ebédre.', 'Ma ramen van ebédre.']]
+      ]
+    },
+    {
+      id: 'varos', title: 'Város és közlekedés', icon: '🚇',
+      tip: '**에 = -ba/-be és -ban/-ben is!** A koreai `에` irányt és helyet is jelöl:\n\n' +
+        '- `학교에 가요.` = Iskolába megyek.\n' +
+        '- `학교에 있어요.` = Az iskolában van.\n\n' +
+        '**에서 = ahol a cselekvés történik** (-ban/-ben, ha valamit csinálunk ott): `식당에서 먹어요.` = Az étteremben eszem.\n\n' +
+        '**Közlekedés:** a koreai „felszáll a buszra” – tárgyraggal: `버스를 타요` = busszal megyek. Eszközzel: `(으)로` = -val/-vel: `택시로 가요.` = Taxival megyek.\n\n' +
+        '**Merre?** `왼쪽` = bal oldal, `오른쪽` = jobb oldal: `오른쪽에 있어요.` = Jobbra van.\n\n' +
+        'Tipp Szöulhoz: a metró (`지하철`) szuper, minden állomás (`역`) neve ki van írva hangullal és latin betűvel, és a `편의점` (éjjel-nappali kisbolt) szinte minden sarkon ott van – a K-drámák kedvenc helyszíne!',
+      words: [
+        ['집', 'ház; otthon', 'jip'], ['방', 'szoba', 'bang'], ['화장실', 'mosdó (WC)', 'hwajangsil'], ['식당', 'étterem', 'sikdang'], ['카페', 'kávézó', 'kape'], ['편의점', 'éjjel-nappali kisbolt', 'pyeonuijeom'],
+        ['병원', 'kórház', 'byeongwon'], ['역', 'állomás', 'yeok'], ['지하철', 'metró', 'jihacheol'], ['버스', 'busz', 'beoseu'], ['택시', 'taxi', 'taeksi'], ['가요', 'megy (megyek)', 'gayo'],
+        ['와요', 'jön (jövök)', 'wayo'], ['타요', 'felszáll, utazik (járművel)', 'tayo'], ['멀어요', 'messze van', 'meoreoyo'], ['가까워요', 'közel van', 'gakkawoyo'], ['왼쪽', 'bal oldal', 'oenjjok'], ['오른쪽', 'jobb oldal', 'oreunjjok']
+      ],
+      sentences: [
+        ['화장실이 어디예요?', 'Hol van a mosdó?', ['화장실이 어디 있어요?', '화장실은 어디예요?'], ['Hol a mosdó?', 'Hol van a WC?']],
+        ['저는 학교에 가요.', 'Iskolába megyek.', ['학교에 가요.'], ['Megyek az iskolába.', 'Én iskolába megyek.', 'Az iskolába megyek.']],
+        ['지하철을 타요.', 'Metróval megyek.', ['저는 지하철을 타요.'], ['Metróval utazom.', 'Felszállok a metróra.', 'Metrózok.']],
+        ['버스를 타요?', 'Busszal mész?', [], ['Busszal utazol?', 'Busszal megy?', 'Busszal mentek?']],
+        ['택시로 가요.', 'Taxival megyek.', [], ['Taxival megyünk.', 'Taxival megy.']],
+        ['집이 멀어요.', 'Messze van az otthonom.', [], ['Messze lakom.', 'Az otthonom messze van.', 'Messze van a házunk.']],
+        ['역은 가까워요.', 'Az állomás közel van.', ['역이 가까워요.'], ['Közel van az állomás.']],
+        ['편의점은 오른쪽에 있어요.', 'A kisbolt jobbra van.', ['편의점이 오른쪽에 있어요.'], ['A kisbolt jobb oldalon van.', 'Jobbra van a kisbolt.', 'Az éjjel-nappali jobbra van.']],
+        ['병원은 왼쪽에 있어요.', 'A kórház balra van.', ['병원이 왼쪽에 있어요.'], ['A kórház bal oldalon van.', 'Balra van a kórház.']],
+        ['친구가 우리 집에 와요.', 'A barátom hozzánk jön.', [], ['A barátom eljön hozzánk.', 'Egy barátom hozzánk jön.']],
+        ['식당에서 밥을 먹어요.', 'Az étteremben eszem.', [], ['Étteremben eszem.', 'Az étteremben eszünk.', 'Étteremben eszünk.']],
+        ['제 방이에요.', 'Ez az én szobám.', [], ['Ez a szobám.']]
+      ]
+    },
+    {
+      id: 'hobbi', title: 'Hobbi és K-pop', icon: '🎤',
+      tip: '**Tagadás: 안 + ige.** Egyszerűen tedd az ige elé: `마셔요` (iszom) → `안 마셔요` (nem iszom), `가요` → `안 가요` (nem megyek).\n\n' +
+        'A `-하다` igéknél a 안 a főnév és a `해요` közé kerül: `운동해요` → `운동 안 해요` (nem sportolok), `축구를 해요` → `축구를 안 해요` (nem focizom).\n\n' +
+        'Ne keverd: a `아니요` válaszszó (nem), az `아니에요` = nem az (főnév után), a `안` pedig az igét tagadja – mint a magyar „nem”, csak három szóval!\n\n' +
+        '**이 / 그 / 저** a főnév előtt: `이 영화` = ez a film, `그 노래` = az a dal (amiről beszélünk), `저 가수` = az az énekes (ott).\n\n' +
+        '**Együtt csináljuk!** A -요 alak felszólításként is működik: `같이 봐요!` = Nézzük együtt!\n\n' +
+        'K-pop szótár: a rajongó `팬`, a „Fighting!” biztatás koreaiul `화이팅!`, a „szívecske” kézjel pedig `손하트`.',
+      words: [
+        ['케이팝', 'K-pop', 'keipap'], ['음악', 'zene', 'eumak'], ['노래', 'dal; ének', 'norae'], ['춤', 'tánc', 'chum'], ['춤춰요', 'táncol', 'chumchwoyo'], ['영화', 'film', 'yeonghwa'],
+        ['드라마', 'sorozat (dráma)', 'deurama'], ['봐요', 'néz', 'bwayo'], ['들어요', 'hallgat (zenét)', 'deureoyo'], ['게임', 'videojáték', 'geim'], ['축구', 'foci', 'chukgu'],
+        ['운동해요', 'sportol', 'undonghaeyo'], ['읽어요', 'olvas', 'ilgeoyo'], ['그림', 'rajz; kép', 'geurim'], ['그려요', 'rajzol', 'geuryeoyo'], ['재미있어요', 'érdekes, szórakoztató', 'jaemiisseoyo'],
+        ['싫어해요', 'nem szeret (utál)', 'sireohaeyo'], ['같이', 'együtt', 'gachi'], ['안', 'nem (az ige előtt)', 'an'], ['잘해요', 'jól csinál, ügyes benne', 'jalhaeyo']
+      ],
+      sentences: [
+        ['저는 케이팝을 좋아해요.', 'Szeretem a K-popot.', ['케이팝을 좋아해요.'], ['Én szeretem a K-popot.']],
+        ['한국 드라마를 봐요.', 'Koreai sorozatokat nézek.', ['저는 한국 드라마를 봐요.'], ['Koreai sorozatot nézek.', 'Koreai drámát nézek.', 'Koreai drámákat nézek.']],
+        ['음악을 들어요.', 'Zenét hallgatok.', ['저는 음악을 들어요.'], ['Zenét hallgat.', 'Zenét hallgatsz.']],
+        ['저는 축구를 안 해요.', 'Nem focizom.', ['축구를 안 해요.', '저는 축구 안 해요.'], ['Én nem focizom.']],
+        ['커피를 안 마셔요.', 'Nem iszom kávét.', ['저는 커피를 안 마셔요.'], ['Kávét nem iszom.']],
+        ['이 영화는 재미있어요.', 'Ez a film érdekes.', ['이 영화 재미있어요.'], ['Ez a film szórakoztató.', 'Ez a film jó.']],
+        ['같이 춤춰요!', 'Táncoljunk együtt!', [], ['Táncoljunk!']],
+        ['게임 좋아해요?', 'Szereted a videojátékokat?', ['게임을 좋아해요?'], ['Szereted a játékokat?', 'Szereti a videojátékokat?']],
+        ['아니요, 게임은 싫어해요.', 'Nem, nem szeretem a videojátékokat.', [], ['Nem, utálom a videojátékokat.', 'Nem, a videojátékokat nem szeretem.']],
+        ['지민은 노래를 잘해요.', 'Dzsimin jól énekel.', [], ['Dzsimin ügyesen énekel.']],
+        ['주말에 같이 영화 봐요!', 'Nézzünk együtt filmet hétvégén!', ['주말에 같이 영화를 봐요!'], ['Hétvégén nézzünk együtt filmet!', 'Hétvégén nézzünk meg együtt egy filmet!']],
+        ['저는 책을 읽어요.', 'Könyvet olvasok.', ['책을 읽어요.'], ['Olvasok egy könyvet.', 'Én könyvet olvasok.']],
+        ['그림을 그려요.', 'Rajzolok.', [], ['Képet rajzolok.', 'Rajzot készítek.']]
+      ]
+    },
+    {
+      id: 'mult', title: 'Múlt idő és tervek', icon: '✈️',
+      tip: '**Múlt idő: -았어요 / -었어요.** Ugyanaz a szabály, mint a jelen időnél (-아요/-어요), csak egy `ㅆ` kerül bele:\n\n' +
+        '- ㅏ, ㅗ után `-았어요`: 가다 → `갔어요` (mentem), 오다 → `왔어요` (jöttem), 보다 → `봤어요` (láttam)\n' +
+        '- máskor `-었어요`: 먹다 → `먹었어요` (ettem), 마시다 → `마셨어요` (ittam)\n' +
+        '- 하다 → `했어요` (csináltam)\n\n' +
+        'Tagadva: `안` + múlt idő: `안 갔어요` = nem mentem, `숙제를 안 했어요` = nem csináltam meg a házit.\n\n' +
+        'Múlt idejű időszavak: `어제` (tegnap), `지난주` (múlt héten), `작년` (tavaly). A `-에` itt is kell: `지난주에`, `작년에`.\n\n' +
+        '**Tervek, vágyak: -고 싶어요** = szeretnék …-ni. Az ige tövéhez tesszük: 가다 → `가고 싶어요` (menni szeretnék), 먹다 → `먹고 싶어요` (enni szeretnék), 보다 → `보고 싶어요` – ez azt is jelenti: **hiányzol** (látni szeretnélek), a K-drámák egyik leggyakoribb mondata!',
+      words: [
+        ['지난주', 'múlt hét', 'jinanju'], ['작년', 'tavaly', 'jangnyeon'], ['다음 주', 'jövő hét', 'daeum ju'], ['갔어요', 'ment (mentem)', 'gasseoyo'], ['왔어요', 'jött (jöttem)', 'wasseoyo'],
+        ['먹었어요', 'evett (ettem)', 'meogeosseoyo'], ['마셨어요', 'ivott (ittam)', 'masyeosseoyo'], ['봤어요', 'látott, nézett (láttam)', 'bwasseoyo'], ['했어요', 'csinált (csináltam)', 'haesseoyo'],
+        ['만났어요', 'találkozott (találkoztam)', 'mannasseoyo'], ['재미있었어요', 'jó volt (érdekes volt)', 'jaemiisseosseoyo'], ['여행', 'utazás', 'yeohaeng'], ['서울', 'Szöul', 'Seoul'],
+        ['바다', 'tenger', 'bada'], ['콘서트', 'koncert', 'konseoteu'], ['사진', 'fénykép', 'sajin'], ['찍었어요', 'lefényképezett (fotóztam)', 'jjigeosseoyo'], ['가고 싶어요', 'menni szeretnék', 'gago sipeoyo'], ['많이', 'sok, sokat', 'mani']
+      ],
+      sentences: [
+        ['어제 친구를 만났어요.', 'Tegnap találkoztam a barátommal.', ['저는 어제 친구를 만났어요.'], ['Tegnap találkoztam egy barátommal.', 'Tegnap a barátommal találkoztam.']],
+        ['주말에 영화를 봤어요.', 'Hétvégén megnéztem egy filmet.', ['주말에 영화 봤어요.'], ['Hétvégén filmet néztem.', 'A hétvégén filmet néztem.', 'Hétvégén láttam egy filmet.']],
+        ['지난주에 서울에 갔어요.', 'Múlt héten Szöulba mentem.', [], ['Múlt héten elmentem Szöulba.', 'A múlt héten Szöulba mentem.']],
+        ['아침에 빵을 먹었어요.', 'Reggel kenyeret ettem.', [], []],
+        ['커피를 마셨어요.', 'Kávét ittam.', [], ['Ittam kávét.', 'Ittam egy kávét.']],
+        ['콘서트가 정말 재미있었어요!', 'A koncert nagyon jó volt!', ['콘서트 정말 재미있었어요!'], ['Nagyon jó volt a koncert!', 'A koncert tényleg jó volt!']],
+        ['사진을 많이 찍었어요.', 'Sok fényképet készítettem.', [], ['Sok fotót csináltam.', 'Sokat fényképeztem.', 'Sok képet csináltam.']],
+        ['숙제를 했어요?', 'Megcsináltad a házit?', [], ['Megírtad a házit?', 'Megcsináltad a házi feladatot?', 'Megírtad a leckét?']],
+        ['아니요, 숙제를 안 했어요.', 'Nem, nem csináltam meg a házit.', ['아니요, 숙제 안 했어요.'], ['Nem, nem írtam meg a házit.', 'Nem, nem csináltam meg a házi feladatot.', 'Nem, nem írtam meg a leckét.']],
+        ['작년에 한국에 왔어요.', 'Tavaly jöttem Koreába.', [], ['Tavaly érkeztem Koreába.', 'Tavaly Koreába jöttem.']],
+        ['여행이 재미있었어요.', 'Jó volt az utazás.', ['여행 재미있었어요.'], ['Az utazás jó volt.', 'Az utazás érdekes volt.']],
+        ['다음 주에 바다에 가고 싶어요.', 'Jövő héten a tengerhez szeretnék menni.', [], ['Jövő héten tengerpartra szeretnék menni.', 'Jövő héten el akarok menni a tengerhez.', 'Jövő héten a tengerhez akarok menni.']],
+        ['저는 한국에 가고 싶어요.', 'Koreába szeretnék menni.', ['한국에 가고 싶어요.'], ['Szeretnék Koreába menni.', 'Koreába akarok menni.', 'El akarok menni Koreába.', 'Én Koreába szeretnék menni.']]
+      ]
+    }
+  ]
+});
+
+</script>
+  <script>/* data/nyelvek/kinai.js */
+/* Kínai (mandarin) nyelvtanfolyam (HSK 1–2) – 10 egység. A szavak egyszerűsített írásjegyekkel, a 3. elem a hangjelekkel ellátott pinjin.
+ * A mondatok szavai szóközzel elválasztva szerepelnek, hogy a szócsempés feladat működjön (a megjelenítés szóköz nélkül fűzi össze őket).
+ * Gépelésnél az ékezet (hangjel) nélküli pinjint is elfogadja a motor, figyelmeztetéssel. */
+STUDIE.addLangCourse({
+  id: 'kinai', title: 'Kínai', flag: '🇨🇳', tts: 'zh-CN', badge: 'HSK 1–2',
+  noSpaces: true, script: true,
+  intro: 'A mandarin kínait több mint 900 millióan beszélik anyanyelvként – többen, mint bármely más nyelvet. Írásjegyekkel írják, de a nyelvtana meglepően egyszerű: nincs igeragozás, nincs többes szám, nincsenek esetragok – cserébe a hangmagasságra (a tónusokra) kell figyelni.',
+  units: [
+    {
+      id: 'wenhou', title: 'Köszönés', icon: '👋',
+      tip: 'A kínai **tonális nyelv**: ugyanaz a szótag más hangmagassággal mást jelent. Négy hang és egy semleges hang van, a **pinjin** (latin betűs átírás) ékezetekkel jelöli őket:\n\n' +
+        '- **1. hang** `mā` – magas és egyenletes, mintha kitartott hangot énekelnél: „láá”.\n' +
+        '- **2. hang** `má` – emelkedő, mint a meglepett kérdés: „Mi?”\n' +
+        '- **3. hang** `mǎ` – mélyre ereszkedik, majd kicsit visszaemelkedik, mint a kételkedő „hááát…”.\n' +
+        '- **4. hang** `mà` – éles, eső, mint egy határozott „Ne!”\n' +
+        '- **semleges hang** `ma` – rövid, könnyű, hangsúlytalan, nincs rajta jel: `xièxie`, `māma`.\n\n' +
+        'Például: `mā` (anya), `má` (kender), `mǎ` (ló), `mà` (szid). A feladatokban a hangjel nélküli pinjint (pl. `ni hao`) is elfogadjuk, de szólunk érte.\n\n' +
+        '**Hangváltozás:** két 3. hang egymás után → az első 2. hangra vált: `nǐ hǎo` ejtése „ní hǎo”. A `不` (bù) 4. hang előtt `bú` lesz: `bù kèqi` → „bú kèqi”.\n\n' +
+        'A `您` (nín) a `你` (nǐ) udvarias párja, mint a magyar **ön** – tanárnak, idősebbnek.',
+      words: [
+        ['你好', 'szia', 'nǐ hǎo'], ['您好', 'jó napot (udvariasan)', 'nín hǎo'], ['早上好', 'jó reggelt', 'zǎoshang hǎo'],
+        ['晚上好', 'jó estét', 'wǎnshang hǎo'], ['晚安', 'jó éjszakát', 'wǎn\'ān'], ['再见', 'viszontlátásra', 'zàijiàn'],
+        ['谢谢', 'köszönöm', 'xièxie'], ['不客气', 'szívesen', 'bù kèqi'], ['对不起', 'bocsánat', 'duìbuqǐ'],
+        ['没关系', 'semmi baj', 'méi guānxi'], ['请', 'kérlek, kérem', 'qǐng'], ['坐', 'ül, leül', 'zuò'],
+        ['老师', 'tanár', 'lǎoshī'], ['同学', 'osztálytárs', 'tóngxué'], ['大家', 'mindenki', 'dàjiā'],
+        ['明天', 'holnap', 'míngtiān'], ['好', 'jó', 'hǎo']
+      ],
+      sentences: [
+        ['老师 好！', 'Jó napot, tanár úr!', [], ['Jó napot, tanárnő!', 'Jó napot kívánok, tanár úr!', 'Jó napot kívánok, tanárnő!']],
+        ['大家 好！', 'Sziasztok!', [], ['Szia mindenki!', 'Jó napot mindenkinek!', 'Helló mindenki!']],
+        ['您 好！', 'Jó napot kívánok!', [], ['Jó napot!']],
+        ['谢谢 老师！', 'Köszönöm, tanár úr!', [], ['Köszönöm, tanárnő!']],
+        ['谢谢 大家！', 'Köszönöm mindenkinek!', [], ['Köszönöm, mindenki!']],
+        ['对不起 老师！', 'Bocsánat, tanár úr!', [], ['Elnézést, tanár úr!', 'Bocsánat, tanárnő!', 'Elnézést, tanárnő!']],
+        ['老师 再见！', 'Viszontlátásra, tanár úr!', [], ['Viszontlátásra, tanárnő!']],
+        ['明天 见！', 'Holnap találkozunk!', [], ['Viszlát holnap!']],
+        ['大家 早上好！', 'Jó reggelt mindenkinek!', [], ['Jó reggelt, mindenki!', 'Jó reggelt mindenki!']],
+        ['老师 晚上好！', 'Jó estét, tanár úr!', [], ['Jó estét, tanárnő!']],
+        ['请 坐！', 'Ülj le, kérlek!', [], ['Kérlek, ülj le!', 'Üljön le, kérem!', 'Kérem, üljön le!', 'Foglaljon helyet!']]
+      ]
+    },
+    {
+      id: 'jieshao', title: 'Bemutatkozás', icon: '🙋',
+      tip: 'A **pinjin** betűit nem szabad magyarosan olvasni! A legfontosabb csapdák:\n\n' +
+        '- `x` ≈ az **sz** és az **s** közötti hang, mosolygó szájjal: `xièxie` („szie-szie”), `Xiōngyálì` (Magyarország)\n' +
+        '- `q` ≈ lágy, mosolygós **cs**: `qǐng` (kérem)\n' +
+        '- `j` ≈ lágy **dzs**: `jiào` (hívják)\n' +
+        '- `zh` ≈ kemény **dzs**, felkunkorított nyelvheggyel: `Zhōngguó` (Kína); `ch` ≈ kemény **cs**; `sh` ≈ **s**: `shì`\n' +
+        '- `c` = **c**, erős lehelettel; `z` = **dz**: `zài`\n' +
+        '- `r` ≈ a **zs** és az angol r keveréke: `rén` (ember)\n' +
+        '- `e` ≈ tompa, **ö**-szerű hang: `hěn`, `de`\n' +
+        '- `zhi, chi, shi, ri, zi, ci, si` végén az `i` nem i, hanem tompa, zümmögő hang.\n\n' +
+        '**A 是 (shì) létige** főnevet köt főnévhez, és **nem ragozzuk**: `我是学生` = diák vagyok, `他是老师` = ő tanár.\n\n' +
+        '**Kérdőszavak** (`什么` = mi?, `谁` = ki?) oda kerülnek, ahol a válasz lesz: `他是谁？` = Ki ő? (szó szerint: ő van ki?)\n\n' +
+        'Az „ő” írásban kétféle: `他` (férfi) és `她` (nő), de mindkettőt **tā**-nak ejtjük.',
+      words: [
+        ['我', 'én', 'wǒ'], ['你', 'te', 'nǐ'], ['他', 'ő (férfi)', 'tā'], ['我们', 'mi (én és mások)', 'wǒmen'],
+        ['是', 'van (létige)', 'shì'], ['叫', 'hívják (valahogy)', 'jiào'], ['名字', 'név', 'míngzi'], ['什么', 'mi? milyen?', 'shénme'],
+        ['学生', 'diák', 'xuésheng'], ['中国', 'Kína', 'Zhōngguó'], ['中国人', 'kínai (ember)', 'Zhōngguórén'],
+        ['匈牙利', 'Magyarország', 'Xiōngyálì'], ['匈牙利人', 'magyar (ember)', 'Xiōngyálìrén'], ['朋友', 'barát', 'péngyou'],
+        ['认识', 'megismer, ismer', 'rènshi'], ['很', 'nagyon', 'hěn'], ['高兴', 'örül, boldog', 'gāoxìng'], ['也', 'is', 'yě'],
+        ['谁', 'ki?', 'shéi'], ['的', '-é, -nak a (birtok)', 'de']
+      ],
+      sentences: [
+        ['我 是 学生。', 'Diák vagyok.', ['是学生。'], ['Én diák vagyok.']],
+        ['我 叫 安娜。', 'Annának hívnak.', [], ['Anna vagyok.', 'A nevem Anna.', 'Az én nevem Anna.', 'Engem Annának hívnak.']],
+        ['你 叫 什么 名字？', 'Hogy hívnak?', [], ['Mi a neved?', 'Téged hogy hívnak?']],
+        ['我 是 匈牙利人。', 'Magyar vagyok.', [], ['Én magyar vagyok.']],
+        ['他 是 中国人。', 'Ő kínai.', [], ['Kínai.']],
+        ['他 是 我 的 朋友。', 'Ő a barátom.', [], ['Ő az én barátom.']],
+        ['认识 你 很 高兴。', 'Örülök, hogy megismertelek.', [], ['Örvendek.', 'Örülök a találkozásnak.', 'Örülök, hogy megismerhettelek.']],
+        ['我 也 是 学生。', 'Én is diák vagyok.', [], []],
+        ['他 是 谁？', 'Ki ő?', [], ['Ő kicsoda?', 'Ki az?']],
+        ['我们 是 朋友。', 'Barátok vagyunk.', [], ['Mi barátok vagyunk.']],
+        ['她 是 老师。', 'Ő tanár.', [], ['Ő tanárnő.', 'Tanárnő.']]
+      ]
+    },
+    {
+      id: 'shuzi', title: 'Számok', icon: '🔢',
+      tip: 'A kínai számok szuper logikusak – ha az 1–10-et tudod, 99-ig mindent tudsz:\n\n' +
+        '- `十一` (shíyī) = 10 + 1 = 11, `十五` = 15\n' +
+        '- `二十` (èrshí) = 2 × 10 = 20, `三十五` = 3 × 10 + 5 = 35\n' +
+        '- `九十九` = 99, `一百` (yībǎi) = 100\n\n' +
+        '**Kettő kétféle:** számoláskor `二` (èr), darabszám előtt `两` (liǎng): `两个` = két darab. Hasonló a magyar **kettő** / **két** párhoz!\n\n' +
+        '**Kérdés számra:** `几` (jǐ) kis számokra (kb. 10-ig, életkor gyerekeknél, óra), `多少` (duōshao) bármekkora számra, például árra: `多少钱？` = Mennyibe kerül?\n\n' +
+        'Az életkornál **nem kell „van”**: `我十四岁` = tizennégy éves vagyok (szó szerint: én tizennégy év).\n\n' +
+        'A kínai pénz a jüan: írásban `元` (yuán), a beszélt nyelvben `块` (kuài). A `这个` (zhège) = ez (a darab), a `加` (jiā) = meg, plusz.\n\n' +
+        'Érdekesség: a **4** (`四`, sì) hasonlít a „halál” szóra (`死`, sǐ), ezért balszerencsésnek tartják – a **8** (`八`, bā) viszont szerencseszám!',
+      words: [
+        ['零', 'nulla', 'líng'], ['一', 'egy', 'yī'], ['二', 'kettő', 'èr'], ['三', 'három', 'sān'], ['四', 'négy', 'sì'],
+        ['五', 'öt', 'wǔ'], ['六', 'hat', 'liù'], ['七', 'hét (szám)', 'qī'], ['八', 'nyolc', 'bā'], ['九', 'kilenc', 'jiǔ'],
+        ['十', 'tíz', 'shí'], ['一百', 'száz', 'yībǎi'], ['两', 'két (darab előtt)', 'liǎng'], ['几', 'hány? (kis számra)', 'jǐ'],
+        ['多少', 'mennyi?', 'duōshao'], ['岁', 'éves (életkor)', 'suì'], ['这个', 'ez (a darab)', 'zhège'], ['块', 'jüan (beszélt nyelvben)', 'kuài'],
+        ['钱', 'pénz', 'qián']
+      ],
+      sentences: [
+        ['一 二 三。', 'Egy, kettő, három.', [], ['Egy, két, három.']],
+        ['六 七 八 九 十。', 'Hat, hét, nyolc, kilenc, tíz.', [], []],
+        ['你 几 岁？', 'Hány éves vagy?', [], []],
+        ['我 十四 岁。', 'Tizennégy éves vagyok.', [], ['14 éves vagyok.']],
+        ['他 二十 岁。', 'Ő húszéves.', [], ['Húszéves.', 'Ő húsz éves.', 'Ő 20 éves.']],
+        ['这个 多少 钱？', 'Mennyibe kerül ez?', [], ['Ez mennyibe kerül?', 'Ez mennyi?']],
+        ['十 块 钱。', 'Tíz jüan.', [], ['10 jüan.']],
+        ['一百 块。', 'Száz jüan.', [], ['100 jüan.']],
+        ['三十五 块 钱。', 'Harmincöt jüan.', [], ['35 jüan.']],
+        ['五 加 五 是 十。', 'Öt meg öt az tíz.', [], ['Öt plusz öt az tíz.', 'Öt meg öt tíz.', 'Öt plusz öt egyenlő tíz.']]
+      ]
+    },
+    {
+      id: 'jiating', title: 'Család', icon: '👨‍👩‍👧',
+      tip: 'Jó hír: a kínaiban **nincs igeragozás** és **nincs többes szám**! Az ige minden személyben ugyanaz: `我有`, `你有`, `他有` = nekem / neked / neki van. A `猫` lehet macska vagy macskák is – a szövegkörnyezet vagy a szám dönt.\n\n' +
+        '**Birtoklás – 有:** `我有哥哥` = van bátyám (szó szerint: én bír báty). Tagadva **mindig** `没有`: `我没有姐姐` = nincs nővérem.\n\n' +
+        '**Eldöntendő kérdés – 吗:** tedd a kijelentő mondat végére a `吗`-t, a szórend nem változik: `你有姐姐。` → `你有姐姐吗？` Olyan, mint a magyar **-e** kérdőszócska: „Van-e nővéred?”\n\n' +
+        '**Mértékszó:** szám és főnév közé mindig kell egy „darab”-szó. Az általános a `个` (gè): `一个哥哥`. Állatokra gyakran `只` (zhī): `一只猫`. A családtagokat a `口` (kǒu, „száj”) számolja: `我家有四口人` = négytagú a családom.\n\n' +
+        'Közeli családtagnál a `的` (-é) elmaradhat: `我妈妈` = az anyukám.',
+      words: [
+        ['爸爸', 'apa', 'bàba'], ['妈妈', 'anya', 'māma'], ['哥哥', 'báty', 'gēge'], ['姐姐', 'nővér', 'jiějie'],
+        ['弟弟', 'öcs', 'dìdi'], ['妹妹', 'húg', 'mèimei'], ['爷爷', 'nagyapa (apai)', 'yéye'], ['奶奶', 'nagymama (apai)', 'nǎinai'],
+        ['家', 'család, otthon', 'jiā'], ['有', 'van (valakinek)', 'yǒu'], ['没有', 'nincs (valakinek)', 'méiyǒu'],
+        ['个', 'darab (általános mértékszó)', 'gè'], ['只', 'darab (állatokra)', 'zhī'], ['口', 'fő (családtagok számolásakor)', 'kǒu'],
+        ['狗', 'kutya', 'gǒu'], ['猫', 'macska', 'māo'], ['吗', 'kérdőszócska (-e?)', 'ma'], ['和', 'és', 'hé'], ['人', 'ember', 'rén']
+      ],
+      sentences: [
+        ['我 家 有 四 口 人。', 'Négytagú a családom.', [], ['Négyen vagyunk a családban.', 'A családom négytagú.', 'A családunk négytagú.']],
+        ['你 家 有 几 口 人？', 'Hányan vagytok a családban?', [], ['Hány tagú a családod?', 'Hány tagú a családotok?']],
+        ['我 有 一 个 哥哥。', 'Van egy bátyám.', [], ['Egy bátyám van.']],
+        ['我 有 两 个 妹妹。', 'Két húgom van.', [], ['Van két húgom.']],
+        ['你 有 姐姐 吗？', 'Van nővéred?', [], []],
+        ['我 没有 姐姐。', 'Nincs nővérem.', [], []],
+        ['这 是 我 妈妈。', 'Ő az anyukám.', [], ['Ez az anyukám.', 'Ő az anyám.', 'Ez az anyám.', 'Ő az édesanyám.']],
+        ['你 爸爸 是 老师 吗？', 'Az apukád tanár?', [], ['Apukád tanár?', 'Az apád tanár?', 'Apád tanár?', 'Az édesapád tanár?']],
+        ['他 是 我 弟弟。', 'Ő az öcsém.', [], ['Ő az én öcsém.']],
+        ['我 爷爷 有 一 只 猫。', 'A nagyapámnak van egy macskája.', [], ['Nagyapámnak van egy macskája.']],
+        ['我 有 一 只 狗 和 一 只 猫。', 'Van egy kutyám és egy macskám.', [], ['Egy kutyám és egy macskám van.']]
+      ]
+    },
+    {
+      id: 'xuexiao', title: 'Iskola', icon: '🏫',
+      tip: 'A kínai írásjegyek (`汉字`, Hànzì) nem betűk: mindegyik **egy szótag és egy jelentés**. Kb. 2500 gyakori jeggyel egy átlagos újságszöveg 97–98%-át el lehet olvasni.\n\n' +
+        'A legtöbb jegy két részből áll: a **gyök** (jelentésrész) súgja, miről szól, a másik rész gyakran a kiejtésre utal:\n\n' +
+        '- `女` (nő): `妈` (anya), `姐` (nővér), `妹` (húg), `她` (ő, nő)\n' +
+        '- `亻` (ember): `你` (te), `他` (ő), `们` (többes jel névmásoknál)\n' +
+        '- `口` (száj): `吃` (eszik), `喝` (iszik), `叫` (hívják), `吗`\n' +
+        '- `木` (fa): `桌` (asztal), `椅` (szék)\n' +
+        '- `氵` (víz): `汉` (kínai), `没` (nincs)\n\n' +
+        'A `妈` (mā) jobb oldala a `马` (mǎ, ló) – innen a hasonló kiejtés!\n\n' +
+        '**Mértékszavak:** könyvre, füzetre `本` (běn): `一本书`; tollra, ceruzára `支` (zhī): `两支铅笔`. Ha bizonytalan vagy, a `个` sokszor elmegy.\n\n' +
+        '`这` = ez, `那` = az: `这本书` = ez a könyv. A `我的` önállóan is állhat: `这本书是我的` = ez a könyv az enyém.',
+      words: [
+        ['学校', 'iskola', 'xuéxiào'], ['教室', 'osztályterem', 'jiàoshì'], ['书', 'könyv', 'shū'], ['本子', 'füzet', 'běnzi'],
+        ['笔', 'toll', 'bǐ'], ['铅笔', 'ceruza', 'qiānbǐ'], ['书包', 'iskolatáska', 'shūbāo'], ['桌子', 'asztal', 'zhuōzi'],
+        ['椅子', 'szék', 'yǐzi'], ['中文', 'kínai nyelv', 'Zhōngwén'], ['汉字', 'kínai írásjegy', 'Hànzì'], ['学习', 'tanul', 'xuéxí'],
+        ['看', 'néz, olvas', 'kàn'], ['写', 'ír', 'xiě'], ['这', 'ez', 'zhè'], ['那', 'az', 'nà'], ['本', 'darab (könyvre)', 'běn']
+      ],
+      sentences: [
+        ['我 有 一 本 书。', 'Van egy könyvem.', [], ['Egy könyvem van.']],
+        ['这 是 我 的 书包。', 'Ez az én iskolatáskám.', [], ['Ez az iskolatáskám.']],
+        ['那 是 什么？', 'Az mi?', [], ['Mi az?']],
+        ['那 是 中文 书。', 'Az egy kínai könyv.', [], ['Az kínai könyv.', 'Az egy kínai nyelvű könyv.']],
+        ['我 学习 中文。', 'Kínaiul tanulok.', [], ['Kínait tanulok.', 'Kínai nyelvet tanulok.', 'Én kínaiul tanulok.']],
+        ['你 有 笔 吗？', 'Van tollad?', [], []],
+        ['我 有 两 支 铅笔。', 'Két ceruzám van.', [], ['Van két ceruzám.']],
+        ['老师 写 汉字。', 'A tanár kínai írásjegyeket ír.', [], ['A tanárnő kínai írásjegyeket ír.', 'A tanár írásjegyeket ír.']],
+        ['这 是 我们 的 教室。', 'Ez a mi osztálytermünk.', [], ['Ez az osztálytermünk.', 'Ez a mi tantermünk.', 'Ez a tantermünk.']],
+        ['我 看 书。', 'Könyvet olvasok.', [], ['Olvasok.']],
+        ['这 本 书 是 我 的。', 'Ez a könyv az enyém.', [], []]
+      ]
+    },
+    {
+      id: 'chifan', title: 'Étel és ital', icon: '🍜',
+      tip: '**Tagadás: 不 vagy 没?**\n\n' +
+        '- `不` (bù): jelen, jövő, szokás, akarat: `我不喝咖啡` = nem iszom kávét (nem szoktam / nem fogok).\n' +
+        '- `没` (méi): ami **nem történt meg**: `我没喝牛奶` = nem ittam tejet.\n' +
+        '- A `有` tagadása mindig `没有`, sosem „不有”.\n\n' +
+        'A tagadószó az **ige elé** kerül, mint a magyar **nem**.\n\n' +
+        '**Akarás és kérés:**\n\n' +
+        '- `想` (xiǎng) + ige = szeretnék: `我想喝茶` = teát szeretnék inni.\n' +
+        '- `要` (yào) = kérek, akarok – határozottabb, rendeléskor jó: `我要一杯水` = kérek egy pohár vizet.\n\n' +
+        '`喜欢` (xǐhuan) = szeret, kedvel: `我喜欢吃面条` = szeretem a tésztát. A `杯` (bēi, pohár) is mértékszó: `一杯茶` = egy csésze tea.\n\n' +
+        'Kínában délen inkább a `米饭` (főtt rizs), északon a `面条` (tészta) és a `饺子` (töltött tésztabatyu) a fő étel. A `好吃` szó szerint „jó enni” = finom.',
+      words: [
+        ['吃', 'eszik', 'chī'], ['喝', 'iszik', 'hē'], ['米饭', 'főtt rizs', 'mǐfàn'], ['面条', 'tészta (metélt)', 'miàntiáo'],
+        ['饺子', 'töltött tésztabatyu', 'jiǎozi'], ['苹果', 'alma', 'píngguǒ'], ['水', 'víz', 'shuǐ'], ['茶', 'tea', 'chá'],
+        ['牛奶', 'tej', 'niúnǎi'], ['咖啡', 'kávé', 'kāfēi'], ['鸡蛋', 'tojás', 'jīdàn'], ['杯', 'pohár, csésze (mértékszó)', 'bēi'],
+        ['想', 'szeretne (valamit tenni)', 'xiǎng'], ['要', 'kér, akar', 'yào'], ['不', 'nem (tagadószó)', 'bù'],
+        ['没', 'nem (ami nem történt meg)', 'méi'], ['喜欢', 'szeret, kedvel', 'xǐhuan'], ['好吃', 'finom', 'hǎochī'],
+        ['饿', 'éhes', 'è'], ['渴', 'szomjas', 'kě']
+      ],
+      sentences: [
+        ['我 喜欢 吃 面条。', 'Szeretem a tésztát.', [], ['Szeretek tésztát enni.']],
+        ['你 想 喝 什么？', 'Mit szeretnél inni?', [], ['Mit innál?', 'Mit kérsz inni?']],
+        ['我 想 喝 茶。', 'Teát szeretnék inni.', [], ['Teát innék.', 'Szeretnék teát inni.', 'Teát kérek.']],
+        ['我 要 一 杯 水。', 'Kérek egy pohár vizet.', [], ['Egy pohár vizet kérek.']],
+        ['我 不 喝 咖啡。', 'Nem iszom kávét.', [], ['Én nem iszom kávét.', 'Kávét nem iszom.']],
+        ['我 不 喜欢 牛奶。', 'Nem szeretem a tejet.', [], ['Én nem szeretem a tejet.']],
+        ['我 没 喝 牛奶。', 'Nem ittam tejet.', [], ['Nem ittam meg a tejet.']],
+        ['你 饿 吗？', 'Éhes vagy?', [], []],
+        ['我 很 渴。', 'Szomjas vagyok.', [], ['Nagyon szomjas vagyok.']],
+        ['面条 很 好吃。', 'A tészta finom.', [], ['A tészta nagyon finom.', 'Finom a tészta.']],
+        ['我 吃 两 个 鸡蛋。', 'Két tojást eszem.', [], ['Eszem két tojást.', 'Megeszek két tojást.']],
+        ['你 喜欢 吃 苹果 吗？', 'Szereted az almát?', [], ['Szeretsz almát enni?']]
+      ]
+    },
+    {
+      id: 'yanse', title: 'Színek és ruhák', icon: '👕',
+      tip: 'Nagy csapda: melléknév előtt **nem** használjuk a `是` létigét!\n\n' +
+        '- ❌ `衣服是漂亮` → ✅ `衣服很漂亮` = a ruha szép\n' +
+        '- `我很渴` = szomjas vagyok\n\n' +
+        'A `很` (nagyon) itt többnyire csak „összekötő”: alig erősít, a magyarba gyakran le sem fordítjuk. Kérdésben és tagadásban elmarad: `贵吗？` = drága?, `不大` = nem nagy. Tehát:\n\n' +
+        '- főnév + `是` + főnév: `他是老师` (ő tanár)\n' +
+        '- főnév + `很` + melléknév: `他很高` (ő magas)\n\n' +
+        '**Színek:** a `色` (sè) jelentése szín: `红色` = piros. Ha a szín valaminek a tulajdonsága, gyakori a `是…的` keret: `我的鞋是黑色的` = a cipőm fekete.\n\n' +
+        'Ruhára a mértékszó `件` (jiàn): `一件衣服`; párokra `双` (shuāng): `一双鞋` = egy pár cipő.\n\n' +
+        'A **piros** Kínában a szerencse és az ünnep színe – az újévi pénzes borítékok (`红包`) is pirosak.',
+      words: [
+        ['颜色', 'szín', 'yánsè'], ['红色', 'piros', 'hóngsè'], ['蓝色', 'kék', 'lánsè'], ['绿色', 'zöld', 'lǜsè'],
+        ['黄色', 'sárga', 'huángsè'], ['白色', 'fehér', 'báisè'], ['黑色', 'fekete', 'hēisè'], ['衣服', 'ruha', 'yīfu'],
+        ['裤子', 'nadrág', 'kùzi'], ['鞋', 'cipő', 'xié'], ['件', 'darab (ruhára)', 'jiàn'], ['双', 'pár', 'shuāng'],
+        ['大', 'nagy', 'dà'], ['小', 'kicsi', 'xiǎo'], ['漂亮', 'szép', 'piàoliang'], ['新', 'új', 'xīn'],
+        ['贵', 'drága', 'guì'], ['便宜', 'olcsó', 'piányi']
+      ],
+      sentences: [
+        ['我 喜欢 红色。', 'Szeretem a pirosat.', [], ['A pirosat szeretem.', 'Szeretem a piros színt.']],
+        ['你 喜欢 什么 颜色？', 'Milyen színt szeretsz?', [], ['Melyik színt szereted?', 'Milyen színeket szeretsz?']],
+        ['这 件 衣服 很 漂亮。', 'Ez a ruha szép.', [], ['Ez a ruha nagyon szép.']],
+        ['我 的 鞋 是 黑色 的。', 'A cipőm fekete.', [], ['Az én cipőm fekete.', 'Fekete a cipőm.']],
+        ['他 的 衣服 是 蓝色 的。', 'A ruhája kék.', [], ['Az ő ruhája kék.', 'Kék a ruhája.']],
+        ['这 双 鞋 很 贵。', 'Ez a cipő drága.', [], ['Ez a cipő nagyon drága.', 'Ez a pár cipő drága.']],
+        ['裤子 很 便宜。', 'A nadrág olcsó.', [], ['A nadrág nagyon olcsó.', 'Olcsó a nadrág.']],
+        ['这个 贵 吗？', 'Ez drága?', [], ['Drága ez?']],
+        ['我 的 书包 不 大。', 'Az iskolatáskám nem nagy.', [], ['Az én iskolatáskám nem nagy.']],
+        ['我 的 猫 很 小。', 'A macskám kicsi.', [], ['A macskám nagyon kicsi.', 'Az én macskám kicsi.']],
+        ['我 有 一 件 新 衣服。', 'Van egy új ruhám.', [], ['Egy új ruhám van.']]
+      ]
+    },
+    {
+      id: 'shijian', title: 'Idő és napok', icon: '📅',
+      tip: '**Az időhatározó az ige ELÉ kerül** – sosem a mondat végére, mint az angolban:\n\n' +
+        '- `我七点起床。` = Hét órakor kelek fel. (én – hét óra – felkel)\n' +
+        '- `我晚上十点睡觉。` vagy `晚上十点我睡觉。` = Este tízkor megyek aludni.\n\n' +
+        'Állhat az alany előtt vagy után, de mindig az ige előtt. Sorrend: **ki – mikor – (hol) – mit csinál**.\n\n' +
+        '**Óra:** `点` (diǎn) = óra, `半` (bàn) = fél. Figyelj: `七点半` = 7:30 = magyarul **fél nyolc**!\n\n' +
+        '**Dátum** a nagytól a kicsi felé – pont, mint a magyarban: `2026年11月25号` = 2026. november 25. A hónapok számok: `五月` = 5. hónap = május.\n\n' +
+        '**Napok:** `星期` (hét) + szám: `星期一` = hétfő, `星期二` = kedd … `星期六` = szombat, a vasárnap viszont `星期天`.\n\n' +
+        'Múlt vagy jövő? Az ige nem változik, az időszó mondja meg: `昨天是星期天` = tegnap vasárnap volt.',
+      words: [
+        ['今天', 'ma', 'jīntiān'], ['昨天', 'tegnap', 'zuótiān'], ['现在', 'most', 'xiànzài'], ['点', 'óra (időpont)', 'diǎn'],
+        ['半', 'fél', 'bàn'], ['星期', 'hét (7 nap)', 'xīngqī'], ['星期一', 'hétfő', 'xīngqīyī'], ['星期六', 'szombat', 'xīngqīliù'],
+        ['星期天', 'vasárnap', 'xīngqītiān'], ['月', 'hónap', 'yuè'], ['号', 'nap (dátumban)', 'hào'], ['年', 'év', 'nián'],
+        ['早上', 'reggel', 'zǎoshang'], ['上午', 'délelőtt', 'shàngwǔ'], ['下午', 'délután', 'xiàwǔ'], ['晚上', 'este', 'wǎnshang'],
+        ['起床', 'felkel', 'qǐchuáng'], ['睡觉', 'alszik, aludni megy', 'shuìjiào'], ['上课', 'órája van (iskolában)', 'shàngkè']
+      ],
+      sentences: [
+        ['现在 几 点？', 'Hány óra van?', [], ['Most hány óra van?', 'Mennyi az idő?']],
+        ['现在 七 点 半。', 'Fél nyolc van.', [], ['Most fél nyolc van.']],
+        ['我 七 点 起床。', 'Hét órakor kelek fel.', [], ['Hétkor kelek fel.', 'Hét órakor kelek.', 'Hétkor kelek.']],
+        ['你 早上 几 点 起床？', 'Reggel hány órakor kelsz fel?', [], ['Reggel hánykor kelsz fel?', 'Hánykor kelsz fel reggel?', 'Reggel hány órakor kelsz?', 'Reggel hánykor kelsz?']],
+        ['我 晚上 十 点 睡觉。', 'Este tízkor megyek aludni.', [], ['Este tíz órakor megyek aludni.', 'Este tízkor fekszem le.', 'Este tíz órakor fekszem le.']],
+        ['今天 星期一。', 'Ma hétfő van.', [], ['Ma hétfő.']],
+        ['明天 星期六。', 'Holnap szombat lesz.', [], ['Holnap szombat van.', 'Holnap szombat.']],
+        ['昨天 是 星期天。', 'Tegnap vasárnap volt.', [], []],
+        ['今天 几 月 几 号？', 'Hányadika van ma?', [], ['Ma hányadika van?']],
+        ['今天 五 月 一 号。', 'Ma május elseje van.', [], ['Ma május elseje.']],
+        ['我们 下午 两 点 上课。', 'Délután kettőkor van óránk.', [], ['Délután két órakor van óránk.', 'Délután kettőkor kezdődik az óránk.']],
+        ['我 星期天 不 上课。', 'Vasárnap nincs órám.', [], ['Vasárnap nincs tanítás.']]
+      ]
+    },
+    {
+      id: 'chengshi', title: 'Város és közlekedés', icon: '🚇',
+      tip: '**Hol van? – 在:** a `在` (zài) jelentése „valahol van”, és elvégzi a magyar **-ban/-ben, -on/-en** ragok munkáját: `我在北京` = Pekingben vagyok, `公园在那儿` = a park ott van.\n\n' +
+        '**Hová megy? – 去:** a cél rag nélkül, közvetlenül az ige után jön: `我去商店` = a boltba megyek.\n\n' +
+        '**Mivel?** A `坐` (ül) járművel = utazik vele. A sorrend: ki – mivel – megy – hová:\n\n' +
+        '- `我坐地铁去学校。` = Metróval megyek iskolába. (én ül metró megy iskola)\n\n' +
+        '**Kérdőszó a helyén:** `你去哪儿？` → `我去商店。` A válasz pontosan a kérdőszó helyére kerül – mint a magyarban: Hová mész? – A boltba megyek. `怎么` (zěnme) = hogyan: `你怎么去？` = hogyan mész?\n\n' +
+        'A szóvégi `儿` (r) a **pekingi** kiejtés jellegzetessége: `哪儿` (nǎr), `这儿` (zhèr), `那儿` (nàr). Délen inkább `哪里`, `这里`, `那里` alakot hallasz.\n\n' +
+        'Figyelj a hangokra: `哪儿` (nǎr = hol?) 3. hang, `那儿` (nàr = ott) 4. hang!',
+      words: [
+        ['去', 'megy (valahová)', 'qù'], ['在', 'van (valahol)', 'zài'], ['哪儿', 'hol? hová?', 'nǎr'], ['这儿', 'itt', 'zhèr'],
+        ['那儿', 'ott', 'nàr'], ['商店', 'bolt', 'shāngdiàn'], ['医院', 'kórház', 'yīyuàn'], ['饭馆', 'étterem', 'fànguǎn'],
+        ['火车站', 'vasútállomás', 'huǒchēzhàn'], ['公园', 'park', 'gōngyuán'], ['公共汽车', 'busz', 'gōnggòng qìchē'],
+        ['出租车', 'taxi', 'chūzūchē'], ['地铁', 'metró', 'dìtiě'], ['飞机', 'repülőgép', 'fēijī'], ['北京', 'Peking', 'Běijīng'],
+        ['远', 'messze', 'yuǎn'], ['近', 'közel', 'jìn'], ['怎么', 'hogyan?', 'zěnme']
+      ],
+      sentences: [
+        ['你 去 哪儿？', 'Hová mész?', [], ['Hova mész?']],
+        ['我 去 商店。', 'A boltba megyek.', [], ['Boltba megyek.', 'Megyek a boltba.']],
+        ['火车站 在 哪儿？', 'Hol van a vasútállomás?', [], ['Hol van a pályaudvar?', 'Merre van a vasútállomás?']],
+        ['公园 在 那儿。', 'A park ott van.', [], ['Ott van a park.']],
+        ['商店 在 这儿。', 'A bolt itt van.', [], ['Itt van a bolt.']],
+        ['我 坐 地铁 去 学校。', 'Metróval megyek iskolába.', [], ['Metróval megyek az iskolába.', 'Metróval járok iskolába.']],
+        ['他 坐 出租车 去 医院。', 'Taxival megy a kórházba.', [], ['Ő taxival megy a kórházba.', 'Taxival megy kórházba.']],
+        ['你 怎么 去 公园？', 'Hogyan mész a parkba?', [], ['Hogy mész a parkba?', 'Mivel mész a parkba?']],
+        ['我 坐 公共汽车 去。', 'Busszal megyek.', [], []],
+        ['医院 远 吗？', 'Messze van a kórház?', [], ['A kórház messze van?']],
+        ['饭馆 很 近。', 'Az étterem közel van.', [], ['Közel van az étterem.', 'Az étterem nagyon közel van.']],
+        ['我们 坐 飞机 去 北京。', 'Repülővel megyünk Pekingbe.', [], ['Repülőgéppel megyünk Pekingbe.']]
+      ]
+    },
+    {
+      id: 'aihao', title: 'Hobbi és múlt', icon: '⚽',
+      tip: '**A 了 (le) – megtörtént!** A kínai ige nem kap múlt idő ragot. Helyette a `了` jelzi, hogy egy cselekvés **megtörtént, befejeződött**, vagy új helyzet állt elő:\n\n' +
+        '- az ige után, ha a tárgynak száma van: `我吃了两个苹果。` = Megettem két almát.\n' +
+        '- a mondat végén: `我昨天看电影了。` = Tegnap filmet néztem. `周末我去公园了。` = Hétvégén elmentem a parkba.\n\n' +
+        '**Tagadva nincs 了!** Helyette `没` (méi) áll: `我没去学校` = nem mentem iskolába. (❌ `我没去了`)\n\n' +
+        'A `了` nem pontosan „múlt idő”: múltbeli állapotra nem kell (`昨天是星期天`). Gondolj rá úgy, mint a magyar **meg-** igekötőre: `吃` = eszik, `吃了` = megette.\n\n' +
+        '**Tudás – 会 (huì):** megtanult képességre: `我会游泳` = tudok úszni.\n\n' +
+        'Sok sport ige + tárgy: `踢足球` (rúgja a labdát = focizik), `打篮球` (üti a kosárlabdát = kosarazik), `唱歌` (dalt énekel = énekel).',
+      words: [
+        ['爱好', 'hobbi', 'àihào'], ['踢足球', 'focizik', 'tī zúqiú'], ['打篮球', 'kosarazik', 'dǎ lánqiú'], ['游泳', 'úszik', 'yóuyǒng'],
+        ['唱歌', 'énekel', 'chànggē'], ['跳舞', 'táncol', 'tiàowǔ'], ['画画', 'rajzol', 'huàhuà'], ['听', 'hallgat', 'tīng'],
+        ['音乐', 'zene', 'yīnyuè'], ['电影', 'film', 'diànyǐng'], ['玩', 'játszik', 'wán'], ['游戏', 'játék', 'yóuxì'],
+        ['电脑', 'számítógép', 'diànnǎo'], ['周末', 'hétvége', 'zhōumò'], ['一起', 'együtt', 'yīqǐ'],
+        ['会', 'tud (valamit csinálni)', 'huì'], ['了', 'a megtörtént cselekvés szócskája', 'le']
+      ],
+      sentences: [
+        ['我 的 爱好 是 踢足球。', 'A hobbim a focizás.', [], ['Az én hobbim a focizás.', 'A hobbim a foci.']],
+        ['周末 我 打篮球。', 'Hétvégén kosarazom.', [], ['Hétvégén kosarazok.', 'Hétvégén kosárlabdázom.', 'Hétvégén kosárlabdázok.']],
+        ['我 喜欢 听 音乐。', 'Szeretek zenét hallgatni.', [], ['Szeretem hallgatni a zenét.']],
+        ['你 会 游泳 吗？', 'Tudsz úszni?', [], []],
+        ['我 会 唱歌。', 'Tudok énekelni.', [], []],
+        ['妹妹 喜欢 画画。', 'A húgom szeret rajzolni.', [], ['Húgom szeret rajzolni.']],
+        ['我们 一起 跳舞。', 'Együtt táncolunk.', [], ['Mi együtt táncolunk.']],
+        ['弟弟 玩 电脑 游戏。', 'Az öcsém számítógépes játékot játszik.', [], ['Az öcsém számítógépezik.', 'Az öcsém számítógépes játékokkal játszik.']],
+        ['我 昨天 看 电影 了。', 'Tegnap filmet néztem.', [], ['Tegnap néztem egy filmet.', 'Tegnap megnéztem egy filmet.']],
+        ['我 吃 了 两 个 苹果。', 'Megettem két almát.', [], ['Két almát ettem.', 'Ettem két almát.']],
+        ['昨天 我 没 去 学校。', 'Tegnap nem mentem iskolába.', [], ['Tegnap nem mentem el az iskolába.', 'Tegnap nem voltam iskolában.']],
+        ['周末 我 去 公园 了。', 'Hétvégén elmentem a parkba.', [], ['Hétvégén a parkba mentem.', 'Hétvégén a parkban voltam.']]
       ]
     }
   ]
