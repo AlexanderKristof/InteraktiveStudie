@@ -40,6 +40,7 @@
       '<input type="search" id="sp-who" placeholder="Írd be a nevét, pl. Messi, Hosszú Katinka, Verstappen…" style="width:100%">' +
       '<div class="chips" id="sp-ath" style="margin-top:10px"></div></section>' +
       ((subj || S.models['f1-auto']) ? '<div class="section-title"><h2>📘 Leckék és modellek</h2>' + (subj ? '<a href="#/tantargy/sport">Összes lecke →</a>' : '') + '</div><div class="grid">' +
+        (S.pageSetup ? '<a class="card tile" href="#/setup"><span class="ico">🏁</span><b>Setup-szimulátor</b><small>Légy versenymérnök: guminyomás, dőlésszög, szárnyak, rugók – mit nyersz, mit veszítesz?</small></a>' : '') +
         (S.models['f1-auto'] ? '<a class="card tile" href="#/felfedezo/f1-auto"><span class="ico">' + S.models['f1-auto'].icon + '</span><b>' + esc(S.models['f1-auto'].title) + '</b><small>Szedd szét alkatrészeire!</small></a>' : '') +
         (subj ? subj.lessons.map(function (l) { return '<a class="card tile" href="#/lecke/sport/' + l.id + '"><span class="ico">' + subj.icon + '</span><b>' + esc(l.title) + '</b><small>' + esc(l.summary || '') + '</small></a>'; }).join('') : '') +
         '</div>' + (subj ? '<p style="margin-top:10px"><a class="btn" href="#/teszt">📝 Sportos teszt a Tesztközpontban</a> <a class="btn" href="#/kartyak/sport">🃏 Tanulókártyák</a></p>' : '') : '') +

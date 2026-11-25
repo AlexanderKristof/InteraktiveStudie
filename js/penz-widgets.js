@@ -89,3 +89,46 @@
     calc();
   });
 })();
+
+/* ---------- 🏋️ Edzésterhelés-kalkulátor (sRPE, monotónia, megterhelés, akut:krónikus arány) ---------- */
+(function () {
+  'use strict';
+  var S = window.STUDIE, esc = S.esc;
+  var DAYS = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'];
+  S.addWidget('terheles', function (el) {
+    var st = S.store.get('terheles', { d: [[60, 5], [0, 0], [75, 7], [45, 3], [0, 0], [90, 8], [0, 0]], prev: [1500, 1600, 1550] });
+    el.innerHTML = '<div class="w-title">🏋️ Edzésterhelés-kalkulátor (sRPE)</div>' +
+      '<p class="w-help">Minden edzés után a sportoló megmondja, mennyire volt nehéz egy 0–10-es skálán (<b>RPE</b>, megélt megerőltetés). ' +
+      'Az edzés terhelése: <code>sRPE = időtartam (perc) × RPE</code> (Foster módszere). Írd be a heti edzéseket és az előző 3 hét összterhelését!</p>' +
+      '<div class="tl-grid"><div><b>Ez a hét</b><table class="pw-table"><tbody>' + DAYS.map(function (d, i) {
+        return '<tr><td>' + d + '</td><td><input type="number" min="0" max="400" data-m="' + i + '" value="' + st.d[i][0] + '" aria-label="' + d + ' perc"> perc</td><td>RPE <input type="number" min="0" max="10" data-r="' + i + '" value="' + st.d[i][1] + '" aria-label="' + d + ' RPE"></td></tr>';
+      }).join('') + '</tbody></table></div>' +
+      '<div><b>Előző hetek összterhelése (AU)</b>' + [3, 2, 1].map(function (w, i) { return '<label class="pw-f"><span>' + w + ' héttel ezelőtt</span><input type="number" min="0" data-p="' + i + '" value="' + st.prev[i] + '"></label>'; }).join('') +
+      '<div id="tl-out"></div></div></div>' +
+      '<p class="w-help" style="margin-top:8px"><small>⚠️ Fontos: ezek a mutatók <b>tájékoztató jellegűek</b>. Az akut:krónikus arány (ACWR) sérüléskockázattal való kapcsolata a kutatásokban vitatott, ezért csak egy jelzés a sok közül. Mindig figyeld a sportoló közérzetét, alvását, fájdalmait – és kétség esetén kérdezz orvost vagy gyógytornászt.</small></p>';
+    function calc() {
+      var loads = DAYS.map(function (d, i) {
+        var mm = +el.querySelector('[data-m="' + i + '"]').value || 0, rr = Math.max(0, Math.min(10, +el.querySelector('[data-r="' + i + '"]').value || 0));
+        st.d[i] = [mm, rr]; return mm * rr;
+      });
+      st.prev = [0, 1, 2].map(function (i) { return +el.querySelector('[data-p="' + i + '"]').value || 0; });
+      S.store.set('terheles', st);
+      var week = loads.reduce(function (a, b) { return a + b; }, 0), mean = week / 7;
+      var sd = Math.sqrt(loads.reduce(function (a, x) { return a + (x - mean) * (x - mean); }, 0) / 7);
+      var mono = sd ? mean / sd : 0, strain = week * mono;
+      var chronic = (st.prev[0] + st.prev[1] + st.prev[2] + week) / 4, acwr = chronic ? week / chronic : 0;
+      var zone = acwr === 0 ? ['–', ''] : acwr < 0.8 ? ['alacsony (lehet, hogy kevés az inger)', 'warn'] : acwr <= 1.3 ? ['a gyakran ajánlott sávban (kb. 0,8–1,3)', 'ok'] : acwr <= 1.5 ? ['emelkedett: hirtelen nőtt a terhelés', 'warn'] : ['nagy ugrás: érdemes visszavenni', 'bad'];
+      el.querySelector('#tl-out').innerHTML = '<table class="pw-table"><tbody>' +
+        '<tr><td>Heti terhelés</td><td><b>' + Math.round(week) + ' AU</b></td></tr>' +
+        '<tr><td>Napi átlag</td><td>' + Math.round(mean) + ' AU</td></tr>' +
+        '<tr><td>Monotónia (átlag ÷ szórás)</td><td>' + (sd ? mono.toFixed(2).replace('.', ',') : '–') + (mono > 2 ? ' ⚠️' : '') + '</td></tr>' +
+        '<tr><td>Megterhelés (strain)</td><td>' + Math.round(strain) + ' AU</td></tr>' +
+        '<tr class="sum"><td>Akut:krónikus arány (ACWR)</td><td><b class="tl-' + zone[1] + '">' + (acwr ? acwr.toFixed(2).replace('.', ',') : '–') + '</b></td></tr></tbody></table>' +
+        '<p class="w-help">ACWR: ' + esc(zone[0]) + '. ' + (mono > 2 ? 'A <b>monotónia magas</b>: túl egyformák a napok – a kemény és könnyű napok váltogatása segíti a regenerációt. ' : '') +
+        'A heti terhelést érdemes fokozatosan növelni; a hirtelen nagy ugrás a legkockázatosabb.</p>' +
+        '<div class="tl-bars">' + loads.map(function (x, i) { var mx = Math.max.apply(null, loads) || 1; return '<div><span style="height:' + Math.round(x / mx * 100) + '%"></span><small>' + DAYS[i].slice(0, 2) + '</small></div>'; }).join('') + '</div>';
+    }
+    el.querySelectorAll('input').forEach(function (i) { i.addEventListener('input', calc); });
+    calc();
+  });
+})();

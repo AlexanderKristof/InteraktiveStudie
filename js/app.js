@@ -130,7 +130,10 @@
         '<span class="muted">Szakszótár ábrákkal és angol megfelelővel, kattintható képletek, fogalomtérkép és tanulókártyák: ' +
         S.courses.map(function (c) { return esc(c.title); }).join(', ') + '.</span></span><span class="btn primary">Megnyitás →</span></a>' : '') +
       (S.pageSport ? '<a class="card uni-band sport-band" href="#/sport" style="text-decoration:none;color:inherit;margin-top:14px"><span class="ico">⚽</span><span><h2 style="margin:0">Sport és tudomány</h2>' +
-        '<span class="muted">Foci, Forma–1, kosárlabda, úszás, tenisz és még sok más: a sport fizikája, edzéstudomány, rekordok és igaz történetek a kedvenc sportolóidról.</span></span><span class="btn primary">Megnyitás →</span></a>' : '');
+        '<span class="muted">Foci, Forma–1, kosárlabda, úszás, tenisz és még sok más: a sport fizikája, edzéstudomány, rekordok és igaz történetek a kedvenc sportolóidról.</span></span><span class="btn primary">Megnyitás →</span></a>' : '') +
+      (S.pageTanaroknak ? '<div class="role-row"><a class="card role-card" href="#/tanaroknak"><span class="ico">👩‍🏫</span><b>Tanároknak</b><small>Dolgozat-összeállító, osztálydolgozat-link, tanmenet, ötletek az órára</small></a>' +
+        '<a class="card role-card" href="#/edzoknek"><span class="ico">🏋️</span><b>Edzőknek</b><small>Terhelés-kalkulátor, edzéstervezés, sérülésmegelőzés</small></a>' +
+        '<a class="card role-card" href="#/setup"><span class="ico">🏁</span><b>Motorsport</b><small>Setup-szimulátor: légy versenymérnök!</small></a></div>' : '');
     if (S.bindFacts) S.bindFacts(main);
     main.querySelector('#hero-search').addEventListener('submit', function (e) {
       e.preventDefault();
@@ -519,6 +522,9 @@
     else if (seg[0] === 'tartalom') { setNav(''); title('Tartalomjegyzék'); S.pageTartalom(main); }
     else if (seg[0] === 'beallitasok') { setNav(''); title('Beállítások'); S.pageBeallitasok(); }
     else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
+    else if (seg[0] === 'tanaroknak') { setNav(''); title('Tanároknak'); S.pageTanaroknak(main); }
+    else if (seg[0] === 'edzoknek') { setNav('sport'); title('Edzőknek'); S.pageEdzoknek(main); }
+    else if (seg[0] === 'setup') { setNav('sport'); title('Setup-szimulátor'); S.pageSetup(main); }
     else if (seg[0] === 'osszeallito') { setNav('teszt'); title('Kérdés-összeállító'); S.pageOsszeallito(main, params); }
     else if (seg[0] === 'tanulas') { setNav('tanulas'); title('Tanulássegéd'); if (!S.pageTanulas(main, seg[1], params)) notFound(); }
     else if (seg[0] === 'nyelvek') { setNav('nyelvek'); title('Nyelvek'); S.pageNyelvek(main); }
