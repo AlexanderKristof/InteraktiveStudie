@@ -52,7 +52,7 @@
   }
   function bindPicker(main, base) {
     var sel = main.querySelector('#tl-pick');
-    if (sel) sel.addEventListener('change', function () { if (sel.value) location.hash = base + '?l=' + sel.value; });
+    if (sel) { sel.addEventListener('change', function () { if (sel.value) location.hash = base + '?l=' + sel.value; }); S.searchableSelect(sel, '🔎 Keresd a leckét: tantárgy vagy téma (pl. sejt, Ohm, honfoglalás)…'); }
   }
   function crumbs(title) {
     return '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/tanulas">Tanulássegéd</a><span>›</span><span>' + esc(title) + '</span></nav>';
@@ -190,6 +190,7 @@
       S.subjects.map(function (s) { return '<option value="' + s.id + '"' + (s.id === sid ? ' selected' : '') + '>' + esc(s.icon + ' ' + s.title) + '</option>'; }).join('') + '</select></label>' +
       '<button type="button" class="btn primary" id="ih-go">▶ Indítás</button><span class="muted">Rekordod: <b>' + (rec[sid || 'vegyes'] || 0) + '</b></span></div><div id="ih-box"></div>';
     main.querySelector('#ih-t').addEventListener('change', function (e) { location.hash = '#/tanulas/igazhamis' + (e.target.value ? '?t=' + e.target.value : ''); });
+    S.searchableSelect(main.querySelector('#ih-t'), '🔎 Keresd a tantárgyat…');
     main.querySelector('#ih-go').addEventListener('click', start);
     var timer = null, keyH = null;
     function start() {
@@ -243,6 +244,7 @@
     main.innerHTML = crumbs('Fogalomkitaláló') + '<h1>🔤 Fogalomkitaláló</h1><p class="lead">Elolvasod a meghatározást, és beírod, melyik fogalomról van szó. Ha elakadsz, kérj segítséget (az első betű, aztán a betűk száma).</p>' +
       '<label class="pw-f" style="max-width:520px"><span>Kurzus</span><select id="fg-k">' + S.courses.map(function (x) { return '<option value="' + x.id + '"' + (x.id === cid ? ' selected' : '') + '>' + esc(x.icon + ' ' + x.title) + '</option>'; }).join('') + '</select></label><div id="fg-box"></div>';
     main.querySelector('#fg-k').addEventListener('change', function (e) { location.hash = '#/tanulas/fogalom?k=' + e.target.value; });
+    S.searchableSelect(main.querySelector('#fg-k'), '🔎 Keresd a kurzust (pl. IFRS, gépi tanulás, anatómia)…');
     if (!c) return true;
     var deck = S.shuffle(c.terms.slice()), i = 0, score = 0, tries = 0;
     var box = main.querySelector('#fg-box');

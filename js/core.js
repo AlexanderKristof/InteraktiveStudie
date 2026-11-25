@@ -19,6 +19,36 @@
   S.addModel = function (m) { S.models[m.id] = m; };
   S.addWidget = function (name, fn) { S.widgets[name] = fn; };
 
+  /* Kereshető legördülő lista: a <select> fölé egy szűrőmezőt tesz; gépeléskor csak az illő opciók maradnak.
+   * Ha pontosan egy opció marad, azt ki is választja (change eseménnyel), Enterre az elsőt. */
+  S.searchableSelect = function (sel, placeholder) {
+    if (!sel || sel.dataset.searchable) return; sel.dataset.searchable = '1';
+    var orig = sel.innerHTML, inp = document.createElement('input');
+    inp.type = 'search'; inp.className = 'sel-find'; inp.placeholder = placeholder || '🔎 Keresés a listában…'; inp.autocomplete = 'off';
+    sel.parentNode.insertBefore(inp, sel);
+    function filter(pickOne) {
+      var q = S.norm(inp.value.trim()), words = q.split(/\s+/).filter(Boolean), cur = sel.value;
+      var tmp = document.createElement('select'); tmp.innerHTML = orig;
+      if (words.length) {
+        Array.prototype.slice.call(tmp.querySelectorAll('optgroup')).forEach(function (g) {
+          var gl = S.norm(g.label || '');
+          Array.prototype.slice.call(g.querySelectorAll('option')).forEach(function (o) {
+            if (!words.every(function (w) { return (S.norm(o.textContent) + ' ' + gl).indexOf(w) >= 0; })) o.remove();
+          });
+          if (!g.querySelector('option')) g.remove();
+        });
+        Array.prototype.slice.call(tmp.children).forEach(function (o) {
+          if (o.tagName === 'OPTION' && o.value && !words.every(function (w) { return S.norm(o.textContent).indexOf(w) >= 0; })) o.remove();
+        });
+      }
+      sel.innerHTML = tmp.innerHTML;
+      var opts = Array.prototype.slice.call(sel.querySelectorAll('option')).filter(function (o) { return o.value; });
+      if (opts.some(function (o) { return o.value === cur; })) sel.value = cur;
+      if (words.length && (opts.length === 1 || pickOne) && opts[0] && cur !== opts[0].value) { sel.value = opts[0].value; sel.dispatchEvent(new Event('change', { bubbles: true })); }
+    }
+    inp.addEventListener('input', function () { filter(false); });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); filter(true); } });
+  };
   S.esc = function (s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')

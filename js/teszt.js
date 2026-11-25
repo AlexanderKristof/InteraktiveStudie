@@ -152,6 +152,8 @@
       (weak.length ? '<div class="note warn"><b class="t">Gyenge pontjaid: ezeket érdemes gyakorolni</b><div class="chips" style="margin-top:6px">' + weak.slice(0, 6).map(function (w) {
         return '<button type="button" class="chip" data-weak="' + w.g.id + '/' + w.t.id + '">' + w.g.icon + ' ' + esc(w.t.title) + ' · ' + w.p + '%</button>';
       }).join('') + '</div></div>' : '') +
+      '<div class="ts-find card pad"><input type="search" id="ts-find" placeholder="🔎 Keresés tantárgyra, kurzusra vagy témára… (pl. fizika, Ohm, IFRS, sejt, 1848)" autocomplete="off">' +
+      '<span class="muted" id="ts-find-n"></span><a class="btn sm" id="ts-find-q" href="#/osszeallito">🧩 Keresés a kérdések szövegében is</a></div>' +
       '<div class="ts-layout"><div class="ts-topics">' + SECTIONS.map(function (sec) {
         var gs = groups.filter(function (g) { return secOf(g) === sec[0]; });
         if (!gs.length) return '';
@@ -190,6 +192,39 @@
         var k = g.topics.filter(function (t) { return sel[g.id + '/' + t.id]; }).length;
         i.checked = k === g.topics.length; i.indeterminate = k > 0 && k < g.topics.length;
       });
+      (function () {
+        var fi = main.querySelector('#ts-find'), cnt = main.querySelector('#ts-find-n'), qa = main.querySelector('#ts-find-q');
+        if (!fi) return;
+        function ws(x) { return ' ' + x.replace(/[^a-z0-9]+/g, ' ') + ' '; }
+        function hit(x, w) { return x.indexOf(' ' + w) >= 0; }
+        var qText = {};
+        groups.forEach(function (g) { g.topics.forEach(function (t) { qText[g.id + '/' + t.id] = t.questions.map(function (q) { return ws(S.norm(q.q + ' ' + q.options.join(' '))); }); }); });
+        fi.addEventListener('input', function () {
+          var qHits = 0;
+          var q = S.norm(fi.value.trim()), words = q.split(/\s+/).filter(Boolean), hitT = 0;
+          qa.href = '#/osszeallito' + (fi.value.trim() ? '?q=' + encodeURIComponent(fi.value.trim()) : '');
+          main.querySelectorAll('.ts-section').forEach(function (sec) {
+            var secTitle = S.norm(sec.querySelector('.ts-sec-title').textContent), secHit = false;
+            sec.querySelectorAll('.ts-group').forEach(function (gr) {
+              var gTitle = S.norm(gr.querySelector('.ts-gt b').textContent), gHit = false;
+              var gAll = words.length && words.every(function (w) { return hit(ws(gTitle + ' ' + secTitle), w); });
+              gr.querySelectorAll('.ts-topic').forEach(function (tp) {
+                var tTitle = S.norm(tp.querySelector('span').textContent), key = tp.querySelector('input').dataset.key;
+                var ok = !words.length || gAll || words.every(function (w) { return hit(ws(tTitle + ' ' + gTitle + ' ' + secTitle), w); });
+                var nq = words.length ? (qText[key] || []).filter(function (x) { return words.every(function (w) { return hit(x, w); }); }).length : 0;
+                var badge = tp.querySelector('.ts-qhit'); if (badge) badge.remove();
+                if (!ok && nq) { ok = true; qHits += nq; tp.insertAdjacentHTML('beforeend', '<span class="badge ts-qhit">🔎 ' + nq + ' kérdés</span>'); }
+                tp.hidden = !ok; if (ok) { gHit = true; if (words.length) hitT++; }
+              });
+              gr.hidden = !gHit; if (gHit) secHit = true;
+              if (words.length) gr.open = gHit;
+            });
+            sec.hidden = !secHit;
+            if (words.length) sec.open = secHit;
+          });
+          cnt.textContent = words.length ? (hitT ? hitT + ' téma illik a keresésre' + (qHits ? ' (ebből ' + qHits + ' kérdés szövegében is szerepel)' : '') + ' – pipáld ki, amelyik kell.' : 'Nincs találat.') : '';
+        });
+      })();
       main.querySelectorAll('[data-section]').forEach(function (i) {
         var tot = 0, k = 0;
         groups.forEach(function (g) { if (secOf(g) !== i.dataset.section) return; g.topics.forEach(function (t) { tot++; if (sel[g.id + '/' + t.id]) k++; }); });

@@ -807,3 +807,8 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .osz-cart .pw-f { margin: 8px 0; } .osz-actions { display: grid; gap: 8px; margin-top: 10px; }
 .osz-promo { display: flex; gap: 12px; align-items: center; padding: 14px 16px; margin: 10px 0 16px; text-decoration: none; color: var(--fg); }
 .osz-promo .ico { font-size: 1.8rem; } .osz-promo > span:nth-child(2) { flex: 1; display: grid; gap: 2px; } .osz-promo small { color: var(--muted); }
+
+.ts-find { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin: 12px 0; padding: 12px 14px; }
+.ts-find input { flex: 1; min-width: 240px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; }
+.ts-topic[hidden], .ts-group[hidden], .ts-section[hidden] { display: none !important; }
+.sel-find { display: block; width: 100%; margin: 4px 0 6px; padding: 8px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; }

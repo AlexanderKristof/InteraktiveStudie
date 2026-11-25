@@ -117,6 +117,7 @@
     main.querySelector('#oz-q').addEventListener('input', function (e) { q = e.target.value; clearTimeout(tmr); tmr = setTimeout(function () { paintRes(); history.replaceState(null, '', '#/osszeallito?q=' + encodeURIComponent(q) + (grp ? '&g=' + grp : '')); }, 250); });
     main.querySelector('#oz-k').addEventListener('change', function (e) { kind = e.target.value; grp = ''; go(); });
     main.querySelector('#oz-g').addEventListener('change', function (e) { grp = e.target.value; go(); });
+    S.searchableSelect(main.querySelector('#oz-g'), '🔎 Keresd a tantárgyat vagy kurzust…');
     main.querySelector('#oz-ans').addEventListener('change', function (e) { showAns = e.target.checked; paintRes(); });
     paintRes(); paintCart();
     return true;

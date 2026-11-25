@@ -193,6 +193,7 @@
       refresh();
     });
     ks.addEventListener('change', refresh);
+    S.searchableSelect(gs, '🔎 Keresd a tantárgyat vagy kurzust (pl. matek, IFRS, villany)…');
     main.querySelector('#ex-form').addEventListener('submit', function (e) {
       e.preventDefault();
       var topics = Array.prototype.slice.call(tb.querySelectorAll('input:checked')).map(function (i) { return i.value; });
