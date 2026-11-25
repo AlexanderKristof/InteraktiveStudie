@@ -110,7 +110,7 @@
       '<form class="search-big" id="hero-search"><input type="search" name="q" placeholder="Mi érdekel? pl. processzor, atom, Ohm-törvény…" aria-label="Keresés"><button class="btn primary" type="submit">Keresés</button></form>' +
       '<div class="chips">' + ['processzor', 'atom', 'akkumulátor', 'Ohm', 'FI relé', 'Pitagorasz', 'négyütemű motor', 'honfoglalás'].map(function (c) {
         return '<a class="chip" href="#/kereses?q=' + encodeURIComponent(c) + '">' + esc(c) + '</a>';
-      }).join('') + '<a class="chip" href="#/tartalom" style="border-style:dashed">📚 Teljes tartalomjegyzék</a></div>' + lastHtml + dailyHtml() + examHtml() + factDayHtml() + '</section>' +
+      }).join('') + '<a class="chip" href="#/tartalom" style="border-style:dashed">📚 Teljes tartalomjegyzék</a></div>' + (S.newsHomeCard ? S.newsHomeCard() : '') + lastHtml + dailyHtml() + examHtml() + factDayHtml() + '</section>' +
       ((S.paths || []).length ? '<div class="section-title"><h2>🧭 Válassz célt</h2><a href="#/utvonalak">Összes útvonal →</a></div><p class="muted" style="margin-top:-6px">Lépésről lépésre végigvezető tanulási tervek, tantárgyakon átívelve.</p><div class="grid">' + S.pathCards(4) + '</div>' : '') +
       S.STAGES.map(function (stg) {
         var list = S.subjects.filter(function (s) { return (s.stage || 'kozep') === stg[0]; });
@@ -522,6 +522,7 @@
     else if (seg[0] === 'tartalom') { setNav(''); title('Tartalomjegyzék'); S.pageTartalom(main); }
     else if (seg[0] === 'beallitasok') { setNav(''); title('Beállítások'); S.pageBeallitasok(); }
     else if (seg[0] === 'jegyzetek') { setNav(''); title('Jegyzeteim'); S.pageJegyzetek(main); }
+    else if (seg[0] === 'ujdonsagok') { setNav('ujdonsagok'); title('Újdonságok'); S.pageUjdonsagok(main); }
     else if (seg[0] === 'tanaroknak') { setNav(''); title('Tanároknak'); S.pageTanaroknak(main); }
     else if (seg[0] === 'edzoknek') { setNav('sport'); title('Edzőknek'); S.pageEdzoknek(main); }
     else if (seg[0] === 'setup') { setNav('sport'); title('Setup-szimulátor'); S.pageSetup(main); }

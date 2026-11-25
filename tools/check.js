@@ -194,6 +194,10 @@ Object.keys(S.simple || {}).forEach(cid => {
   });
 });
 
+/* Újdonságok */
+const newsIds = new Set();
+(S.news || []).forEach(n => { if (!n.id || newsIds.has(n.id)) err('újdonság ' + n.id, 'hiányzó vagy ismétlődő id'); newsIds.add(n.id); if (!/^\d{4}-\d{2}-\d{2}$/.test(n.date || '')) err('újdonság ' + n.id, 'rossz dátum'); });
+
 /* Tudtad? tények */
 const factIds = new Set(), CATS = new Set((S.FACT_CATS || []).map(c => c[0]));
 (S.facts || []).forEach((f, i) => {
