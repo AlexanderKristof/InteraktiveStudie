@@ -95,6 +95,13 @@ gondolattérkép minden leckéhez, „Igaz vagy hamis?” villámjáték, Fogalo
 
 **🎒 Egyetem iskolai nézetben:** minden szakszónál egyszerű, szakszavak nélküli magyarázat hasonlattal (`data/egyszeru/*.js` – `STUDIE.addSimple`); a szakmai rész lenyitható.
 
+**🎓 MSc – mesterképzés (14 kurzus)**, a BSc-re épülve („Erre épül” hivatkozásokkal): Gépi tanulás, Elosztott rendszerek és felhő,
+Kriptográfia és IT-biztonság, Teljesítményelektronika, Beágyazott rendszerek, Haladó irányítástechnika, Numerikus módszerek,
+Optimalizálás és operációkutatás, Sztochasztikus folyamatok, Haladó vállalati pénzügyek, IFRS, Kontrolling, Élettan és kórélettan,
+Molekuláris biológia és farmakológia. Fájlnév: `data/egyetem/msc-*.js` (`degree: 'msc'`, `builds: [...]`).
+
+**🧩 Kérdés-összeállító:** kulcsszavas keresés az összes kérdés között, kosár, gyakorló teszt, időre menő vizsga, nyomtatható dolgozat megoldókulccsal.
+
 **📈 Haladásom.** Tanulási sorozat, aktivitásnaptár, kitűzők, és a haladás **mentése/betöltése fájlba** (géphez nem kötött).
 
 Ezen kívül: **kereső** az összes tartalomban (ékezet nélkül is működik), haladásmentés, világos és sötét mód,
@@ -160,6 +167,7 @@ js/tudtad.js          „Tudtad?” érdekességek
 js/sport.js           sport és tudomány oldal
 js/nyelvek.js         játékos nyelvtanulás
 js/tanulas.js         tanulássegéd (felidézés, gondolattérkép, villámjáték, Pomodoro)
+js/osszeallito.js     kérdés-összeállító (keresés, kosár, vizsga, nyomtatás)
 data/                 a tananyag
 sw.js, manifest       offline mód és telepíthetőség
 tools/build-single.js egyfájlos változat készítése
