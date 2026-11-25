@@ -787,3 +787,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .pomo-mode { font-weight: 700; } .pomo-mode.focus { color: #dc2626; } .pomo-mode.rest { color: #16a34a; }
 .pomo-bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; margin: 8px 0 14px; } .pomo-bar i { display: block; height: 100%; background: var(--accent); }
 @media print { .mm-card { border: 0; box-shadow: none; } }
+
+.deg-title { margin: 28px 0 4px; font-size: 1.5rem; } .deg-title small { font-size: .9rem; font-weight: 400; }
+.badge.msc { background: #7c3aed; color: #fff; font-size: .7rem; vertical-align: middle; }
+.builds { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }

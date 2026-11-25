@@ -315,12 +315,17 @@
   S.pageUniList = function (main) {
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>Egyetem</span></nav>' +
       '<h1>Egyetemi szakszótár és vizuális jegyzet</h1><p class="lead">Szakszavak érthetően, ábrákkal és angol megfelelővel. Kattintható képletek, fogalomtérkép, ami megmutatja, mi mivel függ össze, és tanulókártyák a vizsgára készüléshez.</p>' +
-      FIELDS.map(function (f) {
-        var list = S.courses.filter(function (c) { return (c.field || FIELD_OF[c.id] || 'egyeb') === f[0]; });
-        return list.length ? '<div class="section-title"><h2>' + f[1] + '</h2><span class="muted">' + list.length + ' kurzus</span></div><div class="grid">' + list.map(function (c) {
-          return '<a class="card tile" style="--tile:' + c.color + '" href="#/egyetem/' + c.id + '"><span class="ico">' + c.icon + '</span><h3>' + esc(c.title) + '</h3><p>' + esc(c.description) + '</p>' +
-            '<span class="meta">' + esc(c.level || '') + ' · ' + c.terms.length + ' szakszó · ' + (c.formulas || []).length + ' képlet</span></a>';
-        }).join('') + '</div>' : '';
+      ['bsc', 'msc'].map(function (deg) {
+        var all = S.courses.filter(function (c) { return (c.degree || 'bsc') === deg; });
+        if (!all.length) return '';
+        return '<h2 class="deg-title">' + (deg === 'msc' ? '🎓 MSc – mesterképzés <small class="muted">a BSc-re épülő, haladó kurzusok</small>' : '📘 BSc – alapképzés') + '</h2>' +
+          FIELDS.map(function (f) {
+            var list = all.filter(function (c) { return (c.field || FIELD_OF[c.id] || 'egyeb') === f[0]; });
+            return list.length ? '<div class="section-title"><h3>' + f[1] + '</h3><span class="muted">' + list.length + ' kurzus</span></div><div class="grid">' + list.map(function (c) {
+              return '<a class="card tile" style="--tile:' + c.color + '" href="#/egyetem/' + c.id + '"><span class="ico">' + c.icon + '</span><h3>' + esc(c.title) + (deg === 'msc' ? ' <span class="badge msc">MSc</span>' : '') + '</h3><p>' + esc(c.description) + '</p>' +
+                '<span class="meta">' + esc(c.level || '') + ' · ' + c.terms.length + ' szakszó · ' + (c.formulas || []).length + ' képlet</span></a>';
+            }).join('') + '</div>' : '';
+          }).join('');
       }).join('');
   };
 
@@ -333,6 +338,7 @@
     setTimeout(function () { var k = main.querySelector('.tabs.big'); if (k) k.insertAdjacentHTML('beforeend', '<a href="#/teszt?targy=' + c.id + '">📝 Teszt</a>'); }, 0);
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/egyetem">Egyetem</a><span>›</span><span>' + esc(c.title) + '</span></nav>' +
       '<div class="subject-head" style="--tile:' + c.color + '"><span class="ico">' + c.icon + '</span><div><h1>' + esc(c.title) + '</h1><p class="lead" style="margin:0">' + esc(c.description) + '</p></div></div>' +
+      (c.builds && c.builds.length ? '<p class="builds">🧱 <b>Erre épül (érdemes előbb ezeket nézni):</b> ' + c.builds.map(function (id) { var x = S.courseById(id); return x ? '<a class="chip" href="#/egyetem/' + x.id + '">' + x.icon + ' ' + esc(x.title) + '</a>' : ''; }).join(' ') + '</p>' : '') +
       (S.level !== 'egyetem' && S.simpleOf(c.id, '_course') ? '<section class="simple-box card pad"><div class="sb-head"><span class="sb-ico">🎒</span><b>Miről szól ez a kurzus? – egyszerűen</b></div>' + md(S.simpleOf(c.id, '_course')) +
         '<p class="muted" style="font-size:.9rem">Iskolai nézetben vagy: a szakszavaknál elöl egyszerű magyarázatot látsz. A fejlécben válthatsz egyetemi szintre.</p></section>'
         : (c.intro ? '<div class="lesson-body">' + md(c.intro) + '</div>' : '')) +

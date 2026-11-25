@@ -178,6 +178,12 @@ const langIds = new Set();
   });
 });
 
+/* MSc: ráépülés */
+(S.courses || []).forEach(c => {
+  if (c.degree && !['bsc', 'msc'].includes(c.degree)) err('kurzus ' + c.id, 'ismeretlen degree: ' + c.degree);
+  (c.builds || []).forEach(id => { if (!S.courseById(id)) err('kurzus ' + c.id, 'ismeretlen ráépülő kurzus: ' + id); });
+});
+
 /* Egyszerű magyarázatok (iskolai nézet) */
 Object.keys(S.simple || {}).forEach(cid => {
   const c = S.courseById && S.courseById(cid);
