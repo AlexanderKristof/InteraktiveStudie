@@ -756,3 +756,4 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .review-btn .ico { font-size: 1.7rem; }
 .review-btn span:last-child { display: grid; gap: 2px; }
 .review-btn small { color: var(--muted); }
+.lang-group { margin: 22px 0 10px; font-size: 1.2rem; }

@@ -173,18 +173,31 @@
   }
 
   /* ---------- oldalak ---------- */
+  var LANG_GROUPS = [['nepszeru', '⭐ A legnépszerűbbek'], ['europa', '🇪🇺 További európai nyelvek'],
+    ['rokon', '🌲 Rokon nyelvünk', 'A finn a magyar távoli rokona (finnugor nyelvek): magánhangzó-illeszkedés, esetragok, nincs nyelvtani nem.'],
+    ['iras', '✍️ Más írású nyelvek', 'Új betűket vagy írásjegyeket is tanulsz; gépelni latin betűs átírással is lehet.']];
+  var LANG_GROUP_OF = { angol: 'nepszeru', nemet: 'nepszeru', spanyol: 'nepszeru', francia: 'nepszeru', olasz: 'nepszeru',
+    finn: 'rokon', japan: 'iras', kinai: 'iras', koreai: 'iras', orosz: 'iras', gorog: 'iras' };
+  var LANG_ORDER = ['angol', 'nemet', 'spanyol', 'francia', 'olasz', 'portugal', 'holland', 'sved', 'lengyel', 'torok', 'finn', 'orosz', 'gorog', 'japan', 'kinai', 'koreai'];
+  function ord(c) { var i = LANG_ORDER.indexOf(c.id); return i < 0 ? 99 : i; }
+  function langCard(c) {
+    var p = prog(c), done = c.units.filter(function (u) { return (p.units[u.id] || 0) > 0; }).length;
+    return '<a class="card lang-card" href="#/nyelv/' + c.id + '"><span class="flag">' + c.flag + '</span><b>' + esc(c.title) + '</b>' +
+      '<small>' + c.units.length + ' egység' + (c.badge ? ' · ' + esc(c.badge) : '') + '</small>' +
+      '<span class="bar"><i style="width:' + Math.round(done / Math.max(1, c.units.length) * 100) + '%"></i></span>' +
+      '<small>' + (p.xp ? p.xp + ' XP' : 'Még nem kezdted el') + '</small></a>';
+  }
   S.pageNyelvek = function (main) {
     var st = streak(), d = daily()[today()] || 0;
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>Nyelvek</span></nav>' +
       '<section class="lang-hero"><h1>🗣️ Nyelvtanulás játékosan</h1><p class="lead">Rövid, 3–5 perces körök: szavak, mondatépítés, hallás utáni értés, párosítás. ' +
       'Napi pár kör, és a sorozatod nő!</p>' + statsBar(st, d) + '</section>' +
-      '<div class="lang-grid">' + S.langCourses.map(function (c) {
-        var p = prog(c), done = c.units.filter(function (u) { return (p.units[u.id] || 0) > 0; }).length;
-        return '<a class="card lang-card" href="#/nyelv/' + c.id + '"><span class="flag">' + c.flag + '</span><b>' + esc(c.title) + '</b>' +
-          '<small>' + c.units.length + ' egység' + (c.badge ? ' · ' + esc(c.badge) : '') + '</small>' +
-          '<span class="bar"><i style="width:' + Math.round(done / Math.max(1, c.units.length) * 100) + '%"></i></span>' +
-          '<small>' + (p.xp ? p.xp + ' XP' : 'Még nem kezdted el') + '</small></a>';
-      }).join('') + '</div>' +
+      LANG_GROUPS.map(function (g) {
+        var list = S.langCourses.filter(function (c) { return (LANG_GROUP_OF[c.id] || 'europa') === g[0]; });
+        list.sort(function (x, y) { return ord(x) - ord(y); });
+        if (!list.length) return '';
+        return '<h2 class="lang-group">' + g[1] + '</h2>' + (g[2] ? '<p class="muted" style="margin-top:-6px">' + g[2] + '</p>' : '') + '<div class="lang-grid">' + list.map(langCard).join('') + '</div>';
+      }).join('') +
       '<div class="card pad" style="margin-top:16px"><b>🎯 Napi cél:</b> <span class="row" style="display:inline-flex;gap:6px;flex-wrap:wrap">' +
       [10, 30, 50, 100].map(function (g) { return '<button type="button" class="chip' + (goal() === g ? ' on' : '') + '" data-goal="' + g + '">' + g + ' XP</button>'; }).join('') + '</span>' +
       '<p class="muted" style="margin:8px 0 0">Egy kör kb. 10–15 XP. A kiejtést a böngésző felolvasója mondja ki; ha nincs hozzá hang telepítve, a hallgatós feladatok kimaradnak.</p></div>';
