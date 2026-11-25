@@ -689,7 +689,12 @@
 
   /* ---------- offline mód (csak webszerverről futtatva) ---------- */
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
-    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+    window.addEventListener('load', function () {
+      var had = !!navigator.serviceWorker.controller, reloaded = false;
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(function (reg) { reg.update(); }).catch(function () {});
+      /* ha új változat érkezett és átvette az irányítást, egyszer újratöltjük, hogy az új fájlok látszódjanak */
+      navigator.serviceWorker.addEventListener('controllerchange', function () { if (had && !reloaded) { reloaded = true; location.reload(); } });
+    });
   }
 
   /* Ha egy link a jelenlegi címre mutat (pl. futó teszt közben a morzsamenü), a böngésző nem

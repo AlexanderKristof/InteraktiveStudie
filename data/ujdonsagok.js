@@ -3,6 +3,10 @@
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-25-frissites', date: '2026-11-25', title: '🔄 Mindig a friss változat töltődik be',
+    plus: [['+1', 'javítás']],
+    items: [['Ha van internet, az oldal mindig a legújabb változatot tölti be (telefonon is); internet nélkül a tárolt változat működik tovább.', '']] });
+
   N({ id: '2026-11-25-motorsport', date: '2026-11-25', title: '🏁 Motorsport, 👩‍🏫 tanárok, 🏋️ edzők',
     plus: [['+3', 'tantárgy'], ['+27', 'lecke'], ['+840', 'tesztkérdés'], ['+36', '„Tudtad?” tény'], ['+2', 'interaktív eszköz'], ['+3', 'új oldal']],
     items: [
