@@ -122,6 +122,48 @@
     return ex.slice(0, ROUND);
   }
 
+  /* ---------- gyenge pontok: a rontott szavak/mondatok, ismétléshez ---------- */
+  function weak(c) { return S.store.get('nyelv.gyenge.' + c.id, {}); }
+  function itemKey(x) { return x.w ? 'w:' + x.w[0] : x.s ? 's:' + x.s[0] : null; }
+  function markWeak(c, x, ok) {
+    var k = itemKey(x); if (!k) return;
+    var wk = weak(c);
+    if (ok) { if (wk[k]) { wk[k]--; if (wk[k] <= 0) delete wk[k]; } }
+    else wk[k] = Math.min(5, (wk[k] || 0) + 2);
+    S.store.set('nyelv.gyenge.' + c.id, wk);
+  }
+  function allWords(c) { var a = []; c.units.forEach(function (u) { a = a.concat(u.words || []); }); return a; }
+  function allSent(c) { var a = []; c.units.forEach(function (u) { a = a.concat(u.sentences || []); }); return a; }
+  function reviewRound(c, mode) {
+    var W = allWords(c), Sn = allSent(c), ws = [], ss = [];
+    if (mode === 'gyenge') {
+      var wk = weak(c);
+      var keys = Object.keys(wk).sort(function (a, b) { return wk[b] - wk[a]; });
+      keys.forEach(function (k) {
+        if (k.indexOf('w:') === 0) { var w = W.filter(function (x) { return x[0] === k.slice(2); })[0]; if (w) ws.push(w); }
+        else { var sn = Sn.filter(function (x) { return x[0] === k.slice(2); })[0]; if (sn) ss.push(sn); }
+      });
+      ws = ws.slice(0, 8); ss = ss.slice(0, 4);
+    } else {
+      var p = prog(c), doneU = c.units.filter(function (u) { return (p.units[u.id] || 0) > 0; });
+      doneU.forEach(function (u) { ws = ws.concat(u.words || []); ss = ss.concat(u.sentences || []); });
+      ws = S.shuffle(ws).slice(0, 7); ss = S.shuffle(ss).slice(0, 5);
+    }
+    var ex = [], speak = canSpeak(c);
+    ws.forEach(function (w, i) {
+      var k = ['choose-rev', 'type', speak ? 'listen' : 'choose'][i % 3];
+      if (k === 'type') ex.push({ k: 'type', w: w });
+      else ex.push({ k: k, w: w, opts: S.shuffle([w].concat(pickOthers(W, w, 3, k === 'choose' ? 1 : 0))) });
+    });
+    ss.forEach(function (sn, i) {
+      var toks = tokens(c, sn[0]), others = [];
+      Sn.forEach(function (o) { if (o !== sn) others = others.concat(tokens(c, o[0])); });
+      others = S.shuffle(others.filter(function (t) { return toks.indexOf(t) < 0; })).filter(function (t, j, a) { return a.indexOf(t) === j; }).slice(0, 3);
+      ex.push({ k: i % 2 && speak ? 'listen-build' : 'build', s: sn, bank: S.shuffle(toks.concat(others)), answer: toks });
+    });
+    return S.shuffle(ex);
+  }
+
   /* ---------- oldalak ---------- */
   S.pageNyelvek = function (main) {
     var st = streak(), d = daily()[today()] || 0;
@@ -155,7 +197,7 @@
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/nyelvek">Nyelvek</a><span>›</span><span>' + esc(c.title) + '</span></nav>' +
       '<section class="lang-hero"><h1>' + c.flag + ' ' + esc(c.title) + '</h1>' + (c.intro ? '<p class="lead">' + S.inline(c.intro) + '</p>' : '') +
       statsBar(streak(), daily()[today()] || 0) + '<p style="margin:8px 0 0">⭐ ' + (p.xp || 0) + ' XP ebben a nyelvben</p></section>' +
-      '<div id="lang-voice"></div>' +
+      '<div id="lang-voice"></div>' + reviewBar(c, p) +
       '<ol class="lang-path">' + c.units.map(function (u, i) {
         var lv = p.units[u.id] || 0, cur = i === next;
         return '<li class="lp-node' + (lv >= MAXLV ? ' done' : lv ? ' started' : '') + (cur ? ' current' : '') + '" style="--off:' + [0, 40, 60, 40, 0, -40, -60, -40][i % 8] + 'px">' +
@@ -167,6 +209,13 @@
     main.querySelectorAll('[data-unit]').forEach(function (b) {
       b.addEventListener('click', function () { unitPop(main, c, +b.dataset.unit); });
     });
+    main.querySelectorAll('[data-review]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var items = reviewRound(c, b.dataset.review);
+        if (items.length < 3) { alert('Ehhez még túl kevés anyag van. Csinálj meg előbb néhány kört!'); return; }
+        runRound(main, c, -1, 0, { items: items, title: b.dataset.review === 'gyenge' ? 'Gyengéim gyakorlása' : 'Vegyes ismétlés' });
+      });
+    });
     /* a hangok betöltése aszinkron, ezért kicsit később nézzük meg, van-e felolvasóhang */
     setTimeout(function () {
       var v = main.querySelector('#lang-voice');
@@ -174,6 +223,14 @@
     }, 1200);
     return true;
   };
+
+  function reviewBar(c, p) {
+    var nWeak = Object.keys(weak(c)).length, nDone = c.units.filter(function (u) { return (p.units[u.id] || 0) > 0; }).length;
+    if (!nWeak && !nDone) return '';
+    return '<div class="review-bar">' +
+      (nWeak ? '<button type="button" class="card review-btn" data-review="gyenge"><span class="ico">🧠</span><span><b>Gyengéim gyakorlása</b><small>' + nWeak + ' szó/mondat, amit eddig elrontottál</small></span></button>' : '') +
+      (nDone ? '<button type="button" class="card review-btn" data-review="vegyes"><span class="ico">🔀</span><span><b>Vegyes ismétlés</b><small>Kevert kör a már elkezdett ' + nDone + ' egységből</small></span></button>' : '') + '</div>';
+  }
 
   function unitPop(main, c, i) {
     var u = c.units[i], lv = prog(c).units[u.id] || 0;
@@ -195,8 +252,8 @@
   }
 
   /* ---------- egy kör ---------- */
-  function runRound(main, c, ui, level) {
-    var u = c.units[ui], items = makeRound(c, ui, level), idx = 0, mistakes = [], good = 0, combo = 0, bestCombo = 0, retry = false;
+  function runRound(main, c, ui, level, preset) {
+    var u = preset ? { id: null, title: preset.title } : c.units[ui], items = preset ? preset.items : makeRound(c, ui, level), idx = 0, mistakes = [], good = 0, combo = 0, bestCombo = 0, retry = false;
     function shell(inner, foot) {
       main.innerHTML = '<div class="lesson-run"><div class="lr-top"><button type="button" class="btn sm" id="lr-quit" aria-label="Kilépés">✕</button>' +
         '<span class="bar lr-bar"><i style="width:' + Math.round(idx / (items.length + mistakes.length || 1) * 100) + '%"></i></span>' +
@@ -213,6 +270,7 @@
     function feedback(ok, correctHtml, extra) {
       var foot = main.querySelector('#lr-foot');
       if (ok) { good++; combo++; bestCombo = Math.max(bestCombo, combo); } else { combo = 0; if (!retry) mistakes.push(items[idx]); }
+      markWeak(c, items[idx], ok);
       foot.className = 'lr-foot ' + (ok ? 'ok' : 'bad');
       foot.innerHTML = '<div><b>' + (ok ? ['Szuper!', 'Ügyes!', 'Pontosan!', 'Így van!'][Math.floor(Math.random() * 4)] : 'Nem egészen.') + '</b>' +
         (correctHtml ? '<div>' + (ok ? '' : 'Helyesen: ') + correctHtml + '</div>' : '') + (extra ? '<div class="muted">' + extra + '</div>' : '') + '</div>' +
@@ -323,8 +381,8 @@
       var total = idx, acc = total ? Math.round(good / total * 100) : 0;
       var xp = 10 + (acc >= 90 ? 5 : 0) + (bestCombo >= 8 ? 3 : 0);
       var p = prog(c); p.xp = (p.xp || 0) + xp;
-      var before = p.units[u.id] || 0;
-      if (level >= before && before < MAXLV) p.units[u.id] = before + 1;
+      var before = u.id ? p.units[u.id] || 0 : 0;
+      if (u.id && level >= before && before < MAXLV) p.units[u.id] = before + 1;
       saveProg(c, p);
       var dd = daily(); dd[today()] = (dd[today()] || 0) + xp; S.store.set('nyelv.napi', dd);
       if (S.logActivity) S.logActivity('lang', c.id);
@@ -332,11 +390,14 @@
       main.innerHTML = '<div class="lesson-run lr-done"><div class="lr-body" style="text-align:center">' +
         '<div class="big-emoji">' + (acc >= 90 ? '🏆' : acc >= 70 ? '🎉' : '💪') + '</div><h1>Kör teljesítve!</h1>' +
         '<div class="lr-score"><div><b>+' + xp + '</b><small>XP</small></div><div><b>' + acc + '%</b><small>pontosság</small></div><div><b>🔥 ' + st + '</b><small>nap sorozat</small></div></div>' +
-        (p.units[u.id] > before ? '<p>👑 Új szint: <b>' + esc(u.title) + '</b> ' + p.units[u.id] + ' / ' + MAXLV + '</p>' : '') +
+        (u.id && p.units[u.id] > before ? '<p>👑 Új szint: <b>' + esc(u.title) + '</b> ' + p.units[u.id] + ' / ' + MAXLV + '</p>' : '') +
         '<p class="muted">' + (dx >= g ? '🎯 Megvan a mai cél (' + dx + ' / ' + g + ' XP)! Holnap is gyere!' : 'Mai cél: ' + dx + ' / ' + g + ' XP – még ' + (g - dx) + ' XP.') + '</p>' +
         '<div class="row" style="justify-content:center;gap:8px;flex-wrap:wrap"><a class="btn primary" href="#/nyelv/' + c.id + '">Tovább az ösvényen →</a>' +
         '<button type="button" class="btn" id="again">🔁 Még egy kör</button></div></div></div>';
-      main.querySelector('#again').addEventListener('click', function () { runRound(main, c, ui, Math.min(p.units[u.id] || 0, MAXLV - 1)); });
+      main.querySelector('#again').addEventListener('click', function () {
+        if (preset) { var it = reviewRound(c, preset.title === 'Gyengéim gyakorlása' ? 'gyenge' : 'vegyes'); if (it.length < 3) { location.hash = '#/nyelv/' + c.id; return; } runRound(main, c, -1, 0, { items: it, title: preset.title }); }
+        else runRound(main, c, ui, Math.min(p.units[u.id] || 0, MAXLV - 1));
+      });
     }
     next();
   }
