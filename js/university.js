@@ -9,7 +9,16 @@
   S.simple = {};
   S.addSimple = function (cid, map) { var o = S.simple[cid] = S.simple[cid] || {}; Object.keys(map).forEach(function (k) { o[k] = map[k]; }); };
   S.simpleOf = function (cid, tid) { return (S.simple[cid] || {})[tid] || ''; };
-  function firstSentence(t) { var m = String(t).replace(/\n[\s\S]*/, '').match(/^.+?[.!?](\s|$)/); return m ? m[0].trim() : String(t).split('\n')[0]; }
+  /* első mondat; a gyakori rövidítéseknél (pl., stb., kb., ill., ún., Kr. e.) és sorszámoknál nem vágunk */
+  function firstSentence(t) {
+    var line = String(t).split('\n')[0], re = /[.!?](\s|$)/g, m;
+    while ((m = re.exec(line)) !== null) {
+      var before = line.slice(0, m.index + 1);
+      if (/(^|\s|\()(pl|stb|kb|ill|ún|vö|Kr|e|sz|dr|ld|min|max|db|ford)\.$/i.test(before) || /\d\.$/.test(before)) continue;
+      return before.trim();
+    }
+    return line;
+  }
   /* iskolai nézetben a rövid leírás helyett az egyszerű magyarázat első mondata */
   S.termShort = function (c, t) { var sm = S.level !== 'egyetem' && S.simpleOf(c.id, t.id); return sm ? firstSentence(sm) : t.short; };
   S.courseById = function (id) { return S.courses.filter(function (c) { return c.id === id; })[0]; };
