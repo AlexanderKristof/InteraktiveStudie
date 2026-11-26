@@ -2148,3 +2148,84 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   .kl-rank .kl-mini { display: none; }
   .kl-row .seg button { padding: 6px 9px; }
 }
+
+/* ==== 🧠 Pszichológia és mentális egészség (psz-) ==== */
+.psz-help { --psz-c: #6d5bd0; --psz-soft: #efecff; border: 2px solid var(--psz-c); background: var(--psz-soft); border-radius: 12px; padding: 12px 14px; margin: 10px 0; max-width: 72ch; }
+.psz-help-wrap.widget.card { padding: 0; border: 0; background: none; box-shadow: none; }
+.psz-help-top .psz-help { margin: 4px 0 14px; }
+.psz-help p { margin: 4px 0; }
+.psz-help-h { font-weight: 700; font-size: 1.05rem; margin-bottom: 2px; }
+.psz-lines { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; }
+.psz-lines li { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.psz-num { display: inline-block; min-width: 5.6em; text-align: center; font-weight: 800; font-size: 1.1rem; padding: 4px 10px; border-radius: 9px; background: var(--psz-c); color: #fff; text-decoration: none; font-variant-numeric: tabular-nums; }
+.psz-num.psz-112 { background: #c22f3a; }
+.psz-num:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+.psz-lines li > span { flex: 1 1 14em; min-width: 0; }
+.psz-small { color: var(--muted); font-size: .85rem; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .psz-help { --psz-c: #a497ff; --psz-soft: #231f3d; } :root:not([data-theme="light"]) .psz-num { color: #120d2b; } :root:not([data-theme="light"]) .psz-num.psz-112 { background: #ff7a84; } }
+:root[data-theme="dark"] .psz-help { --psz-c: #a497ff; --psz-soft: #231f3d; }
+:root[data-theme="dark"] .psz-num { color: #120d2b; }
+:root[data-theme="dark"] .psz-num.psz-112 { background: #ff7a84; }
+.psz-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0; }
+.psz-row > * { min-width: 0; }
+.psz-chk { display: flex; gap: 8px; align-items: center; margin: 6px 0; font-size: .92rem; }
+.psz-lbl { font-weight: 600; margin: 12px 0 6px; }
+/* légzés */
+.psz-breath { display: grid; justify-items: center; gap: 8px; padding: 14px 8px; border-radius: 12px; background: var(--surface-2); }
+.psz-orb { width: 170px; height: 170px; border-radius: 50%; display: grid; place-items: center; transform: scale(.55); background: radial-gradient(circle at 35% 35%, #b9b0ff, #6d5bd0); color: #fff; font-size: 2.2rem; font-weight: 700; will-change: transform; }
+.psz-orb span { transform: none; }
+.psz-orb.psz-tart { background: radial-gradient(circle at 35% 35%, #9fe0c5, #1f8a70); }
+.psz-orb.psz-szunet { background: radial-gradient(circle at 35% 35%, #d5dae6, #7b8499); }
+.psz-static .psz-orb { width: 110px; height: 110px; transform: none !important; transition: none !important; }
+.psz-phase { font-size: 1.2rem; font-weight: 600; text-align: center; }
+.psz-pbar { width: min(320px, 100%); height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.psz-pbar i { display: block; height: 100%; width: 0; background: var(--accent); }
+.psz-pbar-big { width: 100%; height: 12px; margin-top: 8px; }
+.psz-pbar-big i { background: var(--ok); }
+@media (prefers-reduced-motion: reduce) { .psz-orb { transition: none !important; } }
+/* hangulatnapló */
+.psz-privacy { background: var(--warn-soft); border-left: 4px solid var(--warn); padding: 8px 12px; border-radius: 8px; font-size: .9rem; margin: 8px 0; }
+.psz-date input { padding: 8px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; max-width: 100%; }
+.psz-moods { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; max-width: 520px; }
+.psz-moods button { border: 1px solid var(--line); background: var(--surface); color: var(--fg); border-radius: 10px; padding: 6px 2px; cursor: pointer; display: grid; justify-items: center; gap: 2px; font: inherit; }
+.psz-moods button span { font-size: 1.6rem; line-height: 1.1; }
+.psz-moods button small { font-size: .72rem; color: var(--muted); text-align: center; }
+.psz-moods button.on { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 2px var(--accent) inset; }
+.psz-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.psz-chart-wrap { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; padding: 6px; background: var(--surface); }
+.psz-chart { width: 100%; height: auto; display: block; }
+.psz-chart text { fill: var(--fg); }
+.psz-grid { stroke: var(--line); stroke-width: 1; }
+.psz-line { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; }
+.psz-dot { fill: var(--accent); stroke: var(--surface); stroke-width: 1.5; }
+.psz-sleep { fill: var(--accent); opacity: .16; }
+.psz-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 10px 0; }
+.psz-stats > div { background: var(--surface-2); border-radius: 10px; padding: 8px 10px; display: grid; gap: 2px; min-width: 0; }
+.psz-stats small { color: var(--muted); }
+.psz-stats b { overflow-wrap: anywhere; }
+/* gondolatcsapda */
+.psz-thought { margin: 10px 0; padding: 12px 16px; border-left: 4px solid var(--accent); background: var(--surface-2); border-radius: 8px; font-size: 1.08rem; font-style: italic; }
+.psz-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-bottom: 10px; }
+.psz-opts .btn { text-align: left; white-space: normal; }
+.psz-opts .btn.psz-ok { border-color: var(--ok); background: var(--ok-soft); }
+.psz-opts .btn.psz-bad { border-color: var(--bad); background: var(--bad-soft); }
+.psz-score { font-size: 2rem; font-weight: 800; }
+/* halogatás-tervező */
+.psz-wide { margin: 8px 0; }
+.psz-wide input, .psz-in { width: 100%; padding: 8px 10px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; box-sizing: border-box; }
+.psz-in { flex: 1 1 220px; width: auto; }
+.psz-steps { padding-left: 1.6em; margin: 10px 0; display: grid; gap: 6px; }
+.psz-steps li { padding: 6px 8px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: space-between; }
+.psz-steps li > label { display: flex; gap: 8px; align-items: flex-start; flex: 1 1 14em; min-width: 0; overflow-wrap: anywhere; }
+.psz-steps li.done > label span { text-decoration: line-through; color: var(--muted); }
+.psz-steps li.psz-empty { color: var(--muted); border-style: dashed; list-style: none; }
+.psz-acts { display: flex; gap: 4px; flex-wrap: wrap; }
+.psz-timer { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); }
+.psz-timer b { font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+.psz-timer span { flex: 1 1 10em; min-width: 0; }
+@media (max-width: 640px) {
+  .psz-orb { width: 140px; height: 140px; }
+  .psz-moods button small { font-size: .62rem; }
+  .psz-num { min-width: 4.8em; font-size: 1rem; }
+  .psz-opts { grid-template-columns: 1fr; }
+}
