@@ -4357,7 +4357,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
       tile('#/egyetem', '🎒', 'Szintváltás 🎒/🎓', 'A fejléc gombjával ugyanaz a tartalom egyszerű vagy szakmai szinten jelenik meg – differenciáláshoz.') +
       '</div>' +
       (subj('tanari') ? lessonTiles(subj('tanari')) : '<p class="note">A tanári módszertan tantárgy hamarosan érkezik.</p>') +
-      '<section class="card pad" style="margin-top:18px"><h2 style="margin-top:0">🔒 Adatvédelem az osztályban</h2><p>Az alkalmazás nem küld adatot sehova: a haladás, a jegyzetek és az eredmények csak az adott eszköz böngészőjében tárolódnak. Közös gépen a „Haladásom” oldalon fájlba menthető a haladás; törölni a böngésző webhelyadatainak törlésével lehet. Az osztálydolgozat-link eredményeit a diák mutatja meg (vagy fényképezi le) – nincs központi szerver.</p></section>';
+      '<section class="card pad" style="margin-top:18px"><h2 style="margin-top:0">🔒 Adatvédelem az osztályban</h2><p>Az alkalmazás nem küld személyes adatot sehova: a haladás, a jegyzetek és az eredmények csak az adott eszköz böngészőjében tárolódnak. Közös gépen a „Haladásom” oldalon fájlba menthető a haladás; törölni a böngésző webhelyadatainak törlésével lehet. Az osztálydolgozat-link eredményeit a diák mutatja meg (vagy fényképezi le) – nincs központi szerver. A weboldalas változat csak névtelen, süti nélküli látogatásszámlálást végez (melyik oldalt hányan nézik), ez kikapcsolható a „Letöltés és használat” oldalon.</p></section>';
     return true;
   };
 
@@ -4653,6 +4653,56 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
     main.querySelector('#sy-read').addEventListener('click', function () { offer(main.querySelector('#sy-paste-b'), main.querySelector('#sy-paste').value); });
   }
   S.addRoute('szinkron', { title: 'Haladás átvitele', nav: '', page: page });
+})();
+
+</script>
+  <script>/* js/stat.js */
+/* Tudásműhely – névtelen látogatásszámlálás (GoatCounter: tudasmuhely.goatcounter.com).
+ * Csak a közzétett weboldalon fut (alexanderkristof.github.io), a letöltött / offline változat semmit nem küld.
+ * Nincs süti, nincs személyes adat; csak az oldal neve (lekérdezési rész NÉLKÜL – pl. a haladás-link adatai
+ * soha nem mennek el), a böngésző típusa, a képernyőméret és az ország. A botokat a GoatCounter kiszűri.
+ * Kikapcsolható: Letöltés és használat oldal (#/nevjegy) → „Látogatásszámlálás” kapcsoló. */
+(function () {
+  'use strict';
+  var S = window.STUDIE;
+  if (typeof document === 'undefined' || typeof location === 'undefined') { S.statPanel = function () { return ''; }; return; }
+  var HOST = 'alexanderkristof.github.io', ENDPOINT = 'https://tudasmuhely.goatcounter.com/count';
+  var on = location.hostname === HOST && /^https:/.test(location.protocol);
+  function allowed() { return on && !S.store.get('nostat', false); }
+  var loaded = false, last = '';
+  function path() {
+    var h = (location.hash || '#/').split('?')[0];
+    /* a hosszú, egyedi azonosítók helyett csak az oldal típusa kerül be, pl. #/lecke/fizika/elektromossag marad,
+       de minden lekérdezési rész (?d=, ?p=, ?c=…) le van vágva */
+    return location.pathname + h;
+  }
+  function count() {
+    if (!allowed() || !window.goatcounter || !window.goatcounter.count) return;
+    var p = path(); if (p === last) return; last = p;
+    try { window.goatcounter.count({ path: p, title: document.title }); } catch (e) { /* */ }
+  }
+  function load() {
+    if (loaded || !allowed()) return; loaded = true;
+    window.goatcounter = { no_onload: true };
+    var s = document.createElement('script');
+    s.async = true; s.src = 'https://gc.zgo.at/count.js'; s.setAttribute('data-goatcounter', ENDPOINT);
+    s.onload = function () { setTimeout(count, 0); };
+    document.head.appendChild(s);
+  }
+  window.addEventListener('hashchange', function () { setTimeout(count, 300); });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load); else load();
+
+  /* kapcsoló + tájékoztatás (a Letöltés és használat oldalon jelenik meg) */
+  S.statPanel = function () {
+    return '<section class="card pad" style="margin-top:18px"><h2 style="margin-top:0">📊 Névtelen látogatásszámlálás</h2>' +
+      '<p>Az interneten közzétett változat megszámolja, hányan és mely oldalakat nézik meg (GoatCounter). Ehhez <b>nem használ sütit</b>, nem gyűjt nevet, e-mail-címet vagy IP-címet tárolva, és <b>a haladásod, jegyzeteid, eredményeid soha nem kerülnek bele</b>. Csak az oldal neve, a böngésző típusa, a képernyőméret és az ország. A letöltött, offline változat semmit nem küld.</p>' +
+      (on ? '<label class="ts-topic"><input type="checkbox" id="st-nostat"' + (S.store.get('nostat', false) ? ' checked' : '') + '><span><b>Ne számolja a látogatásaimat</b><br><small class="muted">Ezen az eszközön kikapcsolja a számlálást.</small></span></label>'
+        : '<p class="muted">Ezen a változaton a számlálás nem fut.</p>') + '</section>';
+  };
+  S.bindStatPanel = function (root) {
+    var c = root.querySelector('#st-nostat');
+    if (c) c.addEventListener('change', function () { S.store.set('nostat', c.checked); if (!c.checked) load(); });
+  };
 })();
 
 </script>
@@ -70071,6 +70121,10 @@ STUDIE.addLangCourse({
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-26-statisztika', date: '2026-11-26', title: '📊 Névtelen látogatásszámlálás',
+    plus: [['+1', 'kikapcsolható beállítás']],
+    items: [['A weboldal névtelenül, süti nélkül számolja, melyik oldalt hányan nézik meg (a haladásod soha nem kerül bele). Kikapcsolható a Letöltés és használat oldalon.', '#/nevjegy']] });
+
   N({ id: '2026-11-26-erettsegi', date: '2026-11-26', title: '🎓 Érettségi, 💻 programozás, 🔐 szabadulószoba, 🕰️ idővonal',
     plus: [['+211', 'érettségi-szerű feladat (13 próbasor)'], ['+29', 'programozási feladat'], ['+4', 'szabadulószoba (24 rejtvény)'], ['+221', 'történelmi esemény'], ['+8', 'történelmi térkép'], ['+9', 'új oldal']],
     items: [
@@ -82568,7 +82622,8 @@ STUDIE.addQuestions('tulelotudas', {
         '**3. lehetőség: telepítés alkalmazásként.** Ha a tananyag egy weboldalon van közzétéve (például az iskola szerverén), a böngésző menüjében válaszd a „Telepítés” vagy „Hozzáadás a kezdőképernyőhöz” lehetőséget. Az első megnyitás után offline is működik, telefonon is.\n\n' +
         'A haladásod (elvégzett leckék, kvízeredmények) a böngésződben tárolódik ezen az eszközön. Ha másik gépre ülsz, ott elölről indul.\n\n' +
         'A tananyag bővíthető: minden tantárgy és modell egy-egy külön fájl a `data` mappában. A leírás a `README.md` fájlban van.') +
-      '<div class="row" style="margin-top:12px"><button class="btn" id="reset" type="button">Haladás törlése ezen az eszközön</button></div></article>';
+      '<div class="row" style="margin-top:12px"><button class="btn" id="reset" type="button">Haladás törlése ezen az eszközön</button></div>' + (S.statPanel ? S.statPanel() : '') + '</article>';
+    if (S.bindStatPanel) S.bindStatPanel(main);
     main.querySelector('#reset').addEventListener('click', function () {
       if (confirm('Biztosan törlöd az összes elvégzett leckét és kvízeredményt?')) {
         progress = {}; S.store.set('progress', progress); S.store.set('last', null); location.hash = '#/';
