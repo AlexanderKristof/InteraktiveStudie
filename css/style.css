@@ -905,7 +905,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .ak-emo { font-size: 1.2rem; height: 22px; display: grid; place-items: center; }
 .ak-ico { width: 44px; height: 24px; overflow: visible; }
 .ak-board { background: var(--stage); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; touch-action: manipulation; }
-.ak-svg { display: block; width: 100%; height: auto; max-height: 70vh; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+.ak-svg { display: block; width: 100%; max-width: 720px; margin: 0 auto; height: auto; max-height: 70vh; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
 .ak-svg .ak-guide { stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 3 5; }
 .ak-w { stroke: var(--fg); stroke-width: 2.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .ak-w.ak-body { fill: var(--surface); }
@@ -1056,3 +1056,23 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .gs-chk { display: flex; gap: 8px; align-items: center; margin-top: 10px; font-size: .92rem; }
 .gs-decgrid { display: grid; gap: 10px; margin: 8px 0; }
 .gs-other { margin-top: 18px; }
+
+/* ==== Alsó menüsor (telefon) ==== */
+.mnav, .msheet { display: none; }
+@media (max-width: 640px) {
+  .mnav { display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; background: var(--surface); border-top: 1px solid var(--line);
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 16px rgba(0,0,0,.08); }
+  .mnav a, .mnav button { display: grid; justify-items: center; gap: 1px; padding: 5px 2px; border: 0; background: none; color: var(--fg-2); text-decoration: none; font: inherit; border-radius: 10px; cursor: pointer; }
+  .mnav span { font-size: 1.35rem; line-height: 1.1; } .mnav small { font-size: .68rem; }
+  .mnav a.on { color: var(--accent); background: var(--accent-soft); }
+  body { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
+  .topnav { display: none !important; }
+  .msheet:not([hidden]) { display: flex; position: fixed; inset: 0; z-index: 95; background: rgba(0,0,0,.4); align-items: flex-end; }
+  .msheet-in { width: 100%; max-height: 80vh; overflow: auto; background: var(--surface); border-radius: 18px 18px 0 0; padding: 14px 14px calc(80px + env(safe-area-inset-bottom)); }
+  .msheet-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .msheet-g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .msheet-g a { display: grid; justify-items: center; gap: 2px; padding: 10px 4px; border-radius: 12px; border: 1px solid var(--line); text-decoration: none; color: var(--fg); text-align: center; }
+  .msheet-g span { font-size: 1.5rem; } .msheet-g small { font-size: .74rem; }
+  .pb-arena { padding-bottom: 70px; }
+}
+@media (max-width: 640px) { #mnav-more { position: relative; } .mnav .mnb { position: absolute; top: 0; right: 18%; display: inline-block; min-width: 16px; padding: 0 4px; border-radius: 99px; background: #ef4444; color: #fff; font-size: .65rem; font-style: normal; font-weight: 700; line-height: 16px; } }
