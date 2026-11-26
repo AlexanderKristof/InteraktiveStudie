@@ -2091,3 +2091,60 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   .miw-bar small { display: none; }
   .miw-ctrl { gap: 8px 12px; }
 }
+
+/* ==== Környezet és klíma widgetek (js/klima-widgets.js) ==== */
+.kl-w { min-width: 0; }
+.kl-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+.kl-ctrls { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 18px; margin-bottom: 12px; }
+.kl-rng { display: grid; gap: 2px; font-size: .92rem; min-width: 0; }
+.kl-rng .lv { display: flex; justify-content: space-between; gap: 8px; }
+.kl-rng .lv b { font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+.kl-rng input[type=range] { width: 100%; }
+.kl-rng input:disabled { opacity: .4; }
+.kl-chartwrap { width: 100%; overflow: hidden; }
+.kl-chart .kl-grid { stroke: var(--line); stroke-width: 1; }
+.kl-chart .kl-demand { stroke: var(--fg); }
+.kl-chart .kl-eve { fill: var(--accent); opacity: .07; }
+.kl-chart .kl-hiany-r { fill: #d62828; opacity: .85; }
+.kl-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .82rem; color: var(--fg-2); margin: 8px 0; }
+.kl-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.kl-legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.kl-legend i.kl-hiany { background: #d62828; }
+.kl-legend i.kl-line { height: 3px; background: var(--fg); border-radius: 2px; }
+.kl-daynote { font-size: .88rem; margin: 4px 0 8px; }
+.kl-small { font-size: .82rem; margin-top: 10px; }
+.kl-alert-bad { border-color: var(--bad); background: var(--bad-soft); }
+.kl-sections { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.kl-fs { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px 12px; margin: 0; display: grid; gap: 10px; min-width: 0; }
+.kl-fs legend { font-weight: 700; padding: 0 6px; }
+.kl-fs select { width: 100%; padding: 7px 9px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; }
+.kl-out { margin-top: 14px; display: grid; gap: 12px; }
+.kl-total { background: var(--accent-soft); border-radius: 12px; padding: 12px 14px; display: grid; gap: 2px; }
+.kl-total small { color: var(--fg-2); }
+.kl-total b { font-size: 1.6rem; font-family: var(--mono); color: var(--accent); }
+.kl-bars { display: grid; gap: 6px; }
+.kl-bar { display: grid; grid-template-columns: minmax(90px, 13em) minmax(0, 1fr) 4.2em; gap: 8px; align-items: center; font-size: .88rem; }
+.kl-bar i { display: block; height: 14px; border-radius: 7px; background: var(--muted); opacity: .55; }
+.kl-bar.me i { background: #1f9d6b; opacity: 1; }
+.kl-bar b { font-family: var(--mono); text-align: right; }
+.kl-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.kl-two h4 { margin: 0 0 6px; }
+.kl-rank, .kl-steps { margin: 0; padding-left: 1.4em; display: grid; gap: 5px; font-size: .9rem; }
+.kl-rank li { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(40px, 1fr) 3.6em 2.6em; gap: 6px; align-items: center; }
+.kl-rank b, .kl-steps b { font-family: var(--mono); text-align: right; white-space: nowrap; }
+.kl-rank small { color: var(--muted); text-align: right; }
+.kl-mini { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+.kl-mini i { display: block; height: 100%; background: #1f9d6b; }
+.kl-steps li { display: flex; justify-content: space-between; gap: 8px; }
+.kl-steps b { color: var(--ok); }
+.kl-presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.kl-gh { max-height: 340px; }
+@media (max-width: 640px) {
+  .kl-ctrls { grid-template-columns: minmax(0, 1fr); }
+  .kl-sections { grid-template-columns: minmax(0, 1fr); }
+  .kl-two { grid-template-columns: minmax(0, 1fr); }
+  .kl-bar { grid-template-columns: minmax(70px, 8.5em) minmax(0, 1fr) 3.8em; font-size: .82rem; }
+  .kl-rank li { grid-template-columns: minmax(0, 1fr) 3.4em 2.4em; }
+  .kl-rank .kl-mini { display: none; }
+  .kl-row .seg button { padding: 6px 9px; }
+}
