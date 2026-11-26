@@ -2385,7 +2385,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 
 /* ==== Fizikai játéktér (jatekter) ==== */
 .jt-hub { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
-.jt-card { display: grid; gap: 4px; padding: 16px; text-decoration: none; color: var(--fg); transition: transform .15s, border-color .15s; }
+.jt-card { display: grid; gap: 4px; align-content: start; padding: 16px; text-decoration: none; color: var(--fg); transition: transform .15s, border-color .15s; }
 .jt-card:hover { transform: translateY(-2px); border-color: var(--accent); }
 .jt-card .jt-ico { font-size: 2rem; }
 .jt-card small { color: var(--muted); }
@@ -2624,3 +2624,4 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
 }
 .jt-opt.jt-wide { grid-column: span 2; }
 @media (max-width: 640px) { .jt-opt.jt-wide { grid-column: auto; } }
+.jt-app [hidden] { display: none !important; }
