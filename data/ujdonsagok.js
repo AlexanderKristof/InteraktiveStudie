@@ -3,6 +3,10 @@
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-26-statisztika', date: '2026-11-26', title: '📊 Névtelen látogatásszámlálás',
+    plus: [['+1', 'kikapcsolható beállítás']],
+    items: [['A weboldal névtelenül, süti nélkül számolja, melyik oldalt hányan nézik meg (a haladásod soha nem kerül bele). Kikapcsolható a Letöltés és használat oldalon.', '#/nevjegy']] });
+
   N({ id: '2026-11-26-erettsegi', date: '2026-11-26', title: '🎓 Érettségi, 💻 programozás, 🔐 szabadulószoba, 🕰️ idővonal',
     plus: [['+211', 'érettségi-szerű feladat (13 próbasor)'], ['+29', 'programozási feladat'], ['+4', 'szabadulószoba (24 rejtvény)'], ['+221', 'történelmi esemény'], ['+8', 'történelmi térkép'], ['+9', 'új oldal']],
     items: [
