@@ -6,7 +6,7 @@
   'use strict';
   var S = window.STUDIE, esc = S.esc;
   var PREFIX = 'tudasmuhely.', SITE = 'https://alexanderkristof.github.io/InteraktiveStudie/';
-  var SKIP = { 'szinkron.last': 1 };
+  var SKIP = { 'szinkron.last': 1, 'pszicho.hangulat': 1 }; /* a hangulatnapló érzékeny, nem utazik linkben */
 
   /* ================= QR-kódoló ================= */
   var ECC_L = [-1, 7, 10, 15, 20, 26, 18, 20, 24, 30, 18, 20, 24, 26, 30, 22, 24, 28, 30, 28, 28, 28, 28, 30, 30, 26, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30];

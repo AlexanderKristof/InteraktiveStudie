@@ -2156,7 +2156,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .psz-help p { margin: 4px 0; }
 .psz-help-h { font-weight: 700; font-size: 1.05rem; margin-bottom: 2px; }
 .psz-lines { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; }
-.psz-lines li { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.psz-lines li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: center; }
 .psz-num { display: inline-block; min-width: 5.6em; text-align: center; font-weight: 800; font-size: 1.1rem; padding: 4px 10px; border-radius: 9px; background: var(--psz-c); color: #fff; text-decoration: none; font-variant-numeric: tabular-nums; }
 .psz-num.psz-112 { background: #c22f3a; }
 .psz-num:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
@@ -2207,6 +2207,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .psz-thought { margin: 10px 0; padding: 12px 16px; border-left: 4px solid var(--accent); background: var(--surface-2); border-radius: 8px; font-size: 1.08rem; font-style: italic; }
 .psz-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-bottom: 10px; }
 .psz-opts .btn { text-align: left; white-space: normal; }
+.psz-opts .btn:disabled { opacity: 1; color: var(--fg); cursor: default; }
 .psz-opts .btn.psz-ok { border-color: var(--ok); background: var(--ok-soft); }
 .psz-opts .btn.psz-bad { border-color: var(--bad); background: var(--bad-soft); }
 .psz-score { font-size: 2rem; font-weight: 800; }
@@ -2228,4 +2229,7 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   .psz-moods button small { font-size: .62rem; }
   .psz-num { min-width: 4.8em; font-size: 1rem; }
   .psz-opts { grid-template-columns: 1fr; }
+  .psz-row .seg { display: grid; width: 100%; }
+  .psz-row .seg button { border-right: 0; border-bottom: 1px solid var(--line); text-align: left; }
+  .psz-row .seg button:last-child { border-bottom: 0; }
 }
