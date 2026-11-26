@@ -538,6 +538,7 @@
     else if (seg[0] === 'teszt') { setNav('teszt'); title('Tesztközpont'); S.pageTeszt(main, params); }
     else if (seg[0] === 'kereses') pageSearch(params.q || '');
     else if (seg[0] === 'nevjegy') pageAbout();
+    else if (S.routes && S.routes[seg[0]]) { var rt = S.routes[seg[0]]; setNav(rt.nav || ''); title(rt.title || ''); if (rt.page(main, seg.slice(1), params) === false) notFound(); }
     else notFound();
     if (path !== lastPath) { window.scrollTo(0, 0); main.focus({ preventScroll: true }); }
     lastPath = path;

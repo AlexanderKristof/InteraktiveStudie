@@ -17,6 +17,9 @@
   S.STAGES = [['altalanos', '🎒 Általános iskola (5–8. osztály)'], ['kozep', '🏫 Középiskola'], ['szakma', '🛠️ Szakmák'], ['sport', '⚽ Sport és mozgás'], ['elet', '🧭 Felnőtt élet – amit az iskola nem tanít']];
   S.stageTitle = function (id) { var x = S.STAGES.filter(function (s) { return s[0] === (id || 'kozep'); })[0]; return x ? x[1] : ''; };
   S.addModel = function (m) { S.models[m.id] = m; };
+  /* Bővítmény-oldalak: STUDIE.addRoute('labor', { title: 'Virtuális labor', nav: '', page: function (main, rest, params) { … } }) → #/labor */
+  S.routes = {};
+  S.addRoute = function (name, r) { S.routes[name] = r; };
   S.addWidget = function (name, fn) { S.widgets[name] = fn; };
 
   /* Kereshető legördülő lista: a <select> fölé egy szűrőmezőt tesz; gépeléskor csak az illő opciók maradnak.
