@@ -110,6 +110,10 @@
       ['gyengepontok', '🎯', 'Gyengepont-térkép', 'Hol hibázol a legtöbbet? Célzott gyakorlás'],
       ['magyarazd', '🗣️', 'Magyarázd el!', 'Írd le a saját szavaiddal – az app megmondja, mi hiányzik'],
       ['fuzet', '📓', 'Nyomtatható jegyzetfüzet', 'Bármely tantárgyból szép összefoglaló füzet'],
+      ['kepletek', '📐', 'Képletgyűjtemény', '238 képlet kalkulátorral: bármelyik betűt kiszámolja, lépésenként'],
+      ['jatekter', '🎱', 'Fizikai játéktér', 'Hajítás, ütközés, hídépítés, holdraszállás – saját fizikamotor'],
+      ['molekula', '⚗️', 'Molekulaépítő', 'Építs molekulát, az app felismeri és 3D-ben megmutatja'],
+      ['hangos', '🎧', 'Hangos tanulás', 'Leckék podcastként, felolvasott kvízzel – képernyő nélkül'],
       ['szinkron', '🔄', 'Átvitel másik eszközre', 'Haladás telefonról gépre linkkel vagy QR-kóddal']]
       .filter(function (w) { return S.routes && S.routes[w[0]]; });
     return W.length ? '<div class="section-title" style="margin-top:22px"><h2>🛠 Interaktív műhely</h2></div><div class="role-row">' + W.map(function (w) {

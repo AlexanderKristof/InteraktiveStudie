@@ -3,6 +3,19 @@
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-26-tudomany', date: '2026-11-26', title: '🤖 MI, 🌍 klíma, 🧠 pszichológia, 🔭 csillagászat + képletek, játéktér, molekulák, hangos tanulás',
+    plus: [['+4', 'tantárgy'], ['+40', 'lecke'], ['+133', 'leckekvíz-kérdés'], ['+276', 'tesztkérdés'], ['+45', '„Tudtad?” tény'], ['+238', 'képlet kalkulátorral'], ['+16', 'interaktív eszköz'], ['+1', 'szétszedhető modell (rakéta)'], ['+4', 'új oldal']],
+    items: [
+      ['Mesterséges intelligencia (10 lecke): „Tanítsd a gépet!”, neurálisháló-játszótér, „Következő szó”, „Valódi vagy MI?”', '#/tantargy/mi'],
+      ['Környezet és klíma (10 lecke): energiamix-szimulátor, ökológiai lábnyom-kalkulátor, üvegházhatás-modell', '#/tantargy/klima'],
+      ['Pszichológia és mentális egészség (10 lecke): segélyvonalak, légzőgyakorlat, hangulatnapló, gondolatcsapda-kvíz, halogatás-tervező', '#/tantargy/pszichologia'],
+      ['Csillagászat és űr (10 lecke): mozgó Naprendszer, pályaszimulátor, Hold-fázisok, égbolttérkép, hordozórakéta-modell', '#/tantargy/csillagaszat'],
+      ['Képletgyűjtemény: 238 képlet, bármelyik betűt kiszámolja, mértékegység-váltással és lépésekkel', '#/kepletek'],
+      ['Fizikai játéktér: homokozó, ferde hajítás célba, ütközések, hídépítő, Newton-bölcső, holdraszállás', '#/jatekter'],
+      ['Molekulaépítő: 119 felismert molekula 3D-ben, 32 kihívás, izomerkereső, 41 reakcióegyenlet', '#/molekula'],
+      ['Hangos tanulás: minden lecke podcastként, felolvasott kvízzel, lejátszási listákkal', '#/hangos']
+    ] });
+
   N({ id: '2026-11-26-statisztika', date: '2026-11-26', title: '📊 Névtelen látogatásszámlálás',
     plus: [['+1', 'kikapcsolható beállítás']],
     items: [['A weboldal névtelenül, süti nélkül számolja, melyik oldalt hányan nézik meg (a haladásod soha nem kerül bele). Kikapcsolható a Letöltés és használat oldalon.', '#/nevjegy']] });
