@@ -94,6 +94,18 @@
   }
   function title(t) { document.title = t ? t + ' – Tudásműhely' : 'Tudásműhely – interaktív tanulás'; }
 
+  function workshopRow() {
+    var W = [['feladatok', '🧮', 'Feladatmegoldó', 'Matek, fizika, kémia, pénzügy – tippekkel és lépésenkénti megoldással'],
+      ['labor', '🧪', 'Virtuális labor', 'Kísérletek fizikából és kémiából, veszély nélkül'],
+      ['aramkor', '🔌', 'Áramkör-labor', 'Építs áramkört, és mérd meg, mi történik'],
+      ['szimulatorok', '💹', 'Gazdasági szimulátorok', 'Tőzsdejáték, saját vállalkozás, családi költségvetés – kockázat nélkül'],
+      ['palya', '🧭', 'Pályaorientáció', 'Milyen szakma illik hozzád? Teszt és szakma-profilok'],
+      ['parbaj', '⚔️', 'Párbaj', 'Kvízcsata egy telefonon vagy kihívó linkkel'],
+      ['sajat', '✏️', 'Saját kérdések', 'Írj saját kártyákat, és oszd meg a barátaiddal']]
+      .filter(function (w) { return S.routes && S.routes[w[0]]; });
+    return W.length ? '<div class="section-title" style="margin-top:22px"><h2>🛠 Interaktív műhely</h2></div><div class="role-row">' + W.map(function (w) {
+      return '<a class="card role-card" href="#/' + w[0] + '"><span class="ico">' + w[1] + '</span><b>' + w[2] + '</b><small>' + w[3] + '</small></a>'; }).join('') + '</div>' : '';
+  }
   function pageHome() {
     setNav('home'); title('');
     var last = S.store.get('last', null);
@@ -134,7 +146,7 @@
         '<span class="muted">Foci, Forma–1, kosárlabda, úszás, tenisz és még sok más: a sport fizikája, edzéstudomány, rekordok és igaz történetek a kedvenc sportolóidról.</span></span><span class="btn primary">Megnyitás →</span></a>' : '') +
       (S.pageTanaroknak ? '<div class="role-row"><a class="card role-card" href="#/tanaroknak"><span class="ico">👩‍🏫</span><b>Tanároknak</b><small>Dolgozat-összeállító, osztálydolgozat-link, tanmenet, ötletek az órára</small></a>' +
         '<a class="card role-card" href="#/edzoknek"><span class="ico">🏋️</span><b>Edzőknek</b><small>Terhelés-kalkulátor, edzéstervezés, sérülésmegelőzés</small></a>' +
-        '<a class="card role-card" href="#/setup"><span class="ico">🏁</span><b>Motorsport</b><small>Setup-szimulátor: légy versenymérnök!</small></a></div>' : '');
+        '<a class="card role-card" href="#/setup"><span class="ico">🏁</span><b>Motorsport</b><small>Setup-szimulátor: légy versenymérnök!</small></a></div>' : '') + workshopRow();
     if (S.bindFacts) S.bindFacts(main);
     main.querySelector('#hero-search').addEventListener('submit', function (e) {
       e.preventDefault();
