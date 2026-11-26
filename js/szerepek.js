@@ -16,6 +16,7 @@
       '<section class="learn-hero" style="background:linear-gradient(120deg,#7c3aed,#db2777)"><h1>👩‍🏫 Tanároknak</h1><p class="lead">Minden eszköz egy helyen, amivel az órára készülhetsz, dolgozatot állíthatsz össze, vagy az osztállyal közösen tanulhattok. Internet nélkül, regisztráció nélkül, ingyen.</p></section>' +
       '<div class="section-title"><h2>🧰 Eszközök az órához</h2></div><div class="learn-grid">' +
       tile('#/osszeallito', '🧩', 'Dolgozat-összeállító', 'Keress kulcsszóra kb. ' + Math.round(S.testGroups().reduce(function (a, g) { return a + g.topics.reduce(function (b, t) { return b + t.questions.length; }, 0); }, 0) / 100) * 100 + ' kérdés között, válogass, és nyomtass dolgozatot megoldókulccsal.') +
+      tile('#/sajat', '✏️', 'Saját kérdéssor', 'Írj saját kérdéseket, nyomtasd ki, vagy oszd meg linkként/fájlként a diákokkal.') +
       tile('#/teszt', '🔗', 'Osztálydolgozat-link', 'A Tesztközpontban linket készíthetsz: minden diák ugyanazt a kérdés- és válaszsorrendet kapja, névvel és időkorláttal.') +
       tile('#/teszt', '🖨', 'Nyomtatható feladatlap', 'Témák kiválasztása után egy gombbal nyomtatható feladatlap és külön megoldókulcs.') +
       tile('#/tartalom', '📚', 'Tartalomjegyzék és tanmenet', 'Minden tantárgy oldalán „🖨 Tanmenet” gomb: a leckék, célok és interaktív elemek listája nyomtatva.') +

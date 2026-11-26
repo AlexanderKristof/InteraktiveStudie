@@ -148,7 +148,7 @@
 
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>Tesztközpont</span></nav>' +
       '<h1>Tesztközpont</h1><p class="lead">Válassz témákat, állítsd be a kérdések számát és a módot. A kérdésbankban jelenleg <b>' + total + '</b> kérdés van, mindegyik 4 válaszlehetőséggel.</p>' +
-      '<div class="row" style="gap:8px;flex-wrap:wrap;margin:8px 0"><a class="btn" href="#/parbaj">⚔️ Párbaj egymás ellen</a><a class="btn" href="#/ismetles">🔁 Mai ismétlés' + (S.srsDue && S.srsDue().length ? ' (' + S.srsDue().length + ')' : '') + '</a></div>' +
+      '<div class="row" style="gap:8px;flex-wrap:wrap;margin:8px 0"><a class="btn" href="#/parbaj">⚔️ Párbaj egymás ellen</a><a class="btn" href="#/sajat">✏️ Saját kérdéseim</a><a class="btn" href="#/ismetles">🔁 Mai ismétlés' + (S.srsDue && S.srsDue().length ? ' (' + S.srsDue().length + ')' : '') + '</a></div>' +
       '<a class="card osz-promo" href="#/osszeallito"><span class="ico">🧩</span><span><b>Kérdés-összeállító</b><small>Keress kulcsszóra az összes kérdés között, válogasd ki, ami kell, és készíts belőle vizsgát vagy nyomtatható dolgozatot.</small></span><span class="btn primary">Megnyitás →</span></a>' +
       (weak.length ? '<div class="note warn"><b class="t">Gyenge pontjaid: ezeket érdemes gyakorolni</b><div class="chips" style="margin-top:6px">' + weak.slice(0, 6).map(function (w) {
         return '<button type="button" class="chip" data-weak="' + w.g.id + '/' + w.t.id + '">' + w.g.icon + ' ' + esc(w.t.title) + ' · ' + w.p + '%</button>';
