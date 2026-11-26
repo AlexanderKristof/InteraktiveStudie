@@ -501,7 +501,8 @@
         '**3. lehetőség: telepítés alkalmazásként.** Ha a tananyag egy weboldalon van közzétéve (például az iskola szerverén), a böngésző menüjében válaszd a „Telepítés” vagy „Hozzáadás a kezdőképernyőhöz” lehetőséget. Az első megnyitás után offline is működik, telefonon is.\n\n' +
         'A haladásod (elvégzett leckék, kvízeredmények) a böngésződben tárolódik ezen az eszközön. Ha másik gépre ülsz, ott elölről indul.\n\n' +
         'A tananyag bővíthető: minden tantárgy és modell egy-egy külön fájl a `data` mappában. A leírás a `README.md` fájlban van.') +
-      '<div class="row" style="margin-top:12px"><button class="btn" id="reset" type="button">Haladás törlése ezen az eszközön</button></div></article>';
+      '<div class="row" style="margin-top:12px"><button class="btn" id="reset" type="button">Haladás törlése ezen az eszközön</button></div>' + (S.statPanel ? S.statPanel() : '') + '</article>';
+    if (S.bindStatPanel) S.bindStatPanel(main);
     main.querySelector('#reset').addEventListener('click', function () {
       if (confirm('Biztosan törlöd az összes elvégzett leckét és kvízeredményt?')) {
         progress = {}; S.store.set('progress', progress); S.store.set('last', null); location.hash = '#/';
