@@ -1076,3 +1076,13 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
   .pb-arena { padding-bottom: 70px; }
 }
 @media (max-width: 640px) { #mnav-more { position: relative; } .mnav .mnb { position: absolute; top: 0; right: 18%; display: inline-block; min-width: 16px; padding: 0 4px; border-radius: 99px; background: #ef4444; color: #fff; font-size: .65rem; font-style: normal; font-weight: 700; line-height: 16px; } }
+
+/* ==== Akadálymentesség ==== */
+:root.dys body, :root.dys button, :root.dys input, :root.dys select, :root.dys textarea { font-family: Verdana, Tahoma, 'Trebuchet MS', 'Segoe UI', sans-serif !important; letter-spacing: .035em; word-spacing: .14em; }
+:root.dys em, :root.dys i, :root.dys .lead { font-style: normal !important; } :root.dys p, :root.dys li { text-align: left !important; }
+:root.wide-lh body { line-height: 1.95; } :root.wide-lh p, :root.wide-lh li { margin-bottom: .7em; }
+:root.ulinks main a, :root.ulinks .foot a { text-decoration: underline !important; text-underline-offset: 3px; }
+.read-ruler { position: fixed; left: 0; right: 0; height: 44px; top: 40%; background: rgba(250, 204, 21, .18); border-top: 2px solid rgba(250, 204, 21, .55); border-bottom: 2px solid rgba(250, 204, 21, .55); pointer-events: none; z-index: 80; }
+.read-fab { position: fixed; right: 16px; bottom: 18px; z-index: 85; width: 54px; height: 54px; border-radius: 50%; border: 0; background: var(--accent); color: #fff; font-size: 1.5rem; box-shadow: 0 6px 18px rgba(0,0,0,.25); cursor: pointer; }
+@media (max-width: 640px) { .read-fab { bottom: calc(78px + env(safe-area-inset-bottom)); } }
+:focus-visible { outline: 3px solid var(--accent) !important; outline-offset: 2px; }

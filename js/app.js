@@ -641,6 +641,34 @@
     r.style.fontSize = st.font ? st.font + '%' : '';
     r.classList.toggle('hc', !!st.contrast);
     r.classList.toggle('no-motion', !!st.noMotion);
+    r.classList.toggle('dys', !!st.dys);
+    r.classList.toggle('wide-lh', !!st.wideLh);
+    r.classList.toggle('ulinks', !!st.ulinks);
+    ruler(!!st.ruler); readBtn(!!st.readAll);
+  }
+  /* olvasóvonalzó: áttetsző sáv, ami követi az ujjat/egeret – segít a sor tartásában */
+  var rulerEl = null;
+  function rulerMove(e) { var y = e.touches ? e.touches[0].clientY : e.clientY; if (rulerEl) rulerEl.style.top = (y - 22) + 'px'; }
+  function ruler(on) {
+    if (on && !rulerEl) { rulerEl = document.createElement('div'); rulerEl.className = 'read-ruler'; document.body.appendChild(rulerEl); document.addEventListener('mousemove', rulerMove); document.addEventListener('touchmove', rulerMove, { passive: true }); }
+    if (!on && rulerEl) { rulerEl.remove(); rulerEl = null; document.removeEventListener('mousemove', rulerMove); document.removeEventListener('touchmove', rulerMove); }
+  }
+  /* felolvasás gomb minden oldalon: a kijelölt szöveget, vagy ha nincs kijelölés, az oldal fő tartalmát olvassa fel */
+  var readEl = null;
+  function readBtn(on) {
+    if (!('speechSynthesis' in window)) return;
+    if (on && !readEl) {
+      readEl = document.createElement('button'); readEl.type = 'button'; readEl.className = 'read-fab'; readEl.title = 'Felolvasás (a kijelölt szöveg vagy az egész oldal)'; readEl.textContent = '🔊';
+      readEl.addEventListener('click', function () {
+        if (speechSynthesis.speaking) { speechSynthesis.cancel(); readEl.textContent = '🔊'; return; }
+        var sel = String(window.getSelection ? window.getSelection() : '').trim(), txt = sel || (main.innerText || '').slice(0, 6000);
+        var u = new SpeechSynthesisUtterance(txt); u.lang = 'hu-HU'; u.rate = (S.store.get('settings', {}).rate) || 0.95;
+        var v = speechSynthesis.getVoices().filter(function (x) { return /^hu/i.test(x.lang); })[0]; if (v) u.voice = v;
+        u.onend = function () { readEl.textContent = '🔊'; }; readEl.textContent = '⏹'; speechSynthesis.speak(u);
+      });
+      document.body.appendChild(readEl);
+    }
+    if (!on && readEl) { readEl.remove(); readEl = null; }
   }
   applySettings();
   S.pageBeallitasok = function () {
@@ -651,6 +679,12 @@
         return '<button type="button" data-v="' + f[0] + '" class="' + ((st.font || 100) === f[0] ? 'on' : '') + '">' + f[1] + '</button>'; }).join('') + '</div></div>' +
       '<label class="ts-topic"><input type="checkbox" id="st-contrast"' + (st.contrast ? ' checked' : '') + '><span><b>Magas kontraszt</b><br><small class="muted">Erősebb színek és keretek, jobb olvashatóság (pl. projektoron).</small></span></label>' +
       '<label class="ts-topic"><input type="checkbox" id="st-motion"' + (st.noMotion ? ' checked' : '') + '><span><b>Animációk kikapcsolása</b><br><small class="muted">Nincs mozgó átmenet és animáció.</small></span></label>' +
+      '<h3 style="margin:8px 0 0">♿ Olvasás és akadálymentesség</h3>' +
+      '<label class="ts-topic"><input type="checkbox" id="st-dys"' + (st.dys ? ' checked' : '') + '><span><b>Diszlexiabarát olvasás</b><br><small class="muted">Jól megkülönböztethető betűk, nagyobb betű- és szóköz, nincs dőlt betű, balra zárt szöveg.</small></span></label>' +
+      '<label class="ts-topic"><input type="checkbox" id="st-lh"' + (st.wideLh ? ' checked' : '') + '><span><b>Tágasabb sorköz</b><br><small class="muted">Több hely a sorok között, könnyebb követni a szöveget.</small></span></label>' +
+      '<label class="ts-topic"><input type="checkbox" id="st-ruler"' + (st.ruler ? ' checked' : '') + '><span><b>Olvasóvonalzó</b><br><small class="muted">Egy halvány sáv követi az egeret vagy az ujjad, így nem csúszol el a sorban.</small></span></label>' +
+      '<label class="ts-topic"><input type="checkbox" id="st-read"' + (st.readAll ? ' checked' : '') + '><span><b>Felolvasás gomb minden oldalon</b><br><small class="muted">Egy 🔊 gomb a sarokban: felolvassa a kijelölt szöveget, vagy kijelölés nélkül az egész oldalt.</small></span></label>' +
+      '<label class="ts-topic"><input type="checkbox" id="st-ulinks"' + (st.ulinks ? ' checked' : '') + '><span><b>Linkek aláhúzása</b><br><small class="muted">A kattintható szövegek mindig aláhúzva látszanak.</small></span></label>' +
       '<div><b>Felolvasás sebessége</b><div class="seg" id="st-rate">' + [[0.75, 'Lassú'], [0.95, 'Normál'], [1.2, 'Gyors']].map(function (f) {
         return '<button type="button" data-v="' + f[0] + '" class="' + ((st.rate || 0.95) === f[0] ? 'on' : '') + '">' + f[1] + '</button>'; }).join('') + '</div></div>' +
       '<div><b>Mélységi szint</b><div class="seg" id="st-level"><button type="button" data-v="iskolai" class="' + (S.level !== 'egyetem' ? 'on' : '') + '">🎒 Iskolai</button><button type="button" data-v="egyetem" class="' + (S.level === 'egyetem' ? 'on' : '') + '">🎓 Egyetemi</button></div></div>' +
@@ -661,6 +695,9 @@
     main.querySelectorAll('#st-level button').forEach(function (b) { b.addEventListener('click', function () { S.setLevel(b.dataset.v); }); });
     main.querySelector('#st-contrast').addEventListener('change', function () { save('contrast', this.checked); });
     main.querySelector('#st-motion').addEventListener('change', function () { save('noMotion', this.checked); });
+    [['#st-dys', 'dys'], ['#st-lh', 'wideLh'], ['#st-ruler', 'ruler'], ['#st-read', 'readAll'], ['#st-ulinks', 'ulinks']].forEach(function (x) {
+      main.querySelector(x[0]).addEventListener('change', function () { save(x[1], this.checked); });
+    });
   };
 
   /* ---------- téma ---------- */
