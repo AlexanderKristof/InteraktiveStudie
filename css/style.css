@@ -2622,3 +2622,5 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
   .jt-msg { top: 8px; transform: translateX(-50%); padding: 8px 12px; font-size: .9rem; }
   .jt-msg .btn { margin-top: 4px; padding: 5px 10px; }
 }
+.jt-opt.jt-wide { grid-column: span 2; }
+@media (max-width: 640px) { .jt-opt.jt-wide { grid-column: auto; } }
