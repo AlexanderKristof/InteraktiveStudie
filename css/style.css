@@ -1179,3 +1179,46 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 .lb-glass { fill: rgba(140,180,230,.10); stroke: var(--fg-2); stroke-width: 1.5; }
 @media (max-width: 900px) { .lb-wide { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .lb-learn { grid-template-columns: 1fr; } .lb-hero { padding: 16px 14px; } }
+
+/* ==== Lépésenkénti feladatmegoldó (js/lepesek.js) ==== */
+.lp-bar { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; justify-content: space-between; margin: 12px 0 8px; }
+.lp-bar > div { display: grid; gap: 4px; min-width: 0; } .lp-bar small { color: var(--muted); }
+.lp-seg button { white-space: nowrap; }
+.lp-stats { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; color: var(--fg-2); }
+.lp-stats b { color: var(--accent); }
+.lp-gh { font-size: 1.2rem; margin: 22px 0 10px; }
+.lp-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+.lp-tile { display: flex; gap: 12px; align-items: flex-start; padding: 14px; text-decoration: none; color: var(--fg); transition: border-color .15s, transform .15s; min-width: 0; }
+.lp-tile:hover { border-color: var(--accent); transform: translateY(-1px); }
+.lp-tile > span:last-child { display: grid; gap: 2px; min-width: 0; }
+.lp-tile small { color: var(--fg-2); font-size: .86rem; } .lp-tile em { font-style: normal; font-size: .8rem; color: var(--muted); }
+.lp-ico { font-size: 1.5rem; width: 44px; height: 44px; flex: none; display: grid; place-items: center; border-radius: 12px; background: var(--accent-soft); }
+.lp-card { padding: 18px; display: grid; gap: 12px; min-width: 0; }
+.lp-card.lp-in-widget { padding: 0; }
+.lp-head { display: flex; flex-wrap: wrap; gap: 6px 10px; justify-content: space-between; align-items: center; font-size: .85rem; }
+.lp-tag { color: var(--muted); }
+.lp-lvl { padding: 2px 10px; border-radius: 99px; font-weight: 600; background: var(--surface-2); }
+.lp-l0 { background: var(--ok-soft); color: var(--ok); } .lp-l2 { background: var(--bad-soft); color: var(--bad); }
+.lp-text { font-size: 1.08rem; line-height: 1.6; overflow-wrap: anywhere; }
+.lp-text code, .lp-steps code, .lp-hint code { white-space: normal; overflow-wrap: anywhere; }
+.lp-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.lp-in { display: flex; align-items: center; gap: 6px; border: 2px solid var(--line); border-radius: 10px; padding: 4px 10px; background: var(--surface); min-width: 0; flex: 1 1 180px; max-width: 320px; }
+.lp-in input { border: 0; background: transparent; color: var(--fg); font: inherit; font-family: var(--mono); width: 100%; min-width: 0; padding: 6px 0; outline: none; }
+.lp-in:focus-within { border-color: var(--accent); }
+.lp-in small { color: var(--muted); white-space: nowrap; } .lp-lab { font-weight: 700; white-space: nowrap; }
+.lp-in.lp-ok { border-color: var(--ok); background: var(--ok-soft); } .lp-in.lp-bad { border-color: var(--bad); background: var(--bad-soft); }
+.lp-fb:empty { display: none; }
+.lp-fb.w-msg:not(.ok):not(.bad) { background: var(--accent-soft); }
+.lp-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.lp-acts .btn { flex: 1 1 calc(50% - 8px); min-width: 0; }
+@media (min-width: 700px) { .lp-acts .btn { flex: 0 1 auto; } }
+.lp-new.lp-pulse { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.lp-hints { display: grid; gap: 8px; } .lp-hints:empty, .lp-steps:empty { display: none; }
+.lp-hint { padding: 10px 12px; border-radius: 10px; border-left: 4px solid #f5b301; background: var(--surface-2); font-size: .95rem; }
+.lp-steps { margin: 0; padding-left: 26px; display: grid; gap: 8px; }
+.lp-step { padding: 8px 10px; border-radius: 10px; background: var(--surface-2); line-height: 1.6; overflow-wrap: anywhere; }
+.lp-step::marker { font-weight: 700; color: var(--accent); }
+.lp-fresh { animation: lp-in .35s ease-out; }
+@keyframes lp-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+.lp-card > .lp-stats { border-top: 1px solid var(--line); padding-top: 10px; }
+.lp-more { margin: 10px 0 0; font-size: .9rem; }
