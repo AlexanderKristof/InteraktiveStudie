@@ -1222,3 +1222,9 @@ table.gloss th { font-size: .8rem; color: var(--muted); }
 @keyframes lp-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 .lp-card > .lp-stats { border-top: 1px solid var(--line); padding-top: 10px; }
 .lp-more { margin: 10px 0 0; font-size: .9rem; }
+
+/* ==== Gyorsabb betöltés (js/lazy.js) ==== */
+.lazy-wait { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 40vh; color: var(--muted); font-size: 1.05rem; }
+.lazy-wait .spin { width: 26px; height: 26px; border: 3px solid var(--line, #ccc); border-top-color: var(--accent, #2563eb); border-radius: 50%; animation: lz-spin .8s linear infinite; }
+@keyframes lz-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .lazy-wait .spin { animation-duration: 2.4s; } }

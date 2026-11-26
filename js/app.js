@@ -521,6 +521,13 @@
     if (S.logActivity && seg[0] && seg[0] !== 'haladas') S.logActivity();
     document.body.setAttribute('data-page', seg[0] || 'home');
     closePop();
+    /* ⚡ a kezdőlap azonnal megjelenik; a többi oldal megvárja a háttérben töltődő adatcsomagokat */
+    if (seg.length && S.need && !S.lazyReady) {
+      main.innerHTML = '<div class="lazy-wait" role="status"><span class="spin"></span> Tananyag betöltése…</div>';
+      var want = location.hash;
+      S.need(function () { if (location.hash === want) route(); });
+      return;
+    }
     if (!seg.length) pageHome();
     else if (seg[0] === 'tantargy') pageSubject(seg[1]);
     else if (seg[0] === 'lecke') pageLesson(seg[1], seg[2]);
@@ -756,4 +763,12 @@
   });
   window.addEventListener('hashchange', route);
   route();
+  /* az első képernyő után a háttérben betöltjük a többi adatot, majd frissítjük a keresőt és a kezdőlapot */
+  if (S.need) setTimeout(function () {
+    S.need(function () {
+      index = null;
+      var a = document.activeElement;
+      if (!(location.hash.slice(1) || '/').replace(/^\/+/, '') && !(a && main.contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName))) { var y = window.scrollY; route(); window.scrollTo(0, y); }
+    });
+  }, 30);
 })();

@@ -3,6 +3,28 @@
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-26-muhely', date: '2026-11-26', title: '🛠 Interaktív műhely: feladatmegoldó, labor, párbaj, szimulátorok',
+    plus: [['+21', 'lépésenkénti feladattípus'], ['+10', 'labor-kísérlet'], ['+6', 'szétszedhető modell (76 alkatrész)'], ['+3', 'gazdasági szimulátor'], ['+46', 'szakma-profil'], ['+1', 'áramkör-labor'], ['+9', 'új oldal']],
+    items: [
+      ['Lépésenkénti feladatmegoldó: 21 feladattípus matekból, fizikából, kémiából és pénzügyből, 3 szinten – tippek, lépésenként kibontható megoldás, végtelen új feladat', '#/feladatok'],
+      ['Virtuális labor: inga, rugó, fénytörés, lencse, interferencia, titrálás, pH-skála, gáztörvények, úszás, olvadás–forrás', '#/labor'],
+      ['Áramkör-labor: építs áramkört telepből, izzóból, LED-ből, kapcsolóból, és mérj', '#/aramkor'],
+      ['Új modellek: repülőgép, emberi csontváz, vulkán, hűtőszekrény, robotporszívó, otthoni hálózat és internet', '#/felfedezo'],
+      ['Gazdasági szimulátorok: tőzsdejáték, saját vállalkozás, családi költségvetés', '#/szimulatorok'],
+      ['Pályaorientáció: érdeklődés-teszt és 46 szakma bemutatása', '#/palya'],
+      ['Okos ismétlés: a rosszul megválaszolt kérdések a megfelelő napon visszajönnek', '#/ismetles'],
+      ['Párbaj: kvízcsata két játékosnak egy telefonon, vagy kihívó link a barátodnak', '#/parbaj'],
+      ['Saját kérdések és kártyák: írd meg, tanuld, nyomtasd, oszd meg linkként', '#/sajat']
+    ] });
+
+  N({ id: '2026-11-26-kenyelem', date: '2026-11-26', title: '📱 Telefonos menü, akadálymentesség, gyorsabb betöltés',
+    plus: [['+1', 'alsó menüsor telefonon'], ['+5', 'akadálymentességi beállítás'], ['~2,5×', 'gyorsabb első betöltés']],
+    items: [
+      ['Telefonon alul menüsor (Kezdőlap, Keresés, Teszt, Tanulás, Menü) – mint egy appban', '#/'],
+      ['Diszlexiabarát betű, nagyobb sorköz, olvasóvonalzó, egész oldal felolvasása, aláhúzott linkek', '#/beallitasok'],
+      ['A kezdőlap azonnal megjelenik, a nagy adatcsomagok a háttérben töltődnek (mobilnet-szimulációban 9,3 s → 3,6 s)', '']
+    ] });
+
   N({ id: '2026-11-25-frissites', date: '2026-11-25', title: '🔄 Mindig a friss változat töltődik be',
     plus: [['+1', 'javítás']],
     items: [['Ha van internet, az oldal mindig a legújabb változatot tölti be (telefonon is); internet nélkül a tárolt változat működik tovább.', '']] });

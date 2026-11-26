@@ -9,7 +9,7 @@ const vm = require('vm');
 
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-const scripts = [...html.matchAll(/<script src="([^"]+)"><\/script>/g)].map(m => m[1]);
+const scripts = [...html.matchAll(/<script (?:src|data-lazy="[^"]*" data-src)="([^"]+)"><\/script>/g)].map(m => m[1]);
 const errors = [], warns = [];
 const err = (where, msg) => errors.push(where + ': ' + msg);
 const warn = (where, msg) => warns.push(where + ': ' + msg);

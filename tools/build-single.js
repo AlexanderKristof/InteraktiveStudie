@@ -15,6 +15,12 @@ html = html.replace(/<script src="([^"]+)"><\/script>/g, (_, src) => {
   const code = fs.readFileSync(path.join(root, src), 'utf8').replace(/<\/script/gi, '<\\/script');
   return '<script>/* ' + src + ' */\n' + code + '\n</script>';
 });
+// A később betöltendő adatcsomagok kódja beágyazva, de nem fut le azonnal (js/lazy.js indítja el).
+html = html.replace(/<script data-lazy="([^"]*)" data-src="([^"]+)"><\/script>/g, (_, g, src) => {
+  if (!fs.existsSync(path.join(root, src))) { console.warn('Hiányzó fájl, kihagyva: ' + src); return ''; }
+  const code = fs.readFileSync(path.join(root, src), 'utf8').replace(/<\/script/gi, '<\\/script');
+  return '<script type="text/x-lazy" data-lazy="' + g + '">/* ' + src + ' */\n' + code + '\n</script>';
+});
 // Egyfájlos módban nincs manifest és service worker; az ikon beágyazva.
 html = html.replace(/\s*<link rel="manifest"[^>]*>/, '');
 const icon = fs.readFileSync(path.join(root, 'icons/icon.svg'), 'utf8');
