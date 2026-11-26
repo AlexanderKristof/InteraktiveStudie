@@ -254,6 +254,7 @@
       '<div class="lesson"><article class="lesson-body">' +
       '<div class="row" style="gap:8px;margin-bottom:6px"><span class="badge ' + lv[1] + '">' + lv[0] + '</span>' + (l.minutes ? '<span class="badge">⏱ kb. ' + l.minutes + ' perc</span>' : '') + '</div>' +
       '<h1>' + esc(l.title) + '</h1><p class="lead">' + esc(l.summary) + '</p>' + (S.toolsHtml ? S.toolsHtml('lecke:' + key) : '') +
+      (S.routes && S.routes.hangos ? '<p class="hg-listen"><a class="btn sm" href="#/hangos/' + s.id + '/' + l.id + '">🎧 Hallgasd meg</a></p>' : '') +
       uniTop + body + widgets +
       (models.length ? '<h2>Nézz bele!</h2><p class="muted">Ehhez a leckéhez kapcsolódó szétszedhető modellek:</p><div class="related">' + models.map(function (m) {
         return '<a class="btn" href="#/felfedezo/' + m + '">' + S.models[m].icon + ' ' + esc(S.models[m].title) + '</a>';
