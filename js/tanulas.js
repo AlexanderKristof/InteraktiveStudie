@@ -79,6 +79,8 @@
         return '<a class="card learn-tile" href="#/tanulas/' + t[0] + '"><span class="ico">' + t[1] + '</span><b>' + esc(t[2]) + '</b><small>' + esc(t[3]) + '</small></a>';
       }).join('') +
       '<a class="card learn-tile" href="#/kartyak/' + (S.subjects[0] ? S.subjects[0].id : '') + '"><span class="ico">🃏</span><b>Tanulókártyák</b><small>Leitner-módszer: amit tudsz, ritkábban jön elő, amit nem, gyakrabban. Minden tantárgy oldalán megtalálod.</small></a>' +
+      '<a class="card learn-tile" href="#/ismetles"><span class="ico">🔁</span><b>Okos ismétlés</b><small>Amit elrontottál, a program 1, 3, 7, 16 és 35 nap múlva újra elődobja – így marad meg igazán.</small></a>' +
+      '<a class="card learn-tile" href="#/parbaj"><span class="ico">⚔️</span><b>Párbaj</b><small>Két játékos egy eszközön egymással szemben, vagy kihívás linkkel – ki tud többet?</small></a>' +
       '<a class="card learn-tile" href="#/osszeallito"><span class="ico">🧩</span><b>Kérdés-összeállító</b><small>Keress témára az összes kérdés között, és állíts össze belőle saját vizsgát vagy nyomtatható dolgozatot.</small></a>' +
       '<a class="card learn-tile" href="#/felkeszito"><span class="ico">📅</span><b>Vizsgafelkészítő</b><small>Napokra bontott terv, felkészültségi mérő és próbavizsga a dolgozatod napjáig.</small></a>' +
       '</div>' +

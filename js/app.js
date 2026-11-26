@@ -42,6 +42,7 @@
         b.addEventListener('click', function () {
           var picked = opts[+b.dataset.k];
           if (picked.ok) score++;
+          if (S.srsRecord) S.srsRecord(q, picked.ok, { label: document.title.replace(/ – Tudásműhely$/, '') || 'Kvíz', href: location.hash });
           box.querySelectorAll('.opt').forEach(function (x) {
             x.disabled = true;
             if (opts[+x.dataset.k].ok) x.classList.add('right');
@@ -110,7 +111,7 @@
       '<form class="search-big" id="hero-search"><input type="search" name="q" placeholder="Mi érdekel? pl. processzor, atom, Ohm-törvény…" aria-label="Keresés"><button class="btn primary" type="submit">Keresés</button></form>' +
       '<div class="chips">' + ['processzor', 'atom', 'akkumulátor', 'Ohm', 'FI relé', 'Pitagorasz', 'négyütemű motor', 'honfoglalás'].map(function (c) {
         return '<a class="chip" href="#/kereses?q=' + encodeURIComponent(c) + '">' + esc(c) + '</a>';
-      }).join('') + '<a class="chip" href="#/tartalom" style="border-style:dashed">📚 Teljes tartalomjegyzék</a></div>' + (S.newsHomeCard ? S.newsHomeCard() : '') + lastHtml + dailyHtml() + examHtml() + factDayHtml() + '</section>' +
+      }).join('') + '<a class="chip" href="#/tartalom" style="border-style:dashed">📚 Teljes tartalomjegyzék</a></div>' + (S.newsHomeCard ? S.newsHomeCard() : '') + (S.srsHomeCard ? S.srsHomeCard() : '') + lastHtml + dailyHtml() + examHtml() + factDayHtml() + '</section>' +
       ((S.paths || []).length ? '<div class="section-title"><h2>🧭 Válassz célt</h2><a href="#/utvonalak">Összes útvonal →</a></div><p class="muted" style="margin-top:-6px">Lépésről lépésre végigvezető tanulási tervek, tantárgyakon átívelve.</p><div class="grid">' + S.pathCards(4) + '</div>' : '') +
       S.STAGES.map(function (stg) {
         var list = S.subjects.filter(function (s) { return (s.stage || 'kozep') === stg[0]; });

@@ -148,6 +148,7 @@
 
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><span>Tesztközpont</span></nav>' +
       '<h1>Tesztközpont</h1><p class="lead">Válassz témákat, állítsd be a kérdések számát és a módot. A kérdésbankban jelenleg <b>' + total + '</b> kérdés van, mindegyik 4 válaszlehetőséggel.</p>' +
+      '<div class="row" style="gap:8px;flex-wrap:wrap;margin:8px 0"><a class="btn" href="#/parbaj">⚔️ Párbaj egymás ellen</a><a class="btn" href="#/ismetles">🔁 Mai ismétlés' + (S.srsDue && S.srsDue().length ? ' (' + S.srsDue().length + ')' : '') + '</a></div>' +
       '<a class="card osz-promo" href="#/osszeallito"><span class="ico">🧩</span><span><b>Kérdés-összeállító</b><small>Keress kulcsszóra az összes kérdés között, válogasd ki, ami kell, és készíts belőle vizsgát vagy nyomtatható dolgozatot.</small></span><span class="btn primary">Megnyitás →</span></a>' +
       (weak.length ? '<div class="note warn"><b class="t">Gyenge pontjaid: ezeket érdemes gyakorolni</b><div class="chips" style="margin-top:6px">' + weak.slice(0, 6).map(function (w) {
         return '<button type="button" class="chip" data-weak="' + w.g.id + '/' + w.t.id + '">' + w.g.icon + ' ' + esc(w.t.title) + ' · ' + w.p + '%</button>';
@@ -354,7 +355,7 @@
     var qs = items.map(function (it) {
       var base = it.q.options.map(function (t, k) { return { t: t, ok: k === it.q.answer }; });
       var opts = orng ? sshuffle(base, orng) : S.shuffle(base);
-      return { q: it.q, g: it.g, t: it.t, opts: opts, pick: null, locked: false };
+      return { q: it.q, g: it.g, t: it.t, meta: it.meta, opts: opts, pick: null, locked: false };
     });
     var i = 0, t0 = Date.now(), finished = false, timer = null;
     window.scrollTo(0, 0);
@@ -441,6 +442,8 @@
       var st = stats(), byTopic = {};
       qs.forEach(function (x) {
         var key = x.g.id + '/' + x.t.id, good = x.pick != null && x.opts[x.pick].ok;
+        if (S.srsRecord) S.srsRecord(x.q, good, x.meta || { label: x.g.title + ' – ' + x.t.title, href: x.t.href, gid: x.g.id, tid: x.t.id });
+        if (x.g.srs) return;
         st[key] = st[key] || { n: 0, ok: 0 }; st[key].n++; if (good) st[key].ok++;
         byTopic[key] = byTopic[key] || { g: x.g, t: x.t, n: 0, ok: 0 }; byTopic[key].n++; if (good) byTopic[key].ok++;
       });
