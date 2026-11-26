@@ -443,6 +443,7 @@
       qs.forEach(function (x) {
         var key = x.g.id + '/' + x.t.id, good = x.pick != null && x.opts[x.pick].ok;
         if (S.srsRecord) S.srsRecord(x.q, good, x.meta || { label: x.g.title + ' – ' + x.t.title, href: x.t.href, gid: x.g.id, tid: x.t.id });
+        if (S.logAnswer && !x.g.srs) S.logAnswer({ gid: x.g.id, tid: x.t.id, q: x.q.q, your: x.pick != null ? x.opts[x.pick].t : null, right: x.q.options[x.q.answer], href: x.t.href, label: x.g.title + ' – ' + x.t.title, src: 'teszt' }, good);
         if (x.g.srs) return;
         st[key] = st[key] || { n: 0, ok: 0 }; st[key].n++; if (good) st[key].ok++;
         byTopic[key] = byTopic[key] || { g: x.g, t: x.t, n: 0, ok: 0 }; byTopic[key].n++; if (good) byTopic[key].ok++;

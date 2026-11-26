@@ -138,7 +138,7 @@
       }).join('') + '</div>' +
       '<p style="margin-top:20px"><a class="btn" href="#/jegyzetek">📝 Jegyzeteim és ⭐ kedvenceim</a> <a class="btn" href="#/utvonalak">🧭 Tanulási útvonalak</a> <a class="btn" href="#/felkeszito">📅 Vizsgafelkészítő</a></p>' +
       '<h2>Mentés és betöltés</h2><div class="card pad"><p style="margin-top:0">A haladásod ebben a böngészőben tárolódik. Ha másik gépen vagy telefonon is folytatnád, mentsd el fájlba, és ott töltsd be.</p>' +
-      '<div class="row"><button type="button" class="btn primary" id="hx-exp">⬇ Haladás mentése fájlba</button><label class="btn" style="cursor:pointer">⬆ Mentés betöltése<input type="file" accept=".json,application/json" id="hx-imp" hidden></label></div></div>';
+      '<div class="row"><a class="btn primary" href="#/szinkron">🔄 Átvitel másik eszközre (link / QR-kód)</a><button type="button" class="btn" id="hx-exp">⬇ Haladás mentése fájlba</button><label class="btn" style="cursor:pointer">⬆ Mentés betöltése<input type="file" accept=".json,application/json" id="hx-imp" hidden></label></div></div>';
     main.querySelector('#hx-exp').addEventListener('click', exportData);
     main.querySelector('#hx-imp').addEventListener('change', function (e) {
       if (e.target.files[0]) importData(e.target.files[0], function () { S.pageHaladas(main); alert('Betöltve!'); });

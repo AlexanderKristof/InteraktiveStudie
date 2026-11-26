@@ -341,7 +341,7 @@ STUDIE.addSubject({
       title: 'Albérlet, rezsi, első lakás',
       level: 2, minutes: 14,
       summary: 'Mennyibe kerül egy albérlet havonta, mi a kaució, mire figyelj a bérleti szerződésben, hogyan működik a rezsiszámla és a mérőóra, mi a közös költség, és milyen támogatások vannak az első saját lakáshoz 2026-ban.',
-      tags: ['albérlet', 'bérleti szerződés', 'kaució', 'rezsi', 'rezsicsökkentés', 'mérőóra', 'közös költség', 'átadás-átvételi jegyzőkönyv', 'Otthon Start', 'CSOK Plusz', 'lakáshitel', 'illeték', 'első lakás'],
+      tags: ['albérlet', 'bérleti szerződés', 'kaució', 'rezsi', 'rezsicsökkentés', 'mérőóra', 'közös költség', 'átadás-átvételi jegyzőkönyv', 'Wekerle Plusz', 'Otthon Start', 'CSOK Plusz', 'lakáshitel', 'illeték', 'első lakás'],
       sections: [
         {
           title: 'Mennyibe kerül egy albérlet? (2026-os példa)',
@@ -364,7 +364,7 @@ STUDIE.addSubject({
         },
         {
           title: 'Első saját lakás: támogatások (2026)',
-          text: 'A 2026-os legfontosabb lehetőségek (a feltételek gyakran változnak – mindig ellenőrizd a bankoknál és a **magyarorszag.hu**-n):\n\n- **Otthon Start** (2025 szeptembere óta): első lakás vásárlására **fix 3%-os kamatú** lakáshitel, legfeljebb **50 millió Ft**, legfeljebb **25 év** futamidőre, jellemzően legalább **10% önerővel**. Az ingatlan árára és négyzetméterárára korlát vonatkozik.\n- **CSOK Plusz**: gyermeket vállaló házaspároknak kedvezményes kamatozású hitel.\n- **Babaváró kölcsön**: házaspároknak, gyermekvállaláshoz kötött kedvezményekkel.\n\n**Számolt példa (Otthon Start, 2026):** 40 millió Ft hitel, 3% kamat, 25 év:\n`havi részlet = H × i / (1 − (1 + i)^(−n))`, ahol `i = 0,03 / 12 = 0,0025`, `n = 300`\n→ kb. **190 000 Ft/hó**. 25 év alatt összesen kb. **57 millió Ft**-ot fizetsz vissza (ebből kb. 17 millió a kamat).\n\nLakásvásárlásnál **vagyonszerzési illetéket** is fizetni kell (általában a vételár **4%-a**; bizonyos esetekben kedvezmény jár) – ezzel is számolj!',
+          text: 'A 2026-os legfontosabb lehetőségek (a feltételek gyakran változnak – mindig ellenőrizd a bankoknál és a **magyarorszag.hu**-n):\n\n- **Wekerle Plusz** (2026. október 28. óta, az Otthon Start utódja): első saját lakáshoz államilag támogatott, **fix kamatú** lakáshitel – **új lakásra fix 3%**, **használt lakásra fix 5%** kamattal, legfeljebb **50 millió Ft**, jellemzően legalább **10% önerővel**. Az ingatlan árára és négyzetméterárára korlát vonatkozik. (Az elődjére, a 2025 szeptemberében indult, fix 3%-os **Otthon Start** hitelre 2026. november 15-ig lehetett igényt beadni.)\n- **CSOK Plusz**: gyermeket vállaló házaspároknak kedvezményes kamatozású hitel.\n- **Babaváró kölcsön**: házaspároknak, gyermekvállaláshoz kötött kedvezményekkel.\n\n**Számolt példa (fix 3%-os támogatott hitel, 2026):** 40 millió Ft hitel, 3% kamat, 25 év:\n`havi részlet = H × i / (1 − (1 + i)^(−n))`, ahol `i = 0,03 / 12 = 0,0025`, `n = 300`\n→ kb. **190 000 Ft/hó**. 25 év alatt összesen kb. **57 millió Ft**-ot fizetsz vissza (ebből kb. 17 millió a kamat).\n\nLakásvásárlásnál **vagyonszerzési illetéket** is fizetni kell (általában a vételár **4%-a**; bizonyos esetekben kedvezmény jár) – ezzel is számolj!',
           warn: 'Lakáshitelt csak akkor vegyél fel, ha a törlesztőrészlet a nettó jövedelmed **legfeljebb kb. harmada**, és marad vésztartalékod. Hitelfelvétel előtt kérj több banktól ajánlatot, és hasonlítsd össze a **THM**-et.'
         }
       ],
@@ -374,7 +374,7 @@ STUDIE.addSubject({
         { q: 'Bérleti díj 200 000 Ft, kaució 2 havi. Mennyit kell beköltözéskor kifizetni az első hónappal együtt?', options: ['400 000 Ft', '600 000 Ft', '800 000 Ft', '200 000 Ft'], answer: 1, explain: '2 × 200 000 kaució + 200 000 első havi díj = 600 000 Ft.' },
         { q: 'Mi az elszámoló számla?', options: ['A közös költség éves díja', 'A kaució visszautalása', 'A bérleti díj számlája', 'Az éves tényleges fogyasztás alapján elkészített számla, ami korrigálja a becsült részszámlákat'], answer: 3, explain: 'Becsült részszámlák után az elszámoló számla mutatja meg, kell-e még fizetni vagy jóváírás jár.' },
         { q: 'Mekkora éves áramfogyasztásig jár 2026-ban a rezsicsökkentett ár?', options: ['10 000 kWh', 'Korlátlanul', '2 523 kWh', '1 729 kWh'], answer: 2, explain: 'Áramból évi 2 523 kWh, gázból évi 1 729 m³ az átlagfogyasztási határ (2022 augusztusa óta).' },
-        { q: 'Mennyi az Otthon Start hitel kamata?', options: ['A jegybanki alapkamat duplája', 'Fix 3%', '0%', 'Változó 10%'], answer: 1, explain: 'Az Otthon Start (2025 szeptembertől) első lakáshoz fix 3%-os kamatot ad, legfeljebb 50 millió Ft-ig.' },
+        { q: 'Mennyi a Wekerle Plusz hitel kamata új lakás vásárlásakor?', options: ['A jegybanki alapkamat duplája', 'Fix 3%', '0%', 'Változó 10%'], answer: 1, explain: 'A Wekerle Plusz (2026. október 28-tól, az Otthon Start utódja) új lakásra fix 3%, használt lakásra fix 5% kamatot ad, legfeljebb 50 millió Ft-ig.' },
         { q: 'Mi a jele egy albérlet-csalásnak?', options: ['Megmutatják a lakást', 'Átadás-átvételi jegyzőkönyvet készítenek', 'Írásos szerződést kínálnak', 'Megtekintés előtt kérnek kauciót, mert a tulajdonos „külföldön van”'], answer: 3, explain: 'Soha ne fizess olyan lakásért, amit nem láttál, és ahol nem találkoztál a tulajdonossal.' }
       ]
     },

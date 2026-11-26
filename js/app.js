@@ -43,6 +43,7 @@
           var picked = opts[+b.dataset.k];
           if (picked.ok) score++;
           if (S.srsRecord) S.srsRecord(q, picked.ok, { label: document.title.replace(/ – Tudásműhely$/, '') || 'Kvíz', href: location.hash });
+          if (S.logAnswer) S.logAnswer({ key: key, q: q.q, your: picked.t, right: q.options[q.answer], href: location.hash, label: document.title.replace(/ – Tudásműhely$/, '') }, picked.ok);
           box.querySelectorAll('.opt').forEach(function (x) {
             x.disabled = true;
             if (opts[+x.dataset.k].ok) x.classList.add('right');
@@ -101,7 +102,15 @@
       ['szimulatorok', '💹', 'Gazdasági szimulátorok', 'Tőzsdejáték, saját vállalkozás, családi költségvetés – kockázat nélkül'],
       ['palya', '🧭', 'Pályaorientáció', 'Milyen szakma illik hozzád? Teszt és szakma-profilok'],
       ['parbaj', '⚔️', 'Párbaj', 'Kvízcsata egy telefonon vagy kihívó linkkel'],
-      ['sajat', '✏️', 'Saját kérdések', 'Írj saját kártyákat, és oszd meg a barátaiddal']]
+      ['sajat', '✏️', 'Saját kérdések', 'Írj saját kártyákat, és oszd meg a barátaiddal'],
+      ['erettsegi', '🎓', 'Érettségi próbavizsga', '6 tantárgy, időre, pontozással és javítókulccsal'],
+      ['kodolas', '💻', 'Programozás játszva', 'Robot a rácson és algoritmusok, lépésenkénti futtatással'],
+      ['szabadulo', '🔐', 'Szabadulószoba', 'Törd fel a lakatokat fizika-, matek- és kémiafeladatokkal'],
+      ['idovonal', '🕰️', 'Idővonal és térképek', 'Történelem az őskortól napjainkig, kattintható térképekkel'],
+      ['gyengepontok', '🎯', 'Gyengepont-térkép', 'Hol hibázol a legtöbbet? Célzott gyakorlás'],
+      ['magyarazd', '🗣️', 'Magyarázd el!', 'Írd le a saját szavaiddal – az app megmondja, mi hiányzik'],
+      ['fuzet', '📓', 'Nyomtatható jegyzetfüzet', 'Bármely tantárgyból szép összefoglaló füzet'],
+      ['szinkron', '🔄', 'Átvitel másik eszközre', 'Haladás telefonról gépre linkkel vagy QR-kóddal']]
       .filter(function (w) { return S.routes && S.routes[w[0]]; });
     return W.length ? '<div class="section-title" style="margin-top:22px"><h2>🛠 Interaktív műhely</h2></div><div class="role-row">' + W.map(function (w) {
       return '<a class="card role-card" href="#/' + w[0] + '"><span class="ico">' + w[1] + '</span><b>' + w[2] + '</b><small>' + w[3] + '</small></a>'; }).join('') + '</div>' : '';
@@ -191,7 +200,7 @@
       '<p class="lead" style="margin:0">' + esc(s.description) + '</p></div></div>' +
       (s.intro ? '<div class="lesson-body">' + md(s.intro) + '</div>' : '') +
       '<div class="row" style="--tile:' + s.color + ';margin-top:10px"><span class="muted">' + st.done + ' / ' + st.total + ' lecke kész</span><span class="bar" style="flex:1;max-width:260px"><i style="width:' + st.pct + '%"></i></span></div>' +
-      '<div class="row" style="margin-top:14px"><a class="btn primary" href="#/teszt?targy=' + s.id + '">📝 Teszt ebből a tantárgyból</a><a class="btn" href="#/kartyak/' + s.id + '">🃏 Tanulókártyák</a><a class="btn" href="#/osszeallito?g=' + s.id + '">🧩 Vizsgakérdések összeállítása</a><a class="btn" href="#/felkeszito">📅 Felkészülés dolgozatra</a><button type="button" class="btn" id="syllabus">🖨 Tanmenet</button></div>' +
+      '<div class="row" style="margin-top:14px"><a class="btn primary" href="#/teszt?targy=' + s.id + '">📝 Teszt ebből a tantárgyból</a><a class="btn" href="#/kartyak/' + s.id + '">🃏 Tanulókártyák</a><a class="btn" href="#/osszeallito?g=' + s.id + '">🧩 Vizsgakérdések összeállítása</a><a class="btn" href="#/felkeszito">📅 Felkészülés dolgozatra</a><button type="button" class="btn" id="syllabus">🖨 Tanmenet</button><a class="btn" href="#/fuzet/' + s.id + '">📓 Jegyzetfüzet</a></div>' +
       '<ol class="lesson-list" style="--tile:' + s.color + '">' + s.lessons.map(function (l, i) {
         var d = isDone(s.id, l.id), lv = LEVELS[l.level || 1];
         var p = progress[lessonKey(s.id, l.id)];
@@ -664,7 +673,9 @@
     r.classList.toggle('wide-lh', !!st.wideLh);
     r.classList.toggle('ulinks', !!st.ulinks);
     ruler(!!st.ruler); readBtn(!!st.readAll);
+    if (S.applyMegjelenes) S.applyMegjelenes(st);
   }
+  S.applySettings = applySettings;
   /* olvasóvonalzó: áttetsző sáv, ami követi az ujjat/egeret – segít a sor tartásában */
   var rulerEl = null;
   function rulerMove(e) { var y = e.touches ? e.touches[0].clientY : e.clientY; if (rulerEl) rulerEl.style.top = (y - 22) + 'px'; }
@@ -696,8 +707,8 @@
       '<div class="card pad settings">' +
       '<div><b>Betűméret</b><div class="seg" id="st-font">' + [[90, 'Kicsi'], [100, 'Normál'], [115, 'Nagy'], [130, 'Nagyon nagy']].map(function (f) {
         return '<button type="button" data-v="' + f[0] + '" class="' + ((st.font || 100) === f[0] ? 'on' : '') + '">' + f[1] + '</button>'; }).join('') + '</div></div>' +
-      '<label class="ts-topic"><input type="checkbox" id="st-contrast"' + (st.contrast ? ' checked' : '') + '><span><b>Magas kontraszt</b><br><small class="muted">Erősebb színek és keretek, jobb olvashatóság (pl. projektoron).</small></span></label>' +
-      '<label class="ts-topic"><input type="checkbox" id="st-motion"' + (st.noMotion ? ' checked' : '') + '><span><b>Animációk kikapcsolása</b><br><small class="muted">Nincs mozgó átmenet és animáció.</small></span></label>' +
+      '<label class="ts-topic"><input type="checkbox" id="st-contrast"' + (st.contrast ? ' checked' : '') + '><span><b>Magas kontraszt</b><br><small class="muted">Fekete-fehér alapú, nagyon erős színek, vastagabb keretek és fókuszkeret (pl. projektoron, gyengénlátóknak).</small></span></label>' +
+      '<label class="ts-topic"><input type="checkbox" id="st-motion"' + (st.noMotion ? ' checked' : '') + '><span><b>Csökkentett mozgás</b><br><small class="muted">Nincs mozgó átmenet, animáció és sima görgetés.</small></span></label>' +
       '<h3 style="margin:8px 0 0">♿ Olvasás és akadálymentesség</h3>' +
       '<label class="ts-topic"><input type="checkbox" id="st-dys"' + (st.dys ? ' checked' : '') + '><span><b>Diszlexiabarát olvasás</b><br><small class="muted">Jól megkülönböztethető betűk, nagyobb betű- és szóköz, nincs dőlt betű, balra zárt szöveg.</small></span></label>' +
       '<label class="ts-topic"><input type="checkbox" id="st-lh"' + (st.wideLh ? ' checked' : '') + '><span><b>Tágasabb sorköz</b><br><small class="muted">Több hely a sorok között, könnyebb követni a szöveget.</small></span></label>' +
@@ -717,6 +728,7 @@
     [['#st-dys', 'dys'], ['#st-lh', 'wideLh'], ['#st-ruler', 'ruler'], ['#st-read', 'readAll'], ['#st-ulinks', 'ulinks']].forEach(function (x) {
       main.querySelector(x[0]).addEventListener('change', function () { save(x[1], this.checked); });
     });
+    if (S.megjelenesPanel) S.megjelenesPanel(main);
   };
 
   /* ---------- téma ---------- */

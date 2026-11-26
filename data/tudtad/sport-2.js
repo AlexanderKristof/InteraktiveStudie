@@ -7,7 +7,7 @@ STUDIE.addFacts([
   {
     id: 'tenisz-djokovic-olimpia', cat: 'sport', sport: 'tenisz', athletes: ['Novak Djokovic'],
     q: 'Novak Djokovic **37 évesen, az ötödik olimpiáján nyerte meg élete első olimpiai aranyérmét**?',
-    why: 'Djokovic 2008-ban Pekingben bronzérmes lett, utána három olimpián (2012, 2016, 2021) nem sikerült érmet nyernie. **2024-ben Párizsban**, 37 évesen végül megnyerte a férfi egyest – ezzel a négy Grand Slam-torna mellett az olimpiai aranyat is begyűjtötte („karrier-arany-Grand Slam”).\n\nKözben a férfiaknál rekordnak számító **24 Grand Slam-tornát** nyert, és összesen **428 hétig** vezette a világranglistát – ez is minden idők csúcsa (2025-ös állás).\n\nA történet tanulsága: a legnagyobbaknak is kellhet **16 év kitartás** egy-egy célhoz.',
+    why: 'Djokovic 2008-ban Pekingben bronzérmes lett, utána három olimpián (2012, 2016, 2021) nem sikerült érmet nyernie. **2024-ben Párizsban**, 37 évesen végül megnyerte a férfi egyest – ezzel a négy Grand Slam-torna mellett az olimpiai aranyat is begyűjtötte („karrier-arany-Grand Slam”).\n\nKözben a férfiaknál rekordnak számító **24 Grand Slam-tornát** nyert, és összesen **428 hétig** vezette a világranglistát – ez is minden idők csúcsa (2026 végi állás).\n\nA történet tanulsága: a legnagyobbaknak is kellhet **16 év kitartás** egy-egy célhoz.',
     links: ['lecke:sport/sportpszichologia', 'lecke:sport/olimpia']
   },
   {

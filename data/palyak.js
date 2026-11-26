@@ -226,7 +226,7 @@
     tantargyak: ['biológia', 'kémia', 'matematika (adagszámítás)', 'idegen nyelv', 'pszichológia jellegű ismeretek'],
     kereset: 'Kezdetben mérsékelt, a végzettség, a szakterület, a műszakpótlékok és a tapasztalat emeli.',
     kilatas: 'Nagy a hiány itthon és külföldön is, a munka biztos.',
-    linkek: [{ utvonal: 'emberi-test' }, { lecke: 'haztartas/elsosegely' }, { lecke: 'bio-alap/emberi-test-1' }, { kurzus: 'anatomia' }, { modell: 'sziv' }] });
+    linkek: [{ tantargy: 'apolas' }, { utvonal: 'emberi-test' }, { lecke: 'haztartas/elsosegely' }, { lecke: 'bio-alap/emberi-test-1' }, { kurzus: 'anatomia' }, { modell: 'sziv' }] });
 
   P({ id: 'gyogyszeresz', title: 'Gyógyszerész', icon: '💊', code: 'ICS', szint: 'diploma', terulet: 'Egészségügy',
     short: 'A gyógyszerek szakértője: kiad, tanácsot ad, fejleszt, ellenőriz.',
@@ -507,7 +507,7 @@
     tantargyak: ['matematika', 'földrajz', 'idegen nyelvek', 'informatika', 'gazdasági ismeretek'],
     kereset: 'Átlagos kezdés, a vezetői és elemző szerepekben jó.',
     kilatas: 'A webes kereskedelem és a gyártás miatt keresett; az automatizált raktárak új tudást kívánnak.',
-    linkek: [{ kurzus: 'msc-optimalizalas' }, { lecke: 'foldrajz/terkep' }, { lecke: 'matematika/szazalek' }, { lecke: 'penz-mindennap/afa-szamla' }, { lecke: 'foldrajz/nepesseg-gazdasag' }] });
+    linkek: [{ tantargy: 'logisztika' }, { kurzus: 'msc-optimalizalas' }, { lecke: 'foldrajz/terkep' }, { lecke: 'matematika/szazalek' }, { lecke: 'penz-mindennap/afa-szamla' }, { lecke: 'foldrajz/nepesseg-gazdasag' }] });
 
   P({ id: 'vallalkozo', title: 'Vállalkozó', icon: '🚀', code: 'ESC', szint: 'vegyes', terulet: 'Gazdaság',
     short: 'Saját ötletből saját céget épít – és vállalja a kockázatot.',

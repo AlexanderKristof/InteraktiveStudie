@@ -16,10 +16,10 @@
   /* ---------- ÁFA ---------- */
   S.addWidget('afa', function (el) {
     var mode = 'netto';
-    el.innerHTML = head('ÁFA-kalkulátor', 'Az árcédulán (boltban) mindig a **bruttó**, áfával együtt számolt ár szerepel. Cégek között gyakran **nettó** árban beszélnek. Kulcsok 2026-ban: **27 %** általános, **18 %** (pl. egyes alapvető élelmiszerek, szálláshely), **5 %** (pl. gyógyszerek, könyvek, egyes élelmiszerek), és vannak adómentes tételek.') +
+    el.innerHTML = head('ÁFA-kalkulátor', 'Az árcédulán (boltban) mindig a **bruttó**, áfával együtt számolt ár szerepel. Cégek között gyakran **nettó** árban beszélnek. Kulcsok 2026-ban: **27 %** általános, **18 %** (pl. egyes alapvető élelmiszerek, szálláshely), **5 %** (pl. nem vényköteles gyógyszerek, könyvek, egyes élelmiszerek), **0 %** (2026. szeptember 1-jétől a vényköteles gyógyszerek), és vannak adómentes tételek.') +
       '<div class="seg" id="afa-mode"><button type="button" data-m="netto" class="on">Nettóból bruttó</button><button type="button" data-m="brutto">Bruttóból nettó</button></div>' +
       '<div class="pw-grid">' + field('afa-ar', 'Ár', 10000, 'Ft') +
-      '<label class="pw-f"><span>ÁFA-kulcs</span><select id="afa-k"><option value="27">27 %</option><option value="18">18 %</option><option value="5">5 %</option><option value="0">0 % (mentes)</option></select></label></div>' +
+      '<label class="pw-f"><span>ÁFA-kulcs</span><select id="afa-k"><option value="27">27 %</option><option value="18">18 %</option><option value="5">5 %</option><option value="0">0 % (pl. vényköteles gyógyszer)</option></select></label></div>' +
       '<div id="afa-out"></div>';
     function calc() {
       var a = num(el, 'afa-ar'), k = parseFloat(el.querySelector('#afa-k').value) / 100, n, b;

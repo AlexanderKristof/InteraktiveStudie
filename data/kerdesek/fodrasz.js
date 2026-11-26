@@ -1,0 +1,77 @@
+/* Kérdésbank: Fodrász és kozmetikus (a data/tantargyak/fodrasz.js leckéihez) */
+STUDIE.addQuestions('fodrasz', {
+  hajszerkezet: [
+    { q: 'Melyik a hajszál külső, pikkelyes rétege?', options: ['Velő', 'Kéreg', 'Kutikula', 'Hajpapilla'], answer: 2, explain: 'A kutikula tetőcserépszerűen egymásra boruló, átlátszó pikkelyekből áll.' },
+    { q: 'Miből áll a haj legnagyobb része?', options: ['Kollagénből', 'Keratinból', 'Keményítőből', 'Zsírból'], answer: 1, explain: 'A haj kb. 90%-ban keratin nevű fehérjéből áll.' },
+    { q: 'Melyik kötést bontja fel a dauer redukálószere?', options: ['A hidrogénkötést', 'A sóhidat', 'A diszulfidkötést', 'Egyiket sem'], answer: 2, explain: 'A dauer a diszulfidkötéseket bontja fel, majd a fixálás új helyen újraköti őket.' },
+    { q: 'Kb. mennyit nő a fejbőr haja egy hónap alatt?', options: ['Kb. 1 mm', 'Kb. 1 cm', 'Kb. 5 cm', 'Kb. 10 cm'], answer: 1, explain: 'Átlagosan kb. 1 cm-t havonta, ez egyénenként eltérhet.' },
+    { q: 'Mi határozza meg leginkább, milyen hosszúra nőhet valakinek a haja?', options: ['Az anagén (növekedési) szakasz hossza', 'A telogén szakasz hossza', 'A sampon márkája', 'A hajvágás gyakorisága'], answer: 0, explain: 'Minél hosszabb a növekedési szakasz, annál hosszabbra nőhet a haj.' },
+    { q: 'Milyen a haj és a fejbőr természetes kémhatása?', options: ['Erősen lúgos', 'Semleges (pH 7)', 'Enyhén savas (kb. pH 4,5–5,5)', 'Erősen savas (pH 1–2)'], answer: 2, explain: 'Az enyhén savas közeg zárja a kutikulát.' },
+    { q: 'Mit jelent, ha egy haj porózus?', options: ['Nagyon egészséges', 'A kutikulája nyitott, gyorsan szív és gyorsan fakul', 'Nincs benne pigment', 'Nem lehet festeni'], answer: 1, explain: 'A porózus haj gyorsan beszívja a festéket, de gyorsan ki is fakul, a végek könnyen túlfestődnek.' },
+    { q: 'Mit javasolsz, ha a vendég foltokban kopaszodik, és a fejbőre gyulladt?', options: ['Erős szőkítést', 'Bőrgyógyászi vizsgálatot', 'Dauert', 'Semmit, ez normális'], answer: 1, explain: 'A kóros hajhullás és a fejbőr betegségei orvosi kivizsgálást igényelnek.' }
+  ],
+  festes: [
+    { q: 'Mit jelent a színmélységskálán az 1-es szám?', options: ['Legvilágosabb szőke', 'Fekete', 'Vörös', 'Ősz'], answer: 1, explain: 'A skálán 1 = fekete, 10 = legvilágosabb szőke.' },
+    { q: 'Melyik pigment adja a haj vöröses-sárgás árnyalatait?', options: ['Eumelanin', 'Feomelanin', 'Karotin', 'Klorofill'], answer: 1, explain: 'A feomelanin vöröses-sárgás, az eumelanin barnás-fekete.' },
+    { q: 'Miért tartós az oxidációs festék színe?', options: ['Mert ragasztót tartalmaz', 'Mert a kéregben nagy színes molekulák keletkeznek, amelyek nem férnek ki a kutikulán', 'Mert csak a felületre tapad', 'Mert lakkozzák'], answer: 1, explain: 'A kicsi előanyagok bejutnak, a kéregben összekapcsolódnak, és bennragadnak.' },
+    { q: 'Hány százalékos a 30 vol oxidálószer?', options: ['3%', '6%', '9%', '12%'], answer: 2, explain: '10 vol = 3%, tehát 30 vol = 9%.' },
+    { q: 'Milyen alapfényt mutat a sötét haj szőkítés közben először?', options: ['Halványsárgát', 'Vöröset', 'Kéket', 'Zöldet'], answer: 1, explain: 'Sorrend: vörös, narancs, sárga, halványsárga.' },
+    { q: 'Mivel semlegesíted a nem kívánt narancsos árnyalatot?', options: ['Kék (hamvas) tónussal', 'Arany tónussal', 'Réz tónussal', 'Vörös tónussal'], answer: 0, explain: 'A színkörön a narancs ellenszíne a kék.' },
+    { q: 'Mi a teendő a kikevert, megmaradt festékkel?', options: ['Légmentesen lezárva eltenni a következő vendégig', 'Nem tárolod el; a gyártó és a hulladékszabály szerint kezeled', 'Visszaöntöd a tubusba', 'Hűtőbe teszed'], answer: 1, explain: 'A keverék tovább reagál, a zárt edény szét is feszülhet, és a hatása is megváltozik.' },
+    { q: 'Melyik állítás igaz a színezőkre (direkt festékekre)?', options: ['Erősebben világosítanak, mint a tartós festékek', 'Oxidálás nélkül tapadnak a hajra, és néhány mosás után kifakulnak', 'Örökre megmaradnak', 'Csak szőkítőporral használhatók'], answer: 1, explain: 'A színezők nem alakítanak ki nagy molekulákat a kéregben, ezért kimosódnak.' }
+  ],
+  allergia: [
+    { q: 'Mi a hajfestékek leggyakoribb allergénje?', options: ['A víz', 'A para-fenilén-diamin (PPD) és rokonai', 'A lanolin', 'A glicerin'], answer: 1, explain: 'A PPD és rokon vegyületei a festékallergiák fő okozói.' },
+    { q: 'Mit jelent a szenzibilizáció?', options: ['A bőr kiszáradását', 'Azt, hogy az immunrendszer „megjegyzi” az anyagot, és később már kis mennyiségre is reagál', 'A haj világosodását', 'A festék beszívódását'], answer: 1, explain: 'A szenzibilizáció általában egész életre megmarad.' },
+    { q: 'Mikor végezzük általában a bőrpróbát?', options: ['A festés után', 'A gyártó előírása szerint a festés előtt, jellemzően 48 órával, minden festés előtt', 'Csak az első festés előtt', 'Soha'], answer: 1, explain: 'Allergia később is kialakulhat, ezért a gyártók minden festés előtt előírják.' },
+    { q: 'A festés közben a vendég arca bedagad, nehezen lélegzik. Mi a teendő?', options: ['Folytatod, majd elmúlik', 'Azonnal lemosod a festéket bő vízzel, és hívod a 112-t', 'Adsz neki egy pohár vizet és vársz', 'Hidegebb vízzel mosod'], answer: 1, explain: 'Ez életveszélyes allergiás reakció lehet, azonnali orvosi segítség kell.' },
+    { q: 'Mekkora lehet legfeljebb a PPD koncentrációja keverés után az EU szabályai szerint az oxidációs hajfestékben?', options: ['0,1%', '2%', '10%', '25%'], answer: 1, explain: 'A kozmetikai rendelet keverés után legfeljebb 2%-ot enged, szakmai felhasználásra.' },
+    { q: 'Melyik kesztyű ajánlott festéshez, ha a latex allergizálhat?', options: ['Pamutkesztyű', 'Egyszer használatos nitrilkesztyű', 'Bőrkesztyű', 'Nem kell kesztyű'], answer: 1, explain: 'A nitrilkesztyű latexmentes, és véd a festékanyagok ellen.' },
+    { q: 'Mi különbözteti meg az irritatív bőrgyulladást az allergiástól?', options: ['Az irritatív bárkinél kialakulhat, ha a vegyszer elég erős vagy elég sokáig hat', 'Az irritatív csak allergiásoknál alakul ki', 'Az irritatív mindig életveszélyes', 'Nincs különbség'], answer: 0, explain: 'Az irritatív gyulladás közvetlen károsítás, az allergiás az immunrendszer reakciója.' }
+  ],
+  bortipusok: [
+    { q: 'Melyik a bőr külső, ér nélküli rétege?', options: ['Irha', 'Hám (epidermisz)', 'Bőralja', 'Izomréteg'], answer: 1, explain: 'A hám alul osztódó, felfelé elszarusodó sejtekből áll.' },
+    { q: 'Mi a savköpeny?', options: ['A bőr enyhén savas védőrétege', 'Egy savas hámlasztó', 'A haj külső rétege', 'Egy napozókrém'], answer: 0, explain: 'A faggyúból, verejtékből és hámsejtekből álló hidrolipid film enyhén savas.' },
+    { q: 'Mi jellemzi a zsíros bőrt?', options: ['Feszül, hámlik', 'Fénylik, tágak a pórusai, gyakoriak a mitesszerek', 'Szinte láthatatlan pórusok', 'Mindig kipirosodik'], answer: 1, explain: 'A sok faggyú miatt fénylik, és hajlamos a komedókra.' },
+    { q: 'Hány típust különböztet meg a Fitzpatrick-skála?', options: ['3', '4', '6', '10'], answer: 2, explain: 'A fototípusok I-től VI-ig terjednek.' },
+    { q: 'Melyik fototípus ég le mindig és sosem barnul?', options: ['I.', 'III.', 'V.', 'VI.'], answer: 0, explain: 'Az I. típus nagyon világos bőrű, gyakran vörös hajú, szeplős.' },
+    { q: 'Hol találhatók a kollagén- és elasztinrostok?', options: ['A szaruréteg felszínén', 'Az irhában', 'A hajszárban', 'A körömben'], answer: 1, explain: 'Az irha rugalmas kötőszövete adja a bőr feszességét.' },
+    { q: 'Mit jelent a „T-zóna”?', options: ['A homlok, az orr és az áll területe', 'A tarkó', 'A két arccsont', 'A nyak'], answer: 0, explain: 'Kombinált bőrnél a T-zóna zsíros, a többi rész normál vagy száraz.' }
+  ],
+  vagas: [
+    { q: 'Mi a vezetőtincs?', options: ['A leghosszabb tincs', 'Az első levágott tincs, amelyhez a többit igazítod', 'A frufru', 'A tarkón lévő tincs'], answer: 1, explain: 'A vezetőtincs adja a hosszt és a vonalat.' },
+    { q: 'Milyen hatást ad a 90°-os emelési szög?', options: ['Súlyos, tömör vonalat', 'Egyenletes rétegeket', 'Semmit', 'Hullámos hajat'], answer: 1, explain: 'A fejre merőlegesen emelt tincsekből egyenletes rétegek lesznek.' },
+    { q: 'Mire való az efilálóolló?', options: ['Egyenes vonal vágására', 'A tömeg csökkentésére, a végek lazítására', 'Szakáll borotválására', 'Papír vágására'], answer: 1, explain: 'A fogazott penge csak a szálak egy részét vágja.' },
+    { q: 'Hogyan dolgozol géppel egy átmenetes (fade) vágásnál?', options: ['Mindenhol ugyanazzal a toldófésűvel', 'Fentről lefelé egyre rövidebb toldófésűkkel, a határokat elmosva', 'Csak ollóval', 'Borotvával kezded'], answer: 1, explain: 'A fade fokozatos átmenet a hosszabb és a rövidebb rész között.' },
+    { q: 'Mi a különbség az álló és a mozgó vezetőtincs között?', options: ['Nincs különbség', 'Állónál minden tincset ugyanoda húzol, mozgónál az előzőleg vágott tincs egy részét viszed tovább', 'A mozgó csak géppel készül', 'Az álló csak a frufrura való'], answer: 1, explain: 'Az álló vezetőtincs hosszt tart, a mozgó egyenletes rétegeket ad.' },
+    { q: 'Miért kell minden vendéghez új borotvapenge?', options: ['Mert kicsorbul', 'Higiéniai okból: vérrel terjedő kórokozók miatt', 'Mert olcsó', 'Mert a vendég kéri'], answer: 1, explain: 'A borotvapenge egyszer használatos eszköz.' },
+    { q: 'Mi segít megelőzni a fodrász csukló- és hüvelykujj-panaszait?', options: ['Görcsös ollófogás', 'Laza ollófogás, jó testtartás, szünetek', 'Csak bal kézzel vágni', 'Kesztyű'], answer: 1, explain: 'A görcsös fogás ín- és ízületi panaszokat okoz.' }
+  ],
+  higienia: [
+    { q: 'Melyik a helyes sorrend?', options: ['Fertőtlenítés, majd tisztítás', 'Tisztítás, majd fertőtlenítés', 'Csak fertőtlenítés', 'Sterilizálás, majd tisztítás'], answer: 1, explain: 'A szennyeződés megvédi a kórokozókat, ezért előbb tisztítunk.' },
+    { q: 'Mi a sterilizálás?', options: ['A látható szennyeződés eltávolítása', 'Minden mikroorganizmus, a spórák elpusztítása is', 'A haj mosása', 'Illatosítás'], answer: 1, explain: 'Pl. gőzsterilizálóban (autoklávban) történik.' },
+    { q: 'Mit jelent a gyantázásnál a „dupla mártás” tilalma?', options: ['Kétszer kell mártani', 'A használt spatulát nem szabad visszamártani a gyantába', 'Két gyantát kell keverni', 'Kétféle spatula kell'], answer: 1, explain: 'A visszamártott spatula a bőrről kórokozókat vihet a közös gyantába.' },
+    { q: 'Mit teszel, ha a vendég fején fejtetűt látsz?', options: ['Megcsinálod a frizurát, utána szólsz', 'Tapintatosan jelzed, a kezelést nem kezded el, az eszközöket a szalon rendje szerint kezeled', 'Kiabálva elküldöd', 'Lefested a hajat, az elpusztítja'], answer: 1, explain: 'A fejtetű terjed: a kezelést halasztani kell, az eszközöket, textíliákat kezelni.' },
+    { q: 'Mi a teendő, ha valaki más vére a te sérült bőrödre került?', options: ['Semmi', 'Bő vízzel és szappannal lemosod, és még aznap orvoshoz fordulsz', 'Bekened krémmel', 'Megvárod, hogy lesz-e panaszod'], answer: 1, explain: 'Egyes megelőző kezelések csak néhány órán belül hatékonyak.' },
+    { q: 'Miért veszélyes klóros és savas tisztítószert összekeverni?', options: ['Mert elszíneződik', 'Mert mérgező klórgáz szabadul fel', 'Mert gyengébb lesz', 'Nem veszélyes'], answer: 1, explain: 'A klórgáz belélegezve súlyos légúti sérülést okoz.' },
+    { q: 'Hogyan kell tárolni a tiszta és a használt eszközöket?', options: ['Együtt, egy fiókban', 'Elkülönítve, a tisztát zárt, tiszta tárolóban', 'A használtat a vendég elé téve', 'Mindegy'], answer: 1, explain: 'A tiszta és a szennyes eszköz soha nem keveredhet.' }
+  ],
+  vendeg: [
+    { q: 'Mikor és hogyan érdemes a konzultációt végezni?', options: ['Mosás után, háttal a vendégnek', 'Mielőtt bármihez hozzányúlnál, lehetőleg száraz hajon, a tükörben szemtől szemben', 'A vágás végén', 'Telefonon'], answer: 1, explain: 'A száraz hajon látszik a haj valódi esése, forgói, hossza.' },
+    { q: 'Melyik zárt kérdés?', options: ['Mit szeretne másképp?', 'Hogyan szokta formázni a haját?', 'Festette hennával az elmúlt évben?', 'Mi zavarja a mostani frizurájában?'], answer: 2, explain: 'A zárt kérdésre igennel vagy nemmel lehet válaszolni.' },
+    { q: 'Mi az aktív hallgatás lényege?', options: ['Közben a telefonodat nézed', 'Figyelsz, visszakérdezel, a saját szavaiddal összefoglalod, amit hallottál', 'Gyorsan közbevágsz', 'Csak bólogatsz'], answer: 1, explain: 'Így derül ki, ha félreértitek egymást.' },
+    { q: 'Mit kezdesz a „kicsit rövidebbet szeretnék” kéréssel?', options: ['Levágsz 10 cm-t', 'Megmutatod ujjal a pontos hosszt, és egyeztetitek', 'Nem vágsz semmit', 'Kopaszra vágod'], answer: 1, explain: 'A „kicsit” mindenkinek mást jelent.' },
+    { q: 'A vendég elégedetlen. Mi az első lépés?', options: ['Megvédeni a munkádat', 'Nyugodtan végighallgatni', 'Azonnal visszaadni a pénzt', 'Elküldeni'], answer: 1, explain: 'A panaszkezelés a végighallgatással és az érzések elismerésével kezdődik.' },
+    { q: 'Milyen adat az allergia a vendégkartonon az adatvédelem szempontjából?', options: ['Nyilvános adat', 'Különleges (egészségügyi) adat, fokozott védelem jár neki', 'Nem személyes adat', 'Reklámcélra felhasználható'], answer: 1, explain: 'Az egészségügyi adat a GDPR szerint különleges kategória.' },
+    { q: 'Mi kerüljön a vendégkartonra?', options: ['Minden, amit a vendég a magánéletéről elmesélt', 'Ami a szolgáltatáshoz szükséges: használt szín, oxidáló, hatóidő, bőrpróba eredménye', 'A vendég jelszavai', 'Semmi'], answer: 1, explain: 'Csak a szükséges adatot rögzítsd (adattakarékosság).' }
+  ],
+  vallalkozas: [
+    { q: 'Mi a székbérlés?', options: ['A szalon székeinek vásárlása', 'Vállalkozóként bérelsz egy széket egy szalonban, te szervezed a vendégeidet és számlázol', 'Egy munkaviszony fajtája fix bérrel', 'A szék javítása'], answer: 1, explain: 'A székbérlő önálló vállalkozó, aki bérleti díjat fizet a szalonnak.' },
+    { q: 'Mi az önköltség?', options: ['Az ár haszonnal és áfával', 'Az anyagköltség és a munkaköltség (bér és rezsi része) összege', 'Csak a festék ára', 'A borravaló'], answer: 1, explain: 'Erre jön a haszon, és ha áfakörös a vállalkozás, az áfa.' },
+    { q: 'Anyagköltség 2000 Ft, munkaköltség 6000 Ft, haszonkulcs 25%. Mennyi a nettó ár?', options: ['8000 Ft', '10 000 Ft', '10 500 Ft', '12 000 Ft'], answer: 1, explain: '(2000 + 6000) · 1,25 = 10 000 Ft.' },
+    { q: 'Kitől kérj tanácsot a vállalkozási és adózási forma kiválasztásakor?', options: ['A vendégeidtől', 'Könyvelőtől, és nézd meg a hatóságok aktuális tájékoztatóit', 'Egy régi fórumbejegyzésből', 'Senkitől, mindegy'], answer: 1, explain: 'Az adó- és járulékszabályok gyakran változnak.' },
+    { q: 'Miért fontos a festékkészlet nyilvántartása?', options: ['Mert a festékek lejárnak, és a régebbit kell előbb felhasználni', 'Mert a festék sosem jár le', 'Hogy minél többet vehess', 'Nem fontos'], answer: 0, explain: 'A lejárt termék rosszabb eredményt adhat, és pazarlás.' },
+    { q: 'Hogyan csökkenthető az üres időpontok (elmaradt vendégek) aránya?', options: ['Emlékeztető üzenettel és előre közölt lemondási szabályokkal', 'Ha nem veszel fel foglalást', 'Ha minden vendégnek ugyanarra az időre adsz időpontot', 'Sehogy'], answer: 0, explain: 'Az emlékeztető és a világos szabályok csökkentik a kimaradást.' },
+    { q: 'Mit kell tenned, mielőtt egy vendégről készült fotót reklámként használsz?', options: ['Semmit', 'A vendég hozzájárulását kérni', 'Fekete-fehérré alakítani', 'A nevét kiírni'], answer: 1, explain: 'A fénykép személyes adat, a felhasználásához hozzájárulás kell.' }
+  ]
+});

@@ -12,7 +12,7 @@
     ['#/tartalom', '📚', 'Tartalomjegyzék'], ['#/haladas', '📈', 'Haladásom'], ['#/jegyzetek', '📝', 'Jegyzeteim'], ['#/beallitasok', '⚙️', 'Beállítások']
   ];
   /* a bővítmények (labor, szimulátorok, pályaorientáció…) maguktól is felkerülnek, ha léteznek */
-  var EXTRA = [['labor', '🧪', 'Virtuális labor'], ['aramkor', '🔌', 'Áramkör-labor'], ['feladatok', '🧮', 'Feladatmegoldó'], ['szimulatorok', '💹', 'Szimulátorok'], ['palya', '🧭', 'Pályaorientáció'], ['setup', '🏁', 'Setup-szimulátor']];
+  var EXTRA = [['labor', '🧪', 'Virtuális labor'], ['aramkor', '🔌', 'Áramkör-labor'], ['feladatok', '🧮', 'Feladatmegoldó'], ['szimulatorok', '💹', 'Szimulátorok'], ['palya', '🧭', 'Pályaorientáció'], ['setup', '🏁', 'Setup-szimulátor'], ['erettsegi', '🎓', 'Érettségi'], ['kodolas', '💻', 'Programozás'], ['szabadulo', '🔐', 'Szabadulószoba'], ['idovonal', '🕰️', 'Idővonal'], ['gyengepontok', '🎯', 'Gyengepontok'], ['magyarazd', '🗣️', 'Magyarázd el!'], ['fuzet', '📓', 'Jegyzetfüzet'], ['szinkron', '🔄', 'Átvitel']];
   function build() {
     if (document.getElementById('mnav')) return;
     var extra = EXTRA.filter(function (e) { return (S.routes && S.routes[e[0]]) || e[0] === 'setup'; }).map(function (e) { return ['#/' + e[0], e[1], e[2]]; });

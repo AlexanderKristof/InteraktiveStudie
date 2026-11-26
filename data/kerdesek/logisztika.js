@@ -1,0 +1,79 @@
+/* Kérdésbank: Logisztika és raktározás (a data/tantargyak/logisztika.js leckéihez) */
+STUDIE.addQuestions('logisztika', {
+  'ellatasi-lanc': [
+    { q: 'Mi az ellátási lánc?', options: ['Egy raktári állványtípus', 'Azon vállalatok és folyamatok összessége, amelyek a terméket a nyersanyagtól a vevőig eljuttatják', 'Egy kamionos szállítási útvonal', 'Egy biztonsági lánc a targoncán'], answer: 1, explain: 'Beszállítótól a gyártón, nagykereskedőn, kiskereskedőn át a vevőig.' },
+    { q: 'Melyik a húzó (pull) rendszer jellemzője?', options: ['Előrejelzés alapján gyártanak készletre', 'A tényleges fogyasztás indítja az utánpótlást', 'Mindig nagy a készlet', 'Nincs benne információáramlás'], answer: 1, explain: 'Ami elfogyott, azt pótolják.' },
+    { q: 'Mit jelent a „kanban” szó?', options: ['Raktár', 'Kártya, jelzés', 'Targonca', 'Raklap'], answer: 1, explain: 'A kiürült tároló kártyája jelzi, hogy pótolni kell.' },
+    { q: 'Mi a just-in-time rendszer egyik kockázata?', options: ['Túl sok a készlet', 'Egy szállítási fennakadás gyorsan leállíthatja a gyártást', 'Túl olcsó', 'Nincs kockázata'], answer: 1, explain: 'Kis készlet mellett nincs tartalék a zavarokra.' },
+    { q: 'Mi az ostorcsapás-hatás?', options: ['A targonca megcsúszása', 'A kereslet kis ingadozása a láncban felfelé egyre nagyobb rendelési ingadozássá erősödik', 'Egy szállítási díj', 'A raktár zajszintje'], answer: 1, explain: 'A halmozott rendelések, késések és a hiányzó információ okozzák.' },
+    { q: 'Mivel foglalkozik a visszutas (reverz) logisztika?', options: ['Csak a beszerzéssel', 'A visszaküldött áruval, göngyöleggel, hulladékkal, javításra szoruló termékkel', 'A tolatással', 'A légi szállítással'], answer: 1, explain: 'A vevőtől visszafelé áramló anyagokkal.' },
+    { q: 'Mit vállal jellemzően egy 3PL szolgáltató?', options: ['Csak a könyvelést', 'Raktározást, komissiózást és szállítást is egy másik cég megbízásából', 'Csak a gyártást', 'Csak a reklámot'], answer: 1, explain: 'Third-party logistics: harmadik fél végzi a logisztikát.' }
+  ],
+  keszlet: [
+    { q: 'Melyik a tartási költség része?', options: ['A rendelés adminisztrációja', 'A lekötött pénz, a raktárhely, a biztosítás, az elavulás', 'Az elmaradt eladás', 'A beszállító haszna'], answer: 1, explain: 'A tartási költség a készlet raktáron tartásával jár.' },
+    { q: 'Mi a biztonsági készlet célja?', options: ['Díszítés', 'Fedezet a váratlan keresletnövekedésre vagy a szállító késésére', 'Az eladás növelése', 'A raktár megtöltése'], answer: 1, explain: 'Minél bizonytalanabb a kereslet és a szállító, annál több kell.' },
+    { q: 'Napi 25 db fogy, az utánpótlás 6 nap, a biztonsági készlet 40 db. Mennyi a rendelési pont?', options: ['71 db', '150 db', '190 db', '240 db'], answer: 2, explain: '25 · 6 + 40 = 190 db.' },
+    { q: 'Mi az EOQ képlete?', options: ['D · K · H', '√(2 · D · K / H)', 'D / H', '2 · D + K'], answer: 1, explain: 'A Wilson-képlet: D éves igény, K rendelési költség, H tartási költség darabonként és évente.' },
+    { q: 'Mit vizsgál az XYZ-elemzés?', options: ['A cikkek értékét', 'A fogyás egyenletességét', 'A cikkek színét', 'A szállítók számát'], answer: 1, explain: 'X: egyenletes, Z: nagyon ingadozó fogyás.' },
+    { q: 'Melyik elv szerint adod ki a tejtermékeket?', options: ['LIFO', 'FEFO: ami leghamarabb lejár, az megy ki először', 'Véletlenszerűen', 'A legdrágább először'], answer: 1, explain: 'Lejárati idővel rendelkező termékeknél a FEFO a helyes.' },
+    { q: 'Mi a ciklikus (folyamatos) leltár előnye?', options: ['Le kell állni vele egy napra', 'Nem kell leállítani a forgalmat, és a fontos cikkek gyakrabban ellenőrizhetők', 'Nem kell számolni', 'Csak évente egyszer van'], answer: 1, explain: 'Folyamatosan, területenként vagy cikkcsoportonként számolnak.' },
+    { q: 'Ha ritkán, nagy tételben rendelünk, akkor…', options: ['…kicsi a tartási költség', '…kevés a rendelési költség, de nagy az átlagkészlet és a tartási költség', '…nincs készlet', '…mindig nő a hiány'], answer: 1, explain: 'Az EOQ e két költség egyensúlyát keresi.' }
+  ],
+  raktar: [
+    { q: 'Mi alapján ellenőrzöd a beérkező szállítmányt?', options: ['Csak ránézésre', 'A szállítólevél és a megrendelés alapján, mennyiségben és minőségben', 'A fuvarozó szóbeli közlése alapján', 'Nem kell ellenőrizni'], answer: 1, explain: 'Az áruátvétel a raktár „kapuja”.' },
+    { q: 'Mi a kaotikus (szabad) tárhely-kiosztás előnye?', options: ['Nem kell hozzá rendszer', 'Jobb helykihasználás', 'Mindig ugyanott van az áru', 'Nem kell vonalkód'], answer: 1, explain: 'Az áru oda kerül, ahol hely van, de ehhez WMS és vonalkód kell.' },
+    { q: 'Hova tegyük a gyorsan forgó cikkeket?', options: ['A raktár legtávolabbi sarkába', 'A kiszedéshez közel, kényelmes magasságba', 'A legfelső polcra', 'A tűzoltó készülék elé'], answer: 1, explain: 'Így rövidebb az út és gyorsabb a kiszedés.' },
+    { q: 'Mi a komissiózás?', options: ['Az áru átvétele', 'A vevői rendelések tételeinek kiszedése a tárhelyekről', 'A raktár takarítása', 'A leltár'], answer: 1, explain: 'A raktári munka legmunkaigényesebb része.' },
+    { q: 'Mi a cross-docking?', options: ['Az áru hosszú távú tárolása', 'A beérkező áru szinte azonnali átrakása a kimenő járművekre, tárolás nélkül', 'A dokkok javítása', 'Kereszt alakú raktár'], answer: 1, explain: 'Gyorsan romló áruknál, elosztóközpontokban gyakori.' },
+    { q: 'Mit mutat az állvány terhelhetőségi táblája?', options: ['Az állvány színét', 'A megengedett legnagyobb terhelést', 'A gyártás évét', 'A takarítás idejét'], answer: 1, explain: 'Ennél nehezebbet nem szabad rátenni.' },
+    { q: 'Milyen sorrendben rakod fel a kamionra egy többállomásos túra áruit?', options: ['Ami elsőként kell, azt rakod fel elsőként', 'Ami elsőként kell lerakni, az kerül fel utoljára', 'Véletlenszerűen', 'Ábécérendben'], answer: 1, explain: 'Így az első lerakóhelyen elöl van az áru.' }
+  ],
+  targonca: [
+    { q: 'Ki vezethet targoncát?', options: ['Bárki, aki tud autót vezetni', 'Aki elvégezte a képzést, érvényes jogosultsága, munkáltatói megbízása és munkahelyi oktatása van', 'Bárki, ha csak odébb áll vele', 'Csak a raktárvezető'], answer: 1, explain: 'A targoncavezetés képzéshez és jogosultsághoz kötött.' },
+    { q: 'Mit teszel, ha a műszak előtti ellenőrzésnél nem működik a kürt?', options: ['Elindulsz, majd kiabálsz', 'Nem használod a gépet, jelzed a hibát, és megjelölöd', 'Megjavítod magad szerszám nélkül', 'Átadod egy kollégának'], answer: 1, explain: 'Hibás géppel nem szabad dolgozni.' },
+    { q: 'Mi történik a stabilitással, ha magasra emelt teherrel haladsz?', options: ['Javul', 'Romlik, mert a súlypont feljebb kerül', 'Nem változik', 'A gép könnyebb lesz'], answer: 1, explain: 'Haladáskor a teher legyen alacsonyan.' },
+    { q: 'Szabad-e embert emelni a villán vagy raklapon?', options: ['Igen, ha óvatos', 'Nem, erre csak külön, engedélyezett munkakosár való', 'Igen, ha kapaszkodik', 'Igen, rövid ideig'], answer: 1, explain: 'A villán állva könnyen leeshet, a gép erre nem alkalmas.' },
+    { q: 'Hogyan haladsz lejtőn felfelé teherrel?', options: ['Tolatva, a teher a lejtő alján', 'Előre, a teher a lejtő felső oldalán', 'Keresztben', 'Cikcakkban'], answer: 1, explain: 'A teher mindig a lejtő felső oldalán legyen.' },
+    { q: 'Mi a helyes parkolás?', options: ['Villa felemelve, motor jár', 'Villa a földön, fék behúzva, kulcs kivéve, a menekülési út szabadon', 'A vészkijárat előtt', 'Lejtőn, fék nélkül'], answer: 1, explain: 'Így a gép nem gurul el, és senki sem botlik a villába.' },
+    { q: 'Mit jelent az adattáblán az 500 mm-es teherközéppont?', options: ['A villa hosszát', 'Azt a távolságot a villa tövétől, amelyre a megadott teherbírás érvényes', 'Az emelési magasságot', 'A kerék átmérőjét'], answer: 1, explain: 'Ha a teher súlypontja távolabb van, kevesebb emelhető.' },
+    { q: 'Mit vegyél figyelembe a gyalogosoknál?', options: ['Ők majd kitérnek', 'Kijelölt útvonal, lassítás kereszteződésben, kürt, körültekintés; számíts arra, hogy nem látnak vagy nem hallanak', 'Gyorsíts, hogy hamar elhaladj', 'Ne figyelj rájuk'], answer: 1, explain: 'A gyalogosnak egy több tonnás géppel szemben nincs esélye.' }
+  ],
+  azonositas: [
+    { q: 'Hány számjegyből áll az EAN-13 kód?', options: ['8', '12', '13', '18'], answer: 2, explain: 'Az EAN-13 egy 13 jegyű GTIN kódot hordoz.' },
+    { q: 'Hogyan számoljuk az EAN-13 ellenőrző számjegyét?', options: ['Az első 12 számjegyet felváltva 1-gyel és 3-mal szorozzuk, összeadjuk, és a következő tízes többszörösig hiányzó rész az ellenőrző számjegy', 'Összeadjuk a számjegyeket', 'Az utolsó számjegyet megduplázzuk', 'Véletlenszám'], answer: 0, explain: 'Ha az összeg pont tízzel osztható, az ellenőrző számjegy 0.' },
+    { q: 'Mit azonosít az SSCC?', options: ['Egy terméktípust', 'Egy egyedi szállítási egységet (pl. raklapot)', 'Egy országot', 'Egy targoncát'], answer: 1, explain: 'A 18 jegyű SSCC minden raklapot egyedileg azonosít.' },
+    { q: 'Milyen olvasó kell a QR-kódhoz és a DataMatrixhoz?', options: ['Lézeres vonalkódolvasó', 'Kamerás (képalkotó) olvasó', 'RFID-olvasó', 'Mérleg'], answer: 1, explain: 'A 2D kódokat képként kell beolvasni.' },
+    { q: 'Honnan kapja az energiát a passzív RFID-címke?', options: ['Saját eleméből', 'Az olvasó rádiójeléből', 'Napelemből', 'A konnektorból'], answer: 1, explain: 'Ezért olcsó és vékony, de kisebb a hatótávja, mint az aktívnak.' },
+    { q: 'Mi zavarhatja az RFID olvasását?', options: ['A papír', 'A fém és a folyadék', 'A fa', 'A műanyag fólia mindig'], answer: 1, explain: 'A fém visszaveri, a víz elnyeli a rádióhullámokat.' },
+    { q: 'Mi a különbség a GS1-128 és az EAN-13 között a logisztikában?', options: ['Nincs különbség', 'A GS1-128 több adatot hordozhat (pl. lejárat, tételszám, tömeg), és a nagyobb egységeken használják', 'A GS1-128 csak színes', 'Az EAN-13 hosszabb'], answer: 1, explain: 'A GS1-128 adatazonosítókkal több információt kódol.' },
+    { q: 'Mi az 599123456789 kezdetű EAN-13 kód ellenőrző számjegye?', options: ['1', '4', '0', '9'], answer: 1, explain: '5·1 + 9·3 + 9·1 + 1·3 + 2·1 + 3·3 + 4·1 + 5·3 + 6·1 + 7·3 + 8·1 + 9·3 = 136; a következő tízes többszörös 140, tehát 140 − 136 = 4. A teljes kód: 5991234567894.' }
+  ],
+  szallitas: [
+    { q: 'Melyik szállítási mód a legrugalmasabb, „háztól házig”?', options: ['Vasúti', 'Közúti', 'Tengeri', 'Csővezeték'], answer: 1, explain: 'A közút sűrű hálózata miatt bárhová eljut.' },
+    { q: 'Mikor éri meg légi szállítást választani?', options: ['Nagy tömegű ércnél', 'Értékes, sürgős vagy gyorsan romló árunál', 'Homoknál', 'Földgáznál'], answer: 1, explain: 'A légi szállítás gyors, de drága.' },
+    { q: 'Mi az intermodális szállítás?', options: ['Csak kamionos szállítás', 'Több szállítási mód összekapcsolása egy rakományegységgel (pl. konténer)', 'Gyalogos futár', 'Csak vasúti szállítás'], answer: 1, explain: 'Pl. hosszú szakasz vasúton, az első és utolsó kilométerek közúton.' },
+    { q: 'Mi a formazáró rakományrögzítés?', options: ['A rakomány hézagmentesen nekitámaszkodik a jármű falának, vagy kitámasztják', 'A rakományt csak lefóliázzák', 'A rakományt nem rögzítik', 'A rakományt összeragasztják'], answer: 0, explain: 'Az erőzáró rögzítés ezzel szemben lekötéssel szorítja a padlóhoz.' },
+    { q: 'Legfeljebb mennyi lehet a napi vezetési idő általában az 561/2006/EK rendelet szerint?', options: ['6 óra', '9 óra (hetente kétszer 10)', '12 óra', '15 óra'], answer: 1, explain: 'Napi 9 óra, hetente legfeljebb kétszer 10 óra.' },
+    { q: 'Mi a CMR?', options: ['Egy targoncatípus', 'Nemzetközi közúti fuvarlevél', 'Egy vámtarifa', 'Egy raklapméret'], answer: 1, explain: 'A CMR fuvarlevél igazolja a nemzetközi közúti fuvarozási szerződést.' },
+    { q: 'Mit szabályoz az ADR?', options: ['A légi szállítást', 'A veszélyes áruk közúti szállítását', 'A vezetési időt', 'Az Incoterms szabályokat'], answer: 1, explain: 'Az ADR-hez külön képzés, jelölés és felszerelés tartozik.' }
+  ],
+  incoterms: [
+    { q: 'Ki adja ki az Incoterms szabályokat?', options: ['Az ENSZ', 'A Nemzetközi Kereskedelmi Kamara (ICC)', 'Az EU', 'A Világbank'], answer: 1, explain: 'Az ICC 1936 óta adja ki, nagyjából tízévente frissítve.' },
+    { q: 'Hány szabályt tartalmaz az Incoterms 2020?', options: ['7', '9', '11', '13'], answer: 2, explain: '7 bármely szállítási módra, 4 csak tengeri és belvízi szállításra.' },
+    { q: 'Melyik szabálynál fizeti az eladó az importvámot is?', options: ['EXW', 'FCA', 'DAP', 'DDP'], answer: 3, explain: 'DDP: vámfizetve leszállítva, az eladónak a legtöbb a kötelezettsége.' },
+    { q: 'CPT szabálynál hol száll át a kockázat a vevőre?', options: ['A rendeltetési helyen', 'Amikor az eladó átadja az árut az első fuvarozónak', 'A vámhatáron', 'Sosem'], answer: 1, explain: 'A „C” szabályoknál a költség és a kockázat különböző helyen száll át.' },
+    { q: 'Milyen biztosítást kell kötnie az eladónak CIP-nél az Incoterms 2020 szerint?', options: ['Semmilyet', 'Magasabb, „A” fedezetűt', 'Csak felelősségbiztosítást', 'Életbiztosítást'], answer: 1, explain: 'A 2020-as változat a CIP-nél magasabb fedezetet ír elő, a CIF-nél maradt a minimális („C”).' },
+    { q: 'Melyik a helyes hivatkozás?', options: ['„FCA”', '„FCA Budapest, Raktár u. 12., Incoterms® 2020”', '„Budapest 2020”', '„Ingyen szállítás”'], answer: 1, explain: 'A szabály, a pontos hely és a változat is szerepeljen.' },
+    { q: 'Konténeres áru esetén melyik szabály ajánlott általában a FOB helyett?', options: ['FCA', 'FAS', 'EXW', 'Egyik sem'], answer: 0, explain: 'A konténert jellemzően a terminálon adják át, nem a hajó fedélzetén, ezért az FCA (illetve CPT, CIP) ajánlott.' },
+    { q: 'Mit jelent a DPU?', options: ['Az eladó a rendeltetési helyen ki is rakja az árut', 'A vevő intéz mindent', 'Az áru a hajó mellett van', 'A vevő fizeti az exportvámot'], answer: 0, explain: 'Delivered at Place Unloaded: kirakva átadva.' }
+  ],
+  biztonsag: [
+    { q: 'Melyik a raktári dolgozó alapvető egyéni védőeszköze?', options: ['Napszemüveg', 'Biztonsági cipő és láthatósági mellény', 'Fülbevaló', 'Papucs'], answer: 1, explain: 'Az orrmerevítős cipő a leeső tárgyaktól, a mellény az elütéstől véd.' },
+    { q: 'Mit kell végiggondolnod egy nehéz doboz felemelése előtt?', options: ['Semmit', 'Muszáj-e kézzel, van-e rá eszköz, mekkora a tömege, kell-e segítség', 'Hogy milyen színű', 'Hogy ki nézi'], answer: 1, explain: 'Az eszközös vagy kétszemélyes mozgatás sokszor a biztonságos megoldás.' },
+    { q: 'Mit teszel teher emelése közben, ha meg kell fordulnod?', options: ['Elcsavarod a derekad', 'A lábaddal lépve fordulsz', 'Eldobod a terhet', 'Hátrahajolsz'], answer: 1, explain: 'A csavarodás teherrel a gerincsérülések gyakori oka.' },
+    { q: 'Mi az állványoszlopok alján lévő ütközésvédő szerepe?', options: ['Díszítés', 'Megvédi az oszlopot a targonca ütésétől', 'Polcként szolgál', 'Jelzi a tárhely számát'], answer: 1, explain: 'A megsérült oszlop az egész állvány stabilitását veszélyezteti.' },
+    { q: 'Hogyan tárolod a veszélyes anyagokat?', options: ['Bárhol, ahol hely van', 'A biztonsági adatlapjuk szerint, kijelölt helyen, egymással összeférhető módon', 'Az élelmiszerek mellett', 'Nyitott edényben'], answer: 1, explain: 'Pl. oxidáló anyagot ne tárolj éghető anyag mellett.' },
+    { q: 'Mi a teendő a közlekedési útvonalon szétszórt fóliával és pántolószalaggal?', options: ['Majd valaki összeszedi', 'Azonnal összeszeded, mert megbotlás, elcsúszás veszélye van', 'Ráteszel egy raklapot', 'Kikerülöd'], answer: 1, explain: 'Az elcsúszás és a megbotlás a leggyakoribb balesetek közé tartozik.' },
+    { q: 'Hogyan használd a létrát?', options: ['Kihajolva oldalra', 'Ép, a feladatnak megfelelő létrát, három ponton támaszkodva', 'A legfelső fokon állva', 'Az állványra mászva helyette'], answer: 1, explain: 'A leesés súlyos sérüléssel járhat.' }
+  ]
+});

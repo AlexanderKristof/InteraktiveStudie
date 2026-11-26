@@ -280,8 +280,8 @@ STUDIE.addSubject({
         },
         {
           title: 'A KATA 2022 utáni szűkítése',
-          text: 'A **kisadózó vállalkozások tételes adója (KATA)** sokáig nagyon népszerű volt (havi fix összeg). **2022. szeptember 1-jétől** azonban erősen leszűkült:\n\n- Csak **főfoglalkozású** egyéni vállalkozó választhatja.\n- **Csak magánszemélyeknek** számlázhat (cégeknek nem – ha mégis, súlyos különadó jár).\n- Havi tételes adó: **50 000 Ft**; éves bevételi határ: **18 millió Ft**.\n\nEzért a korábbi KATA-sok többsége **átalányadóra** váltott. Ma a KATA főleg lakossági szolgáltatóknak (pl. fodrász, kozmetikus, magántanár, akinek csak magánszemély ügyfele van) lehet érdekes.',
-          tip: 'Ha cégeknek is dolgoznál (pl. webfejlesztés, grafika), a KATA nem neked való – nézd az átalányadót.'
+          text: 'A **kisadózó vállalkozások tételes adója (KATA)** sokáig nagyon népszerű volt (havi fix összeg). **2022. szeptember 1-jétől** azonban erősen leszűkült:\n\n- Csak **főfoglalkozású** egyéni vállalkozó választhatja.\n- **Csak magánszemélyeknek** számlázhat (cégeknek nem – ha mégis, súlyos különadó jár).\n- Havi tételes adó: **50 000 Ft**; éves bevételi határ: **18 millió Ft**.\n\nEzért a korábbi KATA-sok többsége **átalányadóra** váltott. Ma a KATA főleg lakossági szolgáltatóknak (pl. fodrász, kozmetikus, magántanár, akinek csak magánszemély ügyfele van) lehet érdekes.\n\n**Változás várható 2027-től:** a kormány 2026-ban törvényjavaslatot tett egy kibővített KATA-ra (magasabb bevételi határ, céges számlázás és mellékállás újra lehetséges, magasabb havi tétel). A végleges szabályokat a NAV oldalán ellenőrizd, mielőtt döntesz.',
+          tip: 'Ha cégeknek is dolgoznál (pl. webfejlesztés, grafika), a 2026-os szabályok szerint a KATA nem neked való – nézd az átalányadót.'
         },
         {
           title: 'ÁFA és az alanyi adómentesség (2026)',
@@ -301,7 +301,7 @@ STUDIE.addSubject({
       ],
       quiz: [
         { q: 'Mekkora a Kft. minimális törzstőkéje?', options: ['Nincs minimum', '3 millió Ft', '500 000 Ft', '20 millió Ft'], answer: 1, explain: 'A Kft. legkisebb törzstőkéje 3 millió Ft.' },
-        { q: 'Mekkora az átalányadózás általános költséghányada 2026-ban?', options: ['40%', '50%', '45%', '90%'], answer: 2, explain: '2026-tól 45% (2025-ig 40% volt, 2027-től 50% lesz).' },
+        { q: 'Mekkora az átalányadózás általános költséghányada 2026-ban?', options: ['40%', '50%', '45%', '90%'], answer: 2, explain: '2026-tól 45% (2025-ig 40% volt). A 2027-es mértéket a korábbi törvény 50%-ra emelte volna, de az új KATA-szabályokkal együtt újratárgyalják – nézd meg a NAV aktuális tájékoztatóját.' },
         { q: 'Mennyi az alanyi ÁFA-mentesség értékhatára 2026-ban?', options: ['20 millió Ft', '12 millió Ft', '18 millió Ft', '50 millió Ft'], answer: 0, explain: '2026-ban 20 millió Ft; 2025-ben 18 millió volt, 2027-ben 22 millió lesz.' },
         { q: 'Kinek számlázhat a KATA-s vállalkozó 2022. szeptember 1. óta (különadó nélkül)?', options: ['Bárkinek', 'Csak cégeknek', 'Csak külföldi cégeknek', 'Csak magánszemélyeknek'], answer: 3, explain: 'A 2022-es szűkítés óta a KATA-s csak magánszemélyeknek számlázhat.' },
         { q: 'Mekkora a jövedelem SZJA-mentes része átalányadózásnál 2026-ban?', options: ['Nincs mentes rész', 'Az éves minimálbér fele, 1 936 800 Ft', 'Az egész jövedelem', '100 000 Ft'], answer: 1, explain: 'Az éves minimálbér felét meg nem haladó jövedelem adómentes: 322 800 × 12 / 2 = 1 936 800 Ft.' },

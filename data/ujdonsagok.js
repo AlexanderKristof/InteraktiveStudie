@@ -3,6 +3,32 @@
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-26-erettsegi', date: '2026-11-26', title: '🎓 Érettségi, 💻 programozás, 🔐 szabadulószoba, 🕰️ idővonal',
+    plus: [['+211', 'érettségi-szerű feladat (13 próbasor)'], ['+29', 'programozási feladat'], ['+4', 'szabadulószoba (24 rejtvény)'], ['+221', 'történelmi esemény'], ['+8', 'történelmi térkép'], ['+9', 'új oldal']],
+    items: [
+      ['Érettségi próbavizsgák: matek, fizika, kémia, biológia, történelem, informatika – időre, pontozással, érdemjeggyel, javítókulccsal, nyomtatható', '#/erettsegi'],
+      ['Programozás játszva: 14 robotos pálya + 15 algoritmus-feladat, lépésenkénti futtatás változókkal', '#/kodolas'],
+      ['Szabadulószoba: 4 szoba (labor, tengeralattjáró, időgép, könyvtár), a lakatokat tananyaggal nyitod', '#/szabadulo'],
+      ['Történelmi idővonal (221 esemény, 4 sáv) és 8 vázlatos térkép (honfoglalás, felfedezések, világháborúk…), „Rakd sorba!” játék', '#/idovonal'],
+      ['Gyengepont-térkép és hibanapló: hol hibázol a legtöbbet, és mit gyakorolj', '#/gyengepontok'],
+      ['Magyarázd el! – a saját magyarázatodra visszajelzést kapsz (Feynman-technika)', '#/magyarazd'],
+      ['Nyomtatható jegyzetfüzet bármely tantárgyból', '#/fuzet'],
+      ['Haladás átvitele másik eszközre fiók nélkül: link vagy QR-kód, összefésüléssel', '#/szinkron'],
+      ['Új színtémák, magas kontraszt, csökkentett mozgás a Beállításokban', '#/beallitasok']
+    ] });
+
+  N({ id: '2026-11-26-szakmak', date: '2026-11-26', title: '🧰 Új szakmák, hétköznapi túlélőtudás, új modellek',
+    plus: [['+5', 'tantárgy'], ['+46', 'lecke'], ['+166', 'leckekvíz-kérdés'], ['+326', 'tesztkérdés'], ['+3', 'szétszedhető modell (37 alkatrész)'], ['+30', '„Tudtad?” tény'], ['+20', 'tényjavítás']],
+    items: [
+      ['Hétköznapi túlélőtudás (14 lecke): elsősegély, háztartási javítások, albérlet, fogyasztóvédelem, csalások…', '#/tantargy/tulelotudas'],
+      ['Fodrász és kozmetikus (8 lecke)', '#/tantargy/fodrasz'],
+      ['Ápolás és egészségügyi alapok (8 lecke)', '#/tantargy/apolas'],
+      ['Logisztika és raktározás (8 lecke)', '#/tantargy/logisztika'],
+      ['Pék és cukrász (8 lecke)', '#/tantargy/pek'],
+      ['Új modellek: mosógép, drón, 3D nyomtató', '#/felfedezo'],
+      ['Tényellenőrzés: 2026-os adó- és támogatási adatok frissítve (pl. Wekerle Plusz, 0%-os gyógyszer-áfa), sportadatok', '']
+    ] });
+
   N({ id: '2026-11-26-muhely', date: '2026-11-26', title: '🛠 Interaktív műhely: feladatmegoldó, labor, párbaj, szimulátorok',
     plus: [['+21', 'lépésenkénti feladattípus'], ['+10', 'labor-kísérlet'], ['+6', 'szétszedhető modell (76 alkatrész)'], ['+3', 'gazdasági szimulátor'], ['+46', 'szakma-profil'], ['+1', 'áramkör-labor'], ['+9', 'új oldal']],
     items: [
