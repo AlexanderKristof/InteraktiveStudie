@@ -3,13 +3,16 @@
 ## Döntések
 - **Első lépés:** a „Miért? Hogyan?” képes füzetek (8 füzet, matricagyűjteménnyel) – lásd lent.
 - **Célközönség:** bárki, nyilvánosan → érdemes a keresőkben is megtalálhatóvá tenni (oldalcímek, leírások, megosztási előnézet).
-- **Saját domain:** igen (pl. tudasmuhely.hu – szabad-e, és mennyibe kerül, ellenőrizni kell). A tulajdonos veszi meg; utána: DNS-beállítás (GitHub Pages egyedi domain, HTTPS), a sw.js és a GoatCounter beállítások frissítése az új címre.
+- **Saját domain:** igen (pl. mitudi.hu – szabad-e, és mennyibe kerül, ellenőrizni kell). A tulajdonos veszi meg; utána: DNS-beállítás (GitHub Pages egyedi domain, HTTPS), a sw.js és a GoatCounter beállítások frissítése az új címre.
 - **MI-átláthatósági szöveg a láblécben, minden oldalon** (és a „Letöltés és használat” oldalon, valamint a README-ben is). Szöveg:
 
   > 🤖 **Mesterséges intelligencia segítségével készült.** A Tudásműhely tartalmát és programját MI segítségével írtuk – ez teszi lehetővé, hogy ilyen sok témát, ilyen részletesen és ingyen kínálhassunk. Az MI és az ember is tévedhet, ezért az itt olvasottakat érdemes kritikusan kezelni, és fontos ügyekben más forrásból is ellenőrizni. **Hibát találtál?** Írd meg nekünk – kijavítjuk!
 
   - **Hibajelentés e-mailben:** „✉️ Hibát jelzek” gomb a láblécben és minden leckénél → megnyitja a levelezőt, a tárgyban és a levélben előre kitöltve az oldal címe és linkje. A címzett e-mail-címet a tulajdonos adja meg (javasolt egy külön, erre létrehozott cím, nem a személyes).
-- **Saját arculat:** igen – logó, színpaletta, egy kalauz-figura (pl. bagoly), egységes ikonok; a képes füzetekben is ez a figura vezet végig.
+- **Saját arculat:** igen – logó, színpaletta, egy kalauz-figura, egységes ikonok.
+- **Új név: „Mitudi”** (a „Tudásműhely” túl általános, nehezen védhető). Ellenőrizni: SZTNH e-kutatás (41-es áruosztály), `mitudi.hu` szabad-e, Google-keresés. Ha rendben: átnevezés mindenhol (fejléc, cím, manifest, offline fájl neve, README, GoatCounter-oldal neve), a domain erre a névre.
+- **Kalauz-figura: gepárd vagy farkas** (a bagoly helyett) – a végleges választás az arculattervezéskor; a figura vezet végig a képes füzeteken is.
+
 
 ## Kicsiknek (6–10 év)
 - [ ] **Számolás játszva** – szorzótábla-játék, fejszámolás-verseny, óra leolvasása, pénz számolása, törtek pizzával
