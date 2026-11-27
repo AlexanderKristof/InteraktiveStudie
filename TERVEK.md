@@ -32,3 +32,6 @@
 - [ ] **Biológiai szimulációk** – róka–nyúl populációdinamika, öröklődés (Punnett-tábla), járványmodell, evolúció
 - [ ] **Fenntartható háztartás** – energiaszámla-elemző, napelem-megtérülés, szigetelés-kalkulátor saját lakásra
 - [ ] **„Miért? Hogyan?” képes füzetek** – a gyerekkori ismeretterjesztő könyvek hangulatában (saját szöveggel és rajzokkal, nem másolva semmilyen könyvsorozatot): egy-egy téma (dinoszauruszok, vulkánok, testünk, űr, lovagok, óceánok…) lapozható, sok-sok rajzzal, kérdés–válasz formában („Miért kék az ég?”), meglepő tényekkel, a végén kis kvízzel; felolvasható (Hangos tanulás), és kapcsolódik a „Mi miből áll?” modellekhez. 6–12 éveseknek, de a felnőttek is szeretik.
+  - **Kiválasztott első 8 füzet:** Dinoszauruszok (magyar leletekkel, pl. Ajkaceratops), Az emberi test, Űr és bolygók, Lovagok és várak (magyar várak, Eger), Óceánok és tengerek, Állatok világa, Feltalálások (magyar feltalálókkal), Időjárás
+  - **Rajzstílus:** részletes, pontos, felcímkézett ismeretterjesztő ábrák
+  - **Használat:** lapozható könyv (telefonon húzással), nyomtatható A5-ös füzet, matricagyűjtemény (minden elolvasott füzetért és kvízért matrica a saját albumba)
