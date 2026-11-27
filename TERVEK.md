@@ -4,6 +4,11 @@
 - **Első lépés:** a „Miért? Hogyan?” képes füzetek (8 füzet, matricagyűjteménnyel) – lásd lent.
 - **Célközönség:** bárki, nyilvánosan → érdemes a keresőkben is megtalálhatóvá tenni (oldalcímek, leírások, megosztási előnézet).
 - **Saját domain:** igen (pl. tudasmuhely.hu – szabad-e, és mennyibe kerül, ellenőrizni kell). A tulajdonos veszi meg; utána: DNS-beállítás (GitHub Pages egyedi domain, HTTPS), a sw.js és a GoatCounter beállítások frissítése az új címre.
+- **MI-átláthatósági sáv az oldal tetején** (minden oldalon, bezárható, de a „Letöltés és használat” oldalon és a README-ben is ott marad). Szöveg:
+
+  > 🤖 **Mesterséges intelligencia segítségével készült.** A Tudásműhely tartalmát és programját MI segítségével írtuk – ez teszi lehetővé, hogy ilyen sok témát, ilyen részletesen és ingyen kínálhassunk. Az MI és az ember is tévedhet, ezért az itt olvasottakat érdemes kritikusan kezelni, és fontos ügyekben más forrásból is ellenőrizni. **Hibát találtál?** Írd meg nekünk – kijavítjuk!
+
+  - Kell hozzá egy „Hibát jelzek” gomb/elérhetőség: pl. előre kitöltött e-mail (a lecke címével) vagy GitHub-hibajegy link – a tulajdonos dönti el, melyik címet adjuk meg.
 - **Saját arculat:** igen – logó, színpaletta, egy kalauz-figura (pl. bagoly), egységes ikonok; a képes füzetekben is ez a figura vezet végig.
 
 ## Kicsiknek (6–10 év)
