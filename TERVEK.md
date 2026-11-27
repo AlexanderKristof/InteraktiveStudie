@@ -76,3 +76,12 @@ Cél: minél több nyelven – **először angolul**, utána a nagy nyelveken (j
 1. **Most: önkéntes adomány-gomb** – Ko-fi, link: **https://ko-fi.com/mitudi** (fiók kész, csak „Receive tips”; hátra: kifizetés bekötése PayPal/Stripe, könyvelői egyeztetés). Ellenszolgáltatás NÉLKÜL (nincs extra tartalom, nincs előny). Helye: lábléc + „Letöltés és használat” oldal. Szöveg: „Ha hasznos neked a MiTudi, támogasd a fenntartását ☕ (csak felnőttek, vagy szülői engedéllyel).” Bekapcsolás előtt rövid egyeztetés könyvelővel (ajándékozási értékhatárok, illeték, mikortól számít jövedelemnek).
 2. **Később, ha nő a forgalom:** alapítvány vagy egyesület (adomány, céges támogatás, pályázatok, később SZJA 1%).
 3. **Kiegészítő:** oktatási pályázatok, díjak; iskolai/céges szponzoráció csak alapítványon/vállalkozáson keresztül (számla miatt).
+
+## 📊 Könyvvizsgálat és IFRS bővítése (2026-11-27)
+A meglévő Könyvvizsgálat (BSc), IFRS (MSc), Számvitel és Kontrolling kurzusokra építve:
+- [ ] **ISA-modulok** – minden fontos standardnak saját kártya (ISA 200–720, ISQM 1–2): cél, fő követelmények, tipikus vizsgakérdés, gyakori hiba, kapcsolódó standardok; témakörönként csoportosítva. Szükség esetén külön „Nemzetközi könyvvizsgálati standardok (ISA)” kurzus.
+- [ ] **Assertionök (vezetői állítások)** részletesen (ISA 315): ügyletek és egyenlegek állításai; melyik vizsgálati eljárás melyiket teszteli (vouching/tracing, egyeztetés, leltár, cut-off, külső megerősítés), mérlegtételenként.
+- [ ] **Interaktív gyakorlók:** „Melyik assertion?” (40+ helyzet), „Vouching vagy tracing?”, lényegességi küszöb kalkulátor (ISA 320), könyvvizsgálói jelentés döntőfa (ISA 700/705/706).
+- [ ] **IFRS bővítés:** IFRS 9 (ECL), 15 (5 lépés), 16 (lízing számpéldával), IAS 16/36/38, IAS 2, 12, 37, IFRS 10/3, IAS 7, 1/8, IFRS 13, IFRS 18 (hatálybalépést ellenőrizni) – kalkulátorokkal.
+- [ ] **80+ új tesztkérdés** és egyszerű (iskolai szintű) magyarázatok.
+- Saját megfogalmazás (az ISA/IFRS szövege szerzői jogvédett), magyar szakterminológia.
