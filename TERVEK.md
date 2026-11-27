@@ -66,3 +66,8 @@ Cél: minél több nyelven – **először angolul**, utána a nagy nyelveken (j
 - [ ] **Nyílt forráskód** – licenc a repóba: kód MIT, tartalom CC BY 4.0 (vagy CC BY-SA); `LICENSE` fájl + rövid „Hogyan járulhatsz hozzá?” leírás.
 - [ ] **Szezonális tartalom** – ünnepekhez, évszakokhoz, évfordulókhoz kötött leckék, kvízek és „Tudtad?” tények, amelyek a dátum alapján automatikusan előkerülnek a kezdőlapon (pl. március 15., karácsony, Föld napja, Nobel-díjak hete).
 - [ ] **Heti újdonság-hírlevél** – az Újdonságok oldal RSS-csatornaként (szerver nélkül, a buildben generálva); e-mailes hírlevélhez szolgáltató kell (pl. Buttondown/MailerLite – a tulajdonos regisztrál, adatkezelési tájékoztatóval).
+
+## 💶 Üzleti modell – döntés (2026-11-27)
+- **A MiTudi ingyenes marad** (nincs zárolt tartalom, nincs havidíj). Bevétel: önkéntes támogatás gomb; később opcionálisan iskolai/tanári licenc extra eszközökre (osztálykezelés, versenyszobák, statisztika) – erről később döntünk.
+- Mérlegelt, de elvetett változat: ingyenes alap + 5 €/10 € havi szintek e-mailes belépéssel (középiskola, egyetem, edzői rész, nagy szimulációk zárolva). Elvetve, mert: vállalkozás, számlázás, uniós ÁFA (OSS), ÁSZF, GDPR, kiskorúak előfizetése, a nyilvános repó miatt a régi tartalom nem zárható vissza, és ütközik a nyílt forráskóddal és a „bárkinek, sok nyelven” céllal.
+- **Saját szerver a saját domainen** később is jól jöhet – nem fizetős tartalomhoz, hanem a versenyszobákhoz, felhős szinkronhoz és a hírlevélhez.
