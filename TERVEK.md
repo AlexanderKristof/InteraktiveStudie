@@ -49,3 +49,12 @@
   - **Kiválasztott első 8 füzet:** Dinoszauruszok (magyar leletekkel, pl. Ajkaceratops), Az emberi test, Űr és bolygók, Lovagok és várak (magyar várak, Eger), Óceánok és tengerek, Állatok világa, Feltalálások (magyar feltalálókkal), Időjárás
   - **Rajzstílus:** részletes, pontos, felcímkézett ismeretterjesztő ábrák
   - **Használat:** lapozható könyv (telefonon húzással), nyomtatható A5-ös füzet, matricagyűjtemény (minden elolvasott füzetért és kvízért matrica a saját albumba)
+
+## 🌍 Többnyelvű MiTudi (2026-11-27)
+Cél: minél több nyelven – **először angolul**, utána a nagy nyelveken (javasolt sorrend: német, spanyol, francia, majd pl. olasz, lengyel, román, ukrán, portugál; később arab, hindi, kínai, japán – ezeknél jobbról balra írás / más betűkészlet is kell).
+- **1. lépés – nyelvi alap:** nyelvválasztó a fejlécben (🌐), az összes felületi szöveg (menük, gombok, üzenetek) külön nyelvi fájlba (`lang/hu.js`, `lang/en.js` …), a böngésző nyelvének felismerése, a választás megjegyzése, a linkekben a nyelv (pl. `#/en/...`), keresőknek `hreflang`.
+- **2. lépés – tartalom:** tantárgyanként külön nyelvi adatfájlok, lusta betöltéssel (csak a választott nyelv töltődik le); amíg egy rész nincs lefordítva, magyarul jelenik meg „még nincs lefordítva” jelzéssel.
+- **Fordítás, nem csak szó szerint:** a magyar-specifikus részeket (adók, jogszabályok, ügyintézés, magyar történelem, érettségi, KRESZ) nem lefordítani kell, hanem helyettesíteni vagy jelölni („Magyarországra vonatkozik”); a mértékegységek, tizedesvessző/pont, dátumformátum nyelvenként.
+- **Minőség:** MI-fordítás + szúrópróbás ellenőrzés anyanyelvi szemmel ahol lehet; a hibajelentő e-mail minden nyelven működjön.
+- **Méret:** angolul a teljes tartalom kb. +10 MB; az egyfájlos offline változat nyelvenként külön fájl legyen.
+- Az angol változattal egyúttal nemzetközi domain is érdemes lehet (pl. `mitudi.com` / `.org`) – ellenőrizni.
