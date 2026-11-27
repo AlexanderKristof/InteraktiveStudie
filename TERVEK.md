@@ -8,7 +8,7 @@
 
   > 🤖 **Mesterséges intelligencia segítségével készült.** A Tudásműhely tartalmát és programját MI segítségével írtuk – ez teszi lehetővé, hogy ilyen sok témát, ilyen részletesen és ingyen kínálhassunk. Az MI és az ember is tévedhet, ezért az itt olvasottakat érdemes kritikusan kezelni, és fontos ügyekben más forrásból is ellenőrizni. **Hibát találtál?** Írd meg nekünk – kijavítjuk!
 
-  - Kell hozzá egy „Hibát jelzek” gomb/elérhetőség: pl. előre kitöltött e-mail (a lecke címével) vagy GitHub-hibajegy link – a tulajdonos dönti el, melyik címet adjuk meg.
+  - **Hibajelentés e-mailben:** „✉️ Hibát jelzek” gomb a láblécben és minden leckénél → megnyitja a levelezőt, a tárgyban és a levélben előre kitöltve az oldal címe és linkje. A címzett e-mail-címet a tulajdonos adja meg (javasolt egy külön, erre létrehozott cím, nem a személyes).
 - **Saját arculat:** igen – logó, színpaletta, egy kalauz-figura (pl. bagoly), egységes ikonok; a képes füzetekben is ez a figura vezet végig.
 
 ## Kicsiknek (6–10 év)
