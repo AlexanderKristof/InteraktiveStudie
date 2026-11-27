@@ -21,3 +21,13 @@
 - [ ] **Táborok és projektek** – többhetes, lépésről lépésre vezetett projektek (pl. „Építs időjárás-állomást”, „Kezdj egy kis vállalkozást”)
 - [ ] **Családi kvízest** – több játékos egy képernyőn, korosztály szerinti nehézséggel
 - [ ] **Szakmai vizsgafelkészítők** – KRESZ-gyakorló (saját kérdésekkel, a hivatalos kérdésbank másolása nélkül), szakmai vizsga-felkészítők a meglévő szakmákhoz
+
+## További ötletek (2026-11-27)
+- [ ] **Jegyzetből kártya** – a saját jegyzeteidből automatikusan tanulókártyák és kérdések
+- [ ] **Szakmai szimulátorok** – pl. villanyszerelői mérés, autódiagnosztika (OBD-hibakódok), ápolói vitálisparaméter-esetek
+- [ ] **Versenyszobák** – szobát lehet létrehozni, linkkel vagy kóddal belépni; látszik, ki melyik tantárgyból milyen eredményt ért el és milyen szinten; a szobák és az eredmények megmaradnak.
+  - ⚠️ Ehhez kell egy tárhely-szolgáltatás (pl. Supabase vagy Firebase, ingyenes fiókkal), mert a GitHub Pages nem tud közös adatot tárolni. Belépés nem kell: a szoba kódja és egy becenév elég. Adatvédelem: csak becenév + pontszámok, adatkezelési tájékoztatóval.
+- [ ] **Földrajzi térképjáték** – országok, fővárosok, magyar megyék, folyók, hegyek kattintós kvízben
+- [ ] **Irodalmi művek kalauza** – kötelező olvasmányok: szereplők kapcsolati hálója, cselekmény-idővonal, értelmezés (saját szöveggel)
+- [ ] **Biológiai szimulációk** – róka–nyúl populációdinamika, öröklődés (Punnett-tábla), járványmodell, evolúció
+- [ ] **Fenntartható háztartás** – energiaszámla-elemző, napelem-megtérülés, szigetelés-kalkulátor saját lakásra
