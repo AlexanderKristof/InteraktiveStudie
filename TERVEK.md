@@ -1,5 +1,11 @@
 # Következő fejlesztések (kiválasztva: 2026-11-27)
 
+## Döntések
+- **Első lépés:** a „Miért? Hogyan?” képes füzetek (8 füzet, matricagyűjteménnyel) – lásd lent.
+- **Célközönség:** bárki, nyilvánosan → érdemes a keresőkben is megtalálhatóvá tenni (oldalcímek, leírások, megosztási előnézet).
+- **Saját domain:** igen (pl. tudasmuhely.hu – szabad-e, és mennyibe kerül, ellenőrizni kell). A tulajdonos veszi meg; utána: DNS-beállítás (GitHub Pages egyedi domain, HTTPS), a sw.js és a GoatCounter beállítások frissítése az új címre.
+- **Saját arculat:** igen – logó, színpaletta, egy kalauz-figura (pl. bagoly), egységes ikonok; a képes füzetekben is ez a figura vezet végig.
+
 ## Kicsiknek (6–10 év)
 - [ ] **Számolás játszva** – szorzótábla-játék, fejszámolás-verseny, óra leolvasása, pénz számolása, törtek pizzával
 - [ ] **Felfedező mesék** – interaktív történetek, amelyekben a gyerek dönt, közben tanul (természet, történelem, biztonság)
