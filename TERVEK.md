@@ -58,3 +58,11 @@ Cél: minél több nyelven – **először angolul**, utána a nagy nyelveken (j
 - **Minőség:** MI-fordítás + szúrópróbás ellenőrzés anyanyelvi szemmel ahol lehet; a hibajelentő e-mail minden nyelven működjön.
 - **Méret:** angolul a teljes tartalom kb. +10 MB; az egyfájlos offline változat nyelvenként külön fájl legyen.
 - Az angol változattal egyúttal nemzetközi domain is érdemes lehet (pl. `mitudi.com` / `.org`) – ellenőrizni.
+
+## 📣 Terjesztés, fenntartás, visszatérés (2026-11-27)
+- [ ] **Keresőoptimalizálás** – minden lecke és oldal saját, Google által is bejárható oldalként (statikus HTML-változatok generálása a build során, oldalcím, leírás, megosztási előnézet, `sitemap.xml`, `robots.txt`).
+- [ ] **Alkalmazás-boltok** – Android-alkalmazás a meglévő oldalból (TWA/PWA-csomagolás, offline is működik). Kell hozzá: Google Play fejlesztői fiók (egyszeri díj, a tulajdonos regisztrál), adatvédelmi nyilatkozat, ikonok, képernyőképek. iOS később (Apple fejlesztői fiók éves díjjal).
+- [ ] **Támogatás gomb** – önkéntes adomány (pl. Buy Me a Coffee vagy hasonló), minden ingyenes marad; a tulajdonos hozza létre a fiókot.
+- [ ] **Nyílt forráskód** – licenc a repóba: kód MIT, tartalom CC BY 4.0 (vagy CC BY-SA); `LICENSE` fájl + rövid „Hogyan járulhatsz hozzá?” leírás.
+- [ ] **Szezonális tartalom** – ünnepekhez, évszakokhoz, évfordulókhoz kötött leckék, kvízek és „Tudtad?” tények, amelyek a dátum alapján automatikusan előkerülnek a kezdőlapon (pl. március 15., karácsony, Föld napja, Nobel-díjak hete).
+- [ ] **Heti újdonság-hírlevél** – az Újdonságok oldal RSS-csatornaként (szerver nélkül, a buildben generálva); e-mailes hírlevélhez szolgáltató kell (pl. Buttondown/MailerLite – a tulajdonos regisztrál, adatkezelési tájékoztatóval).
