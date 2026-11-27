@@ -10,7 +10,7 @@
 
   - **Hibajelentés e-mailben:** „✉️ Hibát jelzek” gomb a láblécben és minden leckénél → megnyitja a levelezőt, a tárgyban és a levélben előre kitöltve az oldal címe és linkje. A címzett e-mail-címet a tulajdonos adja meg (javasolt egy külön, erre létrehozott cím, nem a személyes).
 - **Saját arculat:** igen – logó, színpaletta, egy kalauz-figura, egységes ikonok.
-- **Új név: „Mitudi”** (a „Tudásműhely” túl általános, nehezen védhető). Ellenőrizni: SZTNH e-kutatás (41-es áruosztály), `mitudi.hu` szabad-e, Google-keresés. Ha rendben: átnevezés mindenhol (fejléc, cím, manifest, offline fájl neve, README, GoatCounter-oldal neve), a domain erre a névre.
+- **Új név: „MiTudi”** (írásmód: MiTudi – nagy M és nagy T; a „Tudásműhely” túl általános, nehezen védhető). Ellenőrizni: SZTNH e-kutatás (41-es áruosztály), `mitudi.hu` szabad-e, Google-keresés. Ha rendben: átnevezés mindenhol (fejléc, cím, manifest, offline fájl neve, README, GoatCounter-oldal neve), a domain erre a névre.
 - **Kalauz-figura: gepárd vagy farkas** (a bagoly helyett) – a végleges választás az arculattervezéskor; a figura vezet végig a képes füzeteken is.
 
 
