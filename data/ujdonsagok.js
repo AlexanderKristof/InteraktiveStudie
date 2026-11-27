@@ -3,6 +3,15 @@
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-27-isa', date: '2026-11-27', title: '📊 Könyvvizsgálat: ISA-standardok, állítások, IFRS-kalkulátorok',
+    plus: [['+1', 'egyetemi kurzus (ISA)'], ['+57', 'szakszó'], ['+105', 'tesztkérdés'], ['+11', 'interaktív gyakorló'], ['+7', 'kalkulátor']],
+    items: [
+      ['Nemzetközi könyvvizsgálati standardok (ISA): 36 standardkártya (ISA 200–720, ISQM 1–2) céllal, követelményekkel, vizsgakérdéssel, gyakori hibával', '#/egyetem/isa'],
+      ['Vezetői állítások (assertionök) az ISA 315 szerint, eljárás ↔ állítás tábla 8 mérlegtételre; „Melyik állítás?” (46 helyzet), „Vouching vagy tracing?”', '#/egyetem/isa'],
+      ['Lényegesség-kalkulátor (ISA 320), könyvvizsgálói jelentés döntőfa (ISA 700/705/706)', '#/egyetem/isa'],
+      ['IFRS-kalkulátorok: IFRS 16 lízing, IFRS 9 ECL, IFRS 15 ügyletiár-felosztás, IAS 36 értékvesztés, IAS 12 halasztott adó, IAS 2; új: IFRS 18', '#/egyetem/msc-ifrs']
+    ] });
+
   N({ id: '2026-11-26-tudomany', date: '2026-11-26', title: '🤖 MI, 🌍 klíma, 🧠 pszichológia, 🔭 csillagászat + képletek, játéktér, molekulák, hangos tanulás',
     plus: [['+4', 'tantárgy'], ['+40', 'lecke'], ['+133', 'leckekvíz-kérdés'], ['+276', 'tesztkérdés'], ['+45', '„Tudtad?” tény'], ['+238', 'képlet kalkulátorral'], ['+16', 'interaktív eszköz'], ['+1', 'szétszedhető modell (rakéta)'], ['+4', 'új oldal']],
     items: [

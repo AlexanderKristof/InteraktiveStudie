@@ -2625,3 +2625,39 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
 .jt-opt.jt-wide { grid-column: span 2; }
 @media (max-width: 640px) { .jt-opt.jt-wide { grid-column: auto; } }
 .jt-app [hidden] { display: none !important; }
+
+/* ==== Könyvvizsgálat és IFRS gyakorlók (js/audit-widgets.js) ==== */
+.aw-seg { margin: 4px 0 10px; }
+.aw-lbl { margin: 10px 0 4px; font-size: .9rem; color: var(--muted); font-weight: 600; }
+.aw-ctrl { margin: 6px 0; max-width: 420px; }
+.aw-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 8px 0; max-width: 100%; }
+.aw-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.aw-table th, .aw-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.aw-table th { color: var(--muted); font-weight: 600; font-size: .82rem; background: var(--surface-2); }
+.aw-table td { font-variant-numeric: tabular-nums; }
+.aw-table tr.aw-key td { background: var(--accent-soft); }
+.aw-table input, .aw-table select { width: 100%; min-width: 80px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; }
+.aw-inputs td:first-child { min-width: 110px; }
+.aw-matrix td:first-child { min-width: 120px; }
+.aw-quiz .aw-prog { font-size: .85rem; color: var(--muted); }
+.aw-quiz .aw-q, .aw-node .aw-q { font-weight: 600; font-size: 1.02rem; margin: 6px 0 10px; }
+.aw-opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.aw-opts.aw-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.aw-opts.aw-col { grid-template-columns: 1fr; }
+.aw-opt { text-align: left; white-space: normal; justify-content: flex-start; }
+.aw-opt.ok { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+.aw-opt.bad { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+.aw-opt:disabled { cursor: default; }
+.aw-opt.ok:disabled, .aw-opt.bad:disabled { opacity: 1; }
+.aw-fb { margin-top: 10px; }
+.aw-nav { margin-top: 10px; gap: 8px; }
+.aw-chips { margin: 0 0 6px; }
+.aw-path { margin: 0 0 10px; padding-left: 20px; font-size: .88rem; display: grid; gap: 4px; }
+.aw-path:empty { display: none; }
+.aw-verdict b { font-size: 1.1rem; }
+.aw-report { padding-left: 22px; display: grid; gap: 4px; font-size: .93rem; }
+@media (max-width: 640px) {
+  .aw-opts, .aw-opts.aw-two { grid-template-columns: 1fr; }
+  .aw-table { font-size: .84rem; }
+  .aw-table th, .aw-table td { padding: 5px 6px; }
+}

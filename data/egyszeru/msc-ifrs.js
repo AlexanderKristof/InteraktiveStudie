@@ -62,3 +62,10 @@ STUDIE.addSimple('msc-ifrs', {
 
   'konszolidacios-eliminaciok': 'A konszolidációs kiszűrés azt jelenti, hogy a cégcsoporton belüli adás-vételeket és tartozásokat kihúzzák a közös beszámolóból.\n\nHa a jobb zsebedből átteszel pénzt a balba, nem lettél gazdagabb. Ugyanígy, ha az anyacég eladja a termékét a saját leánycégének, a csoport még semmit sem keresett, amíg az áru kívülre nem kerül. Ezért a belső eladást és a belső nyereséget kiszűrik, és csak a csoporton kívüli vevőktől származó eredmény marad.'
 });
+
+/* Kiegészítés (2026-11): IAS 2, IFRS 18, lízingbeadó */
+STUDIE.addSimple('msc-ifrs', {
+  'ias2-keszletek': 'A **készlet** a raktárban lévő áru, anyag és kész termék. A szabály szerint mindig a kisebb értéken kell beírni: vagy amennyibe került, vagy amennyiért még el lehet adni (a még szükséges költségek levonása után).\n\nHa egy pólót 3 000 forintért vettél, de már csak 2 000 forintért tudnád eladni, akkor 2 000 forintot ér. Fordítva viszont nem lehet felfelé írni: ha 5 000 forintért is elkelne, akkor is 3 000 forint marad.',
+  'ifrs18-bemutatas': 'Az **IFRS 18** egy új szabály arról, hogyan kell **elrendezni** a cégek eredménykimutatását, hogy könnyebb legyen összehasonlítani őket. 2027-től kötelező.\n\nA bevételeket és költségeket három fő „fiókba” kell tenni: a fő tevékenység, a befektetések és a hitelek fiókjába. Ha a cég saját mutatókat is használ (például „korrigált nyereség”), meg kell magyaráznia, hogyan számolta őket. Olyan, mint amikor minden iskola ugyanolyan szerkezetű bizonyítványt ad.',
+  'ifrs16-lizingbeado': 'A **lízingbeadó** az, aki bérbe adja a dolgát, például egy autót. Ha a bérlés gyakorlatilag olyan, mintha eladta volna (a bérlő végül megtartja, vagy szinte az egész élettartamára használja), akkor a beadó úgy könyveli, mintha eladta volna, és a bérlő tartozik neki.\n\nHa viszont csak rövidebb ideig adja bérbe, és utána visszakapja, akkor az autó az övé marad, és a havi bérleti díj a bevétele.'
+});
