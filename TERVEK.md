@@ -8,7 +8,7 @@
 
   > 🤖 **Mesterséges intelligencia segítségével készült.** A Tudásműhely tartalmát és programját MI segítségével írtuk – ez teszi lehetővé, hogy ilyen sok témát, ilyen részletesen és ingyen kínálhassunk. Az MI és az ember is tévedhet, ezért az itt olvasottakat érdemes kritikusan kezelni, és fontos ügyekben más forrásból is ellenőrizni. **Hibát találtál?** Írd meg nekünk – kijavítjuk!
 
-  - **Hibajelentés e-mailben:** „✉️ Hibát jelzek” gomb a láblécben és minden leckénél → megnyitja a levelezőt, a tárgyban és a levélben előre kitöltve az oldal címe és linkje. A címzett e-mail-címet a tulajdonos adja meg (javasolt egy külön, erre létrehozott cím, nem a személyes).
+  - **Hibajelentés e-mailben:** „✉️ Hibát jelzek” gomb a láblécben és minden leckénél → megnyitja a levelezőt, a tárgyban és a levélben előre kitöltve az oldal címe és linkje. Címzett: **mitudi.hibak@gmail.com**.
 - **Saját arculat:** igen – logó, színpaletta, egy kalauz-figura, egységes ikonok.
 - **Új név: „MiTudi”** (írásmód: MiTudi – nagy M és nagy T; a „Tudásműhely” túl általános, nehezen védhető). Ellenőrizni: SZTNH e-kutatás (41-es áruosztály), `mitudi.hu` szabad-e, Google-keresés. Ha rendben: átnevezés mindenhol (fejléc, cím, manifest, offline fájl neve, README, GoatCounter-oldal neve), a domain erre a névre.
 - **Kalauz-figura: gepárd vagy farkas** (a bagoly helyett) – a végleges választás az arculattervezéskor; a figura vezet végig a képes füzeteken is.
