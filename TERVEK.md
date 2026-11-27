@@ -73,6 +73,6 @@ Cél: minél több nyelven – **először angolul**, utána a nagy nyelveken (j
 - **Saját szerver a saját domainen** később is jól jöhet – nem fizetős tartalomhoz, hanem a versenyszobákhoz, felhős szinkronhoz és a hírlevélhez.
 
 ## ☕ Fenntartás pénzügyileg – döntés (2026-11-27)
-1. **Most: önkéntes adomány-gomb** (Ko-fi / Buy Me a Coffee / GitHub Sponsors – a tulajdonos regisztrál, majd megadja a linket). Ellenszolgáltatás NÉLKÜL (nincs extra tartalom, nincs előny). Helye: lábléc + „Letöltés és használat” oldal. Szöveg: „Ha hasznos neked a MiTudi, támogasd a fenntartását ☕ (csak felnőttek, vagy szülői engedéllyel).” Bekapcsolás előtt rövid egyeztetés könyvelővel (ajándékozási értékhatárok, illeték, mikortól számít jövedelemnek).
+1. **Most: önkéntes adomány-gomb** – Ko-fi, link: **https://ko-fi.com/mitudi** (fiók kész, csak „Receive tips”; hátra: kifizetés bekötése PayPal/Stripe, könyvelői egyeztetés). Ellenszolgáltatás NÉLKÜL (nincs extra tartalom, nincs előny). Helye: lábléc + „Letöltés és használat” oldal. Szöveg: „Ha hasznos neked a MiTudi, támogasd a fenntartását ☕ (csak felnőttek, vagy szülői engedéllyel).” Bekapcsolás előtt rövid egyeztetés könyvelővel (ajándékozási értékhatárok, illeték, mikortól számít jövedelemnek).
 2. **Később, ha nő a forgalom:** alapítvány vagy egyesület (adomány, céges támogatás, pályázatok, később SZJA 1%).
 3. **Kiegészítő:** oktatási pályázatok, díjak; iskolai/céges szponzoráció csak alapítványon/vállalkozáson keresztül (számla miatt).
