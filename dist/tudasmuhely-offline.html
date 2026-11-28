@@ -2702,6 +2702,19 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
 .ih-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--accent, #2563eb); border-radius: 2px; transform-origin: left; animation: ih-bar linear forwards; }
 @keyframes ih-bar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 
+/* ==== Teszt: előző kérdés részletes megoldása a számok alatt ==== */
+.ts-prevx { grid-column: 1 / -1; margin-top: 8px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-size: .9rem; line-height: 1.45; animation: ih-pop .3s ease-out; }
+.ts-prevx.ok { border-left: 4px solid #16a34a; } .ts-prevx.bad { border-left: 4px solid #dc2626; }
+.ts-prevx-h { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.ts-prevx-h span { font-weight: 700; } .ts-prevx.ok .ts-prevx-h span { color: #16a34a; } .ts-prevx.bad .ts-prevx-h span { color: #dc2626; }
+.ts-prevx p { margin: 4px 0; } .ts-prevx-q { font-weight: 600; }
+.ts-prevx-you { color: #dc2626; text-decoration: line-through; } .ts-prevx-right { color: #16a34a; font-weight: 700; }
+:root[data-theme="dark"] .ts-prevx-right, :root[data-theme="dark"] .ts-prevx.ok .ts-prevx-h span { color: #4ade80; } :root[data-theme="dark"] .ts-prevx-you, :root[data-theme="dark"] .ts-prevx.bad .ts-prevx-h span { color: #f87171; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ts-prevx-right, :root:not([data-theme="light"]) .ts-prevx.ok .ts-prevx-h span { color: #4ade80; } :root:not([data-theme="light"]) .ts-prevx-you, :root:not([data-theme="light"]) .ts-prevx.bad .ts-prevx-h span { color: #f87171; } }
+.ts-prevx-why { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
+.ts-prevx-more { display: inline-block; margin-top: 6px; font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .ts-prevx { animation: none; } }
+
 </style>
 </head>
 <body>
@@ -82099,6 +82112,10 @@ STUDIE.addLangCourse({
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-28-teszt-magyarazat', date: '2026-11-28', title: '📝 Teszt: az előző kérdés megoldása kint marad',
+    plus: [['+1', 'magyarázó panel']],
+    items: [['Azonnali visszajelzés módban a kérdésszámok alatt továbblépés után is látszik az előző kérdés: a te válaszod, a helyes válasz, a „Miért?” magyarázat és link a leckéhez.', '#/teszt']] });
+
   N({ id: '2026-11-28-igazhamis', date: '2026-11-28', title: '⚡ Igaz vagy hamis?: sorozat-pontozás, nagy visszajelzés',
     plus: [['+1', 'játékszabály-javítás']],
     items: [['Egy hibás válasz lenullázza a pontot (a pont a jelenlegi sorozat); a rekord a leghosszabb sorozat.', '#/tanulas/igazhamis'], ['A visszajelzés ugyanannál a kérdésnél jelenik meg: hamis állításnál mindig látod az igazi választ (zölddel, ha eltaláltad, pirossal, ha nem), a helyes gomb kiszíneződik – hibánál pirosan villog. Közben az idő megáll.', '#/tanulas/igazhamis']] });
@@ -87711,7 +87728,20 @@ STUDIE.addFacts([
         if (mode === 'azonnali' && x.locked) cls += x.opts[x.pick].ok ? ' ok' : ' bad';
         else if (x.pick != null) cls += ' done';
         return '<button type="button" data-go="' + k + '" class="' + cls + '">' + (k + 1) + '</button>';
-      }).join('') + '</div>';
+      }).join('') + prevExplain() + '</div>';
+    }
+    /* azonnali módban a számok alatt az előző kérdés részletes megoldása marad kint */
+    function prevExplain() {
+      if (mode !== 'azonnali') return '';
+      var k = i - 1; while (k >= 0 && !qs[k].locked) k--;
+      if (k < 0) return '';
+      var y = qs[k], ok = y.opts[y.pick].ok, right = y.opts.filter(function (o) { return o.ok; })[0];
+      return '<div class="ts-prevx ' + (ok ? 'ok' : 'bad') + '"><div class="ts-prevx-h"><b>' + (k + 1) + '. kérdés megoldása</b><span>' + (ok ? '✔ Eltaláltad' : '✘ Nem találtad el') + '</span></div>' +
+        '<p class="ts-prevx-q">' + S.inline(y.q.q) + '</p>' +
+        (ok ? '' : '<p class="ts-prevx-you">Te: ' + S.inline(y.opts[y.pick].t) + '</p>') +
+        '<p class="ts-prevx-right">✔ ' + S.inline(right.t) + '</p>' +
+        (y.q.explain ? '<div class="ts-prevx-why"><b>Miért?</b> ' + S.inline(y.q.explain) + '</div>' : '') +
+        (y.t && y.t.href ? '<a class="ts-prevx-more" href="' + y.t.href + '">📘 Részletesen a leckében →</a>' : '') + '</div>';
     }
     function score() { return qs.filter(function (x) { return x.pick != null && x.opts[x.pick].ok; }).length; }
 
