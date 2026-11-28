@@ -85,3 +85,6 @@ A meglévő Könyvvizsgálat (BSc), IFRS (MSc), Számvitel és Kontrolling kurzu
 - [ ] **IFRS bővítés:** IFRS 9 (ECL), 15 (5 lépés), 16 (lízing számpéldával), IAS 16/36/38, IAS 2, 12, 37, IFRS 10/3, IAS 7, 1/8, IFRS 13, IFRS 18 (hatálybalépést ellenőrizni) – kalkulátorokkal.
 - [ ] **80+ új tesztkérdés** és egyszerű (iskolai szintű) magyarázatok.
 - Saját megfogalmazás (az ISA/IFRS szövege szerzői jogvédett), magyar szakterminológia.
+
+## 🔍 Kérdés-minőségellenőrzés (2026-11-28)
+- [ ] Az összes kvíz- és tesztkérdés átnézése (kb. 9500): **kétértelmű kérdések** (hiányzó feltétel, pl. „milyen a pálya” – ferde vagy függőleges dobás?), **több helyes válasz** (egy „rossz” opció is igaz), **félrevezető helyes válasz**, a magyarázat ellentmond-e a válasznak. A felhasználó eddig két ilyet talált (kosárlabda lapos dobás, labda pályája) – mindkettő javítva.
