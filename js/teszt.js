@@ -377,7 +377,20 @@
         if (mode === 'azonnali' && x.locked) cls += x.opts[x.pick].ok ? ' ok' : ' bad';
         else if (x.pick != null) cls += ' done';
         return '<button type="button" data-go="' + k + '" class="' + cls + '">' + (k + 1) + '</button>';
-      }).join('') + '</div>';
+      }).join('') + prevExplain() + '</div>';
+    }
+    /* azonnali módban a számok alatt az előző kérdés részletes megoldása marad kint */
+    function prevExplain() {
+      if (mode !== 'azonnali') return '';
+      var k = i - 1; while (k >= 0 && !qs[k].locked) k--;
+      if (k < 0) return '';
+      var y = qs[k], ok = y.opts[y.pick].ok, right = y.opts.filter(function (o) { return o.ok; })[0];
+      return '<div class="ts-prevx ' + (ok ? 'ok' : 'bad') + '"><div class="ts-prevx-h"><b>' + (k + 1) + '. kérdés megoldása</b><span>' + (ok ? '✔ Eltaláltad' : '✘ Nem találtad el') + '</span></div>' +
+        '<p class="ts-prevx-q">' + S.inline(y.q.q) + '</p>' +
+        (ok ? '' : '<p class="ts-prevx-you">Te: ' + S.inline(y.opts[y.pick].t) + '</p>') +
+        '<p class="ts-prevx-right">✔ ' + S.inline(right.t) + '</p>' +
+        (y.q.explain ? '<div class="ts-prevx-why"><b>Miért?</b> ' + S.inline(y.q.explain) + '</div>' : '') +
+        (y.t && y.t.href ? '<a class="ts-prevx-more" href="' + y.t.href + '">📘 Részletesen a leckében →</a>' : '') + '</div>';
     }
     function score() { return qs.filter(function (x) { return x.pick != null && x.opts[x.pick].ok; }).length; }
 
