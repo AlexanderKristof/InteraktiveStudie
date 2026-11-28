@@ -102,3 +102,16 @@ Az online szobák (`#/szoba`) bővítése több játékfajtával; a „Dühöng�
 - [ ] **Feleletválasztós** (a mostani), **igaz/hamis**, **sorba rendezés** (idővonal), **párosítás**, **kép/modell alkatrész-felismerés** („Keresd meg a rajzon!”).
 - [ ] Beállítás: körök száma, játékfajták szűrése, idők (gondolkodási idő, „ha az ellenfél már válaszolt” idő), téma.
 - Mindenhol: kétlépcsős válasz (kijelölés → Véglegesítem), „✅ az ellenfél már választott” jelzés, a kör végén mindenki tippje és ideje látszik.
+
+## 🏫 Osztályterem – VÉGLEGES (2026-11-28, a tulajdonos döntése)
+A „Versenyszobák” ötlet végleges formája (a fenti „Versenyszobák” tétel helyett ez érvényes):
+- **Létrehozás:** bárki (pl. tanár, edző, szülő, barát) létrehoz egy osztálytermet (név, pl. „9.B fizika”). Kap egy **belépési kódot**, **meghívó linket** (`mitudi.hu/#/osztaly/KOD`) és **QR-kódot**.
+- **Belépés:** bármennyien beléphetnek, akinek megadják a kódot vagy linket – becenévvel, fiók nélkül (Supabase névtelen munkamenet). Egy ember több osztályteremben is lehet.
+- **Eredmények mindenből:** a tagok teljesítménye automatikusan bekerül az osztályterembe: tesztek és kvízek (tantárgy/téma, helyes arány, pont), leckék elvégzése, játékok (Igaz vagy hamis, feladatmegoldó, párbajszobák stb.), okos ismétlés, haladás. **Mindenki látja mindenki eredményét** az osztályteremben.
+- **Nézetek:** összesített ranglista; tantárgyankénti/témánkénti bontás (ki miből mennyire jó, milyen szinten – iskolai/egyetemi); tagonkénti profil (mit csinált, mikor, eredmények idővonala); heti/havi szűrés; az osztály „legjobb témái” és „közös gyenge pontjai”.
+- **Osztálytermi párbaj:** az osztályteremből egy gombbal online párbajszoba indítható a tagoknak (a meglévő `#/szoba` motorral), az eredmény az osztályterembe kerül.
+- **Létrehozó (gazda) jogai:** átnevezés, tag eltávolítása, belépés lezárása/újranyitása, új kód generálása, osztályterem archiválása.
+- **Megmaradás:** az osztálytermek és az eredmények megmaradnak (nem vesznek el); a tag a saját eszközén bármikor visszatér.
+- **Adatvédelem:** csak becenév + eredmények; a belépéskor rövid tájékoztató („az osztályterem tagjai látják az eredményeidet”), a tag kiléphet és kérheti az adatai törlését; ne valódi teljes nevet használjanak.
+- **Technika:** Supabase (meglévő projekt): új táblák `classes`, `class_members`, `class_events` (eredményesemények) RLS-sel – a tag csak saját eseményt írhat, az osztály tagjai olvashatják; SQL: `supabase/osztaly.sql` (a tulajdonos futtatja). Kliens: `js/osztaly.js`, a meglévő naplózási pontokra (S.logAnswer, S.logActivity, teszteredmény, játékrekordok) kötve; offline esetén sorban áll és később szinkronizál.
+- **Sorrend:** ez kerül **elsőként** megvalósításra a TERVEK.md végrehajtásakor.
