@@ -94,3 +94,11 @@ A meglévő Könyvvizsgálat (BSc), IFRS (MSc), Számvitel és Kontrolling kurzu
 - Adatbázis-séma: `supabase/szobak.sql` (rooms + players, RLS, Realtime). A tulajdonos futtatja az SQL Editorban; előtte: Authentication → „Allow anonymous sign-ins” bekapcsolása.
 - Működés: szoba létrehozása → 4–6 jegyű kód + meghívó link (`#/szoba/KOD`) → becenév → a gazda témát választ és indít → mindenki ugyanazokat a kérdéseket kapja, élő ranglista → a szobák és eredmények megmaradnak.
 - Megvalósítás (js/szobak.js): supabase-js helyett könnyű saját REST + Realtime (WebSocket) kliens, vagy a supabase-js UMD (cdn) – offline változatban a funkció jelzi, hogy internet kell. Adatkezelési tájékoztató: csak becenév + pontszám.
+
+## 🔥 „Dühöngő” – vegyes online játékszoba (ötletek, 2026-11-28)
+Az online szobák (`#/szoba`) bővítése több játékfajtával; a „Dühöngő” mód a beállított körszámnyi (pl. 20) kört véletlenszerűen keveri az összes játékfajtából, így minden meccs más.
+- [ ] **Térképes tipp (GeoGuessr-szerű utolsó lépés):** egy térképre kell bökni – „Hol volt a thermopülai csata?”, „Hol feküdt Karthágó?”, „Melyik vidékről híresek a spártaiak?”. Aki közelebb bök, több pontot kap (távolság km-ben; egyezés esetén a gyorsabb nyer). Saját, egyszerűsített SVG-térképek (Európa/Mediterráneum, világ, Magyarország) – nem Google Maps, nem MI-generált kép; a meglévő idővonal-térképek (js/idovonal.js, data/idovonal.js) újrahasznosíthatók.
+- [ ] **Számtipp (becslős):** „Hány méter magas a Mount Everest?”, „Melyik évben…?” – aki közelebb tippel, nyer; azonos tippnél a gyorsabb. Mindenki látja a többiek tippjét és idejét a kör végén.
+- [ ] **Feleletválasztós** (a mostani), **igaz/hamis**, **sorba rendezés** (idővonal), **párosítás**, **kép/modell alkatrész-felismerés** („Keresd meg a rajzon!”).
+- [ ] Beállítás: körök száma, játékfajták szűrése, idők (gondolkodási idő, „ha az ellenfél már válaszolt” idő), téma.
+- Mindenhol: kétlépcsős válasz (kijelölés → Véglegesítem), „✅ az ellenfél már választott” jelzés, a kör végén mindenki tippje és ideje látszik.
