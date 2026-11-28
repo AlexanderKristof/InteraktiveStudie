@@ -188,40 +188,44 @@
   function igazHamis(main, params) {
     var sid = params && params.t || '';
     var rec = S.store.get('igazhamis.rekord', {});
-    main.innerHTML = crumbs('Igaz vagy hamis?') + '<h1>⚡ Igaz vagy hamis?</h1><p class="lead">Kapsz egy kérdést és egy választ. Döntsd el gyorsan: <b>igaz</b> vagy <b>hamis</b>? 60 másodperced van. (Billentyűzeten: ← hamis, → igaz.)</p>' +
+    main.innerHTML = crumbs('Igaz vagy hamis?') + '<h1>⚡ Igaz vagy hamis?</h1><p class="lead">Kapsz egy kérdést és egy választ. Döntsd el gyorsan: <b>igaz</b> vagy <b>hamis</b>? 60 másodperced van – minden helyes válasz +1 pont, egy hibás lenullázza a pontot! (Billentyűzeten: ← hamis, → igaz.)</p>' +
       '<div class="row" style="gap:8px;flex-wrap:wrap;align-items:end"><label class="pw-f"><span>Téma</span><select id="ih-t"><option value="">🎲 Vegyes (minden tantárgy)</option>' +
       S.subjects.map(function (s) { return '<option value="' + s.id + '"' + (s.id === sid ? ' selected' : '') + '>' + esc(s.icon + ' ' + s.title) + '</option>'; }).join('') + '</select></label>' +
-      '<button type="button" class="btn primary" id="ih-go">▶ Indítás</button><span class="muted">Rekordod: <b>' + (rec[sid || 'vegyes'] || 0) + '</b></span></div><div id="ih-box"></div>';
+      '<button type="button" class="btn primary" id="ih-go">▶ Indítás</button><span class="muted">Rekordod (leghosszabb sorozat): <b>' + (rec[sid || 'vegyes'] || 0) + '</b></span></div><div id="ih-box"></div>';
     main.querySelector('#ih-t').addEventListener('change', function (e) { location.hash = '#/tanulas/igazhamis' + (e.target.value ? '?t=' + e.target.value : ''); });
     S.searchableSelect(main.querySelector('#ih-t'), '🔎 Keresd a tantárgyat…');
     main.querySelector('#ih-go').addEventListener('click', start);
     var timer = null, keyH = null;
     function start() {
-      var pool = S.shuffle(questionsFor(sid)), i = 0, score = 0, streak = 0, best = 0, left = 60, wrong = [], cur = null;
+      var pool = S.shuffle(questionsFor(sid)), i = 0, score = 0, streak = 0, best = 0, good = 0, left = 60, wrong = [], cur = null, fb = '';
       var box = main.querySelector('#ih-box');
       function next() {
         var it = pool[i++ % pool.length], q = it.q, truth = Math.random() < 0.5;
         var wrongOpts = q.options.map(function (o, k) { return k; }).filter(function (k) { return k !== q.answer; });
         var shownIdx = truth ? q.answer : wrongOpts[Math.floor(Math.random() * wrongOpts.length)];
         cur = { it: it, truth: truth, shown: q.options[shownIdx] };
-        box.innerHTML = '<div class="ih-card card pad"><div class="ih-top"><span>⏱ <b id="ih-left">' + left + '</b> mp</span><span>Pont: <b>' + score + '</b></span>' + (streak >= 3 ? '<span class="combo">🔥 ' + streak + '</span>' : '') + '</div>' +
+        box.innerHTML = '<div class="ih-card card pad"><div class="ih-top"><span>⏱ <b id="ih-left">' + left + '</b> mp</span><span>Pont: <b>' + score + '</b> <small class="muted">· legjobb sorozat: ' + best + ' · helyes: ' + good + '</small></span>' + (streak >= 3 ? '<span class="combo">🔥 ' + streak + '</span>' : '') + '</div>' + fb +
           '<small class="muted">' + esc(it.s.icon + ' ' + it.s.title + ' · ' + it.l.title) + '</small><p class="ih-q">' + S.inline(q.q) + '</p><p class="ih-a">→ ' + S.inline(String(cur.shown)) + '</p>' +
           '<div class="ih-btns"><button type="button" class="btn ih-no" data-v="0">✗ Hamis</button><button type="button" class="btn ih-yes" data-v="1">✓ Igaz</button></div></div>';
         box.querySelectorAll('[data-v]').forEach(function (b) { b.addEventListener('click', function () { answer(b.dataset.v === '1'); }); });
       }
       function answer(v) {
         if (!cur || left <= 0) return;
-        if (v === cur.truth) { score++; streak++; best = Math.max(best, streak); flash(true); }
-        else { streak = 0; wrong.push(cur); flash(false); }
+        /* a pont a jelenlegi sorozat: egy rossz válasz lenullázza */
+        if (v === cur.truth) { streak++; good++; score = streak; best = Math.max(best, streak); fb = '<div class="ih-fb ok" role="status"><span class="ih-big">✓</span> Helyes! +1 pont' + (streak >= 3 ? ' · 🔥 ' + streak + ' egymás után' : '') + '</div>'; flash(true); }
+        else {
+          var lost = streak; streak = 0; score = 0; wrong.push(cur);
+          fb = '<div class="ih-fb bad" role="status"><span class="ih-big">✗</span> Hibás! ' + (lost ? 'Elveszett a sorozatod (' + lost + ' pont), a pont nullázódott. ' : '') + '<small>Helyes válasz: <b>' + S.inline(String(cur.it.q.options[cur.it.q.answer])) + '</b></small></div>'; flash(false);
+        }
         next();
       }
       function flash(ok) { box.classList.remove('ih-ok', 'ih-bad'); void box.offsetWidth; box.classList.add(ok ? 'ih-ok' : 'ih-bad'); }
       function end() {
         clearInterval(timer); timer = null; document.removeEventListener('keydown', keyH);
-        var key = sid || 'vegyes', r = S.store.get('igazhamis.rekord', {}), isRec = score > (r[key] || 0);
-        if (isRec) { r[key] = score; S.store.set('igazhamis.rekord', r); }
+        var key = sid || 'vegyes', r = S.store.get('igazhamis.rekord', {}), isRec = best > (r[key] || 0);
+        if (isRec) { r[key] = best; S.store.set('igazhamis.rekord', r); }
         if (S.logActivity) S.logActivity('game', 'igazhamis');
-        box.innerHTML = '<div class="card pad" style="text-align:center"><div style="font-size:3rem">' + (isRec ? '🏆' : '⚡') + '</div><h2>' + score + ' pont</h2><p>Leghosszabb sorozat: 🔥 ' + best + (isRec ? ' · <b>Új rekord!</b>' : '') + '</p>' +
+        box.innerHTML = '<div class="card pad" style="text-align:center"><div style="font-size:3rem">' + (isRec ? '🏆' : '⚡') + '</div><h2>🔥 ' + best + ' pontos legjobb sorozat</h2><p>Összesen ' + good + ' helyes, ' + wrong.length + ' hibás válasz' + (isRec ? ' · <b>Új rekord!</b>' : '') + '</p>' +
           (wrong.length ? '<details style="text-align:left"><summary>Amit elrontottál (' + wrong.length + ') – nézd át!</summary><ul>' + wrong.slice(0, 15).map(function (w) {
             return '<li>' + S.inline(w.it.q.q) + '<br><small>Te: ' + (w.truth ? '„hamis”' : '„igaz”') + ' · Helyes válasz: <b>' + S.inline(String(w.it.q.options[w.it.q.answer])) + '</b> · <a href="#/lecke/' + w.it.s.id + '/' + w.it.l.id + '">lecke</a></small></li>';
           }).join('') + '</ul></details>' : '') + '<p><button type="button" class="btn primary" id="ih-again">🔁 Újra</button></p></div>';

@@ -3,6 +3,10 @@
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-28-igazhamis', date: '2026-11-28', title: '⚡ Igaz vagy hamis?: sorozat-pontozás, nagy visszajelzés',
+    plus: [['+1', 'játékszabály-javítás']],
+    items: [['Egy hibás válasz lenullázza a pontot (a pont a jelenlegi sorozat); minden válasz után nagy ✓ / ✗ jelzés, hibánál a helyes válasszal; a rekord a leghosszabb sorozat.', '#/tanulas/igazhamis']] });
+
   N({ id: '2026-11-28-atlathatosag', date: '2026-11-28', title: '🤖 Átláthatóság és ✉️ hibajelzés',
     plus: [['+1', 'hibajelentő gomb minden oldalon'], ['+1', 'nyílt licenc']],
     items: [

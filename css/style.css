@@ -2666,3 +2666,14 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
 .foot .ai-note { max-width: 860px; margin: 0 auto 12px; padding: 10px 14px; border: 1px solid var(--line, #ccc); border-radius: 10px; font-size: .88rem; line-height: 1.5; color: var(--muted); text-align: left; }
 .foot .ai-note b { color: var(--fg); }
 .foot .ai-note .btn { margin-left: 6px; white-space: nowrap; }
+
+/* ==== Igaz vagy hamis: nagy visszajelzés ==== */
+.ih-fb { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 8px 0 10px; padding: 10px 14px; border-radius: 10px; font-weight: 700; animation: ih-pop .35s ease-out; }
+.ih-fb small { font-weight: 400; flex-basis: 100%; }
+.ih-fb.ok { background: rgba(22, 163, 74, .15); color: #15803d; border: 2px solid #16a34a; }
+.ih-fb.bad { background: rgba(220, 38, 38, .12); color: #b91c1c; border: 2px solid #dc2626; }
+:root[data-theme="dark"] .ih-fb.ok { color: #4ade80; } :root[data-theme="dark"] .ih-fb.bad { color: #f87171; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ih-fb.ok { color: #4ade80; } :root:not([data-theme="light"]) .ih-fb.bad { color: #f87171; } }
+.ih-big { font-size: 2rem; line-height: 1; }
+@keyframes ih-pop { 0% { transform: scale(.85); opacity: .3; } 100% { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ih-fb { animation: none; } }
