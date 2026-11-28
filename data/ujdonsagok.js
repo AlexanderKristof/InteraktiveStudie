@@ -3,6 +3,14 @@
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-28-szobak', date: '2026-11-28', title: '🌐 Online párbajszobák – versenyezz a barátaiddal interneten keresztül!',
+    plus: [['+1', 'online játékmód'], ['+1', 'új oldal']],
+    items: [
+      ['Hozz létre szobát (téma, kérdésszám, gondolkodási idő), és hívd meg a barátaidat linkkel, kóddal vagy QR-kóddal – fiók nélkül, becenévvel', '#/szoba'],
+      ['Mindenki ugyanazt a kérdést kapja: kijelölöd, majd „✔ Véglegesítem” – látod, ha a többiek már választottak, és onnan legfeljebb 20 mp-ed marad', '#/szoba'],
+      ['Jó válasz 500 pont + gyorsasági bónusz, élő ranglista, dobogó, visszavágó – a szobák és eredmények megmaradnak', '#/szoba']
+    ] });
+
   N({ id: '2026-11-28-teszt-magyarazat', date: '2026-11-28', title: '📝 Teszt: az előző kérdés megoldása kint marad',
     plus: [['+1', 'magyarázó panel']],
     items: [['Azonnali visszajelzés módban a kérdésszámok alatt továbblépés után is látszik az előző kérdés: a te válaszod, a helyes válasz, a „Miért?” magyarázat, link a leckéhez és egy kapcsolódó „💡 Tudtad?” érdekesség.', '#/teszt'], ['Javítva: kosárlabda-kérdés a lapos dobásról (két helyes válasza volt, félrevezető megfogalmazás).', '']] });

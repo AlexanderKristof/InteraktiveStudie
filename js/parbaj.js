@@ -30,6 +30,7 @@
     var st = S.store.get('parbaj.beall', { g: '', n: 10, a: 'Anna', b: 'Bence' });
     main.innerHTML = '<nav class="crumbs"><a href="#/">Kezdőlap</a><span>›</span><a href="#/teszt">Tesztközpont</a><span>›</span><span>Párbaj</span></nav>' +
       '<h1>⚔️ Párbaj</h1><p class="lead">Ki tud többet? Válassz témát, és mérkőzzetek meg egymással!</p>' +
+      '<p><a class="btn" href="#/szoba">🌐 Online, távoli barátokkal: Párbajszoba →</a></p>' +
       '<div class="pb-setup card pad"><label class="pw-f"><span>Téma</span>' + groupSelect(st.g) + '</label>' +
       '<label class="pw-f"><span>Kérdések száma</span><select id="pb-n">' + [5, 10, 15, 20].map(function (n) { return '<option' + (n === st.n ? ' selected' : '') + '>' + n + '</option>'; }).join('') + '</select></label>' +
       '<div class="pb-modes"><div class="card pad"><h2>👥 Egy eszközön, egymás ellen</h2><p class="muted">Üljetek egymással szemben (vagy egymás mellé), a képernyő két fele az egyik és a másik játékosé. Aki előbb jól válaszol, viszi a pontot; aki rosszat nyom, arra a kérdésre kiesik.</p>' +

@@ -102,6 +102,7 @@
       ['szimulatorok', '💹', 'Gazdasági szimulátorok', 'Tőzsdejáték, saját vállalkozás, családi költségvetés – kockázat nélkül'],
       ['palya', '🧭', 'Pályaorientáció', 'Milyen szakma illik hozzád? Teszt és szakma-profilok'],
       ['parbaj', '⚔️', 'Párbaj', 'Kvízcsata egy telefonon vagy kihívó linkkel'],
+      ['szoba', '🌐', 'Online párbajszoba', 'Hívd meg a barátaidat linkkel vagy kóddal, és versenyezzetek élőben'],
       ['sajat', '✏️', 'Saját kérdések', 'Írj saját kártyákat, és oszd meg a barátaiddal'],
       ['erettsegi', '🎓', 'Érettségi próbavizsga', '6 tantárgy, időre, pontozással és javítókulccsal'],
       ['kodolas', '💻', 'Programozás játszva', 'Robot a rácson és algoritmusok, lépésenkénti futtatással'],
