@@ -3,7 +3,7 @@
 (function () {
   'use strict';
   if (typeof document === 'undefined') return;
-  var MAIL = 'mitudi.hibak@gmail.com', SITE = 'https://alexanderkristof.github.io/InteraktiveStudie/';
+  var MAIL = 'mitudi.hibak@gmail.com', SITE = 'https://mitudi.hu/';
   function link() {
     var url = (/^https?:/.test(location.protocol) ? location.href.split('#')[0] : SITE) + (location.hash || '#/').split('?')[0];
     var t = (document.title || '').replace(/ – Tudásműhely$/, '') || 'Kezdőlap';

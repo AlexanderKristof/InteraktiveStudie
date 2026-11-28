@@ -5,7 +5,7 @@
 (function () {
   'use strict';
   var S = window.STUDIE, esc = S.esc;
-  var PREFIX = 'tudasmuhely.', SITE = 'https://alexanderkristof.github.io/InteraktiveStudie/';
+  var PREFIX = 'tudasmuhely.', SITE = 'https://mitudi.hu/';
   var SKIP = { 'szinkron.last': 1, 'pszicho.hangulat': 1 }; /* a hangulatnapló érzékeny, nem utazik linkben */
 
   /* ================= QR-kódoló ================= */

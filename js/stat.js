@@ -1,5 +1,5 @@
 /* Tudásműhely – névtelen látogatásszámlálás (GoatCounter: tudasmuhely.goatcounter.com).
- * Csak a közzétett weboldalon fut (alexanderkristof.github.io), a letöltött / offline változat semmit nem küld.
+ * Csak a közzétett weboldalon fut (mitudi.hu, illetve a régi alexanderkristof.github.io cím), a letöltött / offline változat semmit nem küld.
  * Nincs süti, nincs személyes adat; csak az oldal neve (lekérdezési rész NÉLKÜL – pl. a haladás-link adatai
  * soha nem mennek el), a böngésző típusa, a képernyőméret és az ország. A botokat a GoatCounter kiszűri.
  * Kikapcsolható: Letöltés és használat oldal (#/nevjegy) → „Látogatásszámlálás” kapcsoló. */
@@ -7,8 +7,8 @@
   'use strict';
   var S = window.STUDIE;
   if (typeof document === 'undefined' || typeof location === 'undefined') { S.statPanel = function () { return ''; }; return; }
-  var HOST = 'alexanderkristof.github.io', ENDPOINT = 'https://tudasmuhely.goatcounter.com/count';
-  var on = location.hostname === HOST && /^https:/.test(location.protocol);
+  var HOSTS = { 'mitudi.hu': 1, 'www.mitudi.hu': 1, 'alexanderkristof.github.io': 1 }, ENDPOINT = 'https://tudasmuhely.goatcounter.com/count';
+  var on = !!HOSTS[location.hostname] && /^https:/.test(location.protocol);
   function allowed() { return on && !S.store.get('nostat', false); }
   var loaded = false, last = '';
   function path() {
