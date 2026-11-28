@@ -2661,3 +2661,8 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
   .aw-table { font-size: .84rem; }
   .aw-table th, .aw-table td { padding: 5px 6px; }
 }
+
+/* ==== MI-megjegyzés és hibajelzés a láblécben ==== */
+.foot .ai-note { max-width: 860px; margin: 0 auto 12px; padding: 10px 14px; border: 1px solid var(--line, #ccc); border-radius: 10px; font-size: .88rem; line-height: 1.5; color: var(--muted); text-align: left; }
+.foot .ai-note b { color: var(--fg); }
+.foot .ai-note .btn { margin-left: 6px; white-space: nowrap; }

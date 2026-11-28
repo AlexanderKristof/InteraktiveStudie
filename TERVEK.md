@@ -4,7 +4,7 @@
 - **Első lépés:** a „Miért? Hogyan?” képes füzetek (8 füzet, matricagyűjteménnyel) – lásd lent.
 - **Célközönség:** bárki, nyilvánosan → érdemes a keresőkben is megtalálhatóvá tenni (oldalcímek, leírások, megosztási előnézet).
 - **Saját domain:** igen (pl. mitudi.hu – szabad-e, és mennyibe kerül, ellenőrizni kell). A tulajdonos veszi meg; utána: DNS-beállítás (GitHub Pages egyedi domain, HTTPS), a sw.js és a GoatCounter beállítások frissítése az új címre.
-- **MI-átláthatósági szöveg a láblécben, minden oldalon** (és a „Letöltés és használat” oldalon, valamint a README-ben is). Szöveg:
+- ✅ (kész, 2026-11-28) **MI-átláthatósági szöveg a láblécben, minden oldalon** (és a „Letöltés és használat” oldalon, valamint a README-ben is). Szöveg:
 
   > 🤖 **Mesterséges intelligencia segítségével készült.** A Tudásműhely tartalmát és programját MI segítségével írtuk – ez teszi lehetővé, hogy ilyen sok témát, ilyen részletesen és ingyen kínálhassunk. Az MI és az ember is tévedhet, ezért az itt olvasottakat érdemes kritikusan kezelni, és fontos ügyekben más forrásból is ellenőrizni. **Hibát találtál?** Írd meg nekünk – kijavítjuk!
 
@@ -63,7 +63,7 @@ Cél: minél több nyelven – **először angolul**, utána a nagy nyelveken (j
 - [ ] **Keresőoptimalizálás** – minden lecke és oldal saját, Google által is bejárható oldalként (statikus HTML-változatok generálása a build során, oldalcím, leírás, megosztási előnézet, `sitemap.xml`, `robots.txt`).
 - [ ] **Alkalmazás-boltok** – Android-alkalmazás a meglévő oldalból (TWA/PWA-csomagolás, offline is működik). Kell hozzá: Google Play fejlesztői fiók (egyszeri díj, a tulajdonos regisztrál), adatvédelmi nyilatkozat, ikonok, képernyőképek. iOS később (Apple fejlesztői fiók éves díjjal).
 - [ ] **Támogatás gomb** – önkéntes adomány (pl. Buy Me a Coffee vagy hasonló), minden ingyenes marad; a tulajdonos hozza létre a fiókot.
-- [ ] **Nyílt forráskód** – licenc a repóba: kód MIT, tartalom CC BY 4.0 (vagy CC BY-SA); `LICENSE` fájl + rövid „Hogyan járulhatsz hozzá?” leírás.
+- [x] **Nyílt forráskód** (kész, 2026-11-28: LICENSE – kód MIT, tananyag CC BY 4.0) – licenc a repóba: kód MIT, tartalom CC BY 4.0 (vagy CC BY-SA); `LICENSE` fájl + rövid „Hogyan járulhatsz hozzá?” leírás.
 - [ ] **Szezonális tartalom** – ünnepekhez, évszakokhoz, évfordulókhoz kötött leckék, kvízek és „Tudtad?” tények, amelyek a dátum alapján automatikusan előkerülnek a kezdőlapon (pl. március 15., karácsony, Föld napja, Nobel-díjak hete).
 - [ ] **Heti újdonság-hírlevél** – az Újdonságok oldal RSS-csatornaként (szerver nélkül, a buildben generálva); e-mailes hírlevélhez szolgáltató kell (pl. Buttondown/MailerLite – a tulajdonos regisztrál, adatkezelési tájékoztatóval).
 

@@ -183,3 +183,9 @@ tools/build-single.js egyfájlos változat készítése
 
 A villanyszerelési és elektromosautó-szerelési leckék az **elméletet** tanítják. Hálózati (230/400 V-os) és
 nagyfeszültségű (HV) járműrendszeren csak megfelelő képesítéssel rendelkező szakember dolgozhat.
+
+## Hogyan készült? / Licenc
+
+🤖 **Mesterséges intelligencia segítségével készült.** A Tudásműhely tartalmát és programját MI segítségével írtuk – ez teszi lehetővé, hogy ilyen sok témát, ilyen részletesen és ingyen kínálhassunk. Az MI és az ember is tévedhet, ezért az itt olvasottakat érdemes kritikusan kezelni, és fontos ügyekben más forrásból is ellenőrizni. **Hibát találtál?** Írd meg: mitudi.hibak@gmail.com – kijavítjuk!
+
+Licenc: a programkód **MIT**, a tananyag **CC BY 4.0** (részletek: `LICENSE`).

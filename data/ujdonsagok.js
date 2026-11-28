@@ -3,6 +3,13 @@
 (function () {
   var N = STUDIE.addNews;
 
+  N({ id: '2026-11-28-atlathatosag', date: '2026-11-28', title: '🤖 Átláthatóság és ✉️ hibajelzés',
+    plus: [['+1', 'hibajelentő gomb minden oldalon'], ['+1', 'nyílt licenc']],
+    items: [
+      ['Minden oldal alján: a tartalom MI segítségével készült, ezért érdemes kritikusan kezelni. A „✉️ Hibát jelzek” gomb előre kitöltött e-mailt nyit az oldal címével – kijavítjuk!', ''],
+      ['Nyílt licenc: a programkód MIT, a tananyag CC BY 4.0 – szabadon felhasználható a forrás megjelölésével', '']
+    ] });
+
   N({ id: '2026-11-27-isa', date: '2026-11-27', title: '📊 Könyvvizsgálat: ISA-standardok, állítások, IFRS-kalkulátorok',
     plus: [['+1', 'egyetemi kurzus (ISA)'], ['+57', 'szakszó'], ['+105', 'tesztkérdés'], ['+11', 'interaktív gyakorló'], ['+7', 'kalkulátor']],
     items: [
