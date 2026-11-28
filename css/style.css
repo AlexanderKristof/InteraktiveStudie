@@ -2704,3 +2704,7 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
 .ts-prevx-why { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
 .ts-prevx-more { display: inline-block; margin-top: 6px; font-weight: 600; }
 @media (prefers-reduced-motion: reduce) { .ts-prevx { animation: none; } }
+.ts-prevx-fact { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.ts-prevx-fact > b { display: block; margin-bottom: 4px; }
+.ts-prevx-fact .fact-card { margin: 0; font-size: .88rem; }
+@media (min-width: 901px) { .ts-prevx { max-height: calc(100vh - 330px); overflow-y: auto; } }

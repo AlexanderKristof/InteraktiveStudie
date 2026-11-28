@@ -390,8 +390,29 @@
         (ok ? '' : '<p class="ts-prevx-you">Te: ' + S.inline(y.opts[y.pick].t) + '</p>') +
         '<p class="ts-prevx-right">✔ ' + S.inline(right.t) + '</p>' +
         (y.q.explain ? '<div class="ts-prevx-why"><b>Miért?</b> ' + S.inline(y.q.explain) + '</div>' : '') +
-        (y.t && y.t.href ? '<a class="ts-prevx-more" href="' + y.t.href + '">📘 Részletesen a leckében →</a>' : '') + '</div>';
+        (y.t && y.t.href ? '<a class="ts-prevx-more" href="' + y.t.href + '">📘 Részletesen a leckében →</a>' : '') + relatedFact(y) + '</div>';
     }
+    /* kapcsolódó „Tudtad?” tény: a kérdés leckéjéhez/modelljéhez kötött tények közül a szövegben leginkább hasonló */
+    var factCache = {};
+    function relatedFact(y) {
+      if (!S.factsFor || !S.factCard || !y.t || !y.t.href) return '';
+      var key = y.q.id || y.q.q;
+      if (!(key in factCache)) {
+        var m = y.t.href.match(/^#\/lecke\/([^/]+\/[^/?]+)/), mm = y.t.href.match(/^#\/felfedezo\/([^/?]+)/);
+        var list = m ? S.factsFor('lecke:' + m[1]) : mm ? S.factsFor('modell:' + mm[1], { prefix: true }) : [];
+        var words = norm(y.q.q + ' ' + y.opts.map(function (o) { return o.t; }).join(' ') + ' ' + (y.q.explain || '')).split(/\s+/).filter(function (w) { return w.length > 4; });
+        var best = null, bestScore = -1;
+        list.forEach(function (f) {
+          var txt = norm(f.q + ' ' + f.why), sc = 0;
+          words.forEach(function (w) { if (txt.indexOf(w.slice(0, 6)) >= 0) sc++; });
+          if (sc > bestScore) { bestScore = sc; best = f; }
+        });
+        factCache[key] = bestScore >= 1 ? best : null; /* csak ha legalább egy fontos szó egyezik */
+      }
+      var f = factCache[key];
+      return f ? '<div class="ts-prevx-fact"><b>💡 Tudtad?</b>' + S.factCard(f, { skipHref: y.t.href }) + '</div>' : '';
+    }
+    function norm(t) { return String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/g, ' '); }
     function score() { return qs.filter(function (x) { return x.pick != null && x.opts[x.pick].ok; }).length; }
 
     function show() {

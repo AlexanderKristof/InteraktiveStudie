@@ -5,7 +5,7 @@
 
   N({ id: '2026-11-28-teszt-magyarazat', date: '2026-11-28', title: '📝 Teszt: az előző kérdés megoldása kint marad',
     plus: [['+1', 'magyarázó panel']],
-    items: [['Azonnali visszajelzés módban a kérdésszámok alatt továbblépés után is látszik az előző kérdés: a te válaszod, a helyes válasz, a „Miért?” magyarázat és link a leckéhez.', '#/teszt']] });
+    items: [['Azonnali visszajelzés módban a kérdésszámok alatt továbblépés után is látszik az előző kérdés: a te válaszod, a helyes válasz, a „Miért?” magyarázat, link a leckéhez és egy kapcsolódó „💡 Tudtad?” érdekesség.', '#/teszt'], ['Javítva: kosárlabda-kérdés a lapos dobásról (két helyes válasza volt, félrevezető megfogalmazás).', '']] });
 
   N({ id: '2026-11-28-igazhamis', date: '2026-11-28', title: '⚡ Igaz vagy hamis?: sorozat-pontozás, nagy visszajelzés',
     plus: [['+1', 'játékszabály-javítás']],
