@@ -2714,6 +2714,10 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
 .ts-prevx-why { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
 .ts-prevx-more { display: inline-block; margin-top: 6px; font-weight: 600; }
 @media (prefers-reduced-motion: reduce) { .ts-prevx { animation: none; } }
+.ts-prevx-fact { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.ts-prevx-fact > b { display: block; margin-bottom: 4px; }
+.ts-prevx-fact .fact-card { margin: 0; font-size: .88rem; }
+@media (min-width: 901px) { .ts-prevx { max-height: calc(100vh - 330px); overflow-y: auto; } }
 
 </style>
 </head>
@@ -82114,7 +82118,7 @@ STUDIE.addLangCourse({
 
   N({ id: '2026-11-28-teszt-magyarazat', date: '2026-11-28', title: '📝 Teszt: az előző kérdés megoldása kint marad',
     plus: [['+1', 'magyarázó panel']],
-    items: [['Azonnali visszajelzés módban a kérdésszámok alatt továbblépés után is látszik az előző kérdés: a te válaszod, a helyes válasz, a „Miért?” magyarázat és link a leckéhez.', '#/teszt']] });
+    items: [['Azonnali visszajelzés módban a kérdésszámok alatt továbblépés után is látszik az előző kérdés: a te válaszod, a helyes válasz, a „Miért?” magyarázat, link a leckéhez és egy kapcsolódó „💡 Tudtad?” érdekesség.', '#/teszt'], ['Javítva: kosárlabda-kérdés a lapos dobásról (két helyes válasza volt, félrevezető megfogalmazás).', '']] });
 
   N({ id: '2026-11-28-igazhamis', date: '2026-11-28', title: '⚡ Igaz vagy hamis?: sorozat-pontozás, nagy visszajelzés',
     plus: [['+1', 'játékszabály-javítás']],
@@ -87741,8 +87745,29 @@ STUDIE.addFacts([
         (ok ? '' : '<p class="ts-prevx-you">Te: ' + S.inline(y.opts[y.pick].t) + '</p>') +
         '<p class="ts-prevx-right">✔ ' + S.inline(right.t) + '</p>' +
         (y.q.explain ? '<div class="ts-prevx-why"><b>Miért?</b> ' + S.inline(y.q.explain) + '</div>' : '') +
-        (y.t && y.t.href ? '<a class="ts-prevx-more" href="' + y.t.href + '">📘 Részletesen a leckében →</a>' : '') + '</div>';
+        (y.t && y.t.href ? '<a class="ts-prevx-more" href="' + y.t.href + '">📘 Részletesen a leckében →</a>' : '') + relatedFact(y) + '</div>';
     }
+    /* kapcsolódó „Tudtad?” tény: a kérdés leckéjéhez/modelljéhez kötött tények közül a szövegben leginkább hasonló */
+    var factCache = {};
+    function relatedFact(y) {
+      if (!S.factsFor || !S.factCard || !y.t || !y.t.href) return '';
+      var key = y.q.id || y.q.q;
+      if (!(key in factCache)) {
+        var m = y.t.href.match(/^#\/lecke\/([^/]+\/[^/?]+)/), mm = y.t.href.match(/^#\/felfedezo\/([^/?]+)/);
+        var list = m ? S.factsFor('lecke:' + m[1]) : mm ? S.factsFor('modell:' + mm[1], { prefix: true }) : [];
+        var words = norm(y.q.q + ' ' + y.opts.map(function (o) { return o.t; }).join(' ') + ' ' + (y.q.explain || '')).split(/\s+/).filter(function (w) { return w.length > 4; });
+        var best = null, bestScore = -1;
+        list.forEach(function (f) {
+          var txt = norm(f.q + ' ' + f.why), sc = 0;
+          words.forEach(function (w) { if (txt.indexOf(w.slice(0, 6)) >= 0) sc++; });
+          if (sc > bestScore) { bestScore = sc; best = f; }
+        });
+        factCache[key] = bestScore >= 1 ? best : null; /* csak ha legalább egy fontos szó egyezik */
+      }
+      var f = factCache[key];
+      return f ? '<div class="ts-prevx-fact"><b>💡 Tudtad?</b>' + S.factCard(f, { skipHref: y.t.href }) + '</div>' : '';
+    }
+    function norm(t) { return String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/g, ' '); }
     function score() { return qs.filter(function (x) { return x.pick != null && x.opts[x.pick].ok; }).length; }
 
     function show() {
