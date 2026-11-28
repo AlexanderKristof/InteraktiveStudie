@@ -2672,6 +2672,11 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
   .aw-table th, .aw-table td { padding: 5px 6px; }
 }
 
+/* ==== MI-megjegyzés és hibajelzés a láblécben ==== */
+.foot .ai-note { max-width: 860px; margin: 0 auto 12px; padding: 10px 14px; border: 1px solid var(--line, #ccc); border-radius: 10px; font-size: .88rem; line-height: 1.5; color: var(--muted); text-align: left; }
+.foot .ai-note b { color: var(--fg); }
+.foot .ai-note .btn { margin-left: 6px; white-space: nowrap; }
+
 </style>
 </head>
 <body>
@@ -13468,6 +13473,31 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
     var c = root.querySelector('#st-nostat');
     if (c) c.addEventListener('change', function () { S.store.set('nostat', c.checked); if (!c.checked) load(); });
   };
+})();
+
+</script>
+  <script>/* js/hibajelzes.js */
+/* Tudásműhely – MI-átláthatósági megjegyzés és „Hibát jelzek” gomb a láblécben (minden oldalon).
+ * A gomb előre kitöltött e-mailt nyit az aktuális oldal címével és linkjével. */
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  var MAIL = 'mitudi.hibak@gmail.com', SITE = 'https://alexanderkristof.github.io/InteraktiveStudie/';
+  function link() {
+    var url = (/^https?:/.test(location.protocol) ? location.href.split('#')[0] : SITE) + (location.hash || '#/').split('?')[0];
+    var t = (document.title || '').replace(/ – Tudásműhely$/, '') || 'Kezdőlap';
+    var body = 'Szia!\n\nHibát találtam ezen az oldalon:\n' + t + '\n' + url + '\n\nMi a hiba? (írd le röviden, ha tudod, a helyes változatot is):\n\n';
+    return 'mailto:' + MAIL + '?subject=' + encodeURIComponent('Hibajelzés: ' + t) + '&body=' + encodeURIComponent(body);
+  }
+  function build() {
+    var f = document.querySelector('footer.foot'); if (!f || f.querySelector('.ai-note')) return;
+    var p = document.createElement('p'); p.className = 'ai-note';
+    p.innerHTML = '🤖 <b>Mesterséges intelligencia segítségével készült.</b> A Tudásműhely tartalmát és programját MI segítségével írtuk – ez teszi lehetővé, hogy ilyen sok témát, ilyen részletesen és ingyen kínálhassunk. Az MI és az ember is tévedhet, ezért az itt olvasottakat érdemes kritikusan kezelni, és fontos ügyekben más forrásból is ellenőrizni. <b>Hibát találtál?</b> Írd meg nekünk – kijavítjuk! <a class="btn sm" id="hibajelzes" href="' + link() + '">✉️ Hibát jelzek</a>';
+    f.insertBefore(p, f.firstChild);
+    p.querySelector('#hibajelzes').addEventListener('click', function () { this.href = link(); });
+  }
+  document.addEventListener('DOMContentLoaded', build);
+  if (document.readyState !== 'loading') build();
 })();
 
 </script>
@@ -82014,6 +82044,13 @@ STUDIE.addLangCourse({
  * STUDIE.addNews({ id, date: 'ÉÉÉÉ-HH-NN', title, plus: [['+840', 'tesztkérdés'], …], items: [['szöveg', '#/link'], …] }) */
 (function () {
   var N = STUDIE.addNews;
+
+  N({ id: '2026-11-28-atlathatosag', date: '2026-11-28', title: '🤖 Átláthatóság és ✉️ hibajelzés',
+    plus: [['+1', 'hibajelentő gomb minden oldalon'], ['+1', 'nyílt licenc']],
+    items: [
+      ['Minden oldal alján: a tartalom MI segítségével készült, ezért érdemes kritikusan kezelni. A „✉️ Hibát jelzek” gomb előre kitöltött e-mailt nyit az oldal címével – kijavítjuk!', ''],
+      ['Nyílt licenc: a programkód MIT, a tananyag CC BY 4.0 – szabadon felhasználható a forrás megjelölésével', '']
+    ] });
 
   N({ id: '2026-11-27-isa', date: '2026-11-27', title: '📊 Könyvvizsgálat: ISA-standardok, állítások, IFRS-kalkulátorok',
     plus: [['+1', 'egyetemi kurzus (ISA)'], ['+57', 'szakszó'], ['+105', 'tesztkérdés'], ['+11', 'interaktív gyakorló'], ['+7', 'kalkulátor']],
