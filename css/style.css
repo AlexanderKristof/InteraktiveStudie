@@ -2688,3 +2688,6 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
 .ih-btns .btn.ih-dim { opacity: .4; } .ih-btns .btn:disabled { cursor: pointer; }
 @keyframes ih-blink { 50% { opacity: .35; } }
 @media (prefers-reduced-motion: reduce) { .ih-btns .btn.ih-fill-bad { animation: none; } }
+.ih-tap { position: relative; margin: 10px 0 0; font-size: .85rem; text-align: center; padding-bottom: 6px; }
+.ih-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--accent, #2563eb); border-radius: 2px; transform-origin: left; animation: ih-bar linear forwards; }
+@keyframes ih-bar { from { transform: scaleX(1); } to { transform: scaleX(0); } }

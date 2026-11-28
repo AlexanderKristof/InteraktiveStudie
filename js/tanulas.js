@@ -236,7 +236,11 @@
         var pt = card.querySelector('.ih-top b + small'); if (pt) pt.previousElementSibling.textContent = score;
         flash(ok);
         function go() { if (!locked) return; clearTimeout(contT); locked = paused = false; card.removeEventListener('click', go); if (left > 0) next(); }
-        contT = setTimeout(go, ok ? 650 : 1600);
+        /* olvasási idő: ha megjelenik a helyes válasz (hamis állítás vagy hiba), annyi ideig marad, hogy el lehessen olvasni */
+        var showsAnswer = !cur.truth || !ok, plain = String(q.options[q.answer]).replace(/<[^>]+>|[*_`]/g, '');
+        var wait = showsAnswer ? Math.min(6000, Math.max(2600, 1800 + plain.length * 45)) : 800;
+        card.insertAdjacentHTML('beforeend', '<p class="ih-tap muted">' + (showsAnswer ? '⏸ Olvasd el nyugodtan – az idő áll. Koppints a továbblépéshez…' : 'Koppints a továbblépéshez…') + '<span class="ih-bar" style="animation-duration:' + wait + 'ms"></span></p>');
+        contT = setTimeout(go, wait);
         setTimeout(function () { card.addEventListener('click', go); }, 150);
       }
       function flash(ok) { box.classList.remove('ih-ok', 'ih-bad'); void box.offsetWidth; box.classList.add(ok ? 'ih-ok' : 'ih-bad'); }
