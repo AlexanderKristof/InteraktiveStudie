@@ -90,7 +90,7 @@ A meglévő Könyvvizsgálat (BSc), IFRS (MSc), Számvitel és Kontrolling kurzu
 - [ ] Az összes kvíz- és tesztkérdés átnézése (kb. 9500): **kétértelmű kérdések** (hiányzó feltétel, pl. „milyen a pálya” – ferde vagy függőleges dobás?), **több helyes válasz** (egy „rossz” opció is igaz), **félrevezető helyes válasz**, a magyarázat ellentmond-e a válasznak. A felhasználó eddig két ilyet talált (kosárlabda lapos dobás, labda pályája) – mindkettő javítva.
 
 ## ⚔️ Online párbajszobák (2026-11-28) – előkészítve
-- Supabase-projekt kész (EU), publishable key: `sb_publishable_HJ2RCgin6oJ3UaISCRIYNA_Loc9Tlss` (nyilvános kulcs, a weboldalba kerül). Project URL: _még hiányzik_.
+- Supabase-projekt kész (EU), publishable key: `sb_publishable_HJ2RCgin6oJ3UaISCRIYNA_Loc9Tlss` (nyilvános kulcs, a weboldalba kerül). Project URL: `https://acrlrhijksveqsuirbxt.supabase.co`.
 - Adatbázis-séma: `supabase/szobak.sql` (rooms + players, RLS, Realtime). A tulajdonos futtatja az SQL Editorban; előtte: Authentication → „Allow anonymous sign-ins” bekapcsolása.
 - Működés: szoba létrehozása → 4–6 jegyű kód + meghívó link (`#/szoba/KOD`) → becenév → a gazda témát választ és indít → mindenki ugyanazokat a kérdéseket kapja, élő ranglista → a szobák és eredmények megmaradnak.
 - Megvalósítás (js/szobak.js): supabase-js helyett könnyű saját REST + Realtime (WebSocket) kliens, vagy a supabase-js UMD (cdn) – offline változatban a funkció jelzi, hogy internet kell. Adatkezelési tájékoztató: csak becenév + pontszám.
