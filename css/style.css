@@ -2677,3 +2677,14 @@ tr.bad .mk-barl span, tr.bad .mk-barr span { background: var(--bad); }
 .ih-big { font-size: 2rem; line-height: 1; }
 @keyframes ih-pop { 0% { transform: scale(.85); opacity: .3; } 100% { transform: scale(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .ih-fb { animation: none; } }
+/* Igaz vagy hamis: visszajelzés ugyanannál a kérdésnél */
+.ih-a.ih-false { text-decoration: line-through; opacity: .75; }
+.ih-a.ih-wasTrue { color: #dc2626; } .ih-a.ih-wasTrueOk { color: #16a34a; }
+.ih-real { font-size: 1.15rem; margin: -2px 0 6px; } .ih-real.ok { color: #16a34a; } .ih-real.bad { color: #dc2626; }
+:root[data-theme="dark"] .ih-real.ok, :root[data-theme="dark"] .ih-a.ih-wasTrueOk { color: #4ade80; } :root[data-theme="dark"] .ih-real.bad, :root[data-theme="dark"] .ih-a.ih-wasTrue { color: #f87171; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ih-real.ok, :root:not([data-theme="light"]) .ih-a.ih-wasTrueOk { color: #4ade80; } :root:not([data-theme="light"]) .ih-real.bad, :root:not([data-theme="light"]) .ih-a.ih-wasTrue { color: #f87171; } }
+.ih-btns .btn.ih-fill-ok { background: #16a34a; border-color: #16a34a; color: #fff; }
+.ih-btns .btn.ih-fill-bad { background: #dc2626; border-color: #dc2626; color: #fff; animation: ih-blink .4s ease-in-out 3; }
+.ih-btns .btn.ih-dim { opacity: .4; } .ih-btns .btn:disabled { cursor: pointer; }
+@keyframes ih-blink { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .ih-btns .btn.ih-fill-bad { animation: none; } }

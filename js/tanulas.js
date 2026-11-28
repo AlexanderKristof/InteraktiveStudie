@@ -204,20 +204,40 @@
         var wrongOpts = q.options.map(function (o, k) { return k; }).filter(function (k) { return k !== q.answer; });
         var shownIdx = truth ? q.answer : wrongOpts[Math.floor(Math.random() * wrongOpts.length)];
         cur = { it: it, truth: truth, shown: q.options[shownIdx] };
-        box.innerHTML = '<div class="ih-card card pad"><div class="ih-top"><span>⏱ <b id="ih-left">' + left + '</b> mp</span><span>Pont: <b>' + score + '</b> <small class="muted">· legjobb sorozat: ' + best + ' · helyes: ' + good + '</small></span>' + (streak >= 3 ? '<span class="combo">🔥 ' + streak + '</span>' : '') + '</div>' + fb +
+        box.innerHTML = '<div class="ih-card card pad"><div class="ih-top"><span>⏱ <b id="ih-left">' + left + '</b> mp</span><span>Pont: <b>' + score + '</b> <small class="muted">· legjobb sorozat: ' + best + ' · helyes: ' + good + '</small></span>' + (streak >= 3 ? '<span class="combo">🔥 ' + streak + '</span>' : '') + '</div>' +
           '<small class="muted">' + esc(it.s.icon + ' ' + it.s.title + ' · ' + it.l.title) + '</small><p class="ih-q">' + S.inline(q.q) + '</p><p class="ih-a">→ ' + S.inline(String(cur.shown)) + '</p>' +
           '<div class="ih-btns"><button type="button" class="btn ih-no" data-v="0">✗ Hamis</button><button type="button" class="btn ih-yes" data-v="1">✓ Igaz</button></div></div>';
         box.querySelectorAll('[data-v]').forEach(function (b) { b.addEventListener('click', function () { answer(b.dataset.v === '1'); }); });
       }
+      var locked = false, paused = false, contT = null;
       function answer(v) {
-        if (!cur || left <= 0) return;
+        if (!cur || left <= 0 || locked) return;
+        locked = paused = true;
+        var ok = v === cur.truth, card = box.querySelector('.ih-card'), q = cur.it.q, real = S.inline(String(q.options[q.answer]));
         /* a pont a jelenlegi sorozat: egy rossz válasz lenullázza */
-        if (v === cur.truth) { streak++; good++; score = streak; best = Math.max(best, streak); fb = '<div class="ih-fb ok" role="status"><span class="ih-big">✓</span> Helyes! +1 pont' + (streak >= 3 ? ' · 🔥 ' + streak + ' egymás után' : '') + '</div>'; flash(true); }
-        else {
-          var lost = streak; streak = 0; score = 0; wrong.push(cur);
-          fb = '<div class="ih-fb bad" role="status"><span class="ih-big">✗</span> Hibás! ' + (lost ? 'Elveszett a sorozatod (' + lost + ' pont), a pont nullázódott. ' : '') + '<small>Helyes válasz: <b>' + S.inline(String(cur.it.q.options[cur.it.q.answer])) + '</b></small></div>'; flash(false);
-        }
-        next();
+        var lost = streak;
+        if (ok) { streak++; good++; score = streak; best = Math.max(best, streak); }
+        else { streak = 0; score = 0; wrong.push(cur); }
+        var a = card.querySelector('.ih-a');
+        if (!cur.truth) {
+          a.classList.add('ih-false');
+          a.insertAdjacentHTML('afterend', '<p class="ih-real ' + (ok ? 'ok' : 'bad') + '">' + (ok ? '✓ Az igazi válasz: ' : '✗ A helyes válasz ez lett volna: ') + '<b>' + real + '</b></p>');
+        } else if (!ok) {
+          a.classList.add('ih-wasTrue'); a.insertAdjacentHTML('afterend', '<p class="ih-real bad">✗ Ez igaz volt!</p>');
+        } else a.classList.add('ih-wasTrueOk');
+        card.querySelectorAll('[data-v]').forEach(function (b) {
+          var bv = b.dataset.v === '1';
+          if (bv === cur.truth) b.classList.add(ok ? 'ih-fill-ok' : 'ih-fill-bad');
+          else b.classList.add('ih-dim');
+        });
+        card.querySelector('.ih-top').insertAdjacentHTML('afterend', ok
+          ? '<div class="ih-fb ok" role="status"><span class="ih-big">✓</span> Helyes! +1 pont' + (streak >= 3 ? ' · 🔥 ' + streak + ' egymás után' : '') + '</div>'
+          : '<div class="ih-fb bad" role="status"><span class="ih-big">✗</span> Hibás! ' + (lost ? 'Elveszett a sorozatod (' + lost + ' pont), a pont nullázódott.' : 'A pont nullázódott.') + '</div>');
+        var pt = card.querySelector('.ih-top b + small'); if (pt) pt.previousElementSibling.textContent = score;
+        flash(ok);
+        function go() { if (!locked) return; clearTimeout(contT); locked = paused = false; card.removeEventListener('click', go); if (left > 0) next(); }
+        contT = setTimeout(go, ok ? 650 : 1600);
+        setTimeout(function () { card.addEventListener('click', go); }, 150);
       }
       function flash(ok) { box.classList.remove('ih-ok', 'ih-bad'); void box.offsetWidth; box.classList.add(ok ? 'ih-ok' : 'ih-bad'); }
       function end() {
@@ -236,6 +256,7 @@
       if (timer) clearInterval(timer);
       timer = setInterval(function () {
         if (!document.body.contains(box)) { clearInterval(timer); document.removeEventListener('keydown', keyH); return; }
+        if (paused) return;
         left--; var el = box.querySelector('#ih-left'); if (el) el.textContent = left;
         if (left <= 0) end();
       }, 1000);

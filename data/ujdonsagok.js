@@ -5,7 +5,7 @@
 
   N({ id: '2026-11-28-igazhamis', date: '2026-11-28', title: '⚡ Igaz vagy hamis?: sorozat-pontozás, nagy visszajelzés',
     plus: [['+1', 'játékszabály-javítás']],
-    items: [['Egy hibás válasz lenullázza a pontot (a pont a jelenlegi sorozat); minden válasz után nagy ✓ / ✗ jelzés, hibánál a helyes válasszal; a rekord a leghosszabb sorozat.', '#/tanulas/igazhamis']] });
+    items: [['Egy hibás válasz lenullázza a pontot (a pont a jelenlegi sorozat); a rekord a leghosszabb sorozat.', '#/tanulas/igazhamis'], ['A visszajelzés ugyanannál a kérdésnél jelenik meg: hamis állításnál mindig látod az igazi választ (zölddel, ha eltaláltad, pirossal, ha nem), a helyes gomb kiszíneződik – hibánál pirosan villog. Közben az idő megáll.', '#/tanulas/igazhamis']] });
 
   N({ id: '2026-11-28-atlathatosag', date: '2026-11-28', title: '🤖 Átláthatóság és ✉️ hibajelzés',
     plus: [['+1', 'hibajelentő gomb minden oldalon'], ['+1', 'nyílt licenc']],
